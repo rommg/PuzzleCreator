@@ -18,7 +18,7 @@ public class YagoFileHandler {
 			"7z_files" +  System.getProperty("file.separator");
 	private static final String TSV_FILE_DEST_DIR = HOME_DIR + "temp_yago_files" +  System.getProperty("file.separator") +
 			"tsv_files" +  System.getProperty("file.separator");
-	private static final String FILTERED_TSV_FILE_DEST_DIR = HOME_DIR + "temp_yago_files" +  System.getProperty("file.separator") +
+	public static final String FILTERED_TSV_FILE_DEST_DIR = HOME_DIR + "temp_yago_files" +  System.getProperty("file.separator") +
 			"filtered_tsv_files" +  System.getProperty("file.separator");
 
 
@@ -224,7 +224,7 @@ public class YagoFileHandler {
 					//object =yagoIDColumns[3];
 					//object = object.substring(0, object.length()-1); // get rid of '>'
 
-				//	if ((typesIDs.contains(subject) || typesIDs.contains(object)) 
+					//	if ((typesIDs.contains(subject) || typesIDs.contains(object)) 
 					if ((typesIDs.contains(lineColumns[1]) || typesIDs.contains(lineColumns[3])) 
 							&& (factsTypeIDs.contains(lineColumns[2]))) { // fact has relevant typeID for either subject or object and relevant fact
 						bw.write(line);
@@ -294,7 +294,7 @@ public class YagoFileHandler {
 		return 1;
 	}
 
-	public void createAllFilteredYagoFiles() throws IOException {
+	public int createAllFilteredYagoFiles() {
 
 		// download files
 		getFileFromURL(YAGO_TYPES);
@@ -303,10 +303,14 @@ public class YagoFileHandler {
 
 
 		// create filtered TSV files
-		parseYagoTypes();
-		parseYagoFacts();
-		parseYagoLiteralFacts();
+		try {
+			parseYagoTypes();
+			parseYagoFacts();
+			parseYagoLiteralFacts();
+		} catch (IOException e) {
+			return 0;
+		}
+		
+		return 1;
 	}
-
-
 }
