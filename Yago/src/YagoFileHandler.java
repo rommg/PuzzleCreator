@@ -1,9 +1,13 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,38 +18,44 @@ public class YagoFileHandler {
 	private static final String TSV = ".tsv";
 	private static final String TSV_7Z = TSV + ".7z";
 	private static final String HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
-	private static final String ZIP_FILE_DEST_DIR = HOME_DIR + "temp_yago_files" +  System.getProperty("file.separator") +
-			"7z_files" +  System.getProperty("file.separator");
-	private static final String TSV_FILE_DEST_DIR = HOME_DIR + "temp_yago_files" +  System.getProperty("file.separator") +
-			"tsv_files" +  System.getProperty("file.separator");
-	public static final String FILTERED_TSV_FILE_DEST_DIR = HOME_DIR + "temp_yago_files" +  System.getProperty("file.separator") +
-			"filtered_tsv_files" +  System.getProperty("file.separator");
+	private static final String TEMP_DIR = HOME_DIR +"temp_yago_files" +  System.getProperty("file.separator");
+	private static final String ZIP_FILE_DEST_DIR = TEMP_DIR + "7z_files" +  System.getProperty("file.separator");
+	private static final String TSV_FILE_DEST_DIR = TEMP_DIR + "tsv_files" +  System.getProperty("file.separator");
+	public static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
 
 
 	// static yago files names
 	public static final String YAGO_TYPES = "yagoTypes";
 	public static final String YAGO_FACTS = "yagoFacts";
-	//public static final String YAGO_LABELS = "yagoLabels";
 	public static final String YAGO_LITERAL_FACTS = "yagoLiteralFacts";
 
 	// instance fields
 	private Set<String> entityTypes = null;
 	private Set<String> factsTypeIDs = null;
 	private Set<String> LitertalTypes = null;
-
-	private Set<String> typesIDs;
+	private Set<String> relevantEntities= null;
 
 	public YagoFileHandler() {
 		getTypes();
-		typesIDs = new HashSet<String>(); // will contain IDS or names of intersting entities
+		relevantEntities = new HashSet<String>(); // will contain names of interesting entities
 
 	}
 
 	private void getEntityTypes() { // can be changed in the future
 		entityTypes = new HashSet<String>(); 
-		entityTypes.add("<wikicategory_Israeli_female_singers>");
-		entityTypes.add("<wikicategory_American_pop_singers>");
-		entityTypes.add("<wikicategory_Capitals_in_Asia>");
+		entityTypes.add("<wikicategory_Israeli_basketball_players>");
+		entityTypes.add("<wikicategory_Capitals_in_Europe>");
+		entityTypes.add("<wikicategory_States_of_the_United_States>");
+		entityTypes.add("<wikicategory_Former_United_States_state_capitals>");
+		entityTypes.add("<wikicategory_English-language_singers>");
+		entityTypes.add("<wikicategory_Jewish_American_musicians>");
+		entityTypes.add("<wikicategory_Jewish_poets>");
+		entityTypes.add("<wikicategory_2000s_comedy_films>");
+		entityTypes.add("<wordnet_movie_106613686>");
+		entityTypes.add("<wikicategory_2013_films>");
+		entityTypes.add("<wikicategory_Israeli_rock_singers>");
+		entityTypes.add("<wikicategory_Israeli_artists>");
+		entityTypes.add("<wikicategory_Israeli_children's_writers>");
 	}
 
 	private void getFactTypes() { // can be changed in the future
@@ -67,11 +77,11 @@ public class YagoFileHandler {
 
 	}
 
-	public int getFileFromURL(String yagoFile) {
+	private int getFileFromURL(String yagoFile) {
 		URI uri = null;
 		String zip_7z_file_path = ZIP_FILE_DEST_DIR + yagoFile + TSV_7Z;
-
 		File zip_7z_file = new File(zip_7z_file_path);
+
 		File tsv_file = new File(TSV_FILE_DEST_DIR + yagoFile + TSV);
 
 		if  (tsv_file.exists()) { // TSV file exists
@@ -128,19 +138,20 @@ public class YagoFileHandler {
 
 		// file should have been created by now by getFileFromURL
 
-		return new BufferedReader(new FileReader(TSV_FILE_DEST_DIR + yagoFile + TSV));
+		return new BufferedReader(new InputStreamReader (new FileInputStream(TSV_FILE_DEST_DIR + yagoFile + TSV),"UTF-8"));
 	}
 
 	private BufferedWriter getFileWriter(String yagoFile) throws IOException {
 
 		// create file 
-		File f =new File(FILTERED_TSV_FILE_DEST_DIR + "filtered_" + yagoFile + TSV); // for example: FILE_DEST_DIR\light_yago_types.tsv
-		if(!f.exists()) {
-			f.getParentFile().mkdirs(); // create FILTERED_TSV_FILE_DEST_DIR directory
-			f.createNewFile();
-		}
+		File f =new File(FILTERED_TSV_FILE_DEST_DIR + yagoFile + TSV); // for example: FILE_DEST_DIR\light_yago_types.tsv
+		if (!f.getParentFile().exists()) // create directory of logFile
+			f.getParentFile().mkdirs();
+		if (f.exists()) // delete if exists, to start with clean file
+			f.delete();
+		f.createNewFile();
 
-		return new BufferedWriter(new FileWriter(f, true));
+		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),"UTF-8"));
 	}
 
 	private int parseYagoTypes() throws IOException {
@@ -167,7 +178,7 @@ public class YagoFileHandler {
 						Logger.writeErrorToLog("Defective yagoID: " + lineColumns[0] + " in " + YAGO_TYPES);
 					}
 					else {
-						typesIDs.add(lineColumns[1]);
+						relevantEntities.add(lineColumns[1]);
 						//	typesIDs.add(yagoIDColumns[1]); //add to relevant type ids collection
 						bw.write(line);
 						bw.newLine();
@@ -225,7 +236,7 @@ public class YagoFileHandler {
 					//object = object.substring(0, object.length()-1); // get rid of '>'
 
 					//	if ((typesIDs.contains(subject) || typesIDs.contains(object)) 
-					if ((typesIDs.contains(lineColumns[1]) || typesIDs.contains(lineColumns[3])) 
+					if ((relevantEntities.contains(lineColumns[1]) || relevantEntities.contains(lineColumns[3])) 
 							&& (factsTypeIDs.contains(lineColumns[2]))) { // fact has relevant typeID for either subject or object and relevant fact
 						bw.write(line);
 						bw.newLine();
@@ -256,7 +267,7 @@ public class YagoFileHandler {
 		int count = 0;
 		String line = null;
 		String[] lineColumns = null;
-
+		
 		BufferedReader br = getFileReader(YAGO_LITERAL_FACTS);
 		BufferedWriter bw = getFileWriter(YAGO_LITERAL_FACTS);
 
@@ -268,7 +279,7 @@ public class YagoFileHandler {
 		try {
 			while ((line = br.readLine()) != null)   {
 				lineColumns = line.split("\\t");
-				if (typesIDs.contains(lineColumns[1]) && LitertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
+				if (relevantEntities.contains(lineColumns[1]) && LitertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
 					bw.write(line);
 					bw.newLine();
 					count++;
@@ -293,14 +304,38 @@ public class YagoFileHandler {
 
 		return 1;
 	}
+	
+	public void deleteAllYagoFiles() {
+		deleteYagoFile(YAGO_TYPES);
+		deleteYagoFile(YAGO_FACTS);
+		deleteYagoFile(YAGO_LITERAL_FACTS);
+		
+		//deleting empty directories
+		deleteFileOrDirectory(ZIP_FILE_DEST_DIR);
+		deleteFileOrDirectory(TSV_FILE_DEST_DIR);
+		deleteFileOrDirectory(FILTERED_TSV_FILE_DEST_DIR);
+		deleteFileOrDirectory(TEMP_DIR);
 
-	public int createAllFilteredYagoFiles() {
+	}
+	
+	private void deleteYagoFile(String yagoFile) {
+		// delete 7z file
+		deleteFileOrDirectory(ZIP_FILE_DEST_DIR + yagoFile + TSV_7Z);
+		//delete tsv file
+		deleteFileOrDirectory(TSV_FILE_DEST_DIR + yagoFile + TSV);
+		//delete filtered TSV
+		deleteFileOrDirectory(FILTERED_TSV_FILE_DEST_DIR +  yagoFile + TSV);
+	}
 
-		// download files
-		getFileFromURL(YAGO_TYPES);
-		getFileFromURL(YAGO_FACTS);
-		getFileFromURL(YAGO_LITERAL_FACTS);
-
+	private void deleteFileOrDirectory(String file) {
+		File f;
+		f = new File(file);
+		if (f.exists())
+			if (f.isFile() || (f.isDirectory() && (f.list().length == 0))) // file or empty directory
+				f.delete();
+	}
+	
+	public int createFilteredYagoFiles() {
 
 		// create filtered TSV files
 		try {
@@ -310,7 +345,13 @@ public class YagoFileHandler {
 		} catch (IOException e) {
 			return 0;
 		}
-		
 		return 1;
+	}
+
+	public void getFilesFromURL() {
+
+		getFileFromURL(YAGO_TYPES);
+		getFileFromURL(YAGO_FACTS);
+		getFileFromURL(YAGO_LITERAL_FACTS);
 	}
 }
