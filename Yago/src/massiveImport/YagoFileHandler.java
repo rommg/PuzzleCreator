@@ -1,81 +1,89 @@
+package massiveImport;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import Utils.DBConnector;
+import Utils.Logger;
+
 import net.sf.sevenzipjbinding.SevenZipException;
 
 public class YagoFileHandler {
 
+	//private static fields
 	private static final String TSV = ".tsv";
 	private static final String TSV_7Z = TSV + ".7z";
 	private static final String HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
 	private static final String TEMP_DIR = HOME_DIR +"temp_yago_files" +  System.getProperty("file.separator");
 	private static final String ZIP_FILE_DEST_DIR = TEMP_DIR + "7z_files" +  System.getProperty("file.separator");
 	private static final String TSV_FILE_DEST_DIR = TEMP_DIR + "tsv_files" +  System.getProperty("file.separator");
-	public static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
-
+	private static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
+	private static final String HAS_GENDER = "<hasGender>";
 
 	// static yago files names
 	public static final String YAGO_TYPES = "yagoTypes";
 	public static final String YAGO_FACTS = "yagoFacts";
 	public static final String YAGO_LITERAL_FACTS = "yagoLiteralFacts";
+	public static final String YAGO_HUMAN_ANSWERS = "yagoHumanAnswers";
 
 	// instance fields
 	private Set<String> entityTypes = null;
-	private Set<String> factsTypeIDs = null;
-	private Set<String> LitertalTypes = null;
+	private Set<String> predicateTypes = null;
+	private Set<String> litertalTypes = null;
 	private Set<String> relevantEntities= null;
 
 	public YagoFileHandler() {
 		getTypes();
 		relevantEntities = new HashSet<String>(); // will contain names of interesting entities
-
 	}
 
-	private void getEntityTypes() { // can be changed in the future
+	private void getEntityTypes()  { // can be changed in the future
 		entityTypes = new HashSet<String>(); 
-		entityTypes.add("<wikicategory_Israeli_basketball_players>");
-		entityTypes.add("<wikicategory_Capitals_in_Europe>");
-		entityTypes.add("<wikicategory_States_of_the_United_States>");
-		entityTypes.add("<wikicategory_Former_United_States_state_capitals>");
-		entityTypes.add("<wikicategory_English-language_singers>");
-		entityTypes.add("<wikicategory_Jewish_American_musicians>");
-		entityTypes.add("<wikicategory_Jewish_poets>");
-		entityTypes.add("<wikicategory_2000s_comedy_films>");
-		entityTypes.add("<wordnet_movie_106613686>");
-		entityTypes.add("<wikicategory_2013_films>");
-		entityTypes.add("<wikicategory_Israeli_rock_singers>");
-		entityTypes.add("<wikicategory_Israeli_artists>");
-		entityTypes.add("<wikicategory_Israeli_children's_writers>");
+		fillCollectionEntitiesFromDB("dbproject","definition", "type", entityTypes);
 	}
 
-	private void getFactTypes() { // can be changed in the future
-		factsTypeIDs = new HashSet<String>(); 
-		factsTypeIDs.add("<created>"); // 1gi
-		factsTypeIDs.add("<actedIn>"); // gar
-		factsTypeIDs.add("<hasCapital>"); //" "789"
+	private void getPredicateTypes() { // can be changed in the future
+		predicateTypes = new HashSet<String>(); 
+		predicateTypes.add(HAS_GENDER);
+		fillCollectionEntitiesFromDB("dbproject", "predicate", "predicate", predicateTypes);
 	}
 
 	private void getLiteralTypes() { // can be changed in the future
-		LitertalTypes = new HashSet<String>(); 
-		LitertalTypes.add("<wasBornOnDate>"); // there are a lot of defective yago IDs in LiteralFacts, so it's bette to use the relation name.
+		litertalTypes = new HashSet<String>(); 
+		fillCollectionEntitiesFromDB("dbproject", "literal", "literal_fact", litertalTypes);
+
+	}
+
+	private void fillCollectionEntitiesFromDB(String schema, String tableName, String entityType, Set<String> collection) {
+		String columnName = "yago_" + entityType;
+		List<Map<String,Object>> rs = null;
+		rs = DBConnector.executeQuery(schema,"SELECT " + tableName + "." + columnName +  " FROM " + tableName + ";");
+		for (Map<String,Object> row : rs )
+			collection.add((String)row.get(columnName));
 	}
 
 	private void getTypes() {
 		getEntityTypes();
-		getFactTypes();
+		getPredicateTypes();
 		getLiteralTypes();
 
 	}
+
+	public static String getFilteredTsvFileDestDir() {
+		return FILTERED_TSV_FILE_DEST_DIR;
+	}
+
 
 	private int getFileFromURL(String yagoFile) {
 		URI uri = null;
@@ -154,11 +162,27 @@ public class YagoFileHandler {
 		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),"UTF-8"));
 	}
 
+	private String getProperName(String input) {
+
+		String returnString;
+		returnString= input.replace('_', ' ').replace('-', ' ').replaceAll("\\.", "");  // remove .,- and add spaces
+		returnString = returnString.substring(1, returnString.length()-1); // trim <,>
+		//remove _(....)
+		int i = returnString.lastIndexOf('(');
+		if (i<=0) // also for entities with 1 char e.g. (_)
+			return returnString.toLowerCase();
+		else 
+			return returnString.substring(0, i-1).toLowerCase(); // get rid of ' ' +  '(... )' in end of entity names
+	}
+
+	private boolean containsNonEnglishChars(String input) {
+		boolean i =  !input.matches("[a-z0-9 ]+");
+		return i;
+
+	}
 	private int parseYagoTypes() throws IOException {
 		int count = 0;
 		String line = null;
-		String[] lineColumns = null; 
-		String[] yagoIDColumns = null;
 
 		BufferedReader br = getFileReader(YAGO_TYPES);
 		BufferedWriter bw = getFileWriter(YAGO_TYPES);
@@ -169,18 +193,34 @@ public class YagoFileHandler {
 		long start = System.currentTimeMillis();
 
 		try {
-
 			while ((line = br.readLine()) != null)   {
-				lineColumns = line.split("\\t");
-				if (entityTypes.contains(lineColumns[3])) { // object is a relevant type
-					yagoIDColumns = lineColumns[0].split("_");
-					if (yagoIDColumns.length != 4) { // discard rows with defective yagoID
-						Logger.writeErrorToLog("Defective yagoID: " + lineColumns[0] + " in " + YAGO_TYPES);
-					}
-					else {
+				String[] lineColumns = line.split("\\t");
+				if ((lineColumns[1].length() <=50) && entityTypes.contains(lineColumns[3])) {
+
+					String properName = getProperName(lineColumns[1]); // get clean entity name
+					if (!containsNonEnglishChars(properName)) { // subject is of a relevant type and English letters only
 						relevantEntities.add(lineColumns[1]);
-						//	typesIDs.add(yagoIDColumns[1]); //add to relevant type ids collection
-						bw.write(line);
+
+						String[] entityNameDivided = properName.split(" ");
+						String newLine = lineColumns[1] + "\t"
+								+ lineColumns[2] + "\t" 
+								+ lineColumns[3] + "\t" 
+								+ properName + "\t";
+
+						StringBuffer buf = new StringBuffer(newLine);
+
+						if (entityNameDivided.length > 1) { // create additional information if there word count in entity > 1
+							buf.append("(");
+							for (int i = 0; i<entityNameDivided.length; ++i) {
+								buf.append(entityNameDivided[i].length());
+								if (i == entityNameDivided.length - 1) //last word in entity
+									buf.append(")");
+								else 
+									buf.append(",");
+							}
+						}
+
+						bw.write(buf.toString());
 						bw.newLine();
 						count++;
 					}
@@ -207,14 +247,10 @@ public class YagoFileHandler {
 	private int parseYagoFacts() throws IOException {
 		int count = 0;
 		String line = null;
-		String[] lineColumns = null;
-		String[] yagoIDColumns = null;
-		//String subject = null;
-		//String object = null;
-		//String fact = null;
 
 		BufferedReader br = getFileReader(YAGO_FACTS);
 		BufferedWriter bw = getFileWriter(YAGO_FACTS);
+		BufferedWriter bwAnswers = getFileWriter(YAGO_HUMAN_ANSWERS);
 
 		Logger.writeToLog("scanning " + YAGO_FACTS + " ...");
 
@@ -222,26 +258,46 @@ public class YagoFileHandler {
 		long start = System.currentTimeMillis();
 
 		try {
-
 			while ((line = br.readLine()) != null)   {
-				lineColumns = line.split("\\t");
-				yagoIDColumns = lineColumns[0].split("_"); // split the yago ID into subject, fact, object.
-				if (yagoIDColumns.length != 4) { //defective yagoID
-					Logger.writeErrorToLog("Defective yagoID: " + lineColumns[0] + " in " + YAGO_FACTS);
-				}
-				else { // valid yago ID
-					//subject =yagoIDColumns[1];
-					//fact = yagoIDColumns[2];
-					//object =yagoIDColumns[3];
-					//object = object.substring(0, object.length()-1); // get rid of '>'
+				String[] lineColumns = line.split("\\t");			
+				boolean subjectHit = relevantEntities.contains(lineColumns[1]);
+				boolean objectHit = relevantEntities.contains(lineColumns[3]);
+				if ((subjectHit || objectHit) 
+						&& (lineColumns[1].length() <= 50) && (lineColumns[3].length() <=50)
+						&& (predicateTypes.contains(lineColumns[2]))) { // fact has relevant typeID for either subject or object and relevant fact
 
-					//	if ((typesIDs.contains(subject) || typesIDs.contains(object)) 
-					if ((relevantEntities.contains(lineColumns[1]) || relevantEntities.contains(lineColumns[3])) 
-							&& (factsTypeIDs.contains(lineColumns[2]))) { // fact has relevant typeID for either subject or object and relevant fact
-						bw.write(line);
+					String newLine = lineColumns[1] + "\t"
+							+ lineColumns[2] + "\t" 
+							+ lineColumns[3] + "\t";
+
+					if (subjectHit) {
+						String subjectLine = newLine + "1"; 
+						bw.write(subjectLine); // write one line for subject matched
 						bw.newLine();
 						count++;
-					} 
+					}
+
+					if (objectHit) {
+						String objectLine = newLine + "0"; 
+						bw.write(objectLine); // write one line for object matched
+						bw.newLine();
+						count++;
+					}
+
+					if (lineColumns[2].compareTo(HAS_GENDER) == 0) { // human
+						String properName = getProperName(lineColumns[1]); // human name in this predicate is in the subject
+						int index = properName.indexOf(' ');
+						String answerLine = null;
+						if (index != -1)  { // at least one name
+							answerLine = lineColumns[1] + "\t" + properName.substring(0, index) + "\tfirstname"; 
+							bwAnswers.write(answerLine);
+							bwAnswers.newLine();
+							index = properName.lastIndexOf(' ');
+							answerLine = lineColumns[1] + "\t" + properName.substring(index + 1, properName.length()) + "\tlastname";
+							bwAnswers.write(answerLine);
+							bwAnswers.newLine();
+						}
+					}
 				}
 			}
 
@@ -259,6 +315,7 @@ public class YagoFileHandler {
 		// close readers and commit changes
 		br.close();
 		bw.close();
+		bwAnswers.close();
 
 		return 1;
 	}
@@ -267,7 +324,7 @@ public class YagoFileHandler {
 		int count = 0;
 		String line = null;
 		String[] lineColumns = null;
-		
+
 		BufferedReader br = getFileReader(YAGO_LITERAL_FACTS);
 		BufferedWriter bw = getFileWriter(YAGO_LITERAL_FACTS);
 
@@ -279,8 +336,14 @@ public class YagoFileHandler {
 		try {
 			while ((line = br.readLine()) != null)   {
 				lineColumns = line.split("\\t");
-				if (relevantEntities.contains(lineColumns[1]) && LitertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
-					bw.write(line);
+				if (lineColumns[1].length() <=50 && relevantEntities.contains(lineColumns[1]) && litertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
+					String properLiteral = lineColumns[3].substring(1, lineColumns[3].lastIndexOf('"'));
+					int index = properLiteral.indexOf('#');
+					if (index != -1)
+						properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
+					
+					String newline = lineColumns[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
+					bw.write(newline);
 					bw.newLine();
 					count++;
 
@@ -304,12 +367,12 @@ public class YagoFileHandler {
 
 		return 1;
 	}
-	
+
 	public void deleteAllYagoFiles() {
 		deleteYagoFile(YAGO_TYPES);
 		deleteYagoFile(YAGO_FACTS);
 		deleteYagoFile(YAGO_LITERAL_FACTS);
-		
+
 		//deleting empty directories
 		deleteFileOrDirectory(ZIP_FILE_DEST_DIR);
 		deleteFileOrDirectory(TSV_FILE_DEST_DIR);
@@ -317,7 +380,7 @@ public class YagoFileHandler {
 		deleteFileOrDirectory(TEMP_DIR);
 
 	}
-	
+
 	private void deleteYagoFile(String yagoFile) {
 		// delete 7z file
 		deleteFileOrDirectory(ZIP_FILE_DEST_DIR + yagoFile + TSV_7Z);
@@ -334,7 +397,7 @@ public class YagoFileHandler {
 			if (f.isFile() || (f.isDirectory() && (f.list().length == 0))) // file or empty directory
 				f.delete();
 	}
-	
+
 	public int createFilteredYagoFiles() {
 
 		// create filtered TSV files
