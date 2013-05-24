@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PuzzleCreator {
 	// System.getProperty("file.separator")
-	private static String filePath = System.getProperty("user.home") + "/desktop/temp/new.txt";
+	private static String filePath = System.getProperty("user.home") + "/desktop/temp/answers.txt";
 	public static PuzzleSquare[][] board;
 	public static List<PuzzleDefinition> definitions = new ArrayList<PuzzleDefinition>();
 	public static List<PuzzleDefinition> unSolved = new ArrayList<PuzzleDefinition>();
@@ -32,22 +32,13 @@ public class PuzzleCreator {
 		printBoardStatus();
 		optimizeBoard();
 		printBoardStatus();
-		
 
 		if (!fillBoard()) {
 			Logger.writeErrorToLog("impossible data");
+		} else {
+			printResults();
 		}
-		printBoard();
 
-	}
-
-	private static void printBoardStatus() {
-		int counter = 0;
-		for (PuzzleDefinition def : definitions) {
-			Logger.writeToLog("def length: " + def.getLength() + " num of answers :" + def.getPossibleAnswers().size());
-			counter += def.getPossibleAnswers().size();
-		}
-		Logger.writeToLog("Total number of possible answers = " + counter);
 	}
 
 	private static boolean fillBoard() {
@@ -57,7 +48,7 @@ public class PuzzleCreator {
 		Collections.sort(unSolved);
 
 		outerLoop: while (!solved) {
-			
+
 			PuzzleDefinition def = unSolved.get(0);
 			List<String> possibleAnswers = def.getPossibleAnswers();
 			innerLoop: while (!def.isSolved()) {
@@ -89,7 +80,7 @@ public class PuzzleCreator {
 						return false;
 					}
 				}
-				
+
 				// fill currentAnswer to the board
 				pushBoardState(stack, def, currentAnswer);
 				insertAnswer(def, currentAnswer);
@@ -107,22 +98,21 @@ public class PuzzleCreator {
 
 			if (stack.size() == definitions.size())
 				solved = true;
-			
+
 		}
 
 		return solved;
 	}
 
 	private static void optimizeBoard() {
-		Logger.writeToLog("Starting optimization");
 		int size = board[0].length;
 		for (int row = 0; row < size; row++) {
 			for (int col = 0; col < size; col++) {
 				board[col][row].optimizeSquare();
 			}
 		}
-		
-		for (PuzzleDefinition def : definitions){
+
+		for (PuzzleDefinition def : definitions) {
 			def.optimizeDefinition();
 		}
 	}
@@ -253,7 +243,7 @@ public class PuzzleCreator {
 
 		def.setAnswer(currentAnswer);
 		def.markSolved();
-//		printBoard();
+		// printBoard();
 
 	}
 
@@ -562,6 +552,75 @@ public class PuzzleCreator {
 		return board;
 	}
 
+	/**
+	 * This method checks if param word contains only english letters
+	 * 
+	 * @param word
+	 *            - must be in lower case only
+	 * @return
+	 */
+	private static boolean checkWordLetters(String word) {
+		for (int letterIndex = 0; letterIndex < word.length(); letterIndex++) {
+			if (!(word.charAt(letterIndex) >= 'a' && word.charAt(letterIndex) <= 'z')) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean readAnswersFile(String path) {
+		Logger.writeToLog("Reading answers file");
+		answers = new ArrayList<String>();
+		try {
+			FileReader in = new FileReader(path);
+			BufferedReader bin = new BufferedReader(in);
+			String line = bin.readLine();
+			String first;
+			String second;
+			String full;
+	
+			while (line != null) {
+				if (line.indexOf('.') != -1 || line.indexOf('-') != -1) {
+					line = bin.readLine();
+					continue;
+				}
+				int index = line.indexOf('_');
+				if (index != -1) {
+					first = line.substring(0, index);
+					second = line.substring(index + 1);
+					full = first + second;
+					if (checkWordLetters(first.toLowerCase()))
+						answers.add(first.toLowerCase());
+					if (checkWordLetters(second.toLowerCase()))
+						answers.add(second.toLowerCase());
+					if (checkWordLetters(full.toLowerCase()))
+						answers.add(full.toLowerCase());
+				} else {
+					if (checkWordLetters(line.toLowerCase()))
+						answers.add(line.toLowerCase());
+				}
+				line = bin.readLine();
+			}
+	
+			bin.close();
+			in.close();
+	
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			return false;
+		}
+		Logger.writeToLog("Finished reading answersr. Number of answers = " + answers.size());
+		return true;
+	}
+
+	private static void printResults() {
+		printBoard();
+		for (PuzzleDefinition def :definitions){
+			Logger.writeToLog("def of length " + def.getLength() + " answer is :"  + def.getAnswer());
+		}
+		
+	}
+
 	private static void printBoard() {
 		Logger.writeToLog("Printing board:");
 		for (int row = 0; row < board[0].length; row++) {
@@ -580,68 +639,18 @@ public class PuzzleCreator {
 			}
 			Logger.writeToLog(rowSt);
 			Logger.writeToLog("");
-
+	
 		}
-
+	
 	}
 
-	private static boolean readAnswersFile(String path) {
-		Logger.writeToLog("Reading answers file");
-		answers = new ArrayList<String>();
-		try {
-			FileReader in = new FileReader(path);
-			BufferedReader bin = new BufferedReader(in);
-			String line = bin.readLine();
-			String first;
-			String second;
-			String full;
-
-			while (line != null) {
-				if (line.indexOf('.') != -1 || line.indexOf('-') != -1) {
-					line = bin.readLine();
-					continue;
-				}
-				int index = line.indexOf('_');
-				if (index != -1) {
-					first = line.substring(0, index);
-					second = line.substring(index + 1);
-					full = first + second;
-					if (checkWordLetters(first.toLowerCase()))
-						answers.add(first.toLowerCase());
-					if (checkWordLetters(second.toLowerCase()))
-					answers.add(second.toLowerCase());
-					if (checkWordLetters(full.toLowerCase()))
-					answers.add(full.toLowerCase());
-				} else {
-					if (checkWordLetters(line.toLowerCase()))
-					answers.add(line.toLowerCase());
-				}
-				line = bin.readLine();
-			}
-
-			bin.close();
-			in.close();
-
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-			return false;
+	private static void printBoardStatus() {
+		int counter = 0;
+		for (PuzzleDefinition def : definitions) {
+			Logger.writeToLog("def length: " + def.getLength() + " num of answers :" + def.getPossibleAnswers().size());
+			counter += def.getPossibleAnswers().size();
 		}
-		Logger.writeToLog("Finished reading answersr. Number of answers = " + answers.size());
-		return true;
-	}
-
-	/**
-	 * This method checks if param word contains only english letters
-	 * @param word - must be in lower case only
-	 * @return
-	 */
-	private static boolean checkWordLetters(String word) {
-		for (int letterIndex = 0; letterIndex < word.length(); letterIndex++){
-			if (!(word.charAt(letterIndex) >= 'a' && word.charAt(letterIndex) <= 'z')){
-				return false;
-			}
-		}
-		return true;
+		Logger.writeToLog("Total number of possible answers = " + counter);
 	}
 
 }
