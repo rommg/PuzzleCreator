@@ -1,3 +1,5 @@
+package PuzzleAlgorithm;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		this(beginRow, beginColumn, length, direction, new ArrayList<String>());
 
 		this.possibleAnswers = new ArrayList<String>();
-		for (String ans : PuzzleCreator.answers) {
+		for (String ans : AlgorithmRunner.answers) {
 			if (ans.length() == length) {
 				possibleAnswers.add(ans);
 			}
@@ -180,7 +182,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 			row = getBeginRow();
 			column = getBeginColumn();
 			for (int letterIndex = 0; letterIndex < this.length; letterIndex++) {
-				if (!(PuzzleCreator.board[column][row].isPossibleLetter(answer.charAt(letterIndex)))) {
+				if (!(AlgorithmRunner.board[column][row].isPossibleLetter(answer.charAt(letterIndex)))) {
 					possibleAnswers.remove(answer);
 				}
 				switch (direction) {

@@ -1,3 +1,6 @@
+package PuzzleAlgorithm;
+
+import Utils.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayDeque;
@@ -6,7 +9,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
-public class PuzzleCreator {
+public class AlgorithmRunner {
 	// System.getProperty("file.separator")
 	private static String filePath = System.getProperty("user.home") + "/desktop/temp/answers.txt";
 	public static PuzzleSquare[][] board;
@@ -17,10 +20,9 @@ public class PuzzleCreator {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		Logger.initialize();
+	public static boolean runAlgorithm() {
 		if (!readAnswersFile(filePath)) {
-			return;
+			return false;
 		}
 
 		Logger.writeToLog("Number of answers = " + answers.size());
@@ -35,9 +37,11 @@ public class PuzzleCreator {
 
 		if (!fillBoard()) {
 			Logger.writeErrorToLog("impossible data");
+			return false;
 		} else {
 			printResults();
 		}
+		return true;
 
 	}
 

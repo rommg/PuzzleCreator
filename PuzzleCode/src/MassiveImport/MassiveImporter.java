@@ -1,4 +1,4 @@
-package massiveImport;
+package MassiveImport;
 import java.io.IOException;
 import Utils.DBConnector;
 import Utils.Logger;
@@ -7,13 +7,10 @@ import Utils.Logger;
 public class MassiveImporter {
 
 	/**
-	 * @param args
-	 * @throws IOException 
+	 * 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static boolean runMassiveImporter() {
 
-		Logger.initialize();
-		
 		Logger.writeToLog("Starting importing process...");
 
 		YagoFileHandler y = new YagoFileHandler();
@@ -50,6 +47,7 @@ public class MassiveImporter {
 		//y.deleteAllYagoFiles(); // delete all temporary files and folders
 		
 		Logger.writeToLog("Finished importing process!");
+		return true;
 
 	}
 

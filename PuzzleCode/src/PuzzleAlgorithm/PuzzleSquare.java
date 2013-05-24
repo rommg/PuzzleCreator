@@ -1,3 +1,5 @@
+package PuzzleAlgorithm;
+
 import java.util.ArrayList;
 import java.util.List;
 

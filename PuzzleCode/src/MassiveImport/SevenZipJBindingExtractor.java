@@ -1,4 +1,5 @@
-package massiveImport;
+package MassiveImport;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
