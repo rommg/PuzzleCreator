@@ -1,4 +1,4 @@
-package PuzzleAlgorithm;
+package puzzleAlgorithm;
 
 import Utils.Logger;
 import java.io.BufferedReader;
