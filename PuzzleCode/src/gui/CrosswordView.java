@@ -13,10 +13,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class CrosswordView extends JFrame {
 
 	private JPanel contentPane;
+	private TimerWidget timer;
 
 	/**
 	 * Create the frame.
@@ -28,29 +31,33 @@ public class CrosswordView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-		
+
 		JPanel timerPanel = new JPanel();
+
+		//TimerWidget timer = new TimerWidget(clockListener)
+		//timerPanel.add();
 		contentPane.add(timerPanel);
-		
+
+
 		JPanel crossWordPanel = new JPanel();
 		crossWordPanel.setBackground(Color.blue);
 		crossWordPanel.setMinimumSize(new Dimension(600, 600));
 		crossWordPanel.setPreferredSize(new Dimension(600, 600));
 		contentPane.add(crossWordPanel);
 		crossWordPanel.setLayout(new GridLayout(1, 0, 0, 0));
-		
+
 		JPanel BtnPanel = new JPanel();
 		contentPane.add(BtnPanel);
-		
+
 		JButton btnCheck = new JButton("Check");
-		
+
 		JButton btnPause = new JButton("Pause");
 		BtnPanel.add(btnPause);
 		BtnPanel.add(btnCheck);
-		
+
 		JButton btnDone = new JButton("Done");
 		BtnPanel.add(btnDone);
-		
+
 		this.pack();
 	}
 

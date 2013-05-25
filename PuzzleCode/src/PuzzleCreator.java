@@ -1,3 +1,4 @@
+import gui.MainView;
 import puzzleAlgorithm.*;
 import massiveImport.*;
 import Utils.*;
@@ -8,8 +9,9 @@ public class PuzzleCreator {
 	 */
 	public static void main(String[] args) {
 		Logger.initialize(false);
-		MassiveImporter.runMassiveImporter();
-		AlgorithmRunner.runAlgorithm();
+		MainView.startGUI();
+		//MassiveImporter.runMassiveImporter();
+		//AlgorithmRunner.runAlgorithm();
 
 	}
 

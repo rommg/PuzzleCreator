@@ -23,6 +23,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JSplitPane;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
+import javax.swing.JButton;
 
 public class MainView {
 
@@ -30,12 +31,12 @@ public class MainView {
 	private JMenuItem mntmUpdateKnowledge;
 	private JMenuItem mntmMassiveImport;
 	private JMenu mnImport;
-	private JToolBar toolBar;
+	private JButton btnPlay;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void startGUI() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
@@ -69,37 +70,40 @@ public class MainView {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 606, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
-		
+
 		JMenu mnFile = new JMenu("Game");
 		menuBar.add(mnFile);
-		
+
 		JMenuItem mntmSd = new JMenuItem("Play new Crossword");
 		mnFile.add(mntmSd);
-		
+
 		JMenuItem mntmQuit = new JMenuItem("Quit");
 		mnFile.add(mntmQuit);
-		
+
 		mnImport = new JMenu("Knowledge Management");
 		menuBar.add(mnImport);
-		
+
 		mntmMassiveImport = new JMenuItem("Massive Import...");
 		mnImport.add(mntmMassiveImport);
-		
+
 		mntmUpdateKnowledge = new JMenuItem("Add/Update Existing Information...");
 		mnImport.add(mntmUpdateKnowledge);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
-		
-		toolBar = new JToolBar();
-		frame.getContentPane().add(toolBar);
+
+		btnPlay = new JButton("Play!");
+		frame.getContentPane().add(btnPlay);
 	}
-	
+
 	void addMassiveImportListener(ActionListener listener) {
 		mntmMassiveImport.addActionListener(listener);
 	}
 	void addUpdateKnowledgeListener(ActionListener listener) {
 		mntmUpdateKnowledge.addActionListener(listener);
+	}
+	void addPlayListener(ActionListener listener) {
+		btnPlay.addActionListener(listener);
 	}
 }
