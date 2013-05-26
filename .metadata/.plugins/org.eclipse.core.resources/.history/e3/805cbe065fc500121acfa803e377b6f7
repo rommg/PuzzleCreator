@@ -1,0 +1,45 @@
+package gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.Timer;
+
+class TimerWidget extends JLabel{
+
+	Timer t;
+
+	TimerWidget() {
+
+		this.setHorizontalAlignment(CENTER);
+		this.setText("Timer should be here");
+		this.setIcon(new ImageIcon(MainView.class.getResource("/resources/k-timer-icon.png")));
+
+		t = new Timer(1000, clockListener);
+		t.setInitialDelay(0);
+	}
+
+	void start() {
+		t.start();
+	}
+
+	void pause() {
+		t.stop();
+	}
+
+	void reset() {
+		t.restart();
+	}
+	
+	class clockListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			TimerWidget.this.setText(t.toString());
+		}
+		
+	}
+}

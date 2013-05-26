@@ -1,0 +1,3 @@
+1369567422483	Extract method 'calcElapsedMilli'
+1369569690638	Rename method 'getElapsedTime'
+1369569735323	Rename field 'elapsedTimeBeforeLastResume'
