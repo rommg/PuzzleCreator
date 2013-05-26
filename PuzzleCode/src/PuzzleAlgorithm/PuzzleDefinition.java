@@ -14,7 +14,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	private char[] letters;
 
 	/**
-	 * 0 is up, 1 right, 2 down, 3 left
+	 * right = 'r' , down = 'd'
 	 */
 	private char direction;
 

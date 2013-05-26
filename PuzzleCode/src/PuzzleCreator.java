@@ -12,6 +12,7 @@ public class PuzzleCreator {
 		MainView.startGUI();
 		//MassiveImporter.runMassiveImporter();
 		//AlgorithmRunner.runAlgorithm();
+		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
 
 	}
 
