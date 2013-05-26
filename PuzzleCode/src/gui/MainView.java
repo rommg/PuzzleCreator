@@ -94,6 +94,7 @@ public class MainView {
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 
 		btnPlay = new JButton("Play!");
+		btnPlay.setIcon(new ImageIcon(MainView.class.getResource("/resources/k-timer-icon.png")));
 		frame.getContentPane().add(btnPlay);
 	}
 

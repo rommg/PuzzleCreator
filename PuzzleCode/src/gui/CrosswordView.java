@@ -1,9 +1,8 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
+import java.awt.FontMetrics;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,20 +10,23 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+
 
 public class CrosswordView extends JFrame {
 
 	private JPanel contentPane;
-	private TimerWidget timer;
+	private TimerJLabel timer;
+	private JButton btnPause;
+	private JPanel crossWordPanel;
+	private boolean isPaused = false;
 
 	/**
 	 * Create the frame.
 	 */
 	public CrosswordView() {
+
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 584, 560);
 		contentPane = new JPanel();
@@ -34,12 +36,13 @@ public class CrosswordView extends JFrame {
 
 		JPanel timerPanel = new JPanel();
 
-		//TimerWidget timer = new TimerWidget(clockListener)
-		//timerPanel.add();
+		timer = new TimerJLabel();
+		timerPanel.add(timer);
+		timer.start();
 		contentPane.add(timerPanel);
 
 
-		JPanel crossWordPanel = new JPanel();
+		crossWordPanel = new JPanel();
 		crossWordPanel.setBackground(Color.blue);
 		crossWordPanel.setMinimumSize(new Dimension(600, 600));
 		crossWordPanel.setPreferredSize(new Dimension(600, 600));
@@ -51,14 +54,40 @@ public class CrosswordView extends JFrame {
 
 		JButton btnCheck = new JButton("Check");
 
-		JButton btnPause = new JButton("Pause");
+		btnPause = new JButton("Pause");
+		btnPause.setPreferredSize(new Dimension(100, btnPause.getPreferredSize().height + 10));
 		BtnPanel.add(btnPause);
 		BtnPanel.add(btnCheck);
 
 		JButton btnDone = new JButton("Done");
 		BtnPanel.add(btnDone);
 
+		linkToController();
+
 		this.pack();
 	}
 
+	private void linkToController() {
+		CrosswordModel model = new CrosswordModel();
+		CrosswordController cont = new CrosswordController(model, this);
+	}
+
+	void pause() {
+		if (!isPaused) {
+			timer.pause();
+			isPaused = true;
+			btnPause.setText("Resume");
+			crossWordPanel.setEnabled(false);
+		}
+		else {
+			timer.resume();
+			isPaused = false;
+			btnPause.setText("Pause");
+			crossWordPanel.setEnabled(true);
+		}
+	}
+
+	void addPauseListener(ActionListener listener) {
+		btnPause.addActionListener(listener);
+	}
 }
