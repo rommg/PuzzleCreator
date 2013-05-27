@@ -1,0 +1,17 @@
+package gui;
+
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+
+public class prepareGameView extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public prepareGameView() {
+
+	}
+
+}
