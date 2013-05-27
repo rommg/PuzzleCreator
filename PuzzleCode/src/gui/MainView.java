@@ -59,7 +59,7 @@ public class MainView {
 	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
 	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
 	private JPanel PrepareGame = null;
-	private JPanel CrosswordView = null;
+	private JPanel crosswordView = null;
 
 	private JPanel menuPanel;
 	private JPanel cardPanel;
@@ -226,11 +226,12 @@ public class MainView {
 	}
 	
 	void showCrosswordview() {
-		if (CrosswordView == null) {
-			CrosswordView = CrosswordView.;
-			cardPanel.add(PrepareGame, CARD_NAMES[1]);
+		if (crosswordView == null) {
+			crosswordView = CrosswordView.startCrosswordView();
+			cardPanel.add(PrepareGame, CARD_NAMES[2]);
 		}
 		
-		Crossw
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel, CARD_NAMES[2]);
 	}
 }
