@@ -34,3 +34,30 @@
 1369638844475	Rename resource 'player_play (1).png'
 1369639185333	Move files
 1369639200479	Rename resource 'dialog_information.png'
+1369654790473	Rename field 'menuPanelTopBtns'
+1369654818339	Rename field 'menuPanelBottomBtns'
+1369654830618	Rename field 'menuPanelAboutBtns'
+1369655430954	Delete element
+1369655495615	Rename type 'MainView'
+1369655510227	Rename type 'trydddd'
+1369655522376	Rename type 'MainView_old'
+1369655671135	Rename type 'MainView'
+1369655684403	Rename compilation unit 'MainView_ol.java'
+1369655704211	Rename compilation unit 'mainView.java'
+1369655904708	Rename compilation unit 'mainView_ol.java'
+1369655949405	Delete element
+1369655994476	Rename type 'MainView_new'
+1369656667825	Rename local variable 'c'
+1369656679302	Rename local variable 'spaceC'
+1369658210719	Rename local variable 'btnconstraint'
+1369660316711	Extract method 'createButton'
+1369665927366	Convert local variable 'prepareGamePanel' to field
+1369672715848	Rename type 'PrepareGameContoller'
+1369673962518	Rename type 'Controller'
+1369674296572	Move compilation unit
+1369674310081	Move compilation unit
+1369674317423	Move compilation unit
+1369676204333	Rename field 'formPanel'
+1369677408946	Rename type 'menuBtnListener'
+1369679702498	Convert local variable 'topicsPanel' to field
+1369680937288	Move compilation unit

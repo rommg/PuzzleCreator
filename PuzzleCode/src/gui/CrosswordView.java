@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.GridLayout;
 
 
-public class CrosswordView extends JFrame {
+public class CrosswordView extends JPanel {
 
 	private JPanel contentPane;
 	private TimerJLabel timer;
@@ -21,17 +21,24 @@ public class CrosswordView extends JFrame {
 	private JPanel crossWordPanel;
 	private boolean isPaused = false;
 
+	static JPanel startCrosswordView() {
+		CrosswordView view = new CrosswordView();
+		@SuppressWarnings("unused")
+		CrosswordController controller = new CrosswordController(null, view);
+		return view;
+	}
 	/**
 	 * Create the frame.
 	 */
 	public CrosswordView() {
+		initialize();
+		this.setVisible(true);
+	}
 
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	private void initialize() {
 		setBounds(100, 100, 584, 560);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 
 		JPanel timerPanel = new JPanel();
@@ -62,14 +69,6 @@ public class CrosswordView extends JFrame {
 		JButton btnDone = new JButton("Done");
 		BtnPanel.add(btnDone);
 
-		linkToController();
-
-		this.pack();
-	}
-
-	private void linkToController() {
-		CrosswordModel model = new CrosswordModel();
-		CrosswordController cont = new CrosswordController(model, this);
 	}
 
 	void pause() {

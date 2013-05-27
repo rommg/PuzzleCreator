@@ -5,14 +5,10 @@ import java.awt.event.ActionListener;
 
 
 
-public class CrosswordController {
+public class CrosswordController extends AbstractController<CrosswordModel, CrosswordView> {
 	
-	private CrosswordModel model;
-	private CrosswordView view;
 	CrosswordController(CrosswordModel model, CrosswordView view) {
-		this.model = model;
-		this.view = view;
-		
+		super(model,view);
 		//add Controller listeners to View
 		view.addPauseListener(new PauseListener());
 	}
