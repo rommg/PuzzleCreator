@@ -1,3 +1,24 @@
 1369567422483	Extract method 'calcElapsedMilli'
 1369569690638	Rename method 'getElapsedTime'
 1369569735323	Rename field 'elapsedTimeBeforeLastResume'
+1369602454315	Rename field 'MAIN_PANEL_BTN_HWIDTH'
+1369604939974	Rename field 'mainPanelBtns'
+1369605234974	Move file
+1369605239466	Delete element
+1369605245719	Rename resource 'crosswors.jpg'
+1369605860092	Convert local variable 'btnAddDef' to field
+1369605877868	Convert local variable 'btnAddHints' to field
+1369605925236	Convert local variable 'btnImport' to field
+1369605976738	Extract method 'setButtonsDimensionAndAlignment'
+1369606107996	Extract method 'addButtonsToMainPanel'
+1369610805830	Convert local variable 'mainPanel' to field
+1369611110688	Convert local variable 'formPanel' to field
+1369611280749	Rename field 'mainPanel'
+1369611293716	Rename field 'mainPanelTopBtns'
+1369611301413	Rename field 'mainPanelBottomBtns'
+1369612161687	Convert local variable 'mainPanel' to field
+1369614664143	Rename method 'addButtonsToMainPanel'
+1369615840802	Extract method 'getSeperatorForMenuPanel'
+1369616154309	Rename field 'aboutBtns'
+1369616160248	Rename field 'menuAboutBtns'
+1369616269101	Delete element

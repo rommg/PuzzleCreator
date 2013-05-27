@@ -15,8 +15,6 @@ class MainController {
 		this.view = view;
 		
 		//add Controller listeners to View
-		view.addMassiveImportListener(new MassiveImportListener());	
-		view.addUpdateKnowledgeListener(new UpdateKnowledgeListener());
 		view.addPlayListener(new playListener());
 	}
 	
