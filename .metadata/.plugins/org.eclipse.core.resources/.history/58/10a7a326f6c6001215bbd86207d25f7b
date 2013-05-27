@@ -1,0 +1,28 @@
+package gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+
+class MainController extends AbstractController<MainModel, MainView>{
+
+	MainController(MainModel model, MainView view) {
+		super(model,view);
+
+		//add Controller listeners to View
+		view.addMenuBtnsListener(new menuBtnListener());
+	}
+
+	class menuBtnListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String btnName =  ((JButton)e.getSource()).getText();
+			if (btnName.compareTo("Play") == 0) {
+				view.playBtnClicked();
+				System.out.println("blah");
+			}
+		}
+	}
+}

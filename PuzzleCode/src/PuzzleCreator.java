@@ -1,4 +1,5 @@
 import gui.MainView;
+import gui.MainView;
 import puzzleAlgorithm.*;
 import massiveImport.*;
 import Utils.*;

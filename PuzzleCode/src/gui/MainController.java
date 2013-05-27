@@ -1,45 +1,29 @@
 package gui;
 
-import gui.KnowledgeManagement;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class MainController {
+import javax.swing.JButton;
 
-	private MainModel model = null; 
-	private MainView view = null;
-	
+class MainController extends AbstractController<MainModel, MainView>{
+
 	MainController(MainModel model, MainView view) {
-		this.model = model;
-		this.view = view;
-		
+		super(model,view);
+
 		//add Controller listeners to View
-		view.addPlayListener(new playListener());
+		view.addMenuBtnsListener(new playBtnListener());
 	}
-	
-	class MassiveImportListener implements ActionListener {
+
+	class playBtnListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		}
-	}
-	
-	class UpdateKnowledgeListener implements ActionListener {
-
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			KnowledgeManagement view = new KnowledgeManagement();
-			view.setVisible(true);
-		}
-	}
-	
-	class playListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			CrosswordView view = new CrosswordView();
-			view.setVisible(true);
+			System.out.println("2");
+			JButton btn = (JButton) e.getSource();
+			if (view.btnLabels.get(btn).getText().compareTo("Play") == 0) {
+				System.out.println("3");
+				view.playBtnClicked();
+			}
 		}
 	}
 }

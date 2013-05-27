@@ -7,14 +7,22 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box.Filler;
+import javax.swing.Icon;
+import javax.swing.JApplet;
 import javax.swing.JComponent;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.Box;
@@ -36,32 +44,27 @@ import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JSeparator;
-
 public class MainView {
 
 	private JFrame frame;
-	private JButton btnPlay;
-	private JButton btnContinueGame;
-	private JButton btnHallOfFame;
-	private JButton btnHelp;
-	private List<JButton> menuPanelTopBtns;
-	private List<JButton> menuPanelBottomBtns;
-	private List<JButton> menuPanelAboutBtns;
-
+	private Map<String,JButton> menuPanelBtns;
+	JButton[] menuPanelBtnsArray;
+	Map<JButton, JLabel> btnLabels;
 
 	private final int FRAME_HEIGHT = 850;
 	private final int FRAME_WIDTH = 800;
-	private final int MAIN_PANEL_BTN_WIDTH = (int) Math.round(0.3 * FRAME_WIDTH);
-	private final int ICON_TEXT_GAP = 10;
-	private JButton btnAddDef;
-	private JButton btnAddHints;
-	private JButton btnImport;
+	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
+	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
+	private JPanel PrepareGame = null;
+	private JPanel crosswordView = null;
+
 	private JPanel menuPanel;
-	private JPanel formPanel;
+	private JPanel cardPanel;
+	private int menuBtnCounter = 0;
+
 	/**
 	 * Launch the application.
 	 */
@@ -108,123 +111,127 @@ public class MainView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// build mainPanel
-		menuPanelTopBtns = new ArrayList<JButton>();
-		menuPanelBottomBtns = new ArrayList<JButton>();
-		menuPanelAboutBtns = new ArrayList<JButton>();
-
 		menuPanel = new JPanel();
+		menuPanel.setSize((int) Math.round(0.5 * FRAME_WIDTH), FRAME_HEIGHT);
 		menuPanel.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, null), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		menuPanel.setLayout(new GridBagLayout());
 		frame.getContentPane().add(menuPanel, BorderLayout.WEST);
-		menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));	
-		menuPanel.setMinimumSize(new Dimension(menuPanel.getPreferredSize().width + 10, menuPanel.getPreferredSize().height));
-		menuPanel.setMaximumSize(new Dimension((int) Math.round(0.2 * FRAME_WIDTH), FRAME_HEIGHT));
-		menuPanel.setPreferredSize(new Dimension((int) Math.round(0.2 * FRAME_WIDTH), FRAME_HEIGHT));
+
+		menuPanelBtns = new HashMap<String,JButton>();
+		menuPanelBtnsArray = new JButton[MAX_NUM_BUTTONS_IN_MENU];
+		btnLabels = new HashMap<JButton,JLabel>();
 
 		// top buttons
+		createButton("Play", "game.png");
 
-		btnPlay = new JButton("<html><center><body>Play!</body></html>", new ImageIcon(MainView.class.getResource("/resources/game.png")));
-		menuPanelTopBtns.add(btnPlay);
+		createButton("Continue Game", "continue.png");
 
-		btnContinueGame = new JButton("<html><center><body>Continue <Br>Game</body></html>",new ImageIcon(MainView.class.getResource("/resources/continue.png")));
-		menuPanelTopBtns.add(btnContinueGame);
+		createButton("Hall of Fame", "best.png");
 
-		btnHallOfFame = new JButton("<html><center><body>Hall of <br>Fame</body></html>", new ImageIcon(MainView.class.getResource("/resources/best.png")));
-		menuPanelTopBtns.add(btnHallOfFame);
+		// middle buttons
+		createButton("Add Definition", "add.png");
 
+		createButton("Add Hints", "add.png");
 
-
-		setButtonsDimensionAndAlignment(menuPanelTopBtns);
-
-		// add top buttons to Jpanel
-		addButtonsTPanel(menuPanelTopBtns);
-
-		menuPanel.add(getBoxFiller());
-
-		JSeparator seperator1 = getSeperatorForMenuPanel();
-
-		menuPanel.add(seperator1);
+		createButton("Massive Import", "addDB.png");
 
 		// bottom buttons
 
-		btnAddDef = new JButton("<html><left><body>Add New <Br>Definition</body></html>",new ImageIcon(MainView.class.getResource("/resources/add.png")));
-		menuPanelBottomBtns.add(btnAddDef);
+		createButton("Help", "help.png");
 
-		btnAddHints = new JButton("<html><left><body>Add Hints</body></html>",new ImageIcon(MainView.class.getResource("/resources/add.png")));
-		//btnAddHints.setIconTextGap(ICON_TEXT_GAP);
-		menuPanelBottomBtns.add(btnAddHints);
+		createButton("About", "about.png");
 
-		btnImport = new JButton("<html><center><body>Massive <Br>Import</body></html>", new ImageIcon(MainView.class.getResource("/resources/addDB.png")));
-		menuPanelBottomBtns.add(btnImport);
+		addButtonsTPanel(menuPanelBtnsArray);
 
-		setButtonsDimensionAndAlignment(menuPanelBottomBtns);
+		//build main panel 
+		cardPanel = new JPanel();
+		cardPanel.setLayout(new CardLayout());
 
-		// add bottom buttons to Jpanel
-		addButtonsTPanel(menuPanelBottomBtns);
-
-		menuPanel.add(getBoxFiller());
-
-		JSeparator seperator2 = getSeperatorForMenuPanel();
-
-		menuPanel.add(seperator2);
-
-		btnHelp = new JButton("<html><center><body>Help</body></html>", new ImageIcon(MainView.class.getResource("/resources/help.png")));
-		menuPanelAboutBtns.add(btnHelp);
-
-		JButton btnAbout = new JButton("<html><center><body>About</body></html>", new ImageIcon(MainView.class.getResource("/resources/about.png")));
-		menuPanelAboutBtns.add(btnAbout);
-
-		setButtonsDimensionAndAlignment(menuPanelAboutBtns, 20);
-		addButtonsTPanel(menuPanelAboutBtns);
-
-		//build formPanel 
-		formPanel = new JPanel();
-		formPanel.setLayout(new BorderLayout(0, 0));
-		formPanel.setBackground(Color.WHITE);
+		JPanel welcomePanel = new JPanel();
+		welcomePanel.setLayout(new BorderLayout());
+		welcomePanel.setBackground(Color.WHITE);
 		JLabel logo = new JLabel(new ImageIcon(MainView.class.getResource("/resources/crossword.jpg")));
-		formPanel.add(logo, BorderLayout.CENTER);
+		welcomePanel.add(logo, BorderLayout.CENTER);
+		cardPanel.add(welcomePanel, CARD_NAMES[0]);
 
 		//add formPanel - this panel will change
-		frame.getContentPane().add(formPanel, BorderLayout.CENTER);
+		frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
+
 	}
 
-	private JSeparator getSeperatorForMenuPanel() {
-		JSeparator seperator = new JSeparator();
-
-		seperator.setMaximumSize(new Dimension(menuPanel.getPreferredSize().width + 50, (int) Math.round(FRAME_HEIGHT * 0.01)));
-		seperator.setMinimumSize(new Dimension(menuPanel.getPreferredSize().width + 50, (int) Math.round(FRAME_HEIGHT * 0.01)));
-		seperator.setPreferredSize(new Dimension(menuPanel.getPreferredSize().width + 50,(int) Math.round(FRAME_HEIGHT * 0.01)));
-		return seperator;
+	private void createButton(String text, String resourceName) {
+		JButton btn = new JButton();
+		btn.setLayout(new BorderLayout());
+		JLabel label = new JLabel(text);
+		btnLabels.put(btn, label);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		JLabel image = new JLabel(new ImageIcon(MainView.class.getResource("/resources/" + resourceName)));
+		btn.add(label, BorderLayout.CENTER);
+		btn.add(image, BorderLayout.WEST);
+		menuPanelBtns.put(text, btn);
+		menuPanelBtnsArray[menuBtnCounter++] = btn;
 	}
 
-	private Filler getBoxFiller() {
-		Dimension minSize = new Dimension(0, 20);
-		Dimension prefSize = new Dimension(0, 20);
-		Dimension maxSize = new Dimension(0, 20);
-		return new Box.Filler(minSize, prefSize, maxSize);
-	}
-	private void addButtonsTPanel(List<JButton> collection) {
+	private void addButtonsTPanel(JButton[] btnArray) {
+		int row = 0;
+
+		//Button constraint
+		GridBagConstraints btnConstraint = new GridBagConstraints();
+		btnConstraint.gridx = 0;
+		btnConstraint.gridy = 0;
+		btnConstraint.fill = GridBagConstraints.BOTH;
+		btnConstraint.weightx = 1;
+		btnConstraint.weighty = 1;
+		btnConstraint.insets = new Insets(5, 5, 5, 5);
+
+		int buttonCounter = 0;
+
 		// add buttons to Jpanel
-		for (JComponent btn : collection) {
-			menuPanel.add(getBoxFiller());
-			menuPanel.add(btn);
+		for (row = 0; row <=9; row++ ) {
+			btnConstraint.gridy = row;
+			if ((row == 3) || (row== 7)) { // seperator
+				JSeparator seperator = new JSeparator();
+				seperator.setPreferredSize(new Dimension(1,1));
+				btnConstraint.insets = new Insets(0, 0, 0, 0);
+				btnConstraint.weightx = 0.3;
+				btnConstraint.weighty = 0.3;
+				btnConstraint.fill = GridBagConstraints.HORIZONTAL;
+				menuPanel.add(seperator, btnConstraint);
+
+				//return old values
+				btnConstraint.insets = new Insets(5, 5, 5, 5);
+				btnConstraint.fill = GridBagConstraints.BOTH;
+				btnConstraint.weightx = 1;
+				btnConstraint.weighty = 1;
+			}
+			else { //button 
+				JButton btn = btnArray[buttonCounter++];
+				menuPanel.add(btn, btnConstraint);
+			}
 		}
 	}
 
-	private void setButtonsDimensionAndAlignment(List<JButton> collection) {
-		setButtonsDimensionAndAlignment(collection, 30);
+	void addMenuBtnsListener(ActionListener listener) {
+		for (JButton btn : menuPanelBtns.values())
+			btn.addActionListener(listener);
 	}
 
-	private void setButtonsDimensionAndAlignment(List<JButton> collection, int height) {
-		for (JComponent btn : collection){
-			//btn.setMinimumSize(new Dimension((int)Math.round(MAIN_PANEL_BTN_WIDTH*0.8), btn.getPreferredSize().height + height));
-			//btn.setMaximumSize(new Dimension((int)Math.round(MAIN_PANEL_BTN_WIDTH*0.8), btn.getPreferredSize().height + height));
-			//btn.setPreferredSize(new Dimension((int)Math.round(MAIN_PANEL_BTN_WIDTH*0.8), btn.getPreferredSize().height + height));
-			((JButton)btn).setIconTextGap(ICON_TEXT_GAP);
-			btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+	void playBtnClicked() {
+		if (PrepareGame == null) {
+			PrepareGame = prepareGameView.startPrepareGame();
+			cardPanel.add(PrepareGame, CARD_NAMES[1]);
 		}
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel, CARD_NAMES[1]);
 	}
-
-	void addPlayListener(ActionListener listener) {
-		btnPlay.addActionListener(listener);
+	
+	void showCrosswordview() {
+		if (crosswordView == null) {
+			crosswordView = CrosswordView.startCrosswordView();
+			cardPanel.add(PrepareGame, CARD_NAMES[2]);
+		}
+		
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel, CARD_NAMES[2]);
 	}
 }
