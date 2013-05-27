@@ -1,0 +1,15 @@
+<actedIn>,Participated in ?,Production in which ? participated
+<created>,Created ?,Was created by ?
+<directed>,Directed ?,Was directed by ?
+<hasCapital>,Its capital is ?,Captial of ?
+<hasChild>,Parent of ?,Child of ?
+<hasCurrency>,Its currency is ?,The currency of ?
+<hasOfficialLanguage>,Its official language is ?,The official language of ?
+<holdsPoliticalPosition>,?,The political position ? holds
+<isInterestedIn>,Person who is interested in ?,? is interested in
+<isMarriedTo>,Married to ?,Married to ?
+<livesIn>,Person who lives in ?,? lives there
+<playsFor>,Plays for ?,? plays for it
+<wasBornIn>,Was born in ?,? was born there
+<hasWonPrize>,Has won the ?,? has won it
+<wroteMusicFor>,Wrote music for ?,The music of ? was written by that person
