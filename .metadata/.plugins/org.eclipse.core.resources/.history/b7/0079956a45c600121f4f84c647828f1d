@@ -1,0 +1,107 @@
+package gui;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
+import javax.swing.Box;
+import javax.swing.UIManager;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
+import javax.swing.border.TitledBorder;
+import javax.swing.JSplitPane;
+import javax.swing.JLayeredPane;
+import javax.swing.JToolBar;
+import javax.swing.JButton;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.JSeparator;
+
+public class MainView {
+
+	private JFrame frame;
+	private JButton btnPlay;
+	private JButton btnContinueGame;
+	private JButton btnHallOfFame;
+	private JButton btnHelp;
+	private JButton btnNewButton;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void startGUI() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainView window = new MainView();
+					@SuppressWarnings("unused")
+					MainController controller = new MainController(null, window);
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public MainView() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 800, 1000);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, null), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		frame.getContentPane().add(mainPanel, BorderLayout.WEST);
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));	
+		mainPanel.setMinimumSize(new Dimension(mainPanel.getPreferredSize().width + 50, mainPanel.getPreferredSize().height));
+		mainPanel.setMaximumSize(
+
+
+		btnPlay = new JButton("Play!");
+		mainPanel.add(btnPlay);
+
+		btnContinueGame = new JButton("Continue Game");
+		mainPanel.add(btnContinueGame);
+
+		btnHallOfFame = new JButton("Hall Of Fame");
+		mainPanel.add(btnHallOfFame);
+
+		btnHelp = new JButton("Help");
+		mainPanel.add(btnHelp);
+
+		btnNewButton = new JButton("New button");
+		mainPanel.add(btnNewButton);
+	}
+
+	void addPlayListener(ActionListener listener) {
+		btnPlay.addActionListener(listener);
+	}
+}
