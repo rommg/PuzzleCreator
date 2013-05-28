@@ -10,9 +10,12 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	private int length;
 	private List<String> possibleAnswers;
 	private boolean solved;
+	private Answer answer2;
 	private String answer;
 	private char[] letters;
-
+	private String definition;
+	private List<String> hints;
+	
 	/**
 	 * right = 'r' , down = 'd'
 	 */
@@ -221,6 +224,26 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
+	}
+
+	public String getDefinition() {
+		return definition;
+	}
+
+	public void setDefinition(String definition) {
+		this.definition = definition;
+	}
+
+	public List<String> getHints() {
+		return hints;
+	}
+
+	public void setHints(List<String> hints) {
+		this.hints = hints;
+	}
+	
+	public int getEntityId(){
+		return this.answer2.getEntityId();
 	}
 
 }

@@ -6,6 +6,7 @@ import Utils.*;
 public class PuzzleCreator {
 
 	public static String appDir = ""; 
+	
 	/**
 	 * @param args
 	 */
