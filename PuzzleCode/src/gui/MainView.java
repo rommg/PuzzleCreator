@@ -57,7 +57,7 @@ public class MainView {
 	private final int FRAME_HEIGHT = 850;
 	private final int FRAME_WIDTH = 800;
 	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
-	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
+	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "WaitView","Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
 	private JPanel PrepareGame = null;
 	private JPanel crosswordView = null;
 
@@ -217,20 +217,32 @@ public class MainView {
 	}
 
 	void playBtnClicked() {
+		showPrepareView();
+	}
+
+	void showPrepareView() {
 		if (PrepareGame == null) {
-			PrepareGame = prepareGameView.startPrepareGame();
+			PrepareGame = PrepareGameView.start();
 			cardPanel.add(PrepareGame, CARD_NAMES[1]);
 		}
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel, CARD_NAMES[1]);
 	}
-	
+
 	void showCrosswordview() {
 		if (crosswordView == null) {
-			crosswordView = CrosswordView.startCrosswordView();
-			cardPanel.add(PrepareGame, CARD_NAMES[2]);
+			crosswordView = CrosswordView.start();
+			cardPanel.add(PrepareGame, CARD_NAMES[3]);
 		}
-		
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel, CARD_NAMES[3]);
+	}
+
+	void showWaitView() {
+		JPanel waitView = CrosswordView.start();
+		cardPanel.add(waitView, CARD_NAMES[2]);
+
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel, CARD_NAMES[2]);
 	}

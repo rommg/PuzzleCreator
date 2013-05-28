@@ -5435,3 +5435,618 @@ java.lang.ClassNotFoundException: org.eclipse.debug.ui.actions.RulerToggleBreakp
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
+!SESSION 2013-05-28 08:09:31.142 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.7.0_09
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.equinox.p2.transport.ecf 2 0 2013-05-28 08:09:32.094
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = org.eclipse.equinox.p2.transport.ecf
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = org.eclipse.equinox.internal.p2.transport.ecf.ECFTransportComponent
+	state = Unsatisfied
+	properties = {p2.agent.servicename=org.eclipse.equinox.internal.p2.repository.Transport}
+	serviceFactory = false
+	serviceInterface = [org.eclipse.equinox.p2.core.spi.IAgentServiceFactory]
+	references = null
+	located in bundle = org.eclipse.equinox.p2.transport.ecf_1.0.0.v20110510 [536]
+]
+Component2: Component[
+	name = org.eclipse.equinox.p2.transport.ecf
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = org.eclipse.equinox.internal.p2.transport.ecf.ECFTransportComponent
+	state = Unsatisfied
+	properties = {p2.agent.servicename=org.eclipse.equinox.internal.p2.repository.Transport}
+	serviceFactory = false
+	serviceInterface = [org.eclipse.equinox.p2.core.spi.IAgentServiceFactory]
+	references = null
+	located in bundle = org.eclipse.equinox.p2.transport.ecf_1.0.0.v20111128-0624 [406]
+]  
+
+!ENTRY org.eclipse.ui 4 4 2013-05-28 08:09:37.023
+!MESSAGE Could not create action delegate for id: org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction
+
+!ENTRY org.eclipse.equinox.registry 4 1 2013-05-28 08:09:37.023
+!MESSAGE Plug-in org.eclipse.wb.core.java was unable to load class org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate.
+!STACK 0
+java.lang.ClassNotFoundException: org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:513)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:429)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:417)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.osgi.internal.loader.BundleLoader.loadClass(BundleLoader.java:345)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.loadClass(BundleHost.java:229)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.loadClass(AbstractBundle.java:1207)
+	at org.eclipse.core.internal.registry.osgi.RegistryStrategyOSGI.createExecutableExtension(RegistryStrategyOSGI.java:174)
+	at org.eclipse.core.internal.registry.ExtensionRegistry.createExecutableExtension(ExtensionRegistry.java:905)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:243)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:55)
+	at org.eclipse.ui.internal.WorkbenchPlugin.createExtension(WorkbenchPlugin.java:260)
+	at org.eclipse.ui.internal.PluginAction.createDelegate(PluginAction.java:122)
+	at org.eclipse.ui.internal.PluginAction.selectionChanged(PluginAction.java:275)
+	at org.eclipse.ui.internal.PluginAction.<init>(PluginAction.java:112)
+	at org.eclipse.ui.internal.PartPluginAction.<init>(PartPluginAction.java:29)
+	at org.eclipse.ui.internal.EditorPluginAction.<init>(EditorPluginAction.java:32)
+	at org.eclipse.ui.internal.ActionDescriptor.createAction(ActionDescriptor.java:262)
+	at org.eclipse.ui.internal.ActionDescriptor.<init>(ActionDescriptor.java:176)
+	at org.eclipse.ui.internal.ActionDescriptor.<init>(ActionDescriptor.java:103)
+	at org.eclipse.ui.internal.EditorActionBuilder.createActionDescriptor(EditorActionBuilder.java:41)
+	at org.eclipse.ui.internal.PluginActionBuilder.readElement(PluginActionBuilder.java:161)
+	at org.eclipse.ui.internal.registry.RegistryReader.readElements(RegistryReader.java:144)
+	at org.eclipse.ui.internal.registry.RegistryReader.readElementChildren(RegistryReader.java:133)
+	at org.eclipse.ui.internal.PluginActionBuilder.readElement(PluginActionBuilder.java:144)
+	at org.eclipse.ui.internal.registry.RegistryReader.readElements(RegistryReader.java:144)
+	at org.eclipse.ui.internal.registry.RegistryReader.readExtension(RegistryReader.java:155)
+	at org.eclipse.ui.internal.registry.RegistryReader.readRegistry(RegistryReader.java:176)
+	at org.eclipse.ui.internal.PluginActionBuilder.readContributions(PluginActionBuilder.java:115)
+	at org.eclipse.ui.internal.EditorActionBuilder.readActionExtensions(EditorActionBuilder.java:58)
+	at org.eclipse.ui.internal.EditorManager.createEditorActionBars(EditorManager.java:346)
+	at org.eclipse.ui.internal.EditorManager.createSite(EditorManager.java:820)
+	at org.eclipse.ui.internal.EditorReference.createPartHelper(EditorReference.java:647)
+	at org.eclipse.ui.internal.EditorReference.createPart(EditorReference.java:465)
+	at org.eclipse.ui.internal.WorkbenchPartReference.getPart(WorkbenchPartReference.java:595)
+	at org.eclipse.ui.internal.EditorAreaHelper.setVisibleEditor(EditorAreaHelper.java:271)
+	at org.eclipse.ui.internal.EditorManager.setVisibleEditor(EditorManager.java:1459)
+	at org.eclipse.ui.internal.EditorManager$5.runWithException(EditorManager.java:972)
+	at org.eclipse.ui.internal.StartupThreading$StartupRunnable.run(StartupThreading.java:31)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:135)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4140)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3757)
+	at org.eclipse.ui.application.WorkbenchAdvisor.openWindows(WorkbenchAdvisor.java:803)
+	at org.eclipse.ui.internal.Workbench$33.runWithException(Workbench.java:1600)
+	at org.eclipse.ui.internal.StartupThreading$StartupRunnable.run(StartupThreading.java:31)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:135)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4140)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3757)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2609)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:123)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:344)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
+
+!ENTRY org.eclipse.jface 2 0 2013-05-28 08:09:42.982
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-05-28 08:09:42.982
+!MESSAGE A conflict occurred for ALT+SHIFT+D R:
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug,Debug RAP Application,
+		Debug RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.debug,Debug on Server,
+		Debug the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-05-28 08:09:42.982
+!MESSAGE A conflict occurred for ALT+SHIFT+X R:
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.run,Run RAP Application,
+		Run RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.run,Run on Server,
+		Run the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-05-28 08:09:42.982
+!MESSAGE A conflict occurred for CTRL+SHIFT+I:
+Binding(CTRL+SHIFT+I,
+	ParameterizedCommand(Command(org.eclipse.jdt.debug.ui.commands.Inspect,Inspect,
+		Inspect result of evaluating selected text,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.dialogAndWindow,,,system)
+Binding(CTRL+SHIFT+I,
+	ParameterizedCommand(Command(org.eclipse.php.debug.ui.commands.Inspect,Inspect,
+		Inspect result of evaluating selected text,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.dialogAndWindow,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-05-28 08:09:42.982
+!MESSAGE A conflict occurred for CTRL+DEL:
+Binding(CTRL+DEL,
+	ParameterizedCommand(Command(org.eclipse.datatools.sqltools.result.removeInstance,Remove Result,
+		,
+		Category(org.eclipse.datatools.sqltools.result.category,SQL Results View,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+DEL,
+	ParameterizedCommand(Command(org.eclipse.graphiti.ui.internal.action.RemoveAction,Remove,
+		Remove selected Pictogram Elements,
+		Category(org.eclipse.graphiti.ui.Graphiti_Category,Edit,Graphiti Diagram Editor,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.wb.core 4 4 2013-05-28 09:20:43.798
+!MESSAGE Designer [1.5.2.r37x201302112024.201305280920]: Index: 0, Size: 0
+!STACK 0
+java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+	at java.util.ArrayList.rangeCheck(Unknown Source)
+	at java.util.ArrayList.get(Unknown Source)
+	at gui.AnimatedIcon.paintIcon(AnimatedIcon.java:399)
+	at javax.swing.plaf.basic.BasicLabelUI.paint(Unknown Source)
+	at javax.swing.plaf.ComponentUI.update(Unknown Source)
+	at javax.swing.JComponent.paintComponent(Unknown Source)
+	at javax.swing.JComponent.printComponent(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.printChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.printChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.printChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.printChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.printChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.printChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JLayeredPane.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.printChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.print(Unknown Source)
+	at java.awt.GraphicsCallback$PrintCallback.run(Unknown Source)
+	at sun.awt.SunGraphicsCallback.runOneComponent(Unknown Source)
+	at sun.awt.SunGraphicsCallback.runComponents(Unknown Source)
+	at java.awt.Container.print(Unknown Source)
+	at sun.awt.windows.WComponentPeer.print(Unknown Source)
+	at sun.awt.windows.WPanelPeer.print(Unknown Source)
+	at sun.awt.windows.WWindowPeer.print(Unknown Source)
+	at java.awt.GraphicsCallback$PeerPrintCallback.run(Unknown Source)
+	at sun.awt.SunGraphicsCallback.runOneComponent(Unknown Source)
+	at java.awt.Component.printAll(Unknown Source)
+	at org.eclipse.wb.internal.swing.utils.SwingScreenshotMaker.makeShots(SwingScreenshotMaker.java:123)
+	at org.eclipse.wb.internal.swing.model.component.ComponentInfo.refresh_fetch(ComponentInfo.java:155)
+	at org.eclipse.wb.internal.swing.model.component.ComponentInfo.refresh_fetch(ComponentInfo.java:140)
+	at org.eclipse.wb.internal.swing.model.component.ContainerInfo.refresh_fetch(ContainerInfo.java:251)
+	at org.eclipse.wb.core.model.ObjectInfo$6$1.run(ObjectInfo.java:496)
+	at org.eclipse.wb.internal.core.utils.execution.ExecutionUtils.runDesignTime(ExecutionUtils.java:145)
+	at org.eclipse.wb.core.model.ObjectInfo$6.run(ObjectInfo.java:494)
+	at org.eclipse.wb.internal.swing.utils.SwingUtils$2.run(SwingUtils.java:76)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$200(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+
+!ENTRY org.eclipse.wb.core 4 4 2013-05-28 18:32:42.813
+!MESSAGE Designer [1.5.2.r37x201302112024.201305280920]: assertion failed
+!STACK 0
+org.eclipse.wb.internal.core.utils.check.AssertionFailedException: assertion failed
+	at org.eclipse.wb.internal.core.utils.check.Assert.fail(Assert.java:225)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:268)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:252)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:179)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:161)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo.getButtons(ButtonGroupInfo.java:74)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo$1.getChildrenTree(ButtonGroupInfo.java:140)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:211)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:1)
+	at org.eclipse.wb.internal.core.utils.execution.ExecutionUtils.runObjectLog(ExecutionUtils.java:304)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.getModelChildren(ObjectEditPart.java:209)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:404)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.addNotify(EditPart.java:139)
+	at org.eclipse.wb.gef.core.EditPart.addChild(EditPart.java:526)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:423)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.addNotify(EditPart.java:139)
+	at org.eclipse.wb.gef.core.EditPart.addChild(EditPart.java:526)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:423)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.addNotify(EditPart.java:139)
+	at org.eclipse.wb.gef.core.EditPart.addChild(EditPart.java:526)
+	at org.eclipse.wb.internal.gef.tree.RootEditPart.setContent(RootEditPart.java:87)
+	at org.eclipse.wb.internal.gef.core.AbstractEditPartViewer.setInput(AbstractEditPartViewer.java:134)
+	at org.eclipse.wb.internal.core.editor.structure.components.ComponentsTreePage.setInput(ComponentsTreePage.java:257)
+	at org.eclipse.wb.internal.core.editor.structure.DesignComponentsComposite.setInput(DesignComponentsComposite.java:93)
+	at org.eclipse.wb.internal.core.editor.JavaDesignComposite.refresh(JavaDesignComposite.java:138)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF(DesignPage.java:585)
+	at org.eclipse.wb.internal.core.editor.DesignPage.access$9(DesignPage.java:522)
+	at org.eclipse.wb.internal.core.editor.DesignPage$8$1.run(DesignPage.java:449)
+	at org.eclipse.swt.widgets.Synchronizer.syncExec(Synchronizer.java:180)
+	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:150)
+	at org.eclipse.swt.widgets.Display.syncExec(Display.java:4683)
+	at org.eclipse.wb.internal.core.editor.DesignPage$8.run(DesignPage.java:446)
+	at org.eclipse.jface.operation.ModalContext.runInCurrentThread(ModalContext.java:464)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:372)
+	at org.eclipse.jface.dialogs.ProgressMonitorDialog.run(ProgressMonitorDialog.java:507)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF_withProgress(DesignPage.java:465)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF(DesignPage.java:415)
+	at org.eclipse.wb.internal.core.editor.UndoManager.refreshDesignerEditor(UndoManager.java:381)
+	at org.eclipse.wb.internal.core.editor.UndoManager.activate(UndoManager.java:90)
+	at org.eclipse.wb.internal.core.editor.DesignPage.handleActiveState_True(DesignPage.java:263)
+	at org.eclipse.wb.internal.core.editor.DesignPage.handleActiveState(DesignPage.java:241)
+	at org.eclipse.wb.internal.core.editor.multi.DefaultMultiMode.showPage(DefaultMultiMode.java:125)
+	at org.eclipse.wb.internal.core.editor.multi.DefaultMultiMode$1.widgetSelected(DefaultMultiMode.java:63)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:240)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1077)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1062)
+	at org.eclipse.swt.widgets.Widget.notifyListeners(Widget.java:774)
+	at org.eclipse.swt.custom.CTabFolder.setSelection(CTabFolder.java:2746)
+	at org.eclipse.swt.custom.CTabFolder.onMouse(CTabFolder.java:1433)
+	at org.eclipse.swt.custom.CTabFolder$1.handleEvent(CTabFolder.java:257)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4165)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3754)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:123)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:344)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
+
+!ENTRY org.eclipse.wb.core 4 4 2013-05-28 18:32:42.826
+!MESSAGE Designer [1.5.2.r37x201302112024.201305280920]: assertion failed
+!STACK 0
+org.eclipse.wb.internal.core.utils.check.AssertionFailedException: assertion failed
+	at org.eclipse.wb.internal.core.utils.check.Assert.fail(Assert.java:225)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:268)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:252)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:179)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:161)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo.getButtons(ButtonGroupInfo.java:74)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo$1.getChildrenTree(ButtonGroupInfo.java:140)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:211)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:1)
+	at org.eclipse.wb.internal.core.utils.execution.ExecutionUtils.runObjectLog(ExecutionUtils.java:304)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.getModelChildren(ObjectEditPart.java:209)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:404)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:456)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.addNotify(EditPart.java:139)
+	at org.eclipse.wb.gef.core.EditPart.addChild(EditPart.java:526)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:423)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.addNotify(EditPart.java:139)
+	at org.eclipse.wb.gef.core.EditPart.addChild(EditPart.java:526)
+	at org.eclipse.wb.internal.gef.tree.RootEditPart.setContent(RootEditPart.java:87)
+	at org.eclipse.wb.internal.gef.core.AbstractEditPartViewer.setInput(AbstractEditPartViewer.java:134)
+	at org.eclipse.wb.internal.core.editor.structure.components.ComponentsTreePage.setInput(ComponentsTreePage.java:257)
+	at org.eclipse.wb.internal.core.editor.structure.DesignComponentsComposite.setInput(DesignComponentsComposite.java:93)
+	at org.eclipse.wb.internal.core.editor.JavaDesignComposite.refresh(JavaDesignComposite.java:138)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF(DesignPage.java:585)
+	at org.eclipse.wb.internal.core.editor.DesignPage.access$9(DesignPage.java:522)
+	at org.eclipse.wb.internal.core.editor.DesignPage$8$1.run(DesignPage.java:449)
+	at org.eclipse.swt.widgets.Synchronizer.syncExec(Synchronizer.java:180)
+	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:150)
+	at org.eclipse.swt.widgets.Display.syncExec(Display.java:4683)
+	at org.eclipse.wb.internal.core.editor.DesignPage$8.run(DesignPage.java:446)
+	at org.eclipse.jface.operation.ModalContext.runInCurrentThread(ModalContext.java:464)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:372)
+	at org.eclipse.jface.dialogs.ProgressMonitorDialog.run(ProgressMonitorDialog.java:507)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF_withProgress(DesignPage.java:465)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF(DesignPage.java:415)
+	at org.eclipse.wb.internal.core.editor.UndoManager.refreshDesignerEditor(UndoManager.java:381)
+	at org.eclipse.wb.internal.core.editor.UndoManager.activate(UndoManager.java:90)
+	at org.eclipse.wb.internal.core.editor.DesignPage.handleActiveState_True(DesignPage.java:263)
+	at org.eclipse.wb.internal.core.editor.DesignPage.handleActiveState(DesignPage.java:241)
+	at org.eclipse.wb.internal.core.editor.multi.DefaultMultiMode.showPage(DefaultMultiMode.java:125)
+	at org.eclipse.wb.internal.core.editor.multi.DefaultMultiMode$1.widgetSelected(DefaultMultiMode.java:63)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:240)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1077)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1062)
+	at org.eclipse.swt.widgets.Widget.notifyListeners(Widget.java:774)
+	at org.eclipse.swt.custom.CTabFolder.setSelection(CTabFolder.java:2746)
+	at org.eclipse.swt.custom.CTabFolder.onMouse(CTabFolder.java:1433)
+	at org.eclipse.swt.custom.CTabFolder$1.handleEvent(CTabFolder.java:257)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4165)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3754)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:123)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:344)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
+
+!ENTRY org.eclipse.wb.core 4 4 2013-05-28 18:32:42.837
+!MESSAGE Designer [1.5.2.r37x201302112024.201305280920]: assertion failed
+!STACK 0
+org.eclipse.wb.internal.core.utils.check.AssertionFailedException: assertion failed
+	at org.eclipse.wb.internal.core.utils.check.Assert.fail(Assert.java:225)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:268)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:252)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:179)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:161)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo.getButtons(ButtonGroupInfo.java:74)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo$1.getChildrenTree(ButtonGroupInfo.java:140)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:211)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:1)
+	at org.eclipse.wb.internal.core.utils.execution.ExecutionUtils.runObjectLog(ExecutionUtils.java:304)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.getModelChildren(ObjectEditPart.java:209)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:404)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:456)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:456)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.addNotify(EditPart.java:139)
+	at org.eclipse.wb.gef.core.EditPart.addChild(EditPart.java:526)
+	at org.eclipse.wb.internal.gef.tree.RootEditPart.setContent(RootEditPart.java:87)
+	at org.eclipse.wb.internal.gef.core.AbstractEditPartViewer.setInput(AbstractEditPartViewer.java:134)
+	at org.eclipse.wb.internal.core.editor.structure.components.ComponentsTreePage.setInput(ComponentsTreePage.java:257)
+	at org.eclipse.wb.internal.core.editor.structure.DesignComponentsComposite.setInput(DesignComponentsComposite.java:93)
+	at org.eclipse.wb.internal.core.editor.JavaDesignComposite.refresh(JavaDesignComposite.java:138)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF(DesignPage.java:585)
+	at org.eclipse.wb.internal.core.editor.DesignPage.access$9(DesignPage.java:522)
+	at org.eclipse.wb.internal.core.editor.DesignPage$8$1.run(DesignPage.java:449)
+	at org.eclipse.swt.widgets.Synchronizer.syncExec(Synchronizer.java:180)
+	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:150)
+	at org.eclipse.swt.widgets.Display.syncExec(Display.java:4683)
+	at org.eclipse.wb.internal.core.editor.DesignPage$8.run(DesignPage.java:446)
+	at org.eclipse.jface.operation.ModalContext.runInCurrentThread(ModalContext.java:464)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:372)
+	at org.eclipse.jface.dialogs.ProgressMonitorDialog.run(ProgressMonitorDialog.java:507)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF_withProgress(DesignPage.java:465)
+	at org.eclipse.wb.internal.core.editor.DesignPage.internal_refreshGEF(DesignPage.java:415)
+	at org.eclipse.wb.internal.core.editor.UndoManager.refreshDesignerEditor(UndoManager.java:381)
+	at org.eclipse.wb.internal.core.editor.UndoManager.activate(UndoManager.java:90)
+	at org.eclipse.wb.internal.core.editor.DesignPage.handleActiveState_True(DesignPage.java:263)
+	at org.eclipse.wb.internal.core.editor.DesignPage.handleActiveState(DesignPage.java:241)
+	at org.eclipse.wb.internal.core.editor.multi.DefaultMultiMode.showPage(DefaultMultiMode.java:125)
+	at org.eclipse.wb.internal.core.editor.multi.DefaultMultiMode$1.widgetSelected(DefaultMultiMode.java:63)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:240)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1077)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1062)
+	at org.eclipse.swt.widgets.Widget.notifyListeners(Widget.java:774)
+	at org.eclipse.swt.custom.CTabFolder.setSelection(CTabFolder.java:2746)
+	at org.eclipse.swt.custom.CTabFolder.onMouse(CTabFolder.java:1433)
+	at org.eclipse.swt.custom.CTabFolder$1.handleEvent(CTabFolder.java:257)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4165)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3754)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:123)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:344)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
+
+!ENTRY org.eclipse.wb.core 4 4 2013-05-28 18:33:09.668
+!MESSAGE Designer [1.5.2.r37x201302112024.201305280920]: assertion failed
+!STACK 0
+org.eclipse.wb.internal.core.utils.check.AssertionFailedException: assertion failed
+	at org.eclipse.wb.internal.core.utils.check.Assert.fail(Assert.java:225)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:268)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isTrue(Assert.java:252)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:179)
+	at org.eclipse.wb.core.model.ObjectInfo.addChild(ObjectInfo.java:161)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo.getButtons(ButtonGroupInfo.java:74)
+	at org.eclipse.wb.internal.swing.model.bean.ButtonGroupInfo$1.getChildrenTree(ButtonGroupInfo.java:140)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:211)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$4.runObject(ObjectEditPart.java:1)
+	at org.eclipse.wb.internal.core.utils.execution.ExecutionUtils.runObjectLog(ExecutionUtils.java:304)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.getModelChildren(ObjectEditPart.java:209)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:404)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:456)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.gef.core.EditPart.refreshChildren(EditPart.java:456)
+	at org.eclipse.wb.gef.core.EditPart.refresh(EditPart.java:385)
+	at org.eclipse.wb.gef.tree.TreeEditPart.refresh(TreeEditPart.java:93)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart.refresh(ObjectEditPart.java:223)
+	at org.eclipse.wb.core.gefTree.part.ObjectEditPart$2.refreshed(ObjectEditPart.java:90)
+	at sun.reflect.GeneratedMethodAccessor22.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.wb.core.model.broadcast.BroadcastSupport$1.intercept(BroadcastSupport.java:208)
+	at org.eclipse.wb.core.model.broadcast.ObjectEventListener$$EnhancerByCGLIB$$82bc59c9.refreshed(<generated>)
+	at org.eclipse.wb.core.model.ObjectInfo.refresh(ObjectInfo.java:504)
+	at org.eclipse.wb.core.model.ObjectInfo.endEdit(ObjectInfo.java:446)
+	at org.eclipse.wb.internal.core.model.variable.VariableProperty.setValue(VariableProperty.java:72)
+	at org.eclipse.wb.internal.core.model.variable.VariableProperty$VariablePropertyEditor.setEditorText(VariableProperty.java:115)
+	at org.eclipse.wb.internal.core.model.property.editor.AbstractTextPropertyEditor.toProperty(AbstractTextPropertyEditor.java:183)
+	at org.eclipse.wb.internal.core.model.property.editor.AbstractTextPropertyEditor.handleKeyPressed(AbstractTextPropertyEditor.java:134)
+	at org.eclipse.wb.internal.core.model.property.editor.AbstractTextPropertyEditor.access$0(AbstractTextPropertyEditor.java:131)
+	at org.eclipse.wb.internal.core.model.property.editor.AbstractTextPropertyEditor$1.keyPressed(AbstractTextPropertyEditor.java:57)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:167)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1077)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1062)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1104)
+	at org.eclipse.swt.widgets.Text.sendKeyEvent(Text.java:1455)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1100)
+	at org.eclipse.swt.widgets.Widget.wmChar(Widget.java:1509)
+	at org.eclipse.swt.widgets.Control.WM_CHAR(Control.java:4640)
+	at org.eclipse.swt.widgets.Text.WM_CHAR(Text.java:2259)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4528)
+	at org.eclipse.swt.widgets.Text.windowProc(Text.java:2254)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4972)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessageW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(OS.java:2531)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3752)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:123)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:344)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)

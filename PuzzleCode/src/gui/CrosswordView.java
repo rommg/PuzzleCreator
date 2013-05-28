@@ -21,7 +21,7 @@ public class CrosswordView extends JPanel {
 	private JPanel crossWordPanel;
 	private boolean isPaused = false;
 
-	static JPanel startCrosswordView() {
+	static JPanel start() {
 		CrosswordView view = new CrosswordView();
 		@SuppressWarnings("unused")
 		CrosswordController controller = new CrosswordController(null, view);

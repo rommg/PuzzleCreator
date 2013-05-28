@@ -1,6 +1,7 @@
 package gui;
 
 
+import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
@@ -21,11 +22,14 @@ import javax.swing.JRadioButton;
 import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+
+import puzzleAlgorithm.PuzzleSquare;
 
 import Utils.GuiAlgorithmConnector;
 import Utils.GuiDBConnector;
@@ -34,21 +38,23 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 
-public class prepareGameView extends JPanel {
+public class PrepareGameView extends JPanel {
 	private final ButtonGroup difficultyBtnsGrp = new ButtonGroup();
 	private List<String> TopicsList;
 	private List<JCheckBox> topicsCheckBoxes;
 	private JPanel topicsPanel;
+	private static PrepareGameModel model;
 
-	public prepareGameView() {
+	public PrepareGameView() {
 		initialize();
 		this.setVisible(true);
 	}
 
-	static JPanel startPrepareGame() {
-		prepareGameView view = new prepareGameView();
+	static JPanel start() {
+		PrepareGameView view = new PrepareGameView();
+		model = new PrepareGameModel();
 		@SuppressWarnings("unused")
-		PrepareGameController controller = new PrepareGameController(null, view);
+		PrepareGameController controller = new PrepareGameController(model, view);
 		return view;
 	}
 
@@ -89,7 +95,11 @@ public class prepareGameView extends JPanel {
 
 		JRadioButton easyRadioBtn = new JRadioButton("Easy");
 		difficultyPanel.add(easyRadioBtn);
-		easyRadioBtn.setSelected(true);
+		difficultyBtnsGrp.add(easyRadioBtn);
+		
+		JRadioButton mediumHardBtn = new JRadioButton("Medium");
+		difficultyPanel.add(mediumHardBtn);
+		mediumHardBtn.setSelected(true);
 		difficultyBtnsGrp.add(easyRadioBtn);
 
 
@@ -116,7 +126,7 @@ public class prepareGameView extends JPanel {
 
 		JButton goBtn = new JButton();
 		btnPanel.add(goBtn);
-		goBtn.setIcon(new ImageIcon(prepareGameView.class.getResource("/resources/start-icon.png")));
+		goBtn.setIcon(new ImageIcon(PrepareGameView.class.getResource("/resources/start-icon.png")));
 
 		addTopicsCheckBoxes();
 	}
@@ -125,13 +135,27 @@ public class prepareGameView extends JPanel {
 	 * 
 	 * @return user selected topics
 	 */
-	List<String> getUserSelectedTopics() {
+	public List<String> getUserSelectedTopics() {
 		List<String> lst = new LinkedList<String>();
 		for (JCheckBox box : topicsCheckBoxes) {
 			if (box.isSelected())
 				lst.add(box.getText());
 		}
 		return lst;
+	}
+	
+	public int getDifficulty() {
+		 for (Enumeration<AbstractButton> buttons = difficultyBtnsGrp.getElements(); buttons.hasMoreElements();) {
+	            AbstractButton button = buttons.nextElement();
+	            if (button.isSelected()) {
+	                if (button.getText().compareTo("Easy") == 0)
+	                	return 0;
+	                if (button.getText().compareTo("Hard") == 0)
+	                	return 1;
+	            }
+	        }
+		 return -1; //Error - no btn selected.
+
 	}
 
 	private void addTopicsCheckBoxes() {
@@ -157,16 +181,7 @@ public class prepareGameView extends JPanel {
 	}
 
 	void goBtnClicked() {
-		List<String> selectedTopics = getUserSelectedTopics();
-		if (selectedTopics.size() < 1) {
-			// Dialog Box
-			System.out.println("Error veze");
-		}
-		else { 
-			//GuiAlgorithmConnector.createPuzzle(); // send request for board
-			// show waiting question panel
-			//have board, can continue
-			
-		}
+		PuzzleSquare[][] board = model.getBoard(this); // This is in separate Thread
+		// in the meantime, answer question in WaitingView
 	}
 }
