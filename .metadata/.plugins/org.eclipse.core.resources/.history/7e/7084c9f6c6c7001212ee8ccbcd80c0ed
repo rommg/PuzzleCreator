@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.CardLayout;
-import javax.swing.UIManager;
 
 public class WaitView extends JPanel {
 
@@ -40,7 +39,7 @@ public class WaitView extends JPanel {
 		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
 		
 		JPanel questionLbl = new JPanel();
-		questionLbl.setBackground(UIManager.getColor("Panel.background"));
+		questionLbl.setBackground(Color.WHITE);
 		centerPanel.add(questionLbl);
 		
 		JPanel animationPanel = new JPanel();
@@ -49,13 +48,13 @@ public class WaitView extends JPanel {
 		animationPanel.setLayout(new CardLayout(0, 0));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(UIManager.getColor("Panel.background"));
+		panel.setBackground(Color.WHITE);
 		animationPanel.add(panel, "name_978375015424865");
 		JLabel animationLbl = new JLabel(new ImageIcon(WaitView.class.getResource("/resources/rotating-circle.gif")));
 		panel.add(animationLbl);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.LIGHT_GRAY);
+		panel_1.setBackground(Color.WHITE);
 		animationPanel.add(panel_1, "name_978428366539881");
 		panel_1.setLayout(new GridLayout(5, 5, 0, 0));
 		
