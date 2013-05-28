@@ -1,6 +1,7 @@
 package puzzleAlgorithm;
 
 import Utils.Logger;
+import Utils.DBUtils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayDeque;
@@ -15,15 +16,18 @@ public class AlgorithmRunner {
 	public static PuzzleSquare[][] board;
 	public static List<PuzzleDefinition> definitions = new ArrayList<PuzzleDefinition>();
 	public static List<PuzzleDefinition> unSolved = new ArrayList<PuzzleDefinition>();
-	public static List<String> answers = new ArrayList<String>();
+	public static List<Answer> answers = new ArrayList<Answer>();
 
 	/**
 	 * @param args
 	 */
 	public static boolean runAlgorithm() {
-		if (!readAnswersFile(filePath)) {
-			return false;
-		}
+		String[] topics = {"geo", "general", "israel"};
+		DBUtils.getPossibleAnswers(topics, 12);
+		
+//		if (!readAnswersFile(filePath)) {
+//			return false;
+//		}
 
 		Logger.writeToLog("Number of answers = " + answers.size());
 
@@ -54,7 +58,7 @@ public class AlgorithmRunner {
 		outerLoop: while (!solved) {
 
 			PuzzleDefinition def = unSolved.get(0);
-			List<String> possibleAnswers = def.getPossibleAnswers();
+			List<Answer> possibleAnswers = def.getPossibleAnswers();
 			innerLoop: while (!def.isSolved()) {
 				if (possibleAnswers.size() == 0) {
 					if (!popBoardState(stack)) {
@@ -64,12 +68,12 @@ public class AlgorithmRunner {
 					continue outerLoop;
 				}
 				int index = (int) Math.floor(Math.random() * possibleAnswers.size());
-				String currentAnswer = possibleAnswers.get(index);
+				Answer currentAnswer = possibleAnswers.get(index);
 				int row = def.getBeginRow();
 				int column = def.getBeginColumn();
 				char direction = def.getDirection();
-				for (int letterIndex = 0; letterIndex < currentAnswer.length(); letterIndex++) {
-					if (!board[column][row].checkLetter(currentAnswer.charAt(letterIndex), false)) {
+				for (int letterIndex = 0; letterIndex < currentAnswer.length; letterIndex++) {
+					if (!board[column][row].checkLetter(currentAnswer.getAnswerString().charAt(letterIndex), false)) {
 						possibleAnswers.remove(currentAnswer);
 						continue innerLoop;
 					}
@@ -128,7 +132,7 @@ public class AlgorithmRunner {
 	 * 
 	 * @param stack
 	 */
-	private static boolean pushBoardState(Deque<BoardState> stack, PuzzleDefinition lastDef, String currentAnswer) {
+	private static boolean pushBoardState(Deque<BoardState> stack, PuzzleDefinition lastDef, Answer currentAnswer) {
 		// TODO when poping from stack, remove the answer of lastDef from it's
 		// answers
 		int size = board[0].length;
@@ -199,7 +203,7 @@ public class AlgorithmRunner {
 		if (!lastDef.getPossibleAnswers().remove(lastDef.getAnswer())) {
 			return false;
 		}
-		lastDef.setAnswer("");
+		lastDef.setAnswer(new Answer("", -1));
 
 		// reset definitions
 		definitions.clear();
@@ -228,13 +232,13 @@ public class AlgorithmRunner {
 		Collections.sort(unSolved);
 	}
 
-	private static void insertAnswer(PuzzleDefinition def, String currentAnswer) {
+	private static void insertAnswer(PuzzleDefinition def, Answer currentAnswer) {
 
 		int row = def.getBeginRow();
 		int column = def.getBeginColumn();
-		for (int letterIndex = 0; letterIndex < currentAnswer.length(); letterIndex++) {
+		for (int letterIndex = 0; letterIndex < currentAnswer.length; letterIndex++) {
 			char direction = def.getDirection();
-			board[column][row].checkLetter(currentAnswer.charAt(letterIndex), true);
+			board[column][row].checkLetter(currentAnswer.getAnswerString().charAt(letterIndex), true);
 			switch (direction) {
 			case 'r':
 				column++;
@@ -572,50 +576,50 @@ public class AlgorithmRunner {
 		return true;
 	}
 
-	private static boolean readAnswersFile(String path) {
-		Logger.writeToLog("Reading answers file");
-		answers = new ArrayList<String>();
-		try {
-			FileReader in = new FileReader(path);
-			BufferedReader bin = new BufferedReader(in);
-			String line = bin.readLine();
-			String first;
-			String second;
-			String full;
-	
-			while (line != null) {
-				if (line.indexOf('.') != -1 || line.indexOf('-') != -1) {
-					line = bin.readLine();
-					continue;
-				}
-				int index = line.indexOf('_');
-				if (index != -1) {
-					first = line.substring(0, index);
-					second = line.substring(index + 1);
-					full = first + second;
-					if (checkWordLetters(first.toLowerCase()))
-						answers.add(first.toLowerCase());
-					if (checkWordLetters(second.toLowerCase()))
-						answers.add(second.toLowerCase());
-					if (checkWordLetters(full.toLowerCase()))
-						answers.add(full.toLowerCase());
-				} else {
-					if (checkWordLetters(line.toLowerCase()))
-						answers.add(line.toLowerCase());
-				}
-				line = bin.readLine();
-			}
-	
-			bin.close();
-			in.close();
-	
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-			return false;
-		}
-		Logger.writeToLog("Finished reading answersr. Number of answers = " + answers.size());
-		return true;
-	}
+//	private static boolean readAnswersFile(String path) {
+//		Logger.writeToLog("Reading answers file");
+//		answers = new ArrayList<String>();
+//		try {
+//			FileReader in = new FileReader(path);
+//			BufferedReader bin = new BufferedReader(in);
+//			String line = bin.readLine();
+//			String first;
+//			String second;
+//			String full;
+//	
+//			while (line != null) {
+//				if (line.indexOf('.') != -1 || line.indexOf('-') != -1) {
+//					line = bin.readLine();
+//					continue;
+//				}
+//				int index = line.indexOf('_');
+//				if (index != -1) {
+//					first = line.substring(0, index);
+//					second = line.substring(index + 1);
+//					full = first + second;
+//					if (checkWordLetters(first.toLowerCase()))
+//						answers.add(first.toLowerCase());
+//					if (checkWordLetters(second.toLowerCase()))
+//						answers.add(second.toLowerCase());
+//					if (checkWordLetters(full.toLowerCase()))
+//						answers.add(full.toLowerCase());
+//				} else {
+//					if (checkWordLetters(line.toLowerCase()))
+//						answers.add(line.toLowerCase());
+//				}
+//				line = bin.readLine();
+//			}
+//	
+//			bin.close();
+//			in.close();
+//	
+//		} catch (Exception ex) {
+//			System.out.println(ex.getMessage());
+//			return false;
+//		}
+//		Logger.writeToLog("Finished reading answersr. Number of answers = " + answers.size());
+//		return true;
+//	}
 
 	private static void printResults() {
 		printBoard();
