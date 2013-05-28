@@ -2,10 +2,17 @@ package gui;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
+import java.awt.GridLayout;
+import java.awt.Color;
+import java.awt.CardLayout;
 
 public class WaitView extends JPanel {
 
@@ -23,30 +30,38 @@ public class WaitView extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblWeArePreparing = new JLabel("<HTML><center>We are preparing you Crossword.<br>To get the juices going, answer this question</HTML>");
+		lblWeArePreparing.setBackground(Color.WHITE);
 		lblWeArePreparing.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblWeArePreparing.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblWeArePreparing, BorderLayout.NORTH);
 		
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new BorderLayout(0, 0));
+		JPanel centerPanel = new JPanel();
+		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JPanel animatedIconPanel = new JPanel();
-		animatedIconPanel.add(getProcessingAnimation());
-		panel.add(animatedIconPanel, BorderLayout.WEST);
+		JPanel questionLbl = new JPanel();
+		questionLbl.setBackground(Color.WHITE);
+		centerPanel.add(questionLbl);
+		
+		JPanel animationPanel = new JPanel();
+		animationPanel.setBackground(Color.WHITE);
+		centerPanel.add(animationPanel);
+		animationPanel.setLayout(new CardLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		animationPanel.add(panel, "name_978375015424865");
+		JLabel animationLbl = new JLabel(new ImageIcon(WaitView.class.getResource("/resources/rotating-circle.gif")));
+		panel.add(animationLbl);
 		
 		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.EAST);
+		panel_1.setBackground(Color.WHITE);
+		animationPanel.add(panel_1, "name_978428366539881");
+		panel_1.setLayout(new GridLayout(5, 5, 0, 0));
 		
-		JButton btnNewButton = new JButton("New button");
-		panel_1.add(btnNewButton);
-		
-		getProcessingAnimation();
-
+		JButton nextBtn = new JButton(">>>>");
+		panel_1.add(nextBtn);
+		add(centerPanel, BorderLayout.CENTER);	
 	}
 	
-	private JLabel getProcessingAnimation() {
-		
-	}
 
 }

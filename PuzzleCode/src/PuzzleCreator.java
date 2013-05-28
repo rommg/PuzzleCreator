@@ -11,7 +11,7 @@ public class PuzzleCreator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Logger.initialize(false);
+		Logger.initialize(true);
 		if (args.length != 1){
 			Logger.writeErrorToLog("Wrong number of arguments");
 			return;

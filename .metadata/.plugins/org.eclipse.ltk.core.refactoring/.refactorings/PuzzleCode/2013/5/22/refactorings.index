@@ -73,3 +73,11 @@
 1369756658481	Rename method 'startGUI'
 1369757259192	Convert local variable 'goBtn' to field
 1369757436161	Delete elements
+1369760020894	Delete element
+1369760069656	Rename compilation unit 'progressBar.java'
+1369760868051	Delete element
+1369762898525	Delete element
+1369762949110	Rename compilation unit 'ProgressTabeedPane.java'
+1369763409714	Rename compilation unit 'ProgressTabbedPane.java'
+1369765798728	Delete element
+1369765832025	Delete element

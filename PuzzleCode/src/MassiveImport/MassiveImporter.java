@@ -11,21 +11,18 @@ public class MassiveImporter {
 	 * @throws IOException 
 	 */
 	public static boolean runMassiveImporter() {
-		return true;
-		//
-		//		Logger.initialize();
-		//		
-		//		Logger.writeToLog("Starting importing process...");
-		//
-		//		YagoFileHandler y = new YagoFileHandler();
-		//		
-		//		Logger.writeToLog("Downloading and extracting yago files from website...");
-		//
-		//		y.getFilesFromURL(); // download yago files
-		//		
-		//		Logger.writeToLog("Filtering TSV files...");
-		//
-		//		y.createFilteredYagoFiles(); // create TSVs with relevant data only
+						
+				Logger.writeToLog("Starting importing process...");
+		
+				YagoFileHandler y = new YagoFileHandler();
+				
+				Logger.writeToLog("Downloading and extracting yago files from website...");
+		
+				y.getFilesFromURL(); // download yago files
+				
+				Logger.writeToLog("Filtering TSV files...");
+		
+				y.createFilteredYagoFiles(); // create TSVs with relevant data only
 		//
 		//		Logger.writeToLog("Importing TSV files to DB...");
 		//		
@@ -52,6 +49,7 @@ public class MassiveImporter {
 		//		
 		//		Logger.writeToLog("Finished importing process!");
 		//
+				return true;
 	}
 
 }
