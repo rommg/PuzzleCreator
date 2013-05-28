@@ -16,7 +16,7 @@ public interface GuiDBConnector {
 	 * Pull a question and an answer from the DB
 	 * @return
 	 */
-	public Object getTriviaQuestion();
+	public String[] getTriviaQuestion();
 	
 	
 	public List<String> getTopics();
