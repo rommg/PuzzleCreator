@@ -9,10 +9,17 @@ import javax.swing.JButton;
 
 public class WaitView extends JPanel {
 
+	static WaitView start() {
+		return new WaitView();
+	}
 	/**
 	 * Create the panel.
 	 */
 	public WaitView() {
+		initialize();
+	}
+	
+	private void initialize() {
 		setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblWeArePreparing = new JLabel("<HTML><center>We are preparing you Crossword.<br>To get the juices going, answer this question</HTML>");
@@ -33,21 +40,13 @@ public class WaitView extends JPanel {
 		
 		JButton btnNewButton = new JButton("New button");
 		panel_1.add(btnNewButton);
+		
+		getProcessingAnimation();
 
 	}
 	
 	private JLabel getProcessingAnimation() {
-		JLabel label = new JLabel("Processing ");
-		label.setHorizontalTextPosition( JLabel.LEADING );
-		AnimatedIcon icon2 = new AnimatedIcon( label );
-		icon2.setAlignmentX( AnimatedIcon.LEFT );
-		icon2.addIcon( new TextIcon(label, ".") );
-		icon2.addIcon( new TextIcon(label, "..") );
-		icon2.addIcon( new TextIcon(label, "...") );
-		icon2.addIcon( new TextIcon(label, "....") );
-		icon2.addIcon( new TextIcon(label, ".....") );
-		label.setIcon( icon2 );
-		return label;
+		
 	}
 
 }

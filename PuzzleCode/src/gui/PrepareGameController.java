@@ -9,13 +9,16 @@ public class PrepareGameController extends AbstractController<PrepareGameModel, 
 
 	PrepareGameController(PrepareGameModel model, PrepareGameView view) {
 		super(model,view);
+		
+		view.addGoListener(new GoListener());
 	}
 	
-	class goListener implements ActionListener {
+	class GoListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			System.out.println("goListenr");
+			model.goBtnClicked();			
 		}
 		
 		

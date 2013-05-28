@@ -1,6 +1,8 @@
 package gui;
 
 
+import gui.PrepareGameController.GoListener;
+
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
@@ -44,6 +46,7 @@ public class PrepareGameView extends JPanel {
 	private List<JCheckBox> topicsCheckBoxes;
 	private JPanel topicsPanel;
 	private static PrepareGameModel model;
+	private JButton goBtn;
 
 	public PrepareGameView() {
 		initialize();
@@ -124,7 +127,7 @@ public class PrepareGameView extends JPanel {
 		gbc_btnPanel.gridy = 2;
 		panel.add(btnPanel, gbc_btnPanel);
 
-		JButton goBtn = new JButton();
+		goBtn = new JButton();
 		btnPanel.add(goBtn);
 		goBtn.setIcon(new ImageIcon(PrepareGameView.class.getResource("/resources/start-icon.png")));
 
@@ -180,8 +183,7 @@ public class PrepareGameView extends JPanel {
 		TopicsList.add("Israel");
 	}
 
-	void goBtnClicked() {
-		PuzzleSquare[][] board = model.getBoard(this); // This is in separate Thread
-		// in the meantime, answer question in WaitingView
+	void addGoListener(GoListener listener) {
+		goBtn.addActionListener(listener);
 	}
 }

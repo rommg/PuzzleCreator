@@ -70,3 +70,6 @@
 1369720805463	Rename local variable 'label2'
 1369721232858	Delete element
 1369721801817	Delete element
+1369756658481	Rename method 'startGUI'
+1369757259192	Convert local variable 'goBtn' to field
+1369757436161	Delete elements

@@ -49,6 +49,8 @@ import java.util.List;
 import java.util.Map;
 public class MainView {
 
+	static MainView mainView = null; 
+
 	private JFrame frame;
 	private Map<String,JButton> menuPanelBtns;
 	JButton[] menuPanelBtnsArray;
@@ -68,7 +70,7 @@ public class MainView {
 	/**
 	 * Launch the application.
 	 */
-	public static void startGUI() {
+	public static void start() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
@@ -77,10 +79,12 @@ public class MainView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainView window = new MainView();
+					if (mainView == null) {
+						mainView = new MainView();
 					@SuppressWarnings("unused")
-					MainController controller = new MainController(null, window);
-					window.frame.setVisible(true);
+					MainController controller = new MainController(null, mainView);
+					mainView.frame.setVisible(true);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -240,10 +244,11 @@ public class MainView {
 	}
 
 	void showWaitView() {
-		JPanel waitView = CrosswordView.start();
+		JPanel waitView = WaitView.start();
 		cardPanel.add(waitView, CARD_NAMES[2]);
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel, CARD_NAMES[2]);
 	}
+
 }

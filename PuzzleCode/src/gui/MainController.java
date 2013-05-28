@@ -18,10 +18,8 @@ class MainController extends AbstractController<MainModel, MainView>{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("2");
 			JButton btn = (JButton) e.getSource();
 			if (view.btnLabels.get(btn).getText().compareTo("Play") == 0) {
-				System.out.println("3");
 				view.playBtnClicked();
 			}
 		}
