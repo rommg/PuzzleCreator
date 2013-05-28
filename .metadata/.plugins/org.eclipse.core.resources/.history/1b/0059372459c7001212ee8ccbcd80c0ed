@@ -1,0 +1,9 @@
+package gui;
+
+import java.util.List;
+
+interface iPrepareGameView {
+	List<String> getUserSelectedTopics();
+	
+	int getDifficulty();
+}

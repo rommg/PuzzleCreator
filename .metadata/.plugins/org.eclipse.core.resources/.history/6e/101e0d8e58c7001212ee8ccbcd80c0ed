@@ -1,0 +1,5 @@
+package gui;
+
+interface iPrepareGameView {
+	List<String> getTopics;
+}

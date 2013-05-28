@@ -1,0 +1,31 @@
+package gui;
+
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JButton;
+
+public class WaitView extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public WaitView() {
+		setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblWeArePreparing = new JLabel("<HTML><center>We are preparing you Crossword.<br>To get the juices going, answer this question</HTML>");
+		lblWeArePreparing.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblWeArePreparing.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblWeArePreparing, BorderLayout.NORTH);
+		
+		JPanel panel = new JPanel();
+		add(panel, BorderLayout.SOUTH);
+		
+		JButton btnSkip = new JButton("Skip");
+		panel.add(btnSkip);
+
+	}
+
+}
