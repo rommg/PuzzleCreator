@@ -1,9 +1,8 @@
 package puzzleAlgorithm;
 
+import Utils.AlgorithmUtils;
 import Utils.Logger;
 import Utils.DBUtils;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,23 +11,24 @@ import java.util.List;
 
 public class AlgorithmRunner {
 	// System.getProperty("file.separator")
-	private static String filePath = System.getProperty("user.home") + "/desktop/temp/answers.txt";
-	public static PuzzleSquare[][] board;
-	public static List<PuzzleDefinition> definitions = new ArrayList<PuzzleDefinition>();
-	public static List<PuzzleDefinition> unSolved = new ArrayList<PuzzleDefinition>();
-	public static List<Answer> answers = new ArrayList<Answer>();
+	protected static PuzzleSquare[][] board;
+	protected static List<PuzzleDefinition> definitions = new ArrayList<PuzzleDefinition>();
+	private static List<PuzzleDefinition> unSolved = new ArrayList<PuzzleDefinition>();
+	protected static List<Answer> answers = new ArrayList<Answer>();
 
 	/**
 	 * @param args
 	 */
 	public static boolean runAlgorithm() {
-		String[] topics = {"geo", "general", "israel"};
+		String[] topics = { "geo", "general", "israel" };
 		DBUtils.getPossibleAnswers(topics, 12);
-		
-//		if (!readAnswersFile(filePath)) {
-//			return false;
-//		}
 
+		// if (!readAnswersFile(filePath)) {
+		// return false;
+		// }
+
+		//TODO remove use of mock function after tests
+		createMockAnswers();
 		Logger.writeToLog("Number of answers = " + answers.size());
 
 		board = createBoard(13);
@@ -43,6 +43,7 @@ public class AlgorithmRunner {
 			Logger.writeErrorToLog("impossible data");
 			return false;
 		} else {
+			AlgorithmUtils.drawBoard(board, definitions);
 			printResults();
 		}
 		return true;
@@ -258,21 +259,21 @@ public class AlgorithmRunner {
 	private static void insertDefinitions() {
 		int row = 0;
 
-		insertDefinition(row, 1, 4, 'd');
+		insertDefinition(row, 1, 4, 'd', 0, 0);
 
-		insertDefinition(row, 3, 5, 'd');
+		insertDefinition(row, 3, 5, 'd', 0, 2);
 
-		insertDefinition(row, 5, 3, 'd');
+		insertDefinition(row, 5, 3, 'd', 0, 6);
 
-		insertDefinition(row, 8, 7, 'd');
+		insertDefinition(row, 8, 7, 'd', 0, 7);
 
-		insertDefinition(row, 10, 3, 'd');
+		insertDefinition(row, 10, 3, 'd', 0, 9);
 
-		insertDefinition(row, 12, 3, 'd');
+		insertDefinition(row, 12, 3, 'd', 0, 11);
 
 		row = 1;
 
-		insertDefinition(row, 0, 6, 'r');
+		insertDefinition(row, 0, 6, 'r', 0,0);
 
 		insertDefinition(row, 4, 4, 'd');
 
@@ -292,7 +293,7 @@ public class AlgorithmRunner {
 
 		row = 3;
 
-		insertDefinition(row, 0, 5, 'r');
+		insertDefinition(row, 0, 5, 'r', 2, 0);
 
 		insertDefinition(row, 2, 5, 'd');
 
@@ -314,7 +315,7 @@ public class AlgorithmRunner {
 
 		row = 5;
 
-		insertDefinition(row, 0, 3, 'r');
+		insertDefinition(row, 0, 3, 'r', 4, 0);
 
 		insertDefinition(row, 1, 6, 'd');
 
@@ -332,7 +333,7 @@ public class AlgorithmRunner {
 
 		row = 7;
 
-		insertDefinition(row, 0, 8, 'r');
+		insertDefinition(row, 0, 8, 'r', 6, 0);
 
 		insertDefinition(row, 4, 6, 'd');
 
@@ -348,7 +349,7 @@ public class AlgorithmRunner {
 
 		row = 9;
 
-		insertDefinition(row, 0, 3, 'r');
+		insertDefinition(row, 0, 3, 'r', 8, 0);
 
 		insertDefinition(row, 2, 4, 'd');
 
@@ -382,21 +383,23 @@ public class AlgorithmRunner {
 
 		row = 12;
 
-		insertDefinition(row, 0, 6, 'r');
+		insertDefinition(row, 0, 6, 'r', 11, 0);
 
 		insertDefinition(row, 7, 6, 'r');
 
 	}
 
 	/**
-	 * For each relevant square - add def to it's definitions
+	 * Create a new definition with the function params Insert definition to
+	 * board definitions collection For each relevant square - add the
+	 * definition to it's definitions
 	 * 
-	 * @param board
-	 * @param def
+	 * 
 	 * @return
 	 */
-	private static boolean insertDefinition(int beginRow, int beginCol, int length, char direction) {
-		PuzzleDefinition def = new PuzzleDefinition(beginRow, beginCol, length, direction);
+	private static boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow,
+			int textCol) {
+		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow, beginCol, length, direction);
 		definitions.add(def);
 
 		switch (direction) {
@@ -415,6 +418,46 @@ public class AlgorithmRunner {
 			return false;
 		}
 
+		return true;
+	}
+
+	/**
+	 * This function calculates the location of the definition text, and than
+	 * calls insertDefinition with the calculated params
+	 * 
+	 * @param beginRow
+	 * @param beginCol
+	 * @param length
+	 * @param direction
+	 * @return
+	 */
+	private static boolean insertDefinition(int beginRow, int beginCol, int length, char direction) {
+		int textRow;
+		int textCol;
+		switch (direction) {
+		case 'r':
+			if (beginCol < 1) {
+				Logger.writeErrorToLog("defintion text out of board. col=" + beginCol + " row=" + beginRow
+						+ " direction=" + direction);
+				return false;
+			}
+			textRow = beginRow;
+			textCol = beginCol - 1;
+			break;
+		case 'd':
+			if (beginRow < 1) {
+				Logger.writeErrorToLog("defintion text out of board. col=" + beginCol + " row=" + beginRow
+						+ " direction=" + direction);
+				return false;
+			}
+			textRow = beginRow - 1;
+			textCol = beginCol;
+			break;
+		default:
+			Logger.writeErrorToLog("unknow direction '" + direction + "'");
+			return false;
+		}
+		insertDefinition(beginRow, beginCol, length, direction, textRow, textCol);
 		return true;
 	}
 
@@ -576,57 +619,58 @@ public class AlgorithmRunner {
 		return true;
 	}
 
-//	private static boolean readAnswersFile(String path) {
-//		Logger.writeToLog("Reading answers file");
-//		answers = new ArrayList<String>();
-//		try {
-//			FileReader in = new FileReader(path);
-//			BufferedReader bin = new BufferedReader(in);
-//			String line = bin.readLine();
-//			String first;
-//			String second;
-//			String full;
-//	
-//			while (line != null) {
-//				if (line.indexOf('.') != -1 || line.indexOf('-') != -1) {
-//					line = bin.readLine();
-//					continue;
-//				}
-//				int index = line.indexOf('_');
-//				if (index != -1) {
-//					first = line.substring(0, index);
-//					second = line.substring(index + 1);
-//					full = first + second;
-//					if (checkWordLetters(first.toLowerCase()))
-//						answers.add(first.toLowerCase());
-//					if (checkWordLetters(second.toLowerCase()))
-//						answers.add(second.toLowerCase());
-//					if (checkWordLetters(full.toLowerCase()))
-//						answers.add(full.toLowerCase());
-//				} else {
-//					if (checkWordLetters(line.toLowerCase()))
-//						answers.add(line.toLowerCase());
-//				}
-//				line = bin.readLine();
-//			}
-//	
-//			bin.close();
-//			in.close();
-//	
-//		} catch (Exception ex) {
-//			System.out.println(ex.getMessage());
-//			return false;
-//		}
-//		Logger.writeToLog("Finished reading answersr. Number of answers = " + answers.size());
-//		return true;
-//	}
+	// private static boolean readAnswersFile(String path) {
+	// Logger.writeToLog("Reading answers file");
+	// answers = new ArrayList<String>();
+	// try {
+	// FileReader in = new FileReader(path);
+	// BufferedReader bin = new BufferedReader(in);
+	// String line = bin.readLine();
+	// String first;
+	// String second;
+	// String full;
+	//
+	// while (line != null) {
+	// if (line.indexOf('.') != -1 || line.indexOf('-') != -1) {
+	// line = bin.readLine();
+	// continue;
+	// }
+	// int index = line.indexOf('_');
+	// if (index != -1) {
+	// first = line.substring(0, index);
+	// second = line.substring(index + 1);
+	// full = first + second;
+	// if (checkWordLetters(first.toLowerCase()))
+	// answers.add(first.toLowerCase());
+	// if (checkWordLetters(second.toLowerCase()))
+	// answers.add(second.toLowerCase());
+	// if (checkWordLetters(full.toLowerCase()))
+	// answers.add(full.toLowerCase());
+	// } else {
+	// if (checkWordLetters(line.toLowerCase()))
+	// answers.add(line.toLowerCase());
+	// }
+	// line = bin.readLine();
+	// }
+	//
+	// bin.close();
+	// in.close();
+	//
+	// } catch (Exception ex) {
+	// System.out.println(ex.getMessage());
+	// return false;
+	// }
+	// Logger.writeToLog("Finished reading answersr. Number of answers = " +
+	// answers.size());
+	// return true;
+	// }
 
 	private static void printResults() {
 		printBoard();
-		for (PuzzleDefinition def :definitions){
-			Logger.writeToLog("def of length " + def.getLength() + " answer is :"  + def.getAnswer());
+		for (PuzzleDefinition def : definitions) {
+			Logger.writeToLog("def of length " + def.getLength() + " answer is :" + def.getAnswer().getAnswerString());
 		}
-		
+
 	}
 
 	private static void printBoard() {
@@ -647,9 +691,9 @@ public class AlgorithmRunner {
 			}
 			Logger.writeToLog(rowSt);
 			Logger.writeToLog("");
-	
+
 		}
-	
+
 	}
 
 	private static void printBoardStatus() {
@@ -661,4 +705,111 @@ public class AlgorithmRunner {
 		Logger.writeToLog("Total number of possible answers = " + counter);
 	}
 
+	private static void createMockAnswers(){
+		Answer ans = new Answer("oboe", -1);
+		answers.add(ans);
+		ans = new Answer("callow", -1);
+		answers.add(ans);
+		ans = new Answer("eject", -1);
+		answers.add(ans);
+		ans = new Answer("arid", -1);
+		answers.add(ans);
+		ans = new Answer("noise", -1);
+		answers.add(ans);
+		ans = new Answer("tic", -1);
+		answers.add(ans);
+		ans = new Answer("one", -1);
+		answers.add(ans);
+		ans = new Answer("anew", -1);
+		answers.add(ans);
+		ans = new Answer("trance", -1);
+		answers.add(ans);
+		ans = new Answer("odd", -1);
+		answers.add(ans);
+		ans = new Answer("ensue", -1);
+		answers.add(ans);
+		ans = new Answer("gum", -1);
+		answers.add(ans);
+		ans = new Answer("idle", -1);
+		answers.add(ans);
+		ans = new Answer("den", -1);
+		answers.add(ans);
+		ans = new Answer("age", -1);
+		answers.add(ans);
+		ans = new Answer("epic", -1);
+		answers.add(ans);
+		ans = new Answer("profess", -1);
+		answers.add(ans);
+		ans = new Answer("liar", -1);
+		answers.add(ans);
+		ans = new Answer("tropic", -1);
+		answers.add(ans);
+		ans = new Answer("cud", -1);
+		answers.add(ans);
+		ans = new Answer("ebb", -1);
+		answers.add(ans);
+		ans = new Answer("unit", -1);
+		answers.add(ans);
+		ans = new Answer("fade", -1);
+		answers.add(ans);
+		ans = new Answer("leap", -1);
+		answers.add(ans);
+		ans = new Answer("new", -1);
+		answers.add(ans);
+		ans = new Answer("din", -1);
+		answers.add(ans);
+		ans = new Answer("fee", -1);
+		answers.add(ans);
+		ans = new Answer("teem", -1);
+		answers.add(ans);
+		ans = new Answer("watt", -1);
+		answers.add(ans);
+		ans = new Answer("abroad", -1);
+		answers.add(ans);
+		ans = new Answer("arable", -1);
+		answers.add(ans);
+		ans = new Answer("indigo", -1);
+		answers.add(ans);
+		ans = new Answer("bee", -1);
+		answers.add(ans);
+		ans = new Answer("geese", -1);
+		answers.add(ans);
+		ans = new Answer("deft", -1);
+		answers.add(ans);
+		ans = new Answer("jewel", -1);
+		answers.add(ans);
+		ans = new Answer("erupt", -1);
+		answers.add(ans);
+		ans = new Answer("ace", -1);
+		answers.add(ans);
+		ans = new Answer("nelson", -1);
+		answers.add(ans);
+		ans = new Answer("act", -1);
+		answers.add(ans);
+		ans = new Answer("spine", -1);
+		answers.add(ans);
+		ans = new Answer("altitude", -1);
+		answers.add(ans);
+		ans = new Answer("item", -1);
+		answers.add(ans);
+		ans = new Answer("creep", -1);
+		answers.add(ans);
+		ans = new Answer("boa", -1);
+		answers.add(ans);
+		ans = new Answer("nil", -1);
+		answers.add(ans);
+		ans = new Answer("wrong", -1);
+		answers.add(ans);
+		ans = new Answer("cicada", -1);
+		answers.add(ans);
+		ans = new Answer("incur", -1);
+		answers.add(ans);
+		ans = new Answer("audit", -1);
+		answers.add(ans);
+		ans = new Answer("redeem", -1);
+		answers.add(ans);
+		ans = new Answer("ardent", -1);
+		answers.add(ans);
+		
+	}
 }
