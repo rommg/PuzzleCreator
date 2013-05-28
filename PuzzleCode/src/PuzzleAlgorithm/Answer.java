@@ -1,19 +1,19 @@
 package puzzleAlgorithm;
 
 public class Answer {
-	public String answerSt;
-	public String entityName;
+	private String answerSt;
+	private int entityId;
 	
-	public Answer(String answer, String entityName){
+	public Answer(String answer, int entityId){
 		this.answerSt = answer;
-		this.entityName = entityName;
+		this.entityId = entityId;
 	}
 	
 	public String getAnswerString(){
 		return this.answerSt;
 	}
 	
-	public String getEntityName(){
-		return this.entityName;
+	public int getEntityId(){
+		return this.entityId;
 	}
 }
