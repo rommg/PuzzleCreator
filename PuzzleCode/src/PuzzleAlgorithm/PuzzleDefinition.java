@@ -236,5 +236,13 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	public int getEntityId(){
 		return this.answer.getEntityId();
 	}
+	
+	public int getTextRow(){
+		return textRow;
+	}
+	
+	public int getTextCol(){
+		return textColumn;
+	}
 
 }
