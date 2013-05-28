@@ -30,7 +30,7 @@ public class WaitView extends JPanel {
 	private void initialize() {
 		setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblWeArePreparing = new JLabel("<HTML><center>We are preparing you Crossword.<br>To get the juices going, answer this question</HTML>");
+		JLabel lblWeArePreparing = new JLabel("<HTML><center>We are preparing you Crossword.<br>In the meantime, get your juices going...</HTML>");
 		lblWeArePreparing.setBackground(Color.WHITE);
 		lblWeArePreparing.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblWeArePreparing.setHorizontalAlignment(SwingConstants.CENTER);

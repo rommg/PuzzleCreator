@@ -9,8 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+
+import puzzleAlgorithm.PuzzleDefinition;
+import puzzleAlgorithm.PuzzleSquare;
+
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
+import java.util.List;
+import java.awt.BorderLayout;
 
 
 public class CrosswordView extends JPanel {
@@ -18,8 +24,8 @@ public class CrosswordView extends JPanel {
 	private JPanel contentPane;
 	private TimerJLabel timer;
 	private JButton btnPause;
-	private JPanel crossWordPanel;
 	private boolean isPaused = false;
+	private JPanel boardPanel;
 
 	static JPanel start() {
 		CrosswordView view = new CrosswordView();
@@ -39,25 +45,20 @@ public class CrosswordView extends JPanel {
 		setBounds(100, 100, 584, 560);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-
-		JPanel timerPanel = new JPanel();
-
-		timer = new TimerJLabel();
-		timerPanel.add(timer);
-		timer.start();
-		contentPane.add(timerPanel);
-
-
-		crossWordPanel = new JPanel();
-		crossWordPanel.setBackground(Color.blue);
-		crossWordPanel.setMinimumSize(new Dimension(600, 600));
-		crossWordPanel.setPreferredSize(new Dimension(600, 600));
-		contentPane.add(crossWordPanel);
-		crossWordPanel.setLayout(new GridLayout(1, 0, 0, 0));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+				JPanel timerPanel = new JPanel();
+				
+						timer = new TimerJLabel();
+						timerPanel.add(timer);
+						timer.start();
+						contentPane.add(timerPanel, BorderLayout.NORTH);
+		
+		boardPanel = new JPanel();
+		contentPane.add(boardPanel, BorderLayout.CENTER);
 
 		JPanel BtnPanel = new JPanel();
-		contentPane.add(BtnPanel);
+		contentPane.add(BtnPanel, BorderLayout.SOUTH);
 
 		JButton btnCheck = new JButton("Check");
 
@@ -70,22 +71,44 @@ public class CrosswordView extends JPanel {
 		BtnPanel.add(btnDone);
 
 	}
+	
+	private void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
+		int boardOrder = board.length;
+		boardPanel.setLayout(new GridLayout(boardOrder, boardOrder));
+		
+		//count number of definitions in each square
+		int[][] boardDefNum = new int[boardOrder][boardOrder];
+		
+		// init
+		for (int i = 0; i<boardOrder; i++) {
+			for (int j=0; j<board[i].length; j++) {
+				boardDefNum[i][j] = 0;
+			}
+		}
+		
+		for (PuzzleDefinition definition : definitions) {
+			boardDefNum[1][2]++; 
+		}
+		
+		
+	}
 
 	void pause() {
 		if (!isPaused) {
 			timer.pause();
 			isPaused = true;
 			btnPause.setText("Resume");
-			crossWordPanel.setEnabled(false);
+			boardPanel.setEnabled(false);
 		}
 		else {
 			timer.resume();
 			isPaused = false;
 			btnPause.setText("Pause");
-			crossWordPanel.setEnabled(true);
+			boardPanel.setEnabled(true);
 		}
 	}
 
+	
 	void addPauseListener(ActionListener listener) {
 		btnPause.addActionListener(listener);
 	}

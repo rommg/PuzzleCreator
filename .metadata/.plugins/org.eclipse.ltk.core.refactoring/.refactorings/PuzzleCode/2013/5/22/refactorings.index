@@ -81,3 +81,4 @@
 1369763409714	Rename compilation unit 'ProgressTabbedPane.java'
 1369765798728	Delete element
 1369765832025	Delete element
+1369769847988	Convert local variable 'boardPanel' to field

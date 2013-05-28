@@ -33,7 +33,6 @@ import javax.swing.ImageIcon;
 
 import puzzleAlgorithm.PuzzleSquare;
 
-import Utils.GuiAlgorithmConnector;
 import Utils.GuiDBConnector;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
