@@ -1,0 +1,89 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.GridLayout;
+
+
+public class CrosswordView extends JFrame {
+
+	private JPanel contentPane;
+	private TimerJLabel timer;
+	private JButton btnPause;
+	private JPanel crossWordPanel;
+	private boolean isPaused = false;
+
+	/**
+	 * Create the frame.
+	 */
+	public CrosswordView() {
+
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 584, 560);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+
+		JPanel timerPanel = new JPanel();
+
+		timer = new TimerJLabel();
+		timerPanel.add(timer);
+		timer.start();
+		contentPane.add(timerPanel);
+
+
+		crossWordPanel = new JPanel();
+		crossWordPanel.setBackground(Color.blue);
+		crossWordPanel.setMinimumSize(new Dimension(600, 600));
+		crossWordPanel.setPreferredSize(new Dimension(600, 600));
+		contentPane.add(crossWordPanel);
+		crossWordPanel.setLayout(new GridLayout(1, 0, 0, 0));
+
+		JPanel BtnPanel = new JPanel();
+		contentPane.add(BtnPanel);
+
+		JButton btnCheck = new JButton("Check");
+
+		btnPause = new JButton("Pause");
+		BtnPanel.add(btnPause);
+		BtnPanel.add(btnCheck);
+
+		JButton btnDone = new JButton("Done");
+		BtnPanel.add(btnDone);
+
+		linkToController();
+
+		this.pack();
+	}
+
+	private void linkToController() {
+		CrosswordModel model = new CrosswordModel();
+		CrosswordController cont = new CrosswordController(model, this);
+	}
+
+	void pause() {
+		if (!isPaused) {
+			timer.pause();
+			isPaused = true;
+			crossWordPanel.setEnabled(false);
+			btnPause.setText("Resume");
+		}
+		else {
+			timer.resume();
+			isPaused = false;
+		}
+	}
+
+	void addPauseListener(ActionListener listener) {
+		btnPause.addActionListener(listener);
+	}
+}

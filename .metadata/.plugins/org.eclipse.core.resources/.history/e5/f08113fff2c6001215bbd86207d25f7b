@@ -1,0 +1,127 @@
+package gui;
+
+
+import javax.swing.JCheckBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import javax.swing.JRadioButton;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+
+import Utils.GuiDBConnector;
+
+
+public class prepareGameView extends JInternalFrame {
+	private final ButtonGroup difficultyBtnsGrp = new ButtonGroup();
+	private List<String> TopicsList;
+	private List<JCheckBox> topicsCheckBoxes;
+	/**
+	 * Create the panel.
+	 */
+	public prepareGameView() {
+		
+		JPanel topicsPanel = new JPanel();
+		topicsPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		JPanel difficultyPanel = new JPanel();
+		difficultyPanel.setBorder(new TitledBorder(null, "Difficulty", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		JPanel btnPanel = new JPanel();
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(229)
+							.addComponent(difficultyPanel, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(topicsPanel, GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(180)
+							.addComponent(btnPanel, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(23)
+					.addComponent(difficultyPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(topicsPanel, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnPanel, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
+					.addGap(28))
+		);
+		topicsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JButton btnNewButton = new JButton();
+		btnPanel.add(btnNewButton);
+		btnNewButton.setIcon(new ImageIcon(prepareGameView.class.getResource("/resources/start-icon.png")));
+		difficultyPanel.setLayout(new BoxLayout(difficultyPanel, BoxLayout.Y_AXIS));
+		
+		JRadioButton hardRadioBtn = new JRadioButton("Hard");
+		difficultyPanel.add(hardRadioBtn);
+		difficultyBtnsGrp.add(hardRadioBtn);
+		
+		JRadioButton easyRadioBtn = new JRadioButton("Easy");
+		difficultyPanel.add(easyRadioBtn);
+		easyRadioBtn.setSelected(true);
+		difficultyBtnsGrp.add(easyRadioBtn);
+		getContentPane().setLayout(groupLayout);
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @return user selected topics
+	 */
+	List<String> getUserSelectedTopics() {
+		List<String> lst = new LinkedList<String>();
+		for (JCheckBox box : topicsCheckBoxes) {
+			if (box.isSelected())
+				lst.add(box.getText());
+		}
+		return lst;
+	}
+	
+	private void addTopicsCheckBoxes() {
+		getTopics(); // retrieve topics from DB
+		topicsCheckBoxes = new LinkedList<JCheckBox>();
+		for (String topic : TopicsList) {
+			JCheckBox box = new JCheckBox();
+			box.setText(topic);
+		}
+	}
+	
+	private void getTopics() {
+		//topicsList =GuiDBConnector.getTopics();
+		
+		//for now - fixed values
+		TopicsList.add("Geography");
+		TopicsList.add("Cinema");
+		TopicsList.add("Music");
+		TopicsList.add("Television");
+		TopicsList.add("General");
+		TopicsList.add("Israel");
+	}
+}

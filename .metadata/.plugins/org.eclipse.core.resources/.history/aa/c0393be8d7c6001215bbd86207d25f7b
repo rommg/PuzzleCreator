@@ -1,0 +1,22 @@
+package gui;
+
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import net.miginfocom.swing.MigLayout;
+
+public class prepareGameView extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public prepareGameView() {
+		setLayout(new MigLayout("wrap 1"));
+		
+		JPanel difficultyPanel = new JPanel();
+		add(difficultyPanel);
+
+	}
+
+}

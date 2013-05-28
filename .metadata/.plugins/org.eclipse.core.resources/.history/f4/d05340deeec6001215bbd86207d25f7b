@@ -1,0 +1,13 @@
+package gui;
+
+import gui.MainController.menuBtnListener;
+
+public class PrepareGameController {
+	private prepareGameView view;
+
+	PrepareGameController(PrerpareGameModel model, prepareGameView view) {
+		super(model,view);
+	}
+
+
+}

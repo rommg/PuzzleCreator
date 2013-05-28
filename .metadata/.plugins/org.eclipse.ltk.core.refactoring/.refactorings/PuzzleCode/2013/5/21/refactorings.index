@@ -1,0 +1,22 @@
+1369470138877	Rename package 'MassiveImport'
+1369470151115	Rename package 'PuzzleAlgorithm'
+1369470400293	Copy package
+1369470404827	Copy package
+1369470406976	Delete element
+1369470408935	Delete element
+1369470435586	Rename package 'management'
+1369474695661	Move files
+1369474708793	Delete element
+1369474717996	Rename resource 'close_box_red (1).png'
+1369474725768	Rename resource 'document_save (2).png'
+1369474922407	Delete element
+1369501855846	Move file
+1369501860105	Delete element
+1369501869153	Delete element
+1369503134414	Extract method 'getCurrentTime'
+1369507682492	Convert local variable 'btnPause' to field
+1369508396267	Convert local variable 'crossWordPanel' to field
+1369509345683	Rename method 'initView'
+1369509566192	Delete element
+1369509732341	Rename type 'TimerWidget'
+1369509785003	Rename type 'Timer'

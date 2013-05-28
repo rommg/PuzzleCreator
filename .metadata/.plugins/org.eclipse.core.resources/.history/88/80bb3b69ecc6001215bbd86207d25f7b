@@ -1,0 +1,10 @@
+package gui;
+
+abstract class Controller<M,V> {
+	protected M view;
+	protected V model;
+	
+	controller<M,V>(M model, V view) {
+		
+	}
+}

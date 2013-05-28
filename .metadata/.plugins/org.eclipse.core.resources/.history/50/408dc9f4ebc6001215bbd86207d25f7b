@@ -1,0 +1,17 @@
+package gui;
+
+import gui.MainController.menuBtnListener;
+
+public class PrepareGameController {
+	private MainView view = null;
+
+	MainController(MainModel model, MainView view) {
+		this.model = model;
+		this.view = view;
+
+		//add Controller listeners to View
+		view.addMenuBtnsListener(new menuBtnListener());
+	}
+
+
+}
