@@ -7,7 +7,7 @@ import Utils.*;
 public class PuzzleCreator {
 
 	/**
-	 * appdir should end with file separator
+	 * appDir should end with file separator
 	 */
 	public static String appDir = ""; 
 	public static String homeDir = System.getProperty("user.home");
