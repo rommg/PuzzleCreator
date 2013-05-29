@@ -14,6 +14,7 @@ public class CrosswordController extends AbstractController<CrosswordModel, Cros
 		super(model,view);
 		//add Controller listeners to View
 		view.addPauseListener(new PauseListener());
+		view.addCheckListener(new CheckListener());
 		
 	}
 
@@ -22,6 +23,15 @@ public class CrosswordController extends AbstractController<CrosswordModel, Cros
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.pause();
+		}
+
+	}
+	
+	class CheckListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.notifyCorrectness(CrosswordModel.isCorrect(view));
 		}
 
 	}

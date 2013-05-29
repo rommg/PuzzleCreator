@@ -25,6 +25,7 @@ public class JSquareTextField extends JTextField {
 		setCaretColor(backgroundColor);
 		setBackground(backgroundColor);
 		setForeground(Color.BLACK);
+		setHighlighter(null);
 
 		addCaretListener(new CaretListener() { // for deleting inserted letter if needed
 			
