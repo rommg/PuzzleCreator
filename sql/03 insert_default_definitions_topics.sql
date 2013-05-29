@@ -209,5 +209,3 @@ INSERT INTO DEFINITIONS_TOPICS (definition_id, topic_id) VALUES (158, 4);
 INSERT INTO DEFINITIONS_TOPICS (definition_id, topic_id) VALUES (158, 7);
 INSERT INTO DEFINITIONS_TOPICS (definition_id, topic_id) VALUES (159, 4);
 INSERT INTO DEFINITIONS_TOPICS (definition_id, topic_id) VALUES (159, 7);
-
-

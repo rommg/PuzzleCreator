@@ -42,7 +42,7 @@ INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (41, '<wikicategory_I
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (42, '<wikicategory_Holy_cities>', 'Holy city');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (43, '<wikicategory_Member_states_of_the_United_Nations>', 'Member state of the United Nations');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (44, '<wikicategory_Near_Eastern_countries>', 'Near Eastern country');
-INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (45, '<wikicategory_Deserts_of_Africa>', 'One of Africa\'s deserts');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (45, '<wikicategory_Deserts_of_Africa>', 'Desert in Africa');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (46, '<wikicategory_Southeast_Asian_countries>', 'Southeast Asian country');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (47, '<wikicategory_States_of_the_United_States>', 'State of the United States');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (48, '<wikicategory_Israeli_film_actors>', 'Israeli film actor');
@@ -157,5 +157,3 @@ INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (156, '<wikicategory_
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (157, '<wikicategory_Maccabi_Petah_Tikva_F.C._players>', 'Maccabi Petah Tikva F.C. player');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (158, '<wikicategory_Hapoel_Tel_Aviv_F.C._players>', 'Hapoel Tel Aviv F.C. player');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (159, '<wikicategory_Bnei_Sakhnin_F.C._players>', 'Bnei Sakhnin F.C. player');
-
-
