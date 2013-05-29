@@ -94,3 +94,6 @@
 1369811836271	Convert local variable 'boardDefCount' to field
 1369811865459	Rename field 'boardDefCounts'
 1369824931406	Rename type 'JTextFieldLimit'
+1369828740111	Delete element
+1369830678775	Convert local variable 'btnCheck' to field
+1369830766199	Rename method 'addCheckBtnListener'

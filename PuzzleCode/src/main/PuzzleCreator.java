@@ -22,7 +22,7 @@ public class PuzzleCreator {
 		}
 		appDir = args[0];
 		
-		Logger.initialize(false);
+		Logger.initialize(true);
 		MainView.start();
 		
 		//MassiveImporter.runMassiveImporter();

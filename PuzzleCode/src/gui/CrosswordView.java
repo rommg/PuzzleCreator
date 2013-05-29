@@ -41,15 +41,23 @@ import java.awt.BorderLayout;
 
 
 public class CrosswordView extends JPanel {
-
+	
 	private TimerJLabel timer;
 	private JButton btnPause;
 	private boolean isPaused = false;
 	private JPanel boardPanel;
 	private Map<Integer, Map<Integer,List<PuzzleDefinition>>> boardDefs;
 	private JPanel[][] boardPanelHolders;
+	JPanel[][] getBoardPanelHolders() {
+		return boardPanelHolders;
+	}
+	List<PuzzleDefinition> getDefinitions() {
+		return definitions;
+	}
+
 	private int[][] boardDefCount;
-	private List<PuzzleDefinition> definitions;
+	List<PuzzleDefinition> definitions;
+	private JButton btnCheck;
 
 	static JPanel start() {
 		CrosswordView view = new CrosswordView();
@@ -82,7 +90,7 @@ public class CrosswordView extends JPanel {
 		JPanel BtnPanel = new JPanel();
 		add(BtnPanel, BorderLayout.SOUTH);
 
-		JButton btnCheck = new JButton("Check");
+		btnCheck = new JButton("Check");
 
 		btnPause = new JButton("Pause");
 		btnPause.setPreferredSize(new Dimension(100, btnPause.getPreferredSize().height + 10));
@@ -146,14 +154,14 @@ public class CrosswordView extends JPanel {
 					lbl1.setBackground(Color.GRAY);
 					lbl2.setBackground(Color.GRAY);
 
-					PuzzleDefinition def1 = boardDefs.get(i).get(j).get(0); // cell top definition
-					PuzzleDefinition def2 = boardDefs.get(i).get(j).get(1); // cell bottom definition
+					PuzzleDefinition def1 = boardDefs.get(i).get(j).get(0); // definition #1 in list
+					PuzzleDefinition def2 = boardDefs.get(i).get(j).get(1); // definition #2 in list
 
 					// place definitions according to where the arrows would be
-					if (isDefinitionTop(def1, i)) { 
-						currentPanel.add(lbl1);
-						lbl1.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-						currentPanel.add(lbl2);
+					if (isDefinitionTop(def1, i)) {  
+						currentPanel.add(lbl1); //definition #1 is cell top
+						lbl1.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)); // seperator
+						currentPanel.add(lbl2); //definition #2 is cell bottom
 					}
 					else {
 						if (isDefinitionBottom(def1, i)) {
@@ -197,11 +205,10 @@ public class CrosswordView extends JPanel {
 				boardPanel.add(boardPanelHolders[i][j]);
 			}
 		}
-
-		boardPanel.repaint();
 		
 		addDefinitionSquareListener(new DefinitionSquareListener()); // add dynamically the definitions listeners.
 		
+		boardPanel.repaint();	
 	}
 	private void initializeBoardPanelHolder(int size) {
 		for (int i = 0; i<size; i++) {
@@ -323,6 +330,18 @@ public class CrosswordView extends JPanel {
 		}
 	}
 	
+	void addCheckListener(ActionListener listener) {
+		btnCheck.addActionListener(listener);
+	}
+	
+	void notifyCorrectness(boolean isCorrect) { // show to user that he was correct or wrong
+		if (isCorrect) {
+			btnCheck.setBackground(Color.GREEN);
+		}
+		else {
+			btnCheck.setBackground(Color.RED);
+		}
+	}
 	void pause() {
 		if (!isPaused) {
 			timer.pause();

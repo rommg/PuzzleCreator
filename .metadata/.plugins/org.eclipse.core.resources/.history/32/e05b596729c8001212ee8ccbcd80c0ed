@@ -1,6 +1,0 @@
-package gui;
-
-public class CrosswordModel {
-
-	BoardSolution getBoard
-}
