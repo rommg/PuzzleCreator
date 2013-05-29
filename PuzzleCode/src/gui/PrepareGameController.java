@@ -17,7 +17,6 @@ public class PrepareGameController extends AbstractController<PrepareGameModel, 
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("goListenr");
 			model.goBtnClicked();			
 		}
 		

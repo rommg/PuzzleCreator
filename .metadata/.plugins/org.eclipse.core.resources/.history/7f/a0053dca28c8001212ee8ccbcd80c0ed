@@ -1,0 +1,12 @@
+package puzzleAlgorithm;
+
+import java.util.List;
+
+public class BoardSolution {
+	private PuzzleSquare[][] board;
+	private List<PuzzleDefinition> definitions;
+	
+	public BoardSolution() {
+		
+	}
+}

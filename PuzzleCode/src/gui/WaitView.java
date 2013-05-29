@@ -14,6 +14,8 @@ import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.CardLayout;
 import javax.swing.UIManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class WaitView extends JPanel {
 
@@ -42,6 +44,14 @@ public class WaitView extends JPanel {
 		JPanel questionLbl = new JPanel();
 		questionLbl.setBackground(UIManager.getColor("Panel.background"));
 		centerPanel.add(questionLbl);
+		
+		JButton btnSkip = new JButton("Skip");
+		btnSkip.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainView.view.showCrosswordview();
+			}
+		});
+		questionLbl.add(btnSkip);
 		
 		JPanel animationPanel = new JPanel();
 		animationPanel.setBackground(Color.WHITE);

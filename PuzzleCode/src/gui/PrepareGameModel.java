@@ -9,7 +9,7 @@ public class PrepareGameModel {
 	void goBtnClicked() {
 		//PuzzleSquare[][] board = model.getBoard(this); // This is in separate Thread
 		// in the meantime, answer question in WaitingView
-		MainView.mainView.showWaitView();
+		MainView.view.showWaitView();
 	}
 	
 	PuzzleSquare[][] getBoard(PrepareGameView view) {

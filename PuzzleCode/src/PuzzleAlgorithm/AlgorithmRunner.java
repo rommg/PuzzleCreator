@@ -3,6 +3,9 @@ package puzzleAlgorithm;
 import Utils.AlgorithmUtils;
 import Utils.Logger;
 import Utils.DBUtils;
+import gui.CrosswordView;
+import gui.MainView;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,9 +22,10 @@ public class AlgorithmRunner {
 	/**
 	 * @param args
 	 */
-	public static boolean runAlgorithm() {
+	public static BoardSolution runAlgorithm() {
 		String[] topics = { "geo", "general", "israel" };
-		DBUtils.getPossibleAnswers(topics, 12);
+		BoardSolution result = null;
+		//DBUtils.getPossibleAnswers(topics, 12); - guy asked to comment this
 
 		// if (!readAnswersFile(filePath)) {
 		// return false;
@@ -41,12 +45,13 @@ public class AlgorithmRunner {
 
 		if (!fillBoard()) {
 			Logger.writeErrorToLog("impossible data");
-			return false;
+			result = new BoardSolution(null,null,false);
 		} else {
-			AlgorithmUtils.drawBoard(board, definitions);
+			result = new BoardSolution(board, definitions, true);
+			//AlgorithmUtils.drawBoard(board, definitions);
 			printResults();
 		}
-		return true;
+		return result;
 
 	}
 

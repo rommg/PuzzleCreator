@@ -82,3 +82,15 @@
 1369765798728	Delete element
 1369765832025	Delete element
 1369769847988	Convert local variable 'boardPanel' to field
+1369774231641	Rename local variable 'boardOrder'
+1369775554206	Extract method 'createDefinitionLabel'
+1369775590067	Convert local variable 'boardDefStrings' to field
+1369776852636	Rename field 'boardDefStrings'
+1369778334039	Convert local variable 'boardPanelHolder' to field
+1369808593159	Rename field 'mainView'
+1369811622699	Extract method 'initializeCellToDefMap'
+1369811725460	Extract method 'initializeBoardPanelHolder'
+1369811778249	Rename local variable 'boardDefNum'
+1369811836271	Convert local variable 'boardDefCount' to field
+1369811865459	Rename field 'boardDefCounts'
+1369824931406	Rename type 'JTextFieldLimit'

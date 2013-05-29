@@ -1,0 +1,42 @@
+package gui;
+
+import java.awt.Color;
+
+import javax.swing.JTextField;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
+
+public class JTextFieldLimit extends JTextField {
+    private int limit;
+
+    public JTextFieldLimit(int limit, Color backgroundColor) {
+        super();
+        this.limit = limit;
+		setHorizontalAlignment(JTextField.CENTER);
+		setFont(this.getFont().deriveFont(40f));
+		setCaretColor(backgroundColor);
+		setBackground(backgroundColor);
+		setForeground(Color.BLACK);
+    }
+
+    @Override
+    protected Document createDefaultModel() {
+        return new LimitDocument();
+    }
+
+    private class LimitDocument extends PlainDocument {
+
+        @Override
+        public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException {
+            if (str == null) return;
+
+            if ((getLength() + str.length()) <= limit) {
+                super.insertString(offset, str, attr);
+            }
+        }       
+
+    }
+
+}

@@ -3,16 +3,17 @@ package Utils;
 import java.util.List;
 
 import puzzleAlgorithm.AlgorithmRunner;
+import puzzleAlgorithm.BoardSolution;
 import puzzleAlgorithm.PuzzleDefinition;
 import puzzleAlgorithm.PuzzleSquare;
 
 public class AlgorithmUtils {
 	
 	
-	public static PuzzleSquare[][] createPuzzle(String difficulty, List<String> topics){
+	public static BoardSolution createPuzzle(String difficulty, List<String> topics){
 		//TODO
-		AlgorithmRunner.runAlgorithm();
-		return null;
+		return AlgorithmRunner.runAlgorithm();
+		
 	}
 	
 	public static void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions){

@@ -1,0 +1,21 @@
+package gui;
+
+import Utils.AlgorithmUtils;
+import puzzleAlgorithm.AlgorithmRunner;
+import puzzleAlgorithm.BoardSolution;
+
+public class CrosswordModel {
+
+	private static BoardSolution getBoard() {
+		return AlgorithmUtils.createPuzzle(null, null); // fill result with board data
+	}
+	
+	private static void draw(CrosswordView view, BoardSolution solution) {
+		view.drawBoard(solution.getBoard(), solution.getDefinitions());
+	}
+	
+	static void getBoardSolutionAndDraw(CrosswordView view) {
+		BoardSolution solution = getBoard();
+		draw(view, solution);
+	}
+}

@@ -49,19 +49,20 @@ import java.util.List;
 import java.util.Map;
 public class MainView {
 
-	static MainView mainView = null; 
+	public static MainView view = null; 
 
 	private JFrame frame;
 	private Map<String,JButton> menuPanelBtns;
 	JButton[] menuPanelBtnsArray;
 	Map<JButton, JLabel> btnLabels;
 
-	private final int FRAME_HEIGHT = 850;
-	private final int FRAME_WIDTH = 800;
+	private final int FRAME_HEIGHT = 1000;
+	private final int FRAME_WIDTH = 1000;
 	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
 	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "WaitView","Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
-	private JPanel PrepareGame = null;
-	private JPanel crosswordView = null;
+	
+	JPanel prepareGame = null;
+	public JPanel crosswordView = null;
 
 	private JPanel menuPanel;
 	private JPanel cardPanel;
@@ -79,11 +80,11 @@ public class MainView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					if (mainView == null) {
-						mainView = new MainView();
+					if (view == null) {
+						view = new MainView();
 					@SuppressWarnings("unused")
-					MainController controller = new MainController(null, mainView);
-					mainView.frame.setVisible(true);
+					MainController controller = new MainController(null, view);
+					view.frame.setVisible(true);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -109,8 +110,8 @@ public class MainView {
 
 		// center screen
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); 
-		int x=(int)((dimension.getWidth() - 800)/2);
-		int y=(int)((dimension.getHeight() - 800)/2);
+		int x=(int)((dimension.getWidth() - 1000)/2);
+		int y=(int)((dimension.getHeight() - 1000)/2);
 		frame.setLocation(x, y);  
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -225,9 +226,9 @@ public class MainView {
 	}
 
 	void showPrepareView() {
-		if (PrepareGame == null) {
-			PrepareGame = PrepareGameView.start();
-			cardPanel.add(PrepareGame, CARD_NAMES[1]);
+		if (prepareGame == null) {
+			prepareGame = PrepareGameView.start();
+			cardPanel.add(prepareGame, CARD_NAMES[1]);
 		}
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel, CARD_NAMES[1]);
@@ -236,7 +237,7 @@ public class MainView {
 	void showCrosswordview() {
 		if (crosswordView == null) {
 			crosswordView = CrosswordView.start();
-			cardPanel.add(PrepareGame, CARD_NAMES[3]);
+			cardPanel.add(crosswordView, CARD_NAMES[3]);
 		}
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
