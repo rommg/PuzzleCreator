@@ -50,24 +50,25 @@ public class YagoFileHandler {
 
 	private void getEntityTypes()  { // can be changed in the future
 		entityTypes = new HashSet<String>(); 
-		fillCollectionEntitiesFromDB("dbproject","definition", "type", entityTypes);
+		fillCollectionEntitiesFromDB("riddle","definitions", "type", entityTypes);
 	}
 
 	private void getPredicateTypes() { // can be changed in the future
 		predicateTypes = new HashSet<String>(); 
-		fillCollectionEntitiesFromDB("dbproject", "predicate", "predicate", predicateTypes);
+		fillCollectionEntitiesFromDB("riddle", "predicates", "predicate", predicateTypes);
 	}
 
 	private void getLiteralTypes() { // can be changed in the future
 		litertalTypes = new HashSet<String>(); 
-		fillCollectionEntitiesFromDB("dbproject", "literal", "literal_fact", litertalTypes);
+		fillCollectionEntitiesFromDB("riddle", "predicates", "predicate", litertalTypes);
 
 	}
 
 	private void fillCollectionEntitiesFromDB(String schema, String tableName, String entityType, Set<String> collection) {
 		String columnName = "yago_" + entityType;
 		List<Map<String,Object>> rs = null;
-		rs = DBConnector.executeQuery(schema,"SELECT " + tableName + "." + columnName +  " FROM " + tableName + ";");
+		String query = "SELECT " + tableName + "." + columnName +  " FROM " + tableName + ";";
+		rs = DBConnector.executeQuery(schema,query);
 		for (Map<String,Object> row : rs )
 			collection.add((String)row.get(columnName));
 	}
