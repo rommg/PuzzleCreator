@@ -1,0 +1,7 @@
+package puzzleAlgorithm;
+
+public class BoardSolution {
+	public BoardSolution() {
+		
+	}
+}

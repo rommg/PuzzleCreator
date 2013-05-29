@@ -1,0 +1,14 @@
+package gui;
+
+import javax.swing.JLabel;
+
+import puzzleAlgorithm.PuzzleDefinition;
+
+public class JDefinitionLabel extends JLabel{
+
+	private PuzzleDefinition def;
+	
+	public JDefinitionLabel(PuzzleDefinition def) {
+		super(def.getDefinition());
+	}
+}

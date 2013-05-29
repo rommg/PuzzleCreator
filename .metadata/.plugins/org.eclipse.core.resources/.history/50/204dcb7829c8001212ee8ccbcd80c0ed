@@ -1,0 +1,10 @@
+package gui;
+
+import puzzleAlgorithm.BoardSolution;
+
+public class CrosswordModel {
+
+	BoardSolution getBoard() {
+		
+	}
+}

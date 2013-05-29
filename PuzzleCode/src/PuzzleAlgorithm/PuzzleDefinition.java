@@ -5,13 +5,14 @@ import java.util.List;
 
 public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 
+	private int textRow;
+	private int textColumn;
 	private int beginRow;
 	private int beginColumn;
 	private int length;
-	private List<String> possibleAnswers;
+	private List<Answer> possibleAnswers;
 	private boolean solved;
-	private Answer answer2;
-	private String answer;
+	private Answer answer;
 	private char[] letters;
 	private String definition;
 	private List<String> hints;
@@ -30,25 +31,27 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	 * @param direction
 	 *            : right = 'r' , down = 'd'
 	 */
-	public PuzzleDefinition(int beginRow, int beginColumn, int length, char direction) {
-		this(beginRow, beginColumn, length, direction, new ArrayList<String>());
+	public PuzzleDefinition(int textRow, int textCol, int beginRow, int beginColumn, int length, char direction) {
+		this(textRow, textCol, beginRow, beginColumn, length, direction, new ArrayList<Answer>());
 
-		this.possibleAnswers = new ArrayList<String>();
-		for (String ans : AlgorithmRunner.answers) {
-			if (ans.length() == length) {
+		this.possibleAnswers = new ArrayList<Answer>();
+		for (Answer ans : AlgorithmRunner.answers) {
+			if (ans.length == length) {
 				possibleAnswers.add(ans);
 			}
 		}
 	}
 
-	public PuzzleDefinition(int beginRow, int beginColumn, int length, char direction, List<String> answers) {
+	public PuzzleDefinition(int textRow, int textCol, int beginRow, int beginColumn, int length, char direction, List<Answer> answers) {
+		this.textRow = textRow;
+		this.textColumn = textCol;
 		this.beginRow = beginRow;
 		this.beginColumn = beginColumn;
 		this.length = length;
 		this.direction = direction;
 		this.solved = false;
-		this.answer = "";
-		this.possibleAnswers = new ArrayList<String>();
+		this.answer = new Answer("", -1);
+		this.possibleAnswers = new ArrayList<Answer>();
 		possibleAnswers.addAll(answers);
 
 		this.letters = new char[length];
@@ -65,12 +68,12 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	 * @return
 	 */
 	public PuzzleDefinition cloneDefinition() {
-		PuzzleDefinition cloned = new PuzzleDefinition(beginRow, beginColumn, length, direction, possibleAnswers);
+		PuzzleDefinition cloned = new PuzzleDefinition(textRow, textColumn, beginRow, beginColumn, length, direction, possibleAnswers);
 		if (solved) {
 			cloned.markSolved();
 		}
-		if (answer.length() > 0) {
-			cloned.setAnswer(new String(answer));
+		if (answer.getAnswerString().length() > 0) {
+			cloned.setAnswer(answer);
 		}
 		return cloned;
 	}
@@ -86,9 +89,9 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 			break;
 		}
 
-		List<String> newPossibleAnswers = new ArrayList<String>();
-		for (String answer : possibleAnswers) {
-			if (answer.charAt(letterIndex) == c) {
+		List<Answer> newPossibleAnswers = new ArrayList<Answer>();
+		for (Answer answer : possibleAnswers) {
+			if (answer.getAnswerString().charAt(letterIndex) == c) {
 				newPossibleAnswers.add(answer);
 			}
 		}
@@ -104,19 +107,6 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		}
 
 		return true;
-	}
-
-	private void checkSolved() {
-		String st = "";
-		for (char c : letters) {
-			if (c == 0) {
-				return;
-			} else {
-				st += c;
-			}
-		}
-		markSolved();
-		this.answer = st;
 	}
 
 	public int getBeginRow() {
@@ -143,7 +133,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		this.direction = direction;
 	}
 
-	public List<String> getPossibleAnswers() {
+	public List<Answer> getPossibleAnswers() {
 		return possibleAnswers;
 	}
 
@@ -178,14 +168,14 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	public boolean optimizeDefinition(){
 		int row = getBeginRow();
 		int column = getBeginColumn();
-		List<String> tempPossibleAnswers = new ArrayList<String>();
+		List<Answer> tempPossibleAnswers = new ArrayList<Answer>();
 		tempPossibleAnswers.addAll(possibleAnswers);
 		try {
-		for (String answer : tempPossibleAnswers){
+		for (Answer answer : tempPossibleAnswers){
 			row = getBeginRow();
 			column = getBeginColumn();
 			for (int letterIndex = 0; letterIndex < this.length; letterIndex++) {
-				if (!(AlgorithmRunner.board[column][row].isPossibleLetter(answer.charAt(letterIndex)))) {
+				if (!(AlgorithmRunner.board[column][row].isPossibleLetter(answer.getAnswerString().charAt(letterIndex)))) {
 					possibleAnswers.remove(answer);
 				}
 				switch (direction) {
@@ -218,11 +208,12 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		this.solved = false;
 	}
 
-	public String getAnswer() {
+	public Answer getAnswer() {
 		return answer;
 	}
+	
 
-	public void setAnswer(String answer) {
+	public void setAnswer(Answer answer) {
 		this.answer = answer;
 	}
 
@@ -243,7 +234,15 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	}
 	
 	public int getEntityId(){
-		return this.answer2.getEntityId();
+		return this.answer.getEntityId();
+	}
+	
+	public int getTextRow(){
+		return textRow;
+	}
+	
+	public int getTextCol(){
+		return textColumn;
 	}
 
 }

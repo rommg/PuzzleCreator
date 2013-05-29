@@ -1,0 +1,18 @@
+package gui;
+
+import javax.swing.JLabel;
+
+import puzzleAlgorithm.PuzzleDefinition;
+
+public class JDefinitionLabel extends JLabel{
+
+	private PuzzleDefinition def;
+
+	public JDefinitionLabel(PuzzleDefinition def) {
+		//super("<html><p>" + def.getDefinition() + "</p></html>");
+		super("<html><p>" + "The capital of guatemalaaaaaa" + "</p></html>");
+
+		lbl.setForeground(Color.LIGHT_GRAY);
+		lbl.setForeground(Color.BLACK);
+	}
+}

@@ -49,17 +49,20 @@ import java.util.List;
 import java.util.Map;
 public class MainView {
 
+	public static MainView view = null; 
+
 	private JFrame frame;
 	private Map<String,JButton> menuPanelBtns;
 	JButton[] menuPanelBtnsArray;
 	Map<JButton, JLabel> btnLabels;
 
-	private final int FRAME_HEIGHT = 850;
-	private final int FRAME_WIDTH = 800;
+	private final int FRAME_HEIGHT = 1000;
+	private final int FRAME_WIDTH = 1000;
 	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
-	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
-	private JPanel PrepareGame = null;
-	private JPanel crosswordView = null;
+	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "WaitView","Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
+	
+	JPanel prepareGame = null;
+	public JPanel crosswordView = null;
 
 	private JPanel menuPanel;
 	private JPanel cardPanel;
@@ -68,7 +71,7 @@ public class MainView {
 	/**
 	 * Launch the application.
 	 */
-	public static void startGUI() {
+	public static void start() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
@@ -77,10 +80,12 @@ public class MainView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainView window = new MainView();
+					if (view == null) {
+						view = new MainView();
 					@SuppressWarnings("unused")
-					MainController controller = new MainController(null, window);
-					window.frame.setVisible(true);
+					MainController controller = new MainController(null, view);
+					view.frame.setVisible(true);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -105,8 +110,8 @@ public class MainView {
 
 		// center screen
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); 
-		int x=(int)((dimension.getWidth() - 800)/2);
-		int y=(int)((dimension.getHeight() - 800)/2);
+		int x=(int)((dimension.getWidth() - 1000)/2);
+		int y=(int)((dimension.getHeight() - 1000)/2);
 		frame.setLocation(x, y);  
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -217,21 +222,34 @@ public class MainView {
 	}
 
 	void playBtnClicked() {
-		if (PrepareGame == null) {
-			PrepareGame = prepareGameView.startPrepareGame();
-			cardPanel.add(PrepareGame, CARD_NAMES[1]);
+		showPrepareView();
+	}
+
+	void showPrepareView() {
+		if (prepareGame == null) {
+			prepareGame = PrepareGameView.start();
+			cardPanel.add(prepareGame, CARD_NAMES[1]);
 		}
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel, CARD_NAMES[1]);
 	}
-	
+
 	void showCrosswordview() {
 		if (crosswordView == null) {
-			crosswordView = CrosswordView.startCrosswordView();
-			cardPanel.add(PrepareGame, CARD_NAMES[2]);
+			crosswordView = CrosswordView.start();
+			cardPanel.add(crosswordView, CARD_NAMES[3]);
 		}
-		
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel, CARD_NAMES[3]);
+	}
+
+	void showWaitView() {
+		JPanel waitView = WaitView.start();
+		cardPanel.add(waitView, CARD_NAMES[2]);
+
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel, CARD_NAMES[2]);
 	}
+
 }

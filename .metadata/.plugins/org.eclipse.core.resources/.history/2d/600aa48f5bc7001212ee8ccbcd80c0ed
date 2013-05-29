@@ -1,0 +1,14 @@
+package gui;
+
+import javax.swing.JPanel;
+
+public class WaitView extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public WaitView() {
+
+	}
+
+}

@@ -61,3 +61,36 @@
 1369677408946	Rename type 'menuBtnListener'
 1369679702498	Convert local variable 'topicsPanel' to field
 1369680937288	Move compilation unit
+1369719481161	Rename type 'PrerpareGameModel'
+1369719902707	Convert local variable 'model' to field
+1369720150190	Delete element
+1369720364886	Delete element
+1369720401827	Rename type 'prepareGameView'
+1369720472564	Delete element
+1369720805463	Rename local variable 'label2'
+1369721232858	Delete element
+1369721801817	Delete element
+1369756658481	Rename method 'startGUI'
+1369757259192	Convert local variable 'goBtn' to field
+1369757436161	Delete elements
+1369760020894	Delete element
+1369760069656	Rename compilation unit 'progressBar.java'
+1369760868051	Delete element
+1369762898525	Delete element
+1369762949110	Rename compilation unit 'ProgressTabeedPane.java'
+1369763409714	Rename compilation unit 'ProgressTabbedPane.java'
+1369765798728	Delete element
+1369765832025	Delete element
+1369769847988	Convert local variable 'boardPanel' to field
+1369774231641	Rename local variable 'boardOrder'
+1369775554206	Extract method 'createDefinitionLabel'
+1369775590067	Convert local variable 'boardDefStrings' to field
+1369776852636	Rename field 'boardDefStrings'
+1369778334039	Convert local variable 'boardPanelHolder' to field
+1369808593159	Rename field 'mainView'
+1369811622699	Extract method 'initializeCellToDefMap'
+1369811725460	Extract method 'initializeBoardPanelHolder'
+1369811778249	Rename local variable 'boardDefNum'
+1369811836271	Convert local variable 'boardDefCount' to field
+1369811865459	Rename field 'boardDefCounts'
+1369824931406	Rename type 'JTextFieldLimit'

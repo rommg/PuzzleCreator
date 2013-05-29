@@ -1,0 +1,16 @@
+package gui;
+
+import gui.MainController.playBtnListener;
+
+public class PrepareGameController extends AbstractController<PrepareGameModel, prepareGameView> {
+
+	PrepareGameController(PrepareGameModel model, prepareGameView view) {
+		super(model,view);
+	}
+	
+	class goListener() {
+		
+	}
+
+
+}

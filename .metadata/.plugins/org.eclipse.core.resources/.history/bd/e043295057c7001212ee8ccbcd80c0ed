@@ -1,0 +1,20 @@
+package gui;
+
+import java.util.List;
+
+public class PrerpareGameModel {
+
+	boolean getBoard(CrossordView view) {
+		List<String> selectedTopics = getUserSelectedTopics();
+		if (selectedTopics.size() < 1) {
+			// Dialog Box
+			System.out.println("Error veze");
+		}
+		else { 
+			//GuiAlgorithmConnector.createPuzzle(); // send request for board
+			// show waiting question panel
+			//have board, can continue
+			
+		}
+	}
+}

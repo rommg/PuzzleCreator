@@ -8,9 +8,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import main.PuzzleCreator;
+
 public class Logger {
 
 	public static String logFilename = "log.txt";
+	public static String logFileDir = PuzzleCreator.appDir;
 	private static File logFile;
 	private static BufferedWriter logWriter;
 
@@ -21,8 +24,7 @@ public class Logger {
 	 * @return
 	 */
 	public static int initialize(boolean deleteOld) {
-		logFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "temp"
-				+ System.getProperty("file.separator"), logFilename);
+		logFile = new File(logFileDir, logFilename);
 		boolean bRes;
 		try {
 			if (!logFile.getParentFile().exists())

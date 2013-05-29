@@ -181,6 +181,7 @@ public class YagoFileHandler {
 	}
 	private int parseYagoTypes() throws IOException {
 		int count = 0;
+		int row = 1;
 		String line = null;
 
 		BufferedReader br = getFileReader(YAGO_TYPES);
@@ -194,36 +195,43 @@ public class YagoFileHandler {
 		try {
 			while ((line = br.readLine()) != null)   {
 				String[] lineColumns = line.split("\\t");
-				if ((lineColumns[1].length() <=50) && entityTypes.contains(lineColumns[3])) {
+				String[] decomposedYagoID = lineColumns[0].split("_");
+				if ((decomposedYagoID.length != 4) || (decomposedYagoID == null)) {
+					Logger.writeErrorToLog("Invalid yagoID in line #" + row);
+				}
+				else {
+					if ((lineColumns[1].length() <=50) && entityTypes.contains(lineColumns[3])) {
 
-					String properName = getProperName(lineColumns[1]); // get clean entity name
-					if (!containsNonEnglishChars(properName)) { // subject is of a relevant type and English letters only
-						relevantEntities.add(lineColumns[1]);
+						String properName = getProperName(lineColumns[1]); // get clean entity name
+						if (!containsNonEnglishChars(properName)) { // subject is of a relevant type and English letters only
+							relevantEntities.add(lineColumns[1]);
 
-						String[] entityNameDivided = properName.split(" ");
-						String newLine = lineColumns[1] + "\t"
-								+ lineColumns[2] + "\t" 
-								+ lineColumns[3] + "\t" 
-								+ properName + "\t";
+							String newLine = lineColumns[1] + decomposedYagoID[1] + "\t"
+									+ lineColumns[2] + "\t" 
+									+ lineColumns[3] + "\t" 
+									+ properName.replaceAll(" ", "") + "\t";
 
-						StringBuffer buf = new StringBuffer(newLine);
+							StringBuffer buf = new StringBuffer(newLine);
 
-						if (entityNameDivided.length > 1) { // create additional information if there word count in entity > 1
-							buf.append("(");
-							for (int i = 0; i<entityNameDivided.length; ++i) {
-								buf.append(entityNameDivided[i].length());
-								if (i == entityNameDivided.length - 1) //last word in entity
-									buf.append(")");
-								else 
-									buf.append(",");
+							String[] entityNameDivided = properName.split(" ");
+							if (entityNameDivided.length > 1) { // create additional information if there word count in entity > 1
+								buf.append("(");
+								for (int i = 0; i<entityNameDivided.length; ++i) {
+									buf.append(entityNameDivided[i].length());
+									if (i == entityNameDivided.length - 1) //last word in entity
+										buf.append(")");
+									else 
+										buf.append(",");
+								}
 							}
-						}
 
-						bw.write(buf.toString());
-						bw.newLine();
-						count++;
-					}
-				} 
+							bw.write(buf.toString());
+							bw.newLine();
+							count++;
+						}
+					} 
+				}
+				row++;
 			}
 		} catch (IOException e) {
 			Logger.writeErrorToLog("IOException in parseYagoTypes");
@@ -245,6 +253,7 @@ public class YagoFileHandler {
 
 	private int parseYagoFacts() throws IOException {
 		int count = 0;
+		int row = 1;
 		String line = null;
 
 		BufferedReader br = getFileReader(YAGO_FACTS);
@@ -258,46 +267,53 @@ public class YagoFileHandler {
 
 		try {
 			while ((line = br.readLine()) != null)   {
-				String[] lineColumns = line.split("\\t");			
-				boolean subjectHit = relevantEntities.contains(lineColumns[1]);
-				boolean objectHit = relevantEntities.contains(lineColumns[3]);
-				if ((subjectHit || objectHit) 
-						&& (lineColumns[1].length() <= 50) && (lineColumns[3].length() <=50)
-						&& (predicateTypes.contains(lineColumns[2]))) { // fact has relevant typeID for either subject or object and relevant fact
+				String[] lineColumns = line.split("\\t");	
+				String[] decomposedYagoID = lineColumns[0].split("_");
+				if ((decomposedYagoID.length != 4) || (decomposedYagoID == null)) {
+					Logger.writeErrorToLog("Invalid yagoID in line #" + row);
+				}
+				else {
+					boolean subjectHit = relevantEntities.contains(lineColumns[1]);
+					boolean objectHit = relevantEntities.contains(lineColumns[3]);
+					if ((subjectHit || objectHit) 
+							&& (lineColumns[1].length() <= 50) && (lineColumns[3].length() <=50)
+							&& (predicateTypes.contains(lineColumns[2]))) { // fact has relevant typeID for either subject or object and relevant fact
 
-					String newLine = lineColumns[1] + "\t"
-							+ lineColumns[2] + "\t" 
-							+ lineColumns[3] + "\t";
+						String newLine = lineColumns[1] + decomposedYagoID[1] + "\t"
+								+ lineColumns[2] + "\t" 
+								+ lineColumns[3] + decomposedYagoID[3] + "\t";
 
-					if (subjectHit) {
-						String subjectLine = newLine + "1"; 
-						bw.write(subjectLine); // write one line for subject matched
-						bw.newLine();
-						count++;
+						if (subjectHit) {
+							String subjectLine = newLine + "1"; 
+							bw.write(subjectLine); // write one line for subject matched
+							bw.newLine();
+							count++;
+						}
+
+						if (objectHit) {
+							String objectLine = newLine + "0"; 
+							bw.write(objectLine); // write one line for object matched
+							bw.newLine();
+							count++;
+						}
 					}
 
-					if (objectHit) {
-						String objectLine = newLine + "0"; 
-						bw.write(objectLine); // write one line for object matched
-						bw.newLine();
-						count++;
+					if (subjectHit && (lineColumns[1].length() <= 50) && (lineColumns[2].compareTo(HAS_GENDER) == 0)) { // subject is human
+						String properName = getProperName(lineColumns[1]); // human name in this predicate is in the subject
+						int index = properName.indexOf(' ');
+						String answerLine = null;
+						if (index != -1)  { // at least one name
+							answerLine = lineColumns[1] + decomposedYagoID[1] + "\t" + properName.substring(0, index) + "\tfirstname"; 
+							bwAnswers.write(answerLine);
+							bwAnswers.newLine();
+							index = properName.lastIndexOf(' ');
+							answerLine = lineColumns[1] + decomposedYagoID[1] + "\t" + properName.substring(index + 1, properName.length()) + "\tlastname";
+							bwAnswers.write(answerLine);
+							bwAnswers.newLine();
+						}
 					}
 				}
-
-				if (subjectHit && (lineColumns[1].length() <= 50) && (lineColumns[2].compareTo(HAS_GENDER) == 0)) { // subject is human
-					String properName = getProperName(lineColumns[1]); // human name in this predicate is in the subject
-					int index = properName.indexOf(' ');
-					String answerLine = null;
-					if (index != -1)  { // at least one name
-						answerLine = lineColumns[1] + "\t" + properName.substring(0, index) + "\tfirstname"; 
-						bwAnswers.write(answerLine);
-						bwAnswers.newLine();
-						index = properName.lastIndexOf(' ');
-						answerLine = lineColumns[1] + "\t" + properName.substring(index + 1, properName.length()) + "\tlastname";
-						bwAnswers.write(answerLine);
-						bwAnswers.newLine();
-					}
-				}
+				row++;
 			}
 		} catch (IOException e) {
 			Logger.writeErrorToLog("IOException in parseYagoFacts");
@@ -320,6 +336,7 @@ public class YagoFileHandler {
 
 	private int parseYagoLiteralFacts() throws IOException {
 		int count = 0;
+		int row = 1;
 		String line = null;
 		String[] lineColumns = null;
 
@@ -334,18 +351,24 @@ public class YagoFileHandler {
 		try {
 			while ((line = br.readLine()) != null)   {
 				lineColumns = line.split("\\t");
-				if (lineColumns[1].length() <=50 && relevantEntities.contains(lineColumns[1]) && litertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
-					String properLiteral = lineColumns[3].substring(1, lineColumns[3].lastIndexOf('"'));
-					int index = properLiteral.indexOf('#');
-					if (index != -1)
-						properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
-
-					String newline = lineColumns[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
-					bw.write(newline);
-					bw.newLine();
-					count++;
-
+				String[] decomposedYagoID = lineColumns[0].split("_");
+				if ((decomposedYagoID.length != 4) || (decomposedYagoID == null)) {
+					Logger.writeErrorToLog("Invalid yagoID in line #" + row);
 				}
+				else {
+					if (lineColumns[1].length() <=50 && relevantEntities.contains(lineColumns[1]) && litertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
+						String properLiteral = lineColumns[3].substring(1, lineColumns[3].lastIndexOf('"'));
+						int index = properLiteral.indexOf('#');
+						if (index != -1)
+							properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
+
+						String newline = lineColumns[1] + decomposedYagoID[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
+						bw.write(newline);
+						bw.newLine();
+						count++;
+					}
+				}
+				row++;
 			}
 
 		} catch (IOException e) {

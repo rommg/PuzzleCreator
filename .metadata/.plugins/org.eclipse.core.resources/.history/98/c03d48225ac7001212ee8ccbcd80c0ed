@@ -1,0 +1,21 @@
+package gui;
+
+import java.util.List;
+
+import puzzleAlgorithm.PuzzleSquare;
+
+public class PrepareGameModel {
+
+	PuzzleSquare[][] getBoard(prepareGameView view) {
+		List<String> selectedTopics = view.getUserSelectedTopics();
+		if (selectedTopics.size() < 1) {
+			// Dialog Box
+			System.out.println("Error veze");
+			return null;
+		}
+		else { 
+			//GuiAlgorithmConnector.createPuzzle(); // send request for board
+		}
+		return new PuzzleSquare[][];
+	}
+}
