@@ -6,7 +6,7 @@ import puzzleAlgorithm.PuzzleDefinition;
 
 public class DBUtils {
 
-	public static List<Answer> getPossibleAnswers(String[] topics, int maxLength) {
+	public static List<Answer> getPossibleAnswers(int[] topics, int maxLength) {
 		// TODO
 		return null;
 	}

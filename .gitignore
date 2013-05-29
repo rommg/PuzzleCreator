@@ -23,3 +23,8 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# history #
+######################
+bin/
+.history/
