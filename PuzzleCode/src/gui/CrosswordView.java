@@ -134,7 +134,7 @@ public class CrosswordView extends JPanel {
 				switch (boardDefCount[i][j]) {
 				case 0 : { // regular square
 					currentPanel.setBackground(Color.WHITE);
-					JTextField txtLbl = new JSquareTextField(currentPanel.getBackground());
+					JTextField txtLbl = new JSquareTextField(currentPanel.getBackground(), i,j);
 					currentPanel.add(txtLbl, BorderLayout.CENTER);
 					break;
 				}
@@ -150,7 +150,7 @@ public class CrosswordView extends JPanel {
 					currentPanel.setBorder(new BevelBorder(BevelBorder.RAISED));
 					currentPanel.setLayout(new GridLayout(2,1));
 					JLabel lbl1 = createDefinitionLabel(i, j,0);
-					JLabel lbl2= createDefinitionLabel(i, j, 1);
+					JLabel lbl2 = createDefinitionLabel(i, j, 1);
 					lbl1.setBackground(Color.GRAY);
 					lbl2.setBackground(Color.GRAY);
 
@@ -255,35 +255,35 @@ public class CrosswordView extends JPanel {
 		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum)); 
 	}
 
-	private void colorDefinitionArea(PuzzleDefinition def, Color color) {
+	private void colorDefinitionArea(PuzzleDefinition def, Color color,Color caretColor) {
 
 		char direction = def.getDirection();
 		switch (direction) {
 		case 'r': {
 			for (int col = def.getBeginColumn(); col<def.getBeginColumn() + def.getAnswer().length; col++) {
 				boardPanelHolders[def.getBeginRow()][col].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(color);
+				((JSquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}
 		case 'l':{
 			for (int col = def.getBeginColumn(); col>def.getBeginColumn() - def.getAnswer().length; col--) {
 				boardPanelHolders[def.getBeginRow()][col].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(color);
+				((JSquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}
 		case 'u': {
 			for (int row = def.getBeginRow(); row>def.getBeginRow() - def.getAnswer().length; row--) {
 				boardPanelHolders[row][def.getBeginColumn()].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(color);
+				((JSquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}
 		case 'd': {
 			for (int row = def.getBeginRow(); row<def.getBeginRow() + def.getAnswer().length; row++) {
 				boardPanelHolders[row][def.getBeginColumn()].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(color);
+				((JSquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}
@@ -294,11 +294,11 @@ public class CrosswordView extends JPanel {
 	}
 
 	void unColorDefinitionAread(PuzzleDefinition def) {
-		colorDefinitionArea(def, Color.WHITE);
+		colorDefinitionArea(def, Color.WHITE, Color.BLACK);
 	}
 
 	void addColorDefinotionArea(PuzzleDefinition def, Color color) {
-		colorDefinitionArea(def, color);
+		colorDefinitionArea(def, color, color);
 	}
 
 	class DefinitionSquareListener extends MouseAdapter { // had to put it here because definitions List does not exist at view & controller initialize, and didnt want to have controller refernce in this class
@@ -306,7 +306,6 @@ public class CrosswordView extends JPanel {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			System.out.println("mouseEnterd");
 			JDefinitionLabel lbl =(JDefinitionLabel) e.getSource();
 			addColorDefinotionArea(lbl.getDef(), COLOR);
 		}
@@ -320,7 +319,6 @@ public class CrosswordView extends JPanel {
 		
 	void addDefinitionSquareListener(MouseListener listener) {
 		for (PuzzleDefinition definition : definitions) {
-			System.out.println("adding listener to definition " + definition.getTextRow() + "," + definition.getTextCol());
 			JPanel square = boardPanelHolders[definition.getTextRow()][definition.getTextCol()];
 			for (Component comp : square.getComponents()) {
 				if (comp.getListeners(MouseListener.class).length < 1) {
@@ -372,5 +370,16 @@ public class CrosswordView extends JPanel {
 
 	void addPauseListener(ActionListener listener) {
 		btnPause.addActionListener(listener);
+	}
+	
+	void keyPressed(Component source, char direction) {
+		JSquareTextField field = (JSquareTextField)source;
+		int row = field.getRow();
+		int col = field.getCol();
+		switch (direction) {
+		//	if (boardPanelHolders
+		}
+
+		
 	}
 }

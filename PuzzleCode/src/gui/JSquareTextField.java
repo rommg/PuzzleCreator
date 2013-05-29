@@ -1,14 +1,7 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import javax.swing.JTextField;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -16,30 +9,31 @@ import javax.swing.text.PlainDocument;
 
 public class JSquareTextField extends JTextField {
     private int limit;
+    private int row, col; // x,y of the square
   
-    private JSquareTextField(int limit, Color backgroundColor) {
+    public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	private JSquareTextField(int limit, Color backgroundColor, int row, int col) {
         super();
         this.limit = limit;
 		setHorizontalAlignment(JTextField.CENTER);
 		setFont(this.getFont().deriveFont(40f));
-		setCaretColor(backgroundColor);
+	
+		//getCaret().setVisible(false);
 		setBackground(backgroundColor);
 		setForeground(Color.BLACK);
 		setHighlighter(null);
 
-		addCaretListener(new CaretListener() { // for deleting inserted letter if needed
-			
-			@Override
-			public void caretUpdate(CaretEvent arg0) {
-				JSquareTextField.this.setCaretPosition(0);
-				
-			}
-		});
-
     }
     
-    public JSquareTextField(Color backgroundColor) {
-    	this(1,backgroundColor);
+    public JSquareTextField(Color backgroundColor, int row,int col) {
+    	this(1,backgroundColor, row,col);
     }
 
     @Override
@@ -52,7 +46,7 @@ public class JSquareTextField extends JTextField {
         @Override
         public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException {
             if (str == null) return;
-
+            getCaret().setVisible(false);
             if ((getLength() + str.length()) <= limit) {
                 super.insertString(offset, str, attr);
             }
