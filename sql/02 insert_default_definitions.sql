@@ -131,3 +131,31 @@ INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (130, '<wikicategory_
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (131, '<wikicategory_Manchester_United_F.C._players>', 'Manchester United F.C. player');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (132, '<wikicategory_NBA_Slam_Dunk_Contest_champions>', 'NBA Slam Dunk Contest champion');
 INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (133, '<wikicategory_UEFA_Euro_2008_players>', 'UEFA Euro 2008 player');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (134, '<wikicategory_MTV_cartoons>', 'MTV cartoon');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (135, '<wikicategory_Constellations>', 'Constellation (astronomy)');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (136, '<wikicategory_Computer_security_software_companies>', 'Computer security software company');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (137, '<wikicategory_Broadway_musicals>', 'Broadway musical');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (138, '<wikicategory_Fashion_magazines>', 'Fashion magazine');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (139, '<wikicategory_Mythological_kings>', 'Mythological king');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (140, '<wikicategory_Hebrew_Bible_people>', 'Character from the Hebrew Bible');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (141, '<wikicategory_Jewish_ritual_objects>', 'Jewish ritual object');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (142, '<wikicategory_University_towns>', 'University town');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (143, '<wikicategory_Capitals_in_South_America>', 'Capital in South America');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (144, '<wikicategory_Countries_bordering_the_Atlantic_Ocean>', 'Country on the borders of the Atlantic Ocean');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (145, '<wikicategory_Archaeological_sites_in_Iraq>', 'An archaeological site in Iraq');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (146, '<wikicategory_Cities_in_the_Netherlands>', 'City in the Netherlands');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (147, '<wikicategory_Mediterranean_port_cities_and_towns_in_Italy>', 'Mediterranean port city in Italy');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (148, '<wikicategory_Neighbourhoods_of_Barcelona>', 'Neighbourhood in Barcelona');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (149, '<wikicategory_European_seas>', 'European sea');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (150, '<wikicategory_Arabic-speaking_countries_and_territories>', 'Arabic-speaking territory');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (151, '<wikicategory_Ethnic_groups_in_Europe>', 'European ethnic group');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (152, '<wikicategory_Software_companies_of_Israel>', 'Israeli software company');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (153, '<wikicategory_Neighbourhoods_of_Jerusalem>', 'Neighbourhood in Jerusalem');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (154, '<wikicategory_Israeli_settlements>', 'Israeli settlement');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (155, '<wikicategory_Kokhav_Nolad_contestants>', 'Participated in Kokhav Nolad');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (156, '<wikicategory_Israeli_mathematicians>', 'Israeli mathematician');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (157, '<wikicategory_Maccabi_Petah_Tikva_F.C._players>', 'Maccabi Petah Tikva F.C. player');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (158, '<wikicategory_Hapoel_Tel_Aviv_F.C._players>', 'Hapoel Tel Aviv F.C. player');
+INSERT INTO DEFINITIONS (id, yago_type, definition) VALUES (159, '<wikicategory_Bnei_Sakhnin_F.C._players>', 'Bnei Sakhnin F.C. player');
+
+
