@@ -308,21 +308,24 @@ public class CrosswordView extends JPanel {
 
 	class DefinitionSquareListener extends MouseAdapter { // had to put it here because definitions List does not exist at view & controller initialize, and didnt want to have controller refernce in this class
 		private Color COLOR = Color.BLUE;
-		private Color BACKGROUNDCOLOR = Color.BLACK;
+		private Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 		private Color origBackgroundColor;
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			JDefinitionLabel lbl =(JDefinitionLabel) e.getSource();
 			origBackgroundColor = lbl.getBackground();
-			lbl.setBackground(BACKGROUNDCOLOR);
+			lbl.setOpaque(true);
+			lbl.setBackground(BACKGROUND_COLOR);
 			addColorDefinitionArea(lbl.getDef(), COLOR);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			JDefinitionLabel lbl =(JDefinitionLabel) e.getSource();
-			setBackground(origBackgroundColor);
+			lbl.setOpaque(false);
+			lbl.setBackground(origBackgroundColor);
+
 			unColorDefinitionArea(lbl.getDef());
 		}
 	}
