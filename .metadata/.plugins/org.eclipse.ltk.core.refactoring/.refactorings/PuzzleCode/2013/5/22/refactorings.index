@@ -97,3 +97,19 @@
 1369828740111	Delete element
 1369830678775	Convert local variable 'btnCheck' to field
 1369830766199	Rename method 'addCheckBtnListener'
+1369853601597	Rename type 'boardPiece'
+1369853960514	Convert local variable 'size' to field
+1369857551350	Rename method 'addColorDefinotionArea'
+1369859042204	Rename method 'isDefinitionSquare'
+1369896154222	Extract method 'addTraversalKey'
+1369898371274	Convert local variable 'glassPane' to field
+1369898680665	Delete element
+1369898794719	Convert local variable 'oldMouseListeners' to field
+1369898799449	Convert local variable 'oldMouseMotionListener' to field
+1369900111771	Rename method 'addDefinitionSquareListener'
+1369900568533	Rename type 'SquarePanel'
+1369900931138	Delete element
+1369901162003	Convert local variable 'boardPanelHolders2' to field
+1369901690557	Rename type 'AbstractSquarePanel'
+1369901766744	Rename type 'SquarePanel'
+1369906328770	Rename type 'DefinitionSquare'

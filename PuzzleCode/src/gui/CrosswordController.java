@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -20,6 +21,7 @@ public class CrosswordController extends AbstractController<CrosswordModel, Cros
 		//add Controller listeners to View
 		view.addPauseListener(new PauseListener());
 		view.addCheckListener(new CheckListener());
+		//view.addKeyListenerToSquares(new SquareKeyListener());
 
 	}
 
@@ -41,29 +43,33 @@ public class CrosswordController extends AbstractController<CrosswordModel, Cros
 
 	}
 
-	class SquareKeyListener extends KeyAdapter {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			char direction;
-			switch (e.getKeyChar()) {
-			case KeyEvent.VK_LEFT: {
-				direction = 'l';
-				break;
-			}
-			case KeyEvent.VK_RIGHT: {
-				direction = 'r';
-				break;
-			}
-			case KeyEvent.VK_UP : {
-				direction = 'u';
-				break;
-			}
-			case KeyEvent.VK_DOWN : {
-				direction = 'd';
-			}
-			//view.keyPressed(e.getSource(), direction);
-			}
-		}
-
-	}
+//	class SquareKeyListener extends KeyAdapter {
+//		@Override
+//		public void keyPressed(KeyEvent e) {
+//			int direction = 0;
+//			int key = (char) e.getKeyCode();
+//			System.out.println(key);
+//			switch (key) {
+//			case KeyEvent.VK_LEFT: {
+//				direction = 'l';
+//				break;
+//			}
+//			case KeyEvent.VK_RIGHT: {
+//				direction = 'r';
+//				break;
+//			}
+//			case KeyEvent.VK_UP : {
+//				direction = 'u';
+//				break;
+//			}
+//			case KeyEvent.VK_DOWN : {
+//				direction = 'd';
+//				break;
+//			}
+//			default : return;
+//			}
+//			view.keyPressed((Component)e.getSource(), direction);
+//		}
+//
+//	}
 }

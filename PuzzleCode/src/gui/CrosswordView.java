@@ -10,8 +10,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -29,9 +31,11 @@ import puzzleAlgorithm.PuzzleSquare;
 import sun.security.krb5.internal.PAEncTSEnc;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,16 +45,18 @@ import java.awt.BorderLayout;
 
 
 public class CrosswordView extends JPanel {
-	
+
 	private TimerJLabel timer;
 	private JButton btnPause;
 	private boolean isPaused = false;
 	private JPanel boardPanel;
 	private Map<Integer, Map<Integer,List<PuzzleDefinition>>> boardDefs;
-	private JPanel[][] boardPanelHolders;
+	private AbstractSquarePanel[][] boardPanelHolders;
+
 	JPanel[][] getBoardPanelHolders() {
 		return boardPanelHolders;
 	}
+	
 	List<PuzzleDefinition> getDefinitions() {
 		return definitions;
 	}
@@ -58,6 +64,11 @@ public class CrosswordView extends JPanel {
 	private int[][] boardDefCount;
 	List<PuzzleDefinition> definitions;
 	private JButton btnCheck;
+	private int size;
+
+	private List<JDefinitionLabel> definitionLabelList;
+	private List<JSquareTextField> sqaureTextFieldList;
+
 
 	static JPanel start() {
 		CrosswordView view = new CrosswordView();
@@ -103,18 +114,17 @@ public class CrosswordView extends JPanel {
 		CrosswordModel.getBoardSolutionAndDraw(this);
 
 	}
-
 	void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
 		this.definitions = definitions; // save a reference in crossview
-		
-		int size = board.length;
-		boardPanelHolders = new JPanel[size][size];
+
+		size = board.length;
+		boardPanelHolders = new AbstractSquarePanel[size][size];
 		boardDefCount = new int[size][size];
 		boardDefs =  new HashMap<Integer, Map<Integer, List<PuzzleDefinition>>>(); // Map required because cannot make such an array
+		definitionLabelList = new ArrayList<JDefinitionLabel>();
+		sqaureTextFieldList = new ArrayList<JSquareTextField>();
 
 		initializeCellToDefMap(size); 
-
-		initializeBoardPanelHolder(size);
 
 		initializeBoardDefCount(size);
 
@@ -124,66 +134,62 @@ public class CrosswordView extends JPanel {
 			int col = definition.getTextCol();
 
 			boardDefCount[row][col]++; 
-			boardDefs.get(row).get(col).add(definition);
+			boardDefs.get(row).get(col).add(definition); // map i,j to list of definitions (up to two)
 		}
 
-		// place definitions in cells
+		//place definitions in cells
 		for (int i = 0; i<size; i++) {
-			for (int j=0; j<board[i].length; j++) {
-				JPanel currentPanel = boardPanelHolders[i][j]; 
+			for (int j=0; j<size; j++) {
 				switch (boardDefCount[i][j]) {
 				case 0 : { // regular square
-					currentPanel.setBackground(Color.WHITE);
-					JTextField txtLbl = new JSquareTextField(currentPanel.getBackground(), i,j);
-					currentPanel.add(txtLbl, BorderLayout.CENTER);
+					JSquareTextField txtLbl = new JSquareTextField();
+					boardPanelHolders[i][j] = new RegularSquare(txtLbl, i, j);
+					sqaureTextFieldList.add(txtLbl);
 					break;
 				}
 				case 1:  {
 					//definition square with one definition
-					JLabel lbl = createDefinitionLabel(i, j,0);
-					currentPanel.setBorder(new BevelBorder(BevelBorder.RAISED));
-
-					currentPanel.add(lbl, BorderLayout.CENTER);
+					JDefinitionLabel lbl = createDefinitionLabel(i, j, 0);
+					OneDefinitionSquare defSquare = new OneDefinitionSquare(i, j);
+					defSquare.addTop(lbl);
+					boardPanelHolders[i][j] = defSquare;
+					definitionLabelList.add(lbl);
 					break;
 				}
 				case 2: { // definition square with two definitions
-					currentPanel.setBorder(new BevelBorder(BevelBorder.RAISED));
-					currentPanel.setLayout(new GridLayout(2,1));
-					JLabel lbl1 = createDefinitionLabel(i, j,0);
-					JLabel lbl2 = createDefinitionLabel(i, j, 1);
-					lbl1.setBackground(Color.GRAY);
-					lbl2.setBackground(Color.GRAY);
-
-					PuzzleDefinition def1 = boardDefs.get(i).get(j).get(0); // definition #1 in list
-					PuzzleDefinition def2 = boardDefs.get(i).get(j).get(1); // definition #2 in list
+					// randomly assign lbl1,lbl2 with the two definitions that would occupy the DefinitionSqaure
+					JDefinitionLabel lbl1 = createDefinitionLabel(i, j,0);
+					definitionLabelList.add(lbl1);
+					JDefinitionLabel lbl2 = createDefinitionLabel(i, j,1);
+					definitionLabelList.add(lbl2);
+					
+					TwoDefinitionSquare defSquare = new TwoDefinitionSquare(i, j);
+					boardPanelHolders[i][j] = defSquare;
 
 					// place definitions according to where the arrows would be
-					if (isDefinitionTop(def1, i)) {  
-						currentPanel.add(lbl1); //definition #1 is cell top
-						lbl1.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)); // seperator
-						currentPanel.add(lbl2); //definition #2 is cell bottom
+					
+					if (isDefinitionTop(lbl1.getDef(), i)) {  
+						defSquare.addTop(lbl1); //definition #1 is cell top
+						defSquare.addBottom(lbl2); //definition #2 is cell bottom
 					}
 					else {
-						if (isDefinitionBottom(def1, i)) {
-							currentPanel.add(lbl2);
-							lbl1.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
-							currentPanel.add(lbl1);
+						if (isDefinitionBottom(lbl1.getDef(), i)) {
+							defSquare.addTop(lbl2);
+							defSquare.addBottom(lbl1);
 						}
 						else {
-							if (isDefinitionTop(def2, i)) {
-								currentPanel.add(lbl2);
-								lbl1.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
-								currentPanel.add(lbl1);
+							if (isDefinitionTop(lbl2.getDef(), i)) {
+								defSquare.addTop(lbl2);
+								defSquare.addBottom(lbl1);
 							}
 							else {
-								if (isDefinitionBottom(def2, i)) {
-									currentPanel.add(lbl1);
-									lbl1.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-									currentPanel.add(lbl2);
+								if (isDefinitionBottom(lbl2.getDef(), i)) {
+									defSquare.addTop(lbl1);
+									defSquare.addBottom(lbl2);
 								}
 								else { // random
-									currentPanel.add(lbl1);
-									currentPanel.add(lbl2);
+									defSquare.addTop(lbl1);
+									defSquare.addBottom(lbl2);
 								}
 							}
 						}
@@ -201,22 +207,14 @@ public class CrosswordView extends JPanel {
 
 		//add panels to boardPanel in right order
 		for (int i = 0; i<size; i++){
-			for (int j=0; j<size; j++) {
+			for (int j=0; j<size; j++) { 
 				boardPanel.add(boardPanelHolders[i][j]);
 			}
 		}
-		
-		addDefinitionSquareListener(new DefinitionSquareListener()); // add dynamically the definitions listeners.
-		
+
+		addDefinitionSquareListenerToSquares(new DefinitionSquareListener()); // add dynamically the definitions listeners.
+
 		boardPanel.repaint();	
-	}
-	private void initializeBoardPanelHolder(int size) {
-		for (int i = 0; i<size; i++) {
-			for (int j=0; j<size; j++) {
-				boardPanelHolders[i][j] = new JPanel();	
-				boardPanelHolders[i][j].setLayout(new BorderLayout());
-			}
-		}
 	}
 
 	private void initializeBoardDefCount(int size) {
@@ -250,7 +248,7 @@ public class CrosswordView extends JPanel {
 		return (def.getBeginRow() == row + 1);
 	}
 
-	private JLabel createDefinitionLabel(int i,int j, int defNum) {
+	private JDefinitionLabel createDefinitionLabel(int i,int j, int defNum) {
 		//JLabel lbl = new JLabel("<html><p>" + boardDefs.get(i).get(j).get(defNum) + "</p></html>");
 		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum)); 
 	}
@@ -297,7 +295,7 @@ public class CrosswordView extends JPanel {
 		colorDefinitionArea(def, Color.WHITE, Color.BLACK);
 	}
 
-	void addColorDefinotionArea(PuzzleDefinition def, Color color) {
+	void addColorDefinitionArea(PuzzleDefinition def, Color color) {
 		colorDefinitionArea(def, color, color);
 	}
 
@@ -307,7 +305,7 @@ public class CrosswordView extends JPanel {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			JDefinitionLabel lbl =(JDefinitionLabel) e.getSource();
-			addColorDefinotionArea(lbl.getDef(), COLOR);
+			addColorDefinitionArea(lbl.getDef(), COLOR);
 		}
 
 		@Override
@@ -316,8 +314,14 @@ public class CrosswordView extends JPanel {
 			unColorDefinitionAread(lbl.getDef());
 		}
 	}
-		
-	void addDefinitionSquareListener(MouseListener listener) {
+
+	void addDefinitionSquareListenerToSquares(MouseListener listener) {
+		for (JDefinitionLabel lbl : definitionLabelList) {
+			lbl.addMouseListener(listener);
+		}
+	}
+
+	void remove(MouseListener listener) {
 		for (PuzzleDefinition definition : definitions) {
 			JPanel square = boardPanelHolders[definition.getTextRow()][definition.getTextCol()];
 			for (Component comp : square.getComponents()) {
@@ -327,11 +331,11 @@ public class CrosswordView extends JPanel {
 			}
 		}
 	}
-	
+
 	void addCheckListener(ActionListener listener) {
 		btnCheck.addActionListener(listener);
 	}
-	
+
 	void notifyCorrectness(boolean isCorrect) { // show to user that he was correct or wrong
 		if (isCorrect) {
 			btnCheck.setBackground(Color.GREEN);
@@ -346,7 +350,15 @@ public class CrosswordView extends JPanel {
 			isPaused = true;
 			enableComponents(boardPanel, false);
 			btnPause.setText("Resume");
-			boardPanel.setEnabled(false);
+			for (JDefinitionLabel lbl : definitionLabelList) {
+				for (MouseListener listener : lbl.getMouseListeners()) {
+					lbl.removeMouseListener(listener);
+				}
+				for (MouseMotionListener listener : lbl.getMouseMotionListeners()) {
+					lbl.removeMouseMotionListener(listener);
+				}
+			}
+			boardPanel.setEnabled(false);	
 		}
 		else {
 			timer.resume();
@@ -354,11 +366,12 @@ public class CrosswordView extends JPanel {
 			boardPanel.setEnabled(true);
 			enableComponents(boardPanel, true);
 			btnPause.setText("Pause");
+			addDefinitionSquareListenerToSquares(new DefinitionSquareListener()); // return the definition swaures listener to all definition squares
 			boardPanel.setEnabled(true);
 		}
 	}
 
-	public void enableComponents(Container container, boolean enable) {
+	void enableComponents(Container container, boolean enable) {
 		Component[] components = container.getComponents();
 		for (Component component : components) {
 			component.setEnabled(enable);
@@ -370,16 +383,5 @@ public class CrosswordView extends JPanel {
 
 	void addPauseListener(ActionListener listener) {
 		btnPause.addActionListener(listener);
-	}
-	
-	void keyPressed(Component source, char direction) {
-		JSquareTextField field = (JSquareTextField)source;
-		int row = field.getRow();
-		int col = field.getCol();
-		switch (direction) {
-		//	if (boardPanelHolders
-		}
-
-		
 	}
 }
