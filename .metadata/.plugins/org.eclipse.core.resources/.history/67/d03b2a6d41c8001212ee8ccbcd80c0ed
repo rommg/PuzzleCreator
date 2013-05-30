@@ -1,7 +1,0 @@
-package gui;
-
-import javax.swing.JLabel;
-
-public class JDefinitionLabel extends JLabel{
-
-}

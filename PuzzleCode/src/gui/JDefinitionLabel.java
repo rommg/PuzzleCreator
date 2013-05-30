@@ -27,7 +27,7 @@ public class JDefinitionLabel extends JLabel{
 
 	public JDefinitionLabel(PuzzleDefinition def) {
 		//super("<html><p>" + def.getDefinition() + "</p></html>");
-		super("<html><p>" + "The capital of guatemalaaaaaa" + "</p></html>");
+		super("<html><center><p>" + "Signatory of the Israeli Declaration of Independence" + "</p></html>");
 		this.def = def;
 		setForeground(Color.LIGHT_GRAY);
 		setForeground(Color.BLACK);

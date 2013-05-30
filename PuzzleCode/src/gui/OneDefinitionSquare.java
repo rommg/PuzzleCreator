@@ -2,12 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
-
-import Utils.Logger;
 
 final class OneDefinitionSquare extends AbstractSquarePanel{
 
@@ -32,12 +27,15 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 		setLayout(new BorderLayout());
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
+		setFont(this.getFont().deriveFont(12f));
 		add(lbl, BorderLayout.CENTER);
 	
 	}
 
 	public OneDefinitionSquare(int row, int col) {
 		super(row, col);
+		super.labelCount = 1;
+		
 		setFocusable(false);
 		setBorder(new BevelBorder(BevelBorder.RAISED));
 	}

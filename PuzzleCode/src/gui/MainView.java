@@ -51,7 +51,7 @@ public class MainView {
 
 	public static MainView view = null; 
 
-	private JFrame frame;
+	JFrame frame;
 	private Map<String,JButton> menuPanelBtns;
 	JButton[] menuPanelBtnsArray;
 	Map<JButton, JLabel> btnLabels;
@@ -112,7 +112,7 @@ public class MainView {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); 
 		int x=(int)((dimension.getWidth() - 1000)/2);
 		int y=(int)((dimension.getHeight() - 1000)/2);
-		frame.setLocation(x, y);  
+		frame.setLocation(x, 0);  
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// build mainPanel

@@ -1,13 +1,9 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
-
-import Utils.Logger;
 
 final public class TwoDefinitionSquare extends AbstractSquarePanel {
 
@@ -32,6 +28,7 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
 		lbl.setBackground(Color.GRAY);
+		lbl.setFont(this.getFont().deriveFont(8f));
 		lbl.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		add(lbl);
 	}
@@ -40,11 +37,14 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
 		lbl.setBackground(Color.GRAY);
+		lbl.setFont(this.getFont().deriveFont(8f));
 		add(lbl);
 	}
 
 	public TwoDefinitionSquare(int row, int col) {
 		super(row, col);
+		super.labelCount = 2;
+		
 		setLayout(new GridLayout(2, 1)); // a 2X1 grid for top and bottom defs
 		setFocusable(false);
 		setBorder(new BevelBorder(BevelBorder.RAISED));

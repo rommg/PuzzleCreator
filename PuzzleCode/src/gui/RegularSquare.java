@@ -13,8 +13,8 @@ final class RegularSquare extends AbstractSquarePanel{
 
 	public RegularSquare(JSquareTextField field, int row, int col) {
 		super(row, col);
+		super.labelCount = 1;
 		setLayout(new BorderLayout());
-		
 		this.field = field;
 		setBackground(Color.WHITE);		
 		field.setBackground(super.getBackground());

@@ -66,7 +66,7 @@ public class CrosswordView extends JPanel {
 	private JButton btnCheck;
 	private int size;
 
-	private List<JDefinitionLabel> definitionLabelList;
+	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<JSquareTextField> sqaureTextFieldList;
 
 
@@ -85,7 +85,6 @@ public class CrosswordView extends JPanel {
 	}
 
 	private void initialize() {
-
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel timerPanel = new JPanel();
@@ -132,7 +131,6 @@ public class CrosswordView extends JPanel {
 		for (PuzzleDefinition definition : definitions) {
 			int row = definition.getTextRow();
 			int col = definition.getTextCol();
-
 			boardDefCount[row][col]++; 
 			boardDefs.get(row).get(col).add(definition); // map i,j to list of definitions (up to two)
 		}
@@ -345,7 +343,7 @@ public class CrosswordView extends JPanel {
 		}
 	}
 	void pause() {
-		if (!isPaused) {
+		if (!isPaused) { // release => pause
 			timer.pause();
 			isPaused = true;
 			enableComponents(boardPanel, false);
@@ -360,13 +358,13 @@ public class CrosswordView extends JPanel {
 			}
 			boardPanel.setEnabled(false);	
 		}
-		else {
+		else { // pause => release
 			timer.resume();
 			isPaused = false;
 			boardPanel.setEnabled(true);
 			enableComponents(boardPanel, true);
 			btnPause.setText("Pause");
-			addDefinitionSquareListenerToSquares(new DefinitionSquareListener()); // return the definition swaures listener to all definition squares
+			addDefinitionSquareListenerToSquares(new DefinitionSquareListener()); // return the definition square listener to all definition squares
 			boardPanel.setEnabled(true);
 		}
 	}
