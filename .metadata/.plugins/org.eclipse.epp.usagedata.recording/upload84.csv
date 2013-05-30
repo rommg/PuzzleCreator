@@ -1,0 +1,276 @@
+what,kind,bundleId,bundleVersion,description,time
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.paste",1369910566576
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910568797
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369910577428
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910580500
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910584621
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369910588027
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369910588211
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369910591892
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369910592161
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369910592661
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369910593030
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369910605523
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369910605672
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910605873
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369910607666
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369910607834
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910612246
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369910619251
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369910620214
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369910620827
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369910621576
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910622832
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369910628082
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369910628214
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910628918
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369910630629
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369910630820
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369910631091
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369910631388
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369910634544
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910635656
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910880664
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910881903
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910883479
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910883927
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910910688
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910917501
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910977202
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369910978718
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911102947
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911103794
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911105811
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911162226
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911165815
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911182878
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911196394
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369911198938
+activated,editor,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.CompilationUnitEditor",1369911199106
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911211173
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911212344
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911222381
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911225363
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911243243
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911243742
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911354055
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911356617
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911407759
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911409281
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911483551
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911484071
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911494637
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369911497010
+opened,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369911497248
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369911497338
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911522697
+started,bundle,org.eclipse.wb.runtime.lib,1.5.2.r37x201302111859,"org.eclipse.wb.runtime.lib",1369911522813
+started,bundle,org.eclipse.wb.swing,1.5.2.r37x201302112024,"org.eclipse.wb.swing",1369911522910
+started,bundle,org.eclipse.wb.swing.FormLayout,1.5.2.r37x201302112024,"org.eclipse.wb.swing.FormLayout",1369911522940
+started,bundle,org.eclipse.pde,3.6.100.v201109091335,"org.eclipse.pde",1369911523024
+started,bundle,org.eclipse.equinox.simpleconfigurator.manipulator,2.0.0.v20110815-1438,"org.eclipse.equinox.simpleconfigurator.manipulator",1369911523032
+started,bundle,org.eclipse.equinox.frameworkadmin,2.0.0.v20110815-1438,"org.eclipse.equinox.frameworkadmin",1369911523035
+started,bundle,org.eclipse.wb.core.databinding,1.5.2.r37x201302111907,"org.eclipse.wb.core.databinding",1369911525389
+started,bundle,org.eclipse.wb.swing.jsr296,1.5.2.r37x201302112024,"org.eclipse.wb.swing.jsr296",1369911526126
+started,bundle,org.eclipse.wb.swing.MigLayout.lib,1.5.2.r37x201302112024,"org.eclipse.wb.swing.MigLayout.lib",1369911526833
+started,bundle,org.eclipse.wb.swing.MigLayout,1.5.2.r37x201302112024,"org.eclipse.wb.swing.MigLayout",1369911526836
+started,bundle,org.eclipse.wb.swing.java6,1.5.2.r37x201302112024,"org.eclipse.wb.swing.java6",1369911526840
+started,bundle,org.eclipse.wb.layout.group,1.5.2.r37x201302111942,"org.eclipse.wb.layout.group",1369911526843
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911526954
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911526968
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911526979
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911527207
+started,bundle,org.eclipse.wb.swing.FormLayout.lib,1.5.2.r37x201302112024,"org.eclipse.wb.swing.FormLayout.lib",1369911535838
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911537807
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911551170
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.findReplace",1369911551194
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911555867
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911559571
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911567464
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.findReplace",1369911567487
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911570312
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911576680
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369911581123
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369911586155
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911587063
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911590309
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911591191
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911591202
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911591212
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911591271
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911592830
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911637247
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369911685042
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911686777
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911691562
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911697055
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911704061
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911704342
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911704353
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911704363
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911704412
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911723654
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911729145
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911747996
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911759171
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911764059
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911773304
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911786580
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911789959
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911795575
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911804661
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911806796
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911813141
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911820576
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911825971
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911827553
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911830529
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369911873842
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369911874038
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369911876858
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369911877030
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369911878186
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369911878334
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369911879867
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911881267
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911899015
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911900691
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911900894
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911900904
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911900914
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369911900964
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911906991
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911927006
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369911927014
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911931015
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911945890
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911956437
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911969786
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911981522
+no handler,command,org.eclipse.ui.workbench.texteditor,3.7.0.v20110928-1504,"org.eclipse.ui.edit.text.goto.lineStart",1369911990195
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369911996971
+activated,perspective,org.eclipse.debug.ui,3.7.102.v20111129-1423_r372,"org.eclipse.debug.ui.DebugPerspective",1369911999762
+activated,perspective,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.JavaPerspective",1369912001826
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.selectAll",1369912011494
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.copy",1369912031729
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.paste",1369912033172
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369912037834
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369912038091
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369912038462
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369912044212
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369912046397
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369912106651
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912115107
+started,bundle,org.eclipse.dltk.core.manipulation,3.0.0.v20110609-1525,"org.eclipse.dltk.core.manipulation",1369912116077
+started,bundle,org.eclipse.wst.jsdt.manipulation,1.0.300.v201104272153,"org.eclipse.wst.jsdt.manipulation",1369912116124
+started,bundle,org.eclipse.wst.jsdt.core,1.1.102.v201111090634,"org.eclipse.wst.jsdt.core",1369912116343
+started,bundle,org.eclipse.wst.jsdt.ui,1.1.102.v201201131900,"org.eclipse.wst.jsdt.ui",1369912116439
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912117318
+executed,command,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.edit.text.java.promote.local.variable",1369912117343
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369912119393
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912120416
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912121928
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369912122513
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912124860
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912133826
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912136606
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369912136951
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369912136962
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369912136974
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912137020
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369912147225
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.cut",1369912151151
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.paste",1369912152927
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369912153782
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912156822
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912196485
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912202051
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912456070
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369912976079
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922045698
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922057452
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922057655
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922066899
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922067097
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369922079473
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369922103017
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922111361
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922111555
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922112372
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922112658
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922112669
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922112679
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922112727
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922120684
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922123081
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922123425
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922125449
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922132162
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922132346
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922142996
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922163439
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922163608
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922165149
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922165324
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.copy",1369922174653
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922176598
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922176757
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922178836
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922185921
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922186077
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922192239
+activated,editor,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.CompilationUnitEditor",1369922192509
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922192934
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922193143
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.paste",1369922212148
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369922213059
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922215759
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922215891
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.copy",1369922218723
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.paste",1369922225582
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369922232709
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369922235779
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922237876
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922256089
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369922264339
+failed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369922268006
+error,log,,,"""Content Assist"" did not complete normally.  Please see the log for more information.",1369922268007
+error,log,,,"1",1369922268009
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922268079
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922269829
+opened,editor,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.ClassFileEditor",1369922270699
+activated,editor,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.ClassFileEditor",1369922270821
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922272624
+closed,editor,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.ClassFileEditor",1369922272638
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.delete",1369922277440
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.paste",1369922280022
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.undo",1369922281073
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369922281650
+failed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369922283458
+error,log,,,"""Content Assist"" did not complete normally.  Please see the log for more information.",1369922283458
+error,log,,,"1",1369922283459
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922283478
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922285828
+failed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.edit.text.contentAssist.proposals",1369922287431
+error,log,,,"""Content Assist"" did not complete normally.  Please see the log for more information.",1369922287431
+error,log,,,"1",1369922287433
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922287450
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922288475
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.save",1369922296603
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369922298585
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369922298822
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922298883
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922299229
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922299239
+error,log,,,"Designer [1.5.2.r37x201302112024.201305301358]: assertion failed",1369922299248
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922299323
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922302488
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922326112
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922326121
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922334176
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922334184
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922338545
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922338553
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922343616
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922343624
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369922346864

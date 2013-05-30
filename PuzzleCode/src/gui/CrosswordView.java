@@ -18,6 +18,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
@@ -28,6 +29,7 @@ import puzzleAlgorithm.AlgorithmRunner;
 import puzzleAlgorithm.BoardSolution;
 import puzzleAlgorithm.PuzzleDefinition;
 import puzzleAlgorithm.PuzzleSquare;
+import sun.applet.Main;
 import sun.security.krb5.internal.PAEncTSEnc;
 
 import java.awt.event.ActionListener;
@@ -85,6 +87,8 @@ public class CrosswordView extends JPanel {
 	}
 
 	private void initialize() {
+		
+		setSizes();
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel timerPanel = new JPanel();
@@ -112,6 +116,11 @@ public class CrosswordView extends JPanel {
 
 		CrosswordModel.getBoardSolutionAndDraw(this);
 
+	}
+
+	void setSizes() {
+		MainView.view.frame.setMinimumSize(new Dimension(1300,1000));
+		MainView.view.frame.setPreferredSize(new Dimension(1300,1000));
 	}
 	void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
 		this.definitions = definitions; // save a reference in crossview
@@ -289,7 +298,7 @@ public class CrosswordView extends JPanel {
 		}
 	}
 
-	void unColorDefinitionAread(PuzzleDefinition def) {
+	void unColorDefinitionArea(PuzzleDefinition def) {
 		colorDefinitionArea(def, Color.WHITE, Color.BLACK);
 	}
 
@@ -299,17 +308,22 @@ public class CrosswordView extends JPanel {
 
 	class DefinitionSquareListener extends MouseAdapter { // had to put it here because definitions List does not exist at view & controller initialize, and didnt want to have controller refernce in this class
 		private Color COLOR = Color.BLUE;
+		private Color BACKGROUNDCOLOR = Color.BLACK;
+		private Color origBackgroundColor;
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			JDefinitionLabel lbl =(JDefinitionLabel) e.getSource();
+			origBackgroundColor = lbl.getBackground();
+			lbl.setBackground(BACKGROUNDCOLOR);
 			addColorDefinitionArea(lbl.getDef(), COLOR);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			JDefinitionLabel lbl =(JDefinitionLabel) e.getSource();
-			unColorDefinitionAread(lbl.getDef());
+			setBackground(origBackgroundColor);
+			unColorDefinitionArea(lbl.getDef());
 		}
 	}
 

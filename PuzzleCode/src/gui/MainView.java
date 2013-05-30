@@ -56,8 +56,8 @@ public class MainView {
 	JButton[] menuPanelBtnsArray;
 	Map<JButton, JLabel> btnLabels;
 
-	private final int FRAME_HEIGHT = 1000;
-	private final int FRAME_WIDTH = 1000;
+	private final int FRAME_HEIGHT = 600;
+	private final int FRAME_WIDTH = 600;
 	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
 	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "WaitView","Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
 	
@@ -106,13 +106,8 @@ public class MainView {
 	private void initialize() {
 
 		frame = new JFrame();
-		frame.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-
-		// center screen
-		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); 
-		int x=(int)((dimension.getWidth() - 1000)/2);
-		int y=(int)((dimension.getHeight() - 1000)/2);
-		frame.setLocation(x, 0);  
+		setSizes();
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// build mainPanel
@@ -162,6 +157,12 @@ public class MainView {
 		//add formPanel - this panel will change
 		frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
 
+	}
+
+	private void setSizes() {
+		frame.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+		frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+		frame.setMaximumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 	}
 
 	private void createButton(String text, String resourceName) {
@@ -231,6 +232,9 @@ public class MainView {
 			cardPanel.add(prepareGame, CARD_NAMES[1]);
 		}
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		setSizes();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 		cl.show(cardPanel, CARD_NAMES[1]);
 	}
 
@@ -241,6 +245,9 @@ public class MainView {
 		}
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		((CrosswordView)crosswordView).setSizes();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 		cl.show(cardPanel, CARD_NAMES[3]);
 	}
 
@@ -249,6 +256,7 @@ public class MainView {
 		cardPanel.add(waitView, CARD_NAMES[2]);
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		setSizes();
 		cl.show(cardPanel, CARD_NAMES[2]);
 	}
 

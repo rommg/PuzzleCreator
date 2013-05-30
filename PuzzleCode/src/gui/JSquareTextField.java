@@ -41,7 +41,6 @@ public class JSquareTextField extends JTextField {
         @Override
         public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException {
             if (str == null) return;
-            getCaret().setVisible(false);
             if ((getLength() + str.length()) <= limit) {
                 super.insertString(offset, str, attr);
             }

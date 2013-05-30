@@ -113,3 +113,8 @@
 1369901690557	Rename type 'AbstractSquarePanel'
 1369901766744	Rename type 'SquarePanel'
 1369906328770	Rename type 'DefinitionSquare'
+1369912117232	Convert local variable 'topicsNamesPanel' to field
+1369923216958	Extract method 'setMinimumSize'
+1369923445473	Rename method 'setMinimumSize'
+1369925204073	Extract method 'setSize'
+1369925300080	Rename method 'setSizeAndLocation'
