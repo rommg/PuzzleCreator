@@ -43,9 +43,10 @@ public class PrepareGameView extends JPanel {
 	private final ButtonGroup difficultyBtnsGrp = new ButtonGroup();
 	List<String> TopicsList;
 	private List<JCheckBox> topicsCheckBoxes;
-	private JPanel topicsPanel;
+	private JPanel centerPanel;
 	private static PrepareGameModel model;
 	private JButton goBtn;
+	private JPanel topicsNamesPanel;
 
 	public PrepareGameView() {
 		initialize();
@@ -63,36 +64,12 @@ public class PrepareGameView extends JPanel {
 	private void initialize() {
 
 		getTopics();
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{577, 0};
-		gridBagLayout.rowHeights = new int[]{461, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
-
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
-		add(panel, gbc_panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{577, 0};
-		gbl_panel.rowHeights = new int[]{56, 258, 147, 0};
-		gbl_panel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel.setLayout(gbl_panel);
+		setLayout(new BorderLayout());
 
 		JPanel difficultyPanel = new JPanel();
-		GridBagConstraints gbc_difficultyPanel = new GridBagConstraints();
-		gbc_difficultyPanel.anchor = GridBagConstraints.NORTH;
-		gbc_difficultyPanel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_difficultyPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_difficultyPanel.gridx = 0;
-		gbc_difficultyPanel.gridy = 0;
-		panel.add(difficultyPanel, gbc_difficultyPanel);
+		add(difficultyPanel, BorderLayout.NORTH);
 		difficultyPanel.setBorder(new TitledBorder(null, "Difficulty", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		difficultyPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		difficultyPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 
 		JRadioButton easyRadioBtn = new JRadioButton("Easy");
@@ -108,27 +85,21 @@ public class PrepareGameView extends JPanel {
 		JRadioButton hardRadioBtn = new JRadioButton("Hard");
 		difficultyPanel.add(hardRadioBtn);
 		difficultyBtnsGrp.add(hardRadioBtn);
-		topicsPanel = new JPanel();
-		GridBagConstraints gbc_topicsPanel = new GridBagConstraints();
-		gbc_topicsPanel.fill = GridBagConstraints.BOTH;
-		gbc_topicsPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_topicsPanel.gridx = 0;
-		gbc_topicsPanel.gridy = 1;
-		panel.add(topicsPanel, gbc_topicsPanel);
-		topicsPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		topicsPanel.setLayout(new GridLayout(2, 0, 0, 0));
-
-		JPanel btnPanel = new JPanel();
-		GridBagConstraints gbc_btnPanel = new GridBagConstraints();
-		gbc_btnPanel.anchor = GridBagConstraints.NORTH;
-		gbc_btnPanel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnPanel.gridx = 0;
-		gbc_btnPanel.gridy = 2;
-		panel.add(btnPanel, gbc_btnPanel);
-
-		goBtn = new JButton();
-		btnPanel.add(goBtn);
-		goBtn.setIcon(new ImageIcon(PrepareGameView.class.getResource("/resources/start-icon.png")));
+		centerPanel = new JPanel();
+		add(centerPanel, BorderLayout.CENTER);
+		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		topicsNamesPanel = new JPanel();
+		topicsNamesPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		centerPanel.add(topicsNamesPanel);
+		topicsNamesPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panel_1 = new JPanel();
+		centerPanel.add(panel_1);
+		
+				goBtn = new JButton();
+				panel_1.add(goBtn);
+				goBtn.setIcon(new ImageIcon(PrepareGameView.class.getResource("/resources/start-icon.png")));
 
 		addTopicsCheckBoxes();
 	}
@@ -152,8 +123,10 @@ public class PrepareGameView extends JPanel {
 	            if (button.isSelected()) {
 	                if (button.getText().compareTo("Easy") == 0)
 	                	return 0;
-	                if (button.getText().compareTo("Hard") == 0)
+	                if (button.getText().compareTo("Medium") == 0)
 	                	return 1;
+	                if (button.getText().compareTo("Hard") == 0)
+	                	return 2;
 	            }
 	        }
 		 return -1; //Error - no btn selected.
@@ -165,7 +138,7 @@ public class PrepareGameView extends JPanel {
 		for (String topic : TopicsList) {
 			JCheckBox box = new JCheckBox();
 			box.setText(topic);
-			topicsPanel.add(box);
+			topicsNamesPanel.add(box);
 		}
 	}
 
