@@ -2,8 +2,8 @@ package main;
 import gui.MainView;
 import gui.MainView;
 import puzzleAlgorithm.*;
+import utils.*;
 import massiveImport.*;
-import Utils.*;
 public class PuzzleCreator {
 
 	/**

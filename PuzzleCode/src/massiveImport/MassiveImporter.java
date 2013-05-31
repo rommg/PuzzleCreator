@@ -1,7 +1,8 @@
 package massiveImport;
 import java.io.IOException;
-import Utils.DBConnector;
-import Utils.Logger;
+
+import utils.DBConnector;
+import utils.Logger;
 
 
 public class MassiveImporter {

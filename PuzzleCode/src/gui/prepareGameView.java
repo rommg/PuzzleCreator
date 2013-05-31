@@ -5,14 +5,24 @@ import gui.PrepareGameController.GoListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,11 +30,14 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
-/**
- * The game settings window
- * @author yonatan
- *
- */
+import puzzleAlgorithm.PuzzleSquare;
+
+import Utils.GuiDBConnector;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+
+
 public class PrepareGameView extends JPanel {
 	private final ButtonGroup difficultyBtnsGrp = new ButtonGroup();
 	List<String> TopicsList;
@@ -91,7 +104,7 @@ public class PrepareGameView extends JPanel {
 	}
 
 	/**
-	 * Retrieves the user selected topics that will populate the crossword
+	 * 
 	 * @return user selected topics
 	 */
 	public List<String> getUserSelectedTopics() {
@@ -103,10 +116,6 @@ public class PrepareGameView extends JPanel {
 		return lst;
 	}
 	
-	/**
-	 * Retrieves the difficulty selected by the user and returns the proper integer
-	 * @return (0==easy,1==medium,2==hard)
-	 */
 	public int getDifficulty() {
 		 for (Enumeration<AbstractButton> buttons = difficultyBtnsGrp.getElements(); buttons.hasMoreElements();) {
 	            AbstractButton button = buttons.nextElement();
@@ -123,9 +132,6 @@ public class PrepareGameView extends JPanel {
 
 	}
 
-	/**
-	 * Adds checkboxes according to the topics retrieved in getTopics()
-	 */
 	private void addTopicsCheckBoxes() {
 		topicsCheckBoxes = new LinkedList<JCheckBox>();
 		for (String topic : TopicsList) {
@@ -135,9 +141,6 @@ public class PrepareGameView extends JPanel {
 		}
 	}
 
-	/**
-	 * Queries the DB for the topics in the DB
-	 */
 	private void getTopics() {
 		//topicsList =GuiDBConnector.getTopics();
 		//for now - fixed values

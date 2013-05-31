@@ -1,8 +1,5 @@
 package puzzleAlgorithm;
 
-import Utils.AlgorithmUtils;
-import Utils.Logger;
-import Utils.DBUtils;
 import gui.CrosswordView;
 import gui.MainView;
 
@@ -11,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
+
+import utils.AlgorithmUtils;
+import utils.DBUtils;
+import utils.Logger;
 
 public class AlgorithmRunner {
 	// System.getProperty("file.separator")
