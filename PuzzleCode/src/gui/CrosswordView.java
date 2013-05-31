@@ -24,9 +24,6 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
-import Utils.AlgorithmUtils;
-import Utils.GuiDBConnector;
-import Utils.Logger;
 
 import puzzleAlgorithm.AlgorithmRunner;
 import puzzleAlgorithm.BoardSolution;
@@ -34,6 +31,9 @@ import puzzleAlgorithm.PuzzleDefinition;
 import puzzleAlgorithm.PuzzleSquare;
 import sun.applet.Main;
 import sun.security.krb5.internal.PAEncTSEnc;
+import utils.AlgorithmUtils;
+import utils.GuiDBConnector;
+import utils.Logger;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;

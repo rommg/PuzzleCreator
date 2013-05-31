@@ -32,8 +32,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
 import puzzleAlgorithm.PuzzleSquare;
+import utils.GuiDBConnector;
 
-import Utils.GuiDBConnector;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;

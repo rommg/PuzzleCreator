@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import Utils.DBConnector;
-import Utils.Logger;
+import utils.DBConnector;
+import utils.Logger;
+
 
 import net.sf.sevenzipjbinding.SevenZipException;
 
