@@ -3,6 +3,11 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+/**
+ * A regular Square (with no definition) in the crossword
+ * @author yonatan
+ *
+ */
 final class RegularSquare extends AbstractSquarePanel{
 	
 	JSquareTextField field;

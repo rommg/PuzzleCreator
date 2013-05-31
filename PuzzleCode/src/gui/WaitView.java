@@ -17,6 +17,11 @@ import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * The window that is shown to the user while the crossword is created
+ * @author yonatan
+ *
+ */
 public class WaitView extends JPanel {
 
 	static WaitView start() {

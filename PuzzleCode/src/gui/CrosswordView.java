@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.FontMetrics;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -15,7 +17,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -35,6 +39,7 @@ import utils.AlgorithmUtils;
 import utils.GuiDBConnector;
 import utils.Logger;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -59,23 +64,30 @@ public class CrosswordView extends JPanel {
 	private JPanel boardPanel;
 	private Map<Integer, Map<Integer,List<PuzzleDefinition>>> boardDefs;
 	private AbstractSquarePanel[][] boardPanelHolders;
-
-	JPanel[][] getBoardPanelHolders() {
+	public AbstractSquarePanel[][] getBoardPanelHolders() {
 		return boardPanelHolders;
 	}
 
+	private JButton btnCheck;
+	private int size;
+	private int[][] boardDefCount;
+
+
+	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
+	private List<JSquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
+	private List<HintPopupMenu> hintPopupMenuList;
+	
+	//CrosswordView dimensions
+	private final int PANEL_WIDTH = 1300;
+	private final int PANEL_HEIGHT = 1000;
+
+	//getters & setters 
+	
 	List<PuzzleDefinition> getDefinitions() {
 		return definitions;
 	}
 
-	private int[][] boardDefCount;
 	List<PuzzleDefinition> definitions;
-	private JButton btnCheck;
-	private int size;
-
-	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
-	private List<JSquareTextField> sqaureTextFieldList;
-
 
 	static JPanel start() {
 		CrosswordView view = new CrosswordView();
@@ -86,7 +98,7 @@ public class CrosswordView extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public CrosswordView() {
+	private CrosswordView() {
 		initialize();
 		this.setVisible(true);
 	}
@@ -96,12 +108,16 @@ public class CrosswordView extends JPanel {
 		setSizes();
 		setLayout(new BorderLayout(0, 0));
 
-		JPanel timerPanel = new JPanel();
-
+		// set statistics panel
+		JPanel statsPanel = new JPanel();
+		statsPanel.setLayout( new FlowLayout(FlowLayout.CENTER, 20, 0));
 		timer = new TimerJLabel();
-		timerPanel.add(timer);
 		timer.start();
-		add(timerPanel, BorderLayout.NORTH);
+		statsPanel.add(timer);
+		HintCounterLabel hintCounterLabel = new HintCounterLabel();
+		hintCounterLabel.setFont(timer.getFont());
+		statsPanel.add(hintCounterLabel);
+		add(statsPanel, BorderLayout.NORTH);
 
 		boardPanel = new JPanel();
 		add(boardPanel, BorderLayout.CENTER);
@@ -122,10 +138,10 @@ public class CrosswordView extends JPanel {
 		CrosswordModel.getBoardSolutionAndDraw(this);
 
 	}
-
+	
 	void setSizes() {
-		MainView.view.frame.setMinimumSize(new Dimension(1300,1000));
-		MainView.view.frame.setPreferredSize(new Dimension(1300,1000));
+		MainView.view.frame.setMinimumSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+		MainView.view.frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 	}
 	void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
 		this.definitions = definitions; // save a reference in crossview
@@ -224,16 +240,25 @@ public class CrosswordView extends JPanel {
 			}
 		}
 
-		addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); // add dynamically the definitions listeners.
+		// add definitions square listeners (for coloring, mostly)
+		addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); 
+
+		addPopupMenusToDefinitions();
+		
+		boardPanel.repaint();	
+	}
+
+	private void addPopupMenusToDefinitions() {
+		hintPopupMenuList = new ArrayList<HintPopupMenu>();
 
 		//add popups to definitionLabels
 		for (JDefinitionLabel lbl : definitionLabelList) {
-			HintPopup popup = new HintPopup(lbl, lbl.getDef().getEntityId());
+			HintPopupMenu popup = new HintPopupMenu(lbl, lbl.getDef().getEntityId());
+			hintPopupMenuList.add(popup);
+
 			lbl.add(popup);
 			lbl.setComponentPopupMenu(popup);
-
 		}
-		boardPanel.repaint();	
 	}
 
 	private void initializeBoardDefCount(int size) {
@@ -410,6 +435,36 @@ public class CrosswordView extends JPanel {
 
 	void addPauseListener(ActionListener listener) {
 		btnPause.addActionListener(listener);
+	}
+	
+	/**
+	 * inner class for hint usage counter
+	 * @author yonatan
+	 *
+	 */
+	private class HintCounterLabel extends JLabel{
+		private Timer t;
+		public HintCounterLabel() {
+			super(new ImageIcon(CrosswordView.class.getResource("/resources/tip_big.png")),SwingConstants.LEADING);
+			t = new Timer(500, new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					int sum = 0;
+					for (HintPopupMenu popupmenu : hintPopupMenuList) { // sum the counters over all popupmenus
+						sum+=popupmenu.getUsedHintsCounter();
+					}
+					
+					//build string to represent counter
+					String text = new Integer(sum / 10).toString() + new Integer(sum % 10).toString();
+					//update counter text
+					HintCounterLabel.this.setText(text); 
+				}
+			});
+			t.setInitialDelay(0);
+			t.start();
+		}
+	
 	}
 
 }

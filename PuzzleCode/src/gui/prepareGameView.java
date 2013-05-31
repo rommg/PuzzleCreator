@@ -21,7 +21,6 @@ import javax.swing.UIManager;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import javax.swing.JRadioButton;
-import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -32,8 +31,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
 import puzzleAlgorithm.PuzzleSquare;
-import utils.GuiDBConnector;
 
+import Utils.GuiDBConnector;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;

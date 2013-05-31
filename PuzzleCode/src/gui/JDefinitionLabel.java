@@ -6,6 +6,13 @@ import javax.swing.JLabel;
 
 import puzzleAlgorithm.PuzzleDefinition;
 
+/**
+ * The Label containing The definition. 
+ * In OneDefinitionSquare there is one JDefinitionLabel.
+ * In TwoDefinitionSquare there are two JDefinitionLabels. 
+ * @author yonatan
+ *
+ */
 public class JDefinitionLabel extends JLabel{
 
 	private PuzzleDefinition def;

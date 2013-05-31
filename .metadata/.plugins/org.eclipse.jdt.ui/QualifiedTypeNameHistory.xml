@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.sun.corba.se.impl.protocol.giopmsgheaders.KeyAddr"/>
-<fullyQualifiedTypeName name="java.awt.event.KeyAdapter"/>
-<fullyQualifiedTypeName name="gui.BoardPiece"/>
-<fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
-<fullyQualifiedTypeName name="gui.CrosswordController.SquareKeyListener"/>
-<fullyQualifiedTypeName name="javax.swing.SwingUtilities"/>
 <fullyQualifiedTypeName name="java.awt.Component"/>
 <fullyQualifiedTypeName name="java.awt.KeyboardFocusManager"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
@@ -33,31 +27,37 @@
 <fullyQualifiedTypeName name="gui.MainView"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="Utils.GuiDBConnector"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.Collection"/>
 <fullyQualifiedTypeName name="java.util.Collections"/>
 <fullyQualifiedTypeName name="java.lang.Comparable"/>
 <fullyQualifiedTypeName name="gui.Hint"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
-<fullyQualifiedTypeName name="gui.AbstractSquarePanel"/>
 <fullyQualifiedTypeName name="javax.swing.JPopupMenu"/>
 <fullyQualifiedTypeName name="sun.management.snmp.util.JvmContextFactory"/>
 <fullyQualifiedTypeName name="javax.swing.JComponent"/>
-<fullyQualifiedTypeName name="gui.JDefinitionLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JMenu"/>
 <fullyQualifiedTypeName name="javax.swing.JMenuItem"/>
 <fullyQualifiedTypeName name="javax.swing.Icon"/>
 <fullyQualifiedTypeName name="gui.HintPopup.HintItem"/>
-<fullyQualifiedTypeName name="gui.CrosswordView"/>
 <fullyQualifiedTypeName name="javax.swing.JPasswordField"/>
-<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
-<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
-<fullyQualifiedTypeName name="gui.HintPopup"/>
 <fullyQualifiedTypeName name="gui.HintPopup.HintPopupSubMenu.HintItem"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="gui.HintPopup.HintPopupSubMenu.HintItem.LockButtonListener"/>
-<fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
+<fullyQualifiedTypeName name="gui.CrosswordView"/>
+<fullyQualifiedTypeName name="javax.swing.SwingConstants"/>
+<fullyQualifiedTypeName name="java.awt.FlowLayout"/>
+<fullyQualifiedTypeName name="gui.AbstractSquarePanel"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="gui.HintPopup"/>
+<fullyQualifiedTypeName name="java.lang.Override"/>
+<fullyQualifiedTypeName name="com.sun.xml.internal.bind.v2.runtime.RuntimeUtil.ToStringAdapter"/>
+<fullyQualifiedTypeName name="gui.CrosswordView.HintCounterLabel"/>
+<fullyQualifiedTypeName name="gui.JDefinitionLabel"/>
 </qualifiedTypeNameHistroy>
