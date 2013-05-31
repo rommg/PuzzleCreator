@@ -274,6 +274,7 @@ public class YagoFileHandler {
 					Logger.writeErrorToLog("Invalid yagoID in line #" + row);
 				}
 				else {
+					decomposedYagoID[3] = decomposedYagoID[3].replaceAll(">", ""); // remove '>' in last cell
 					boolean subjectHit = relevantEntities.contains(lineColumns[1]);
 					boolean objectHit = relevantEntities.contains(lineColumns[3]);
 					if ((subjectHit || objectHit) 
