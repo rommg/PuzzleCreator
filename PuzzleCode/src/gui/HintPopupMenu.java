@@ -89,7 +89,7 @@ final class HintPopupMenu extends JPopupMenu {
 
 				this.hintText = hintText; // save the hint text for later
 				this.setLayout(new BorderLayout());
-				lbl = new JLabel("<html><p><left>&nbsp" + createEchoString(hintText.length()) + "</p></html>");
+				lbl = new JLabel("<html><p><left>&nbsp;&nbsp;&nbsp;&nbsp;" + createEchoString(hintText.length()) + "</p></html>");
 				add(lbl, BorderLayout.CENTER);
 				JButton imageBtn = new JButton(new ImageIcon(HintPopupMenu.class.getResource("/resources/locked.png")));
 
@@ -120,7 +120,7 @@ final class HintPopupMenu extends JPopupMenu {
 						btn.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/unlocked.png")));
 						btn.setEnabled(false);
 						HintPopupMenu.this.usedHintsCounter++; // increment the hints used in this popup
-						this.lbl.setText(HintItem.this.hintText);
+						this.lbl.setText("<html><p><left>&nbsp;&nbsp;&nbsp;&nbsp;" + HintItem.this.hintText);
 						
 					}
 				}
