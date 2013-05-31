@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.awt.Component"/>
 <fullyQualifiedTypeName name="java.awt.KeyboardFocusManager"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="com.sun.xml.internal.bind.v2.runtime.RuntimeUtil.ToStringAdapter"/>
 <fullyQualifiedTypeName name="gui.CrosswordView.HintCounterLabel"/>
 <fullyQualifiedTypeName name="gui.JDefinitionLabel"/>
+<fullyQualifiedTypeName name="gui.HintPopupMenu.HintItem"/>
 </qualifiedTypeNameHistroy>
