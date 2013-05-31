@@ -23,6 +23,7 @@ import javax.swing.JPopupMenu;
 final class HintPopupMenu extends JPopupMenu {
 	private Hint[] hintArray;
 	private int usedHintsCounter;
+	JDefinitionLabel label;
 
 	HintPopupMenu(JDefinitionLabel label, int entityID) {
 		//GuiDBConnector conn = new GuiDDBconnectorImpl();
@@ -30,6 +31,7 @@ final class HintPopupMenu extends JPopupMenu {
 		// for now
 		// hintList = Hint[hintsList.size]; static decleration
 		hintArray = new Hint[5];// for now
+		this.label = label;
 		buildPopupSubMenus();
 	}
 
@@ -50,8 +52,13 @@ final class HintPopupMenu extends JPopupMenu {
 		//		for (int i=0; i<hintArray.length; i++){ // sorted by predicate
 		//			add(new HintPopupSubmenu("Hint #" + (i+1), hintArray[i].getHintText())); 
 		//		}
+		
+		JMenuItem item = new JMenuItem(label.getText());
+		item.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/tip.png")));
+		add(item);
 
 		for (int i=0; i<hintArray.length; i++) {
+			addSeparator();
 			add(new HintItem(hintArray[i].getHintText()));
 		}
 	}

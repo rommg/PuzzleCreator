@@ -248,6 +248,9 @@ public class CrosswordView extends JPanel {
 		boardPanel.repaint();	
 	}
 
+	/*
+	 * upon intialization, add HintPopups to all definitions
+	 */
 	private void addPopupMenusToDefinitions() {
 		hintPopupMenuList = new ArrayList<HintPopupMenu>();
 
@@ -268,6 +271,10 @@ public class CrosswordView extends JPanel {
 			}
 		}
 	}
+	
+	/*
+	 * technical need to map (i,j) - > Definition
+	 */
 	private void initializeCellToDefMap(int size) {
 		for (int i = 0; i<size; i++) {
 			boardDefs.put(i, new HashMap<Integer, List<PuzzleDefinition>>());
