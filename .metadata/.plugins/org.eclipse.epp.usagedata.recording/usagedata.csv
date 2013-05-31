@@ -49,3 +49,35 @@ deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",136998418
 activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984192657
 deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984221463
 activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984243252
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984246623
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984288746
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369984289698
+executed,command,org.eclipse.ui,3.7.0.v20110928-1505,"org.eclipse.ui.file.refresh",1369984291144
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984293604
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984294593
+activated,editor,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.CompilationUnitEditor",1369984294863
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984296083
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984309293
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984311148
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984327600
+activated,view,org.eclipse.jdt.ui,3.7.1.r371_v20110824-0800,"org.eclipse.jdt.ui.PackageExplorer",1369984330783
+error,log,,,"Could not create action delegate for id: org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction",1369984330919
+error,log,,,"Plug-in org.eclipse.wb.core.java was unable to load class org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate.",1369984330921
+opened,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369984331079
+activated,editor,org.eclipse.wb.core.ui,,"org.eclipse.wb.core.guiEditor",1369984331182
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984333034
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984509787
+deactivated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984510347
+activated,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984511854
+closed,workbench,org.eclipse.ui.workbench,3.7.1.v20120104-1859,"",1369984512325
+stopped,bundle,overlay.com.android.ide.eclipse.adt.overlay,21.0.0.v201210310015-519525,"overlay.com.android.ide.eclipse.adt.overlay",1369984516351
+stopped,bundle,com.android.ide.eclipse.adt,21.0.0.v201210310015-519525,"com.android.ide.eclipse.adt",1369984516464
+stopped,bundle,org.eclipse.jst.j2ee.xdoclet.runtime,1.1.300.v201004280700,"org.eclipse.jst.j2ee.xdoclet.runtime",1369984516495
+stopped,bundle,org.eclipse.jst.j2ee.ejb.annotations.xdoclet,1.2.200.v201103302125,"org.eclipse.jst.j2ee.ejb.annotations.xdoclet",1369984516630
+stopped,bundle,org.eclipse.datatools.enablement.sybase.asa.schemaobjecteditor.examples,2.5.0.200810071,"org.eclipse.datatools.enablement.sybase.asa.schemaobjecteditor.examples",1369984516766
+stopped,bundle,org.eclipse.datatools.sqltools.schemaobjecteditor.ui.pages,1.1.0.200810071,"org.eclipse.datatools.sqltools.schemaobjecteditor.ui.pages",1369984516887
+stopped,bundle,org.eclipse.datatools.sqltools.schemaobjecteditor.ui,1.1.1.200810071,"org.eclipse.datatools.sqltools.schemaobjecteditor.ui",1369984516993
+stopped,bundle,org.eclipse.jst.jsf.apache.trinidad.tagsupport,1.1.200.v201104061711,"org.eclipse.jst.jsf.apache.trinidad.tagsupport",1369984517183
+stopped,bundle,org.eclipse.jst.jsf.facesconfig.ui,1.2.2.v201103292152,"org.eclipse.jst.jsf.facesconfig.ui",1369984517293
+stopped,bundle,org.eclipse.jst.jsf.facelet.ui,1.0.1.v201104032306,"org.eclipse.jst.jsf.facelet.ui",1369984517379
+stopped,bundle,org.eclipse.jst.jsf.ui,1.3.2.v201104251204,"org.eclipse.jst.jsf.ui",1369984517471
