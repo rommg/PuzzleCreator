@@ -118,3 +118,10 @@
 1369923445473	Rename method 'setMinimumSize'
 1369925204073	Extract method 'setSize'
 1369925300080	Rename method 'setSizeAndLocation'
+1369959339556	Rename type 'DefinitionSquareListener'
+1369961194741	Rename type 'HintMenuItem'
+1369979627228	Rename type 'HintPopupMenu'
+1369980414100	Move file
+1369980549134	Rename method 'buildPopup'
+1369982697113	Convert local variable 'imageBtn' to field
+1369982985881	Convert local variable 'lbl' to field

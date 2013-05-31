@@ -9,7 +9,9 @@ import java.awt.FontMetrics;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -23,6 +25,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 import Utils.AlgorithmUtils;
+import Utils.GuiDBConnector;
 import Utils.Logger;
 
 import puzzleAlgorithm.AlgorithmRunner;
@@ -40,6 +43,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +63,7 @@ public class CrosswordView extends JPanel {
 	JPanel[][] getBoardPanelHolders() {
 		return boardPanelHolders;
 	}
-	
+
 	List<PuzzleDefinition> getDefinitions() {
 		return definitions;
 	}
@@ -87,7 +92,7 @@ public class CrosswordView extends JPanel {
 	}
 
 	private void initialize() {
-		
+
 		setSizes();
 		setLayout(new BorderLayout(0, 0));
 
@@ -169,12 +174,12 @@ public class CrosswordView extends JPanel {
 					definitionLabelList.add(lbl1);
 					JDefinitionLabel lbl2 = createDefinitionLabel(i, j,1);
 					definitionLabelList.add(lbl2);
-					
+
 					TwoDefinitionSquare defSquare = new TwoDefinitionSquare(i, j);
 					boardPanelHolders[i][j] = defSquare;
 
 					// place definitions according to where the arrows would be
-					
+
 					if (isDefinitionTop(lbl1.getDef(), i)) {  
 						defSquare.addTop(lbl1); //definition #1 is cell top
 						defSquare.addBottom(lbl2); //definition #2 is cell bottom
@@ -219,8 +224,15 @@ public class CrosswordView extends JPanel {
 			}
 		}
 
-		addDefinitionSquareListenerToSquares(new DefinitionSquareListener()); // add dynamically the definitions listeners.
+		addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); // add dynamically the definitions listeners.
 
+		//add popups to definitionLabels
+		for (JDefinitionLabel lbl : definitionLabelList) {
+			HintPopup popup = new HintPopup(lbl, lbl.getDef().getEntityId());
+			lbl.add(popup);
+			lbl.setComponentPopupMenu(popup);
+
+		}
 		boardPanel.repaint();	
 	}
 
@@ -306,7 +318,7 @@ public class CrosswordView extends JPanel {
 		colorDefinitionArea(def, color, color);
 	}
 
-	class DefinitionSquareListener extends MouseAdapter { // had to put it here because definitions List does not exist at view & controller initialize, and didnt want to have controller refernce in this class
+	class JDefinitionLabelListener extends MouseAdapter { // had to put it here because definitions List does not exist at view & controller initialize, and didnt want to have controller refernce in this class
 		private Color COLOR = Color.BLUE;
 		private Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 		private Color origBackgroundColor;
@@ -381,7 +393,7 @@ public class CrosswordView extends JPanel {
 			boardPanel.setEnabled(true);
 			enableComponents(boardPanel, true);
 			btnPause.setText("Pause");
-			addDefinitionSquareListenerToSquares(new DefinitionSquareListener()); // return the definition square listener to all definition squares
+			addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); // return the definition square listener to all definition squares
 			boardPanel.setEnabled(true);
 		}
 	}
@@ -399,4 +411,5 @@ public class CrosswordView extends JPanel {
 	void addPauseListener(ActionListener listener) {
 		btnPause.addActionListener(listener);
 	}
+
 }
