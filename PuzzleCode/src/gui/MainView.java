@@ -2,71 +2,57 @@ package gui;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionListener;
-
-import javax.swing.Box.Filler;
-import javax.swing.Icon;
-import javax.swing.JApplet;
-import javax.swing.JComponent;
 import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
-import javax.swing.Box;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
-import javax.swing.JSplitPane;
-import javax.swing.JLayeredPane;
-import javax.swing.JToolBar;
 import javax.swing.JButton;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+/**
+ * The one and only frame in the application.
+ * @author yonatan
+ *
+ */
 public class MainView {
 
 	public static MainView view = null; 
 
 	JFrame frame;
-	private Map<String,JButton> menuPanelBtns;
-	JButton[] menuPanelBtnsArray;
-	Map<JButton, JLabel> btnLabels;
+	private JPanel menuPanel; // left side menu 
+	private Map<String,JButton> menuPanelBtns; //mapping from windows name to the button that leads to it
+	private JPanel cardPanel; // This is the main panel in the application; this is what switches "screens"
+	private int menuBtnCounter = 0;
+
 
 	private final int FRAME_HEIGHT = 600;
 	private final int FRAME_WIDTH = 600;
 	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
+	// define application's view names
 	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "WaitView","Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
 	
 	JPanel prepareGame = null;
+	JButton[] menuPanelBtnsArray;
+	Map<JButton, JLabel> btnLabels; 
+	
 	public JPanel crosswordView = null;
 
-	private JPanel menuPanel;
-	private JPanel cardPanel;
-	private int menuBtnCounter = 0;
 
 	/**
 	 * Launch the application.
@@ -178,6 +164,9 @@ public class MainView {
 		menuPanelBtnsArray[menuBtnCounter++] = btn;
 	}
 
+	/*
+	 * populates the left side menu
+	 */
 	private void addButtonsTPanel(JButton[] btnArray) {
 		int row = 0;
 
@@ -195,7 +184,7 @@ public class MainView {
 		// add buttons to Jpanel
 		for (row = 0; row <=9; row++ ) {
 			btnConstraint.gridy = row;
-			if ((row == 3) || (row== 7)) { // seperator
+			if ((row == 3) || (row== 7)) { // seperator cells
 				JSeparator seperator = new JSeparator();
 				seperator.setPreferredSize(new Dimension(1,1));
 				btnConstraint.insets = new Insets(0, 0, 0, 0);
@@ -226,6 +215,9 @@ public class MainView {
 		showPrepareView();
 	}
 
+	/**
+	 * switch to PrepareView card
+	 */
 	void showPrepareView() {
 		if (prepareGame == null) {
 			prepareGame = PrepareGameView.start();
@@ -238,6 +230,9 @@ public class MainView {
 		cl.show(cardPanel, CARD_NAMES[1]);
 	}
 
+	/*
+	 * switch to CrosswordView
+	 */
 	void showCrosswordview() {
 		if (crosswordView == null) {
 			crosswordView = CrosswordView.start();
@@ -251,6 +246,9 @@ public class MainView {
 		cl.show(cardPanel, CARD_NAMES[3]);
 	}
 
+	/*
+	 * switch to WaitView
+	 */
 	void showWaitView() {
 		JPanel waitView = WaitView.start();
 		cardPanel.add(waitView, CARD_NAMES[2]);
