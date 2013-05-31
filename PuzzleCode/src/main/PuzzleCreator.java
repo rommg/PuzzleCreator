@@ -23,9 +23,9 @@ public class PuzzleCreator {
 		appDir = args[0];
 		
 		Logger.initialize(true);
-		//MainView.start();
+		MainView.start();
 		
-		MassiveImporter.runMassiveImporter();
+		//MassiveImporter.runMassiveImporter();
 		//AlgorithmRunner.runAlgorithm();
 		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
 
