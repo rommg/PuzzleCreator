@@ -11,6 +11,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.Timer;;
 
+/**
+ * A label containing a timer for elapsed game time
+ * @author yonatan
+ *
+ */
 class TimerJLabel extends JLabel{
 
 	private Timer t;

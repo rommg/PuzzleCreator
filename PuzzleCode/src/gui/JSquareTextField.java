@@ -14,6 +14,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
+/**
+ * a text box (in a RegulareSquare) that holds at most one letter
+ * @author yonatan
+ *
+ */
 public class JSquareTextField extends JTextField {
     private int limit;
 
@@ -31,6 +36,9 @@ public class JSquareTextField extends JTextField {
     	this(1);
     }
 
+    /**
+     * DefaultModel now limits the text according to limit
+     */
     @Override
     protected Document createDefaultModel() {
         return new LimitDocument();

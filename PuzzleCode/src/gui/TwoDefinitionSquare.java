@@ -5,6 +5,11 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
+/**
+ * A DefinitionSquare with two definitions
+ * @author yonatan
+ *
+ */
 final public class TwoDefinitionSquare extends AbstractSquarePanel {
 
 	private JDefinitionLabel TopDefinitionLbl;

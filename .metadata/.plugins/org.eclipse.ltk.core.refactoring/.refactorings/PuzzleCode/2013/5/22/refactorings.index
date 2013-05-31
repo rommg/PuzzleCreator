@@ -125,3 +125,7 @@
 1369980549134	Rename method 'buildPopup'
 1369982697113	Convert local variable 'imageBtn' to field
 1369982985881	Convert local variable 'lbl' to field
+1369985778005	Rename local variable 'timerPanel'
+1369987335495	Extract method 'addPopupMenusToDefinitions'
+1369987506585	Convert local variable 'hintsCounterLabel' to field
+1369988547766	Rename type 'HintPopup'

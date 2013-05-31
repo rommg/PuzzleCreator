@@ -9,6 +9,11 @@ import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+/**
+ * abstract layout of a square in the crossword board
+ * @author yonatan
+ *
+ */
 abstract class AbstractSquarePanel extends JPanel {
 
     private int row, col; // x,y of the square
