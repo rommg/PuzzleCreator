@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import Utils.DBConnector;
-import Utils.Logger;
+import utils.DBConnector;
+import utils.Logger;
+
 
 import net.sf.sevenzipjbinding.SevenZipException;
 
@@ -274,6 +275,7 @@ public class YagoFileHandler {
 					Logger.writeErrorToLog("Invalid yagoID in line #" + row);
 				}
 				else {
+					decomposedYagoID[3] = decomposedYagoID[3].replaceAll(">", ""); // remove '>' in last cell
 					boolean subjectHit = relevantEntities.contains(lineColumns[1]);
 					boolean objectHit = relevantEntities.contains(lineColumns[3]);
 					if ((subjectHit || objectHit) 
