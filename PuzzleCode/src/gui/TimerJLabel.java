@@ -49,7 +49,7 @@ class TimerJLabel extends JLabel{
 		isBlink = false;
 	}
 	
-	private String getElapsedTimeText() {
+	String getElapsedTimeText() {
 		long elapsed = calcElapsedMilli();
 		long hr = TimeUnit.MILLISECONDS.toHours(elapsed);
 		long min = TimeUnit.MILLISECONDS.toMinutes(elapsed - TimeUnit.HOURS.toMillis(hr));
@@ -57,7 +57,7 @@ class TimerJLabel extends JLabel{
 		return String.format("%02d:%02d:%02d", hr,min,sec);				
 	}
 
-	private long calcElapsedMilli() {
+	long calcElapsedMilli() {
 		return (new Date().getTime() - lastResumeTimeInMilli) + elapsedTimeLastPause;
 	}
 	

@@ -21,6 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
+
+import com.sun.java.swing.plaf.windows.resources.windows;
+
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,13 +48,14 @@ public class MainView {
 	private final int FRAME_WIDTH = 600;
 	private final int MAX_NUM_BUTTONS_IN_MENU = 8;
 	// define application's view names
-	private final String[] CARD_NAMES = {"Welcome", "PrepareGame", "WaitView","Crossword", "AddDef", "AddHint", "Massive Import", "Help", "About"};
-	
+
+
 	JPanel prepareGame = null;
 	JButton[] menuPanelBtnsArray;
 	Map<JButton, JLabel> btnLabels; 
-	
-	public JPanel crosswordView = null;
+
+	private JPanel crosswordView = null;
+	private JPanel welcomePanel;
 
 
 	/**
@@ -68,9 +72,9 @@ public class MainView {
 				try {
 					if (view == null) {
 						view = new MainView();
-					@SuppressWarnings("unused")
-					MainController controller = new MainController(null, view);
-					view.frame.setVisible(true);
+						@SuppressWarnings("unused")
+						MainController controller = new MainController(null, view);
+						view.frame.setVisible(true);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -109,22 +113,17 @@ public class MainView {
 
 		// top buttons
 		createButton("Play", "game.png");
-
 		createButton("Continue Game", "continue.png");
-
 		createButton("Hall of Fame", "best.png");
 
 		// middle buttons
 		createButton("Add Definition", "add.png");
-
 		createButton("Add Hints", "add.png");
-
 		createButton("Massive Import", "addDB.png");
 
 		// bottom buttons
 
 		createButton("Help", "help.png");
-
 		createButton("About", "about.png");
 
 		addButtonsTPanel(menuPanelBtnsArray);
@@ -133,12 +132,12 @@ public class MainView {
 		cardPanel = new JPanel();
 		cardPanel.setLayout(new CardLayout());
 
-		JPanel welcomePanel = new JPanel();
+		welcomePanel = new JPanel();
 		welcomePanel.setLayout(new BorderLayout());
 		welcomePanel.setBackground(Color.WHITE);
 		JLabel logo = new JLabel(new ImageIcon(MainView.class.getResource("/resources/crossword.jpg")));
 		welcomePanel.add(logo, BorderLayout.CENTER);
-		cardPanel.add(welcomePanel, CARD_NAMES[0]);
+		showWelcomeView();
 
 		//add formPanel - this panel will change
 		frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
@@ -164,7 +163,7 @@ public class MainView {
 		menuPanelBtnsArray[menuBtnCounter++] = btn;
 	}
 
-	/*
+	/**
 	 * populates the left side menu
 	 */
 	private void addButtonsTPanel(JButton[] btnArray) {
@@ -214,6 +213,10 @@ public class MainView {
 	void playBtnClicked() {
 		showPrepareView();
 	}
+	
+	void hallOfFameBtnClicked() {
+		showHallOfFameView();
+	}
 
 	/**
 	 * switch to PrepareView card
@@ -221,41 +224,66 @@ public class MainView {
 	void showPrepareView() {
 		if (prepareGame == null) {
 			prepareGame = PrepareGameView.start();
-			cardPanel.add(prepareGame, CARD_NAMES[1]);
+			cardPanel.add(prepareGame, Window.PrepareGame.toString());
 		}
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		setSizes();
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		cl.show(cardPanel, CARD_NAMES[1]);
+		cl.show(cardPanel, Window.PrepareGame.toString());
 	}
 
-	/*
+	/**
 	 * switch to CrosswordView
 	 */
 	void showCrosswordview() {
 		if (crosswordView == null) {
 			crosswordView = CrosswordView.start();
-			cardPanel.add(crosswordView, CARD_NAMES[3]);
+			cardPanel.add(crosswordView, Window.Crossword.toString());
 		}
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		((CrosswordView)crosswordView).setSizes();
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		cl.show(cardPanel, CARD_NAMES[3]);
+		cl.show(cardPanel,Window.Crossword.toString());
 	}
 
-	/*
+	/**
 	 * switch to WaitView
 	 */
 	void showWaitView() {
 		JPanel waitView = WaitView.start();
-		cardPanel.add(waitView, CARD_NAMES[2]);
+		cardPanel.add(waitView, Window.Wait.toString());
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		setSizes();
-		cl.show(cardPanel, CARD_NAMES[2]);
+		cl.show(cardPanel, Window.Wait.toString());
 	}
+
+	/**
+	 * switch to welcome screen
+	 */
+	void showWelcomeView() {
+		if (crosswordView == null) {
+			cardPanel.add(welcomePanel, Window.Welcome.toString());
+		}
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.Welcome.toString());
+	}
+
+	/**
+	 * switch to hall of fame view
+	 */
+	void showHallOfFameView() {
+		HallOfFameView view = HallOfFameView.start();
+		cardPanel.add(view, Window.HallOfFame.toString());
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.HallOfFame.toString());
+	}
+
+
 
 }

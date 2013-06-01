@@ -1,0 +1,4 @@
+1370122926026	Convert local variable 'tablePanel' to field
+1370125947729	Extract method 'showWelcome'
+1370125993526	Convert local variable 'welcomePanel' to field
+1370126795416	Rename type 'playBtnListener'

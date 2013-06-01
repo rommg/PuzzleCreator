@@ -3,7 +3,7 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import gui.MainController.playBtnListener;
+import gui.MainController.BtnListener;
 
 public class PrepareGameController extends AbstractController<PrepareGameModel, PrepareGameView> {
 
