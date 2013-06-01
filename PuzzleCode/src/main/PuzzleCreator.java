@@ -30,13 +30,14 @@ public class PuzzleCreator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		Logger.initialize(true);
 		if (args.length != 2){
 			Logger.writeErrorToLog("Wrong number of arguments");
 			return;
 		}
 		appDir = args[0];
 		String password = args[1]; 
-		Logger.initialize(true);
+		
 
 		connectionPool = new ConnectionPool("jdbc:mysql://"+ dbServerAddress +":"+ dbServerPort +"/"+ schemaName,
 				username, password);
@@ -44,11 +45,9 @@ public class PuzzleCreator {
 			Logger.writeErrorToLog("Failed to create the Connections Pool");
 			return;
 		}
-
 		Logger.writeToLog("Connections Pool was created");
-		//To Delete
-		int[] topics = {1};
-		DBUtils.getPossibleAnswers(topics, 10);
+		//TODO: To Delete
+//		DBUtils.test();
 		//
 		MainView.start();
 
