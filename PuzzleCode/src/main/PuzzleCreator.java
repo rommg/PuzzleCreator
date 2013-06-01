@@ -22,7 +22,7 @@ public class PuzzleCreator {
 	public static String dbServerAddress = "localhost";
 	public static String dbServerPort = "3306";
 	public static String username = "root";
-	public static String password = ""; // enter your password 
+	//public static String password = ""; // enter your password 
 	public static String schemaName = "riddle";
 
 
@@ -30,12 +30,13 @@ public class PuzzleCreator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if (args.length != 1){
+		if (args.length != 2){
 			Logger.writeErrorToLog("Wrong number of arguments");
 			return;
 		}
 		appDir = args[0];
-		Logger.initialize(true);		
+		String password = args[1]; 
+		Logger.initialize(true);
 
 		connectionPool = new ConnectionPool("jdbc:mysql://"+ dbServerAddress +":"+ dbServerPort +"/"+ schemaName,
 				username, password);
