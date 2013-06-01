@@ -15,7 +15,6 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	private Answer answer;
 	private char[] letters;
 	private String definition;
-	private String additionalInformation;
 	private List<String> hints;
 	
 	/**
@@ -51,7 +50,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		this.length = length;
 		this.direction = direction;
 		this.solved = false;
-		this.answer = new Answer("", -1);
+		this.answer = new Answer("", -1, "");
 		this.possibleAnswers = new ArrayList<Answer>();
 		possibleAnswers.addAll(answers);
 
@@ -247,11 +246,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	}
 
 	public String getAdditionalInformation() {
-		return additionalInformation;
-	}
-
-	public void setAdditionalInformation(String additionalInformation) {
-		this.additionalInformation = additionalInformation;
+		return this.answer.getAdditionalInformation();
 	}
 
 }

@@ -44,11 +44,9 @@ public class PuzzleCreator {
 			Logger.writeErrorToLog("Failed to create the Connections Pool");
 			return;
 		}
-
 		Logger.writeToLog("Connections Pool was created");
-		//To Delete
-		int[] topics = {1};
-		DBUtils.getPossibleAnswers(topics, 10);
+		//TODO: To Delete
+//		DBUtils.test();
 		//
 		MainView.start();
 
