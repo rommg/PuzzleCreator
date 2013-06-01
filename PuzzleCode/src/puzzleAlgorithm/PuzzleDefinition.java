@@ -15,6 +15,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	private Answer answer;
 	private char[] letters;
 	private String definition;
+	private String additionalInformation;
 	private List<String> hints;
 	
 	/**
@@ -243,6 +244,14 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	
 	public int getTextCol(){
 		return textColumn;
+	}
+
+	public String getAdditionalInformation() {
+		return additionalInformation;
+	}
+
+	public void setAdditionalInformation(String additionalInformation) {
+		this.additionalInformation = additionalInformation;
 	}
 
 }
