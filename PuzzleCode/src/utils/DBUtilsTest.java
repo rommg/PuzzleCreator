@@ -1,11 +1,12 @@
 package utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import connectionPool.ConnectionPool;
@@ -19,8 +20,8 @@ public class DBUtilsTest {
 	public static String password = "2bsafe"; // enter your password 
 	public static String schemaName = "riddle";
 	
-	@BeforeClass 
-	public static void before(){
+	@Before 
+	public void before(){
 		Logger.initialize(true);
 		connectionPool = new ConnectionPool("jdbc:mysql://"+ dbServerAddress +":"+ dbServerPort +"/"+ schemaName,
 				username, password);
@@ -45,8 +46,8 @@ public class DBUtilsTest {
 	}
 	
 	
-	@AfterClass
-	public static void after(){
+	@After
+	public void after(){
 		try {
 			connectionPool.closeConnections();
 			Logger.writeToLog("Closed all connections");

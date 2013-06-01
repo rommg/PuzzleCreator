@@ -35,7 +35,7 @@ public class DBUtils {
 						  	"entities_definitions.definition_id = definitions.id and " +
 						  	"definitions.id = definitions_topics.definition_id and " +
 						  	topicsCondition  + " and " + maxLenghtCondition +  ";";
-		
+	
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sqlQuery);
 		List<Answer> answers = new ArrayList<Answer>();
 		for (Map<String,Object> row : rs) {

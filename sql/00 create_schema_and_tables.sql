@@ -49,16 +49,16 @@ CONSTRAINT uc_YagoPredicate UNIQUE (yago_predicate)
 
 
 CREATE TABLE YAGO_TYPE (
-subject varchar(50) NOT NULL, 
+subject varchar(100) NOT NULL, 
 predicate varchar(50), 
 object varchar(250) NOT NULL, 
 answer varchar(50), 
-additional_information varchar(20),
+additional_information varchar(25),
 CONSTRAINT fk_Object FOREIGN KEY(object) REFERENCES DEFINITIONS(yago_type)
 );
 
 CREATE TABLE YAGO_FACT (
-subject varchar(50), 
+subject varchar(100), 
 predicate varchar(50), 
 object varchar(250), 
 is_subject boolean, 
@@ -66,7 +66,7 @@ CONSTRAINT fk_PredicateFact FOREIGN KEY(predicate) REFERENCES PREDICATES(yago_pr
 );
 
 CREATE TABLE YAGO_LITERAL_FACT( 
-subject varchar(50), 
+subject varchar(100), 
 predicate varchar(50), 
 object varchar(250), 
 CONSTRAINT fk_PredicateLiteralFact FOREIGN KEY(predicate) REFERENCES PREDICATES(yago_predicate)
@@ -74,7 +74,7 @@ CONSTRAINT fk_PredicateLiteralFact FOREIGN KEY(predicate) REFERENCES PREDICATES(
 
 CREATE TABLE ENTITIES (
 id int NOT NULL AUTO_INCREMENT, 
-name varchar(50) NOT NULL, 
+name varchar(100) NOT NULL, 
 PRIMARY KEY(id),
 CONSTRAINT uc_EntityName UNIQUE (name)
 );
