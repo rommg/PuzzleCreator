@@ -30,13 +30,14 @@ public class PuzzleCreator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		Logger.initialize(true);
 		if (args.length != 2){
 			Logger.writeErrorToLog("Wrong number of arguments");
 			return;
 		}
 		appDir = args[0];
 		String password = args[1]; 
-		Logger.initialize(true);
+		
 
 		connectionPool = new ConnectionPool("jdbc:mysql://"+ dbServerAddress +":"+ dbServerPort +"/"+ schemaName,
 				username, password);
