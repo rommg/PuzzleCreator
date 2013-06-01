@@ -14,7 +14,7 @@ public class PuzzleCreator {
 	/**
 	 * appDir should end with file separator
 	 */
-	public static String appDir = "c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\"; 
+	public static String appDir = ""; 
 	public static String homeDir = System.getProperty("user.home");
 	public static ConnectionPool connectionPool = null;
 
@@ -45,6 +45,10 @@ public class PuzzleCreator {
 			return;
 		}
 		Logger.writeToLog("Connections Pool was created");
+		//To Delete
+		int[] topics = {1};
+		DBUtils.getPossibleAnswers(topics, 10);
+		//
 		MainView.start();
 
 		//createDB();
