@@ -27,7 +27,7 @@ public class DBUtils {
 		
 		String maxLenghtCondition = "answers.length < " + maxLength;
 		
-		String sqlQuery = "select answer, answers.entity_id " +
+		String sqlQuery = "select answer, answers.entity_id as entity_id " +
 						  "from answers, entities , entities_definitions, definitions, definitions_topics " +
 						  "where " +
 						  	"answers.entity_id = entities.id and " +
@@ -36,7 +36,6 @@ public class DBUtils {
 						  	"definitions.id = definitions_topics.definition_id and " +
 						  	topicsCondition  + " and " + maxLenghtCondition +  ";";
 	
-	//	String sqlQuery = "select * from answers;";
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sqlQuery);
 		List<Answer> answers = new ArrayList<Answer>();
 		for (Map<String,Object> row : rs) {
