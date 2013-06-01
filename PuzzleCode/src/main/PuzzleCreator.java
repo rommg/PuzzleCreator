@@ -14,7 +14,7 @@ public class PuzzleCreator {
 	/**
 	 * appDir should end with file separator
 	 */
-	public static String appDir = ""; 
+	public static String appDir = "c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\"; 
 	public static String homeDir = System.getProperty("user.home");
 	public static ConnectionPool connectionPool = null;
 
