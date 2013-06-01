@@ -16,16 +16,21 @@ import massiveImport.YagoFileHandler;
 
 public class DBConnection {
 
-	public static Connection getConnection() throws SQLException {
+	private static Connection getConnection() throws SQLException {
 		return PuzzleCreator.connectionPool.getConnection();
 	}
 
-	public static void freeConnection(Connection conn) {
+	private static void freeConnection(Connection conn) {
 		if (conn != null) {
 			PuzzleCreator.connectionPool.returnConnection(conn);
 		}
 	}
 
+	/**
+	 * 
+	 * @param sqlQuery - the string query you wish to execute
+	 * @return List of Map<String, Object>> where String is the attribute and Object is the data
+	 */
 	public static List<Map<String,Object>> executeQuery(String sqlQuery) {
 		Connection conn = null;
 		try {
@@ -63,6 +68,24 @@ public class DBConnection {
 				freeConnection(conn);					 
 			}
 		}		
+		return returnList;
+	}
+
+	// NOT TO USE YET
+	@SuppressWarnings("unused")
+	private static List<Map<String,Object>> executeUpdate(String sqlUpdate) {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+		} catch (SQLException e) {
+			Logger.writeErrorToLog("DBConnection failed to get connection from pool " + e.getMessage());
+		}
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<Map<String,Object>> returnList = null;
+		
+		//TODO 
+		
 		return returnList;
 	}
 
@@ -127,7 +150,7 @@ public class DBConnection {
 		}	
 
 	}
-	
+
 	// Methods from DBConnector, not yet used here: //
 	//////////////////////////////////////////////////
 
@@ -143,7 +166,8 @@ public class DBConnection {
 
 	}
 
-	public static String buildImportSql(String importedFile, String tableTo) {
+	@SuppressWarnings("unused")
+	private static String buildImportSql(String importedFile, String tableTo) {
 		String fixedPath = YagoFileHandler.getFilteredTsvFileDestDir().replace("\\", "\\\\");
 		return "LOAD DATA LOCAL INFILE '" + fixedPath + importedFile + ".TSV' " +
 		"INTO TABLE " + tableTo + " " +
@@ -153,7 +177,8 @@ public class DBConnection {
 	}
 
 
-	public static int createTable(String tablename)  {
+	@SuppressWarnings("unused")
+	private static int createTable(String tablename)  {
 		String sql = buildCreateTableSql(tablename);
 		try {
 			Connection conn = getConnection();
@@ -175,10 +200,11 @@ public class DBConnection {
 		return 1;
 	}
 
-	public static int createSchema(String schemaName) {
+	@SuppressWarnings("unused")
+	private static int createSchema(String schemaName) {
 		return executeSql(schemaName, "CREATE SCHEMA IF NOT EXISTS " + schemaName  + " CHARACTER SET utf8 COLLATE utf8_general_ci;");
 	}
-	public static int executeSql(String schemaname, String sql) {
+	private static int executeSql(String schemaname, String sql) {
 		try {
 			Connection conn = getConnection();
 			Statement stmt = conn.createStatement();
