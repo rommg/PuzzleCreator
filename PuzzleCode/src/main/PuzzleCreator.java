@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import gui.MainView;
-import gui.MainView;
 import connectionPool.*;
 import puzzleAlgorithm.*;
 import utils.*;
@@ -47,22 +46,7 @@ public class PuzzleCreator {
 		Logger.writeToLog("Connections Pool was created");
 		MainView.start();
 
-
-		// running SQL scripts 01 02 03 04 
-		
-		/*try {
-			DBConnection.executeSqlScript(appDir + "sql\\01 insert_default_topics.sql");
-			DBConnection.executeSqlScript(appDir + "sql\\02 insert_default_definitions.sql");
-			DBConnection.executeSqlScript(appDir + "sql\\03 insert_default_definitions_topics.sql");
-			DBConnection.executeSqlScript(appDir + "sql\\04 insert_default_predicates.sql");
-		} catch (SQLException e) {
-			Logger.writeErrorToLog("Executing SQL script failed" + e.getMessage());
-		}*/
-
-		//MassiveImporter.runMassiveImporter();
-		//AlgorithmRunner.runAlgorithm();
-		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
-
+		//createDB();
 
 		try {
 			connectionPool.closeConnections();
@@ -71,6 +55,25 @@ public class PuzzleCreator {
 			Logger.writeErrorToLog("ConnectionPool failed to close connections" + e.getMessage());
 		}
 
+	}
+
+
+	/**
+	 * This method runs SQL scripts 01 02 03 04 
+	 */
+	private static void createDB() {
+		try {
+			DBConnection.executeSqlScript(appDir + "sql\\01 insert_default_topics.sql");
+			DBConnection.executeSqlScript(appDir + "sql\\02 insert_default_definitions.sql");
+			DBConnection.executeSqlScript(appDir + "sql\\03 insert_default_definitions_topics.sql");
+			DBConnection.executeSqlScript(appDir + "sql\\04 insert_default_predicates.sql");
+		} catch (SQLException e) {
+			Logger.writeErrorToLog("Executing SQL script failed" + e.getMessage());
+		}
+
+		MassiveImporter.runMassiveImporter();
+		AlgorithmRunner.runAlgorithm();
+		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
 	}
 
 }
