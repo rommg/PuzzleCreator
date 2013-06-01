@@ -1,0 +1,199 @@
+package connectionPool;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import utils.Logger;
+import main.*;
+import massiveImport.YagoFileHandler;
+
+
+public class DBConnection {
+
+	public static Connection getConnection() throws SQLException {
+		return PuzzleCreator.connectionPool.getConnection();
+	}
+
+	public static void freeConnection(Connection conn) {
+		if (conn != null) {
+			PuzzleCreator.connectionPool.returnConnection(conn);
+		}
+	}
+
+	public static List<Map<String,Object>> executeQuery(String sqlQuery) {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+		} catch (SQLException e) {
+			Logger.writeErrorToLog("DBConnection failed to get connection from pool " + e.getMessage());
+		}
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<Map<String,Object>> returnList = null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sqlQuery);
+			returnList = mapResultSet(rs);
+		}
+		catch (SQLException e) {
+			Logger.writeErrorToLog("DBConnection executeQuery: " + e.getMessage());
+		}
+		finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					Logger.writeErrorToLog("DBConnection executeQuery: " + e.getMessage());
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					Logger.writeErrorToLog("DBConnection executeQuery:" + e.getMessage());
+				}
+			}
+			if (conn != null) {
+				freeConnection(conn);					 
+			}
+		}		
+		return returnList;
+	}
+
+	private static List<Map<String,Object>> mapResultSet(ResultSet rs) throws SQLException {
+		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> row = null;
+
+		ResultSetMetaData metaData = rs.getMetaData();
+		Integer columnCount = metaData.getColumnCount();
+
+		while (rs.next()) {
+			row = new HashMap<String, Object>();
+			for (int i = 1; i <= columnCount; i++) {
+				row.put(metaData.getColumnName(i), rs.getObject(i));
+			}
+			resultList.add(row);
+		}
+		return resultList;
+	}
+
+	public static void executeSqlScript(String sqlScriptPath) throws SQLException
+	{
+		String str = new String();
+		StringBuffer strBuffer = new StringBuffer();
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+
+		try
+		{
+			FileReader fr = new FileReader(new File(sqlScriptPath));
+			BufferedReader bufferedReader = new BufferedReader(fr);
+
+			while((str = bufferedReader.readLine()) != null) {
+				strBuffer.append(str);
+			}
+			bufferedReader.close();
+
+			// Use ";" as a delimiter for each request
+			String[] instruction = strBuffer.toString().split(";");
+
+			for(int i = 0; i<instruction.length; i++) {
+				if(!instruction[i].trim().equals("")) {
+					stmt.executeUpdate(instruction[i]);
+					Logger.writeToLog(instruction[i]);
+				}
+			}             
+		}
+		catch(Exception e) {
+			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());
+		}
+		finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					Logger.writeErrorToLog("DBConnection executeSqlScript:" + e.getMessage());
+				}
+			}
+			if (conn != null) {
+				freeConnection(conn);					 
+			}
+		}	
+
+	}
+	
+	// Methods from DBConnector, not yet used here: //
+	//////////////////////////////////////////////////
+
+	private static String buildCreateTableSql(String tablename) {
+		return "CREATE TABLE "+ tablename + " " +
+		"(yago_id varchar(50), " +
+		"subject varchar(50), "+ 
+		"predicate varchar(50), " + 
+		"object varchar(250), " +
+		"value float, " +
+		"id int NOT NULL AUTO_INCREMENT, " + 
+		"PRIMARY KEY(id));";
+
+	}
+
+	public static String buildImportSql(String importedFile, String tableTo) {
+		String fixedPath = YagoFileHandler.getFilteredTsvFileDestDir().replace("\\", "\\\\");
+		return "LOAD DATA LOCAL INFILE '" + fixedPath + importedFile + ".TSV' " +
+		"INTO TABLE " + tableTo + " " +
+		"fields terminated by '\\t' " +
+		"lines terminated by '\\n' " +
+		"(yago_id,subject,predicate,object,value);";
+	}
+
+
+	public static int createTable(String tablename)  {
+		String sql = buildCreateTableSql(tablename);
+		try {
+			Connection conn = getConnection();
+			Statement stmt = conn.createStatement();
+			stmt.addBatch("DROP TABLE IF EXISTS " + tablename);
+			stmt.addBatch(sql);
+			stmt.executeBatch();
+			stmt.close();
+			freeConnection(conn);
+		}
+		catch (SQLSyntaxErrorException e) {
+			Logger.writeErrorToLog("Executing: " + sql + " failed: Wrong syntax." );
+			return 0;
+		}
+		catch (SQLException e) {
+			Logger.writeErrorToLog(e.getMessage());
+			return 0;
+		}
+		return 1;
+	}
+
+	public static int createSchema(String schemaName) {
+		return executeSql(schemaName, "CREATE SCHEMA IF NOT EXISTS " + schemaName  + " CHARACTER SET utf8 COLLATE utf8_general_ci;");
+	}
+	public static int executeSql(String schemaname, String sql) {
+		try {
+			Connection conn = getConnection();
+			Statement stmt = conn.createStatement();
+			stmt.execute(sql);	
+			stmt.close();
+			freeConnection(conn);
+		}
+		catch (SQLSyntaxErrorException e) {
+			Logger.writeErrorToLog("Executing: " + sql + " failed: Wrong syntax." );
+			return 0;
+		}
+		catch (SQLException e){
+			Logger.writeErrorToLog(e.getMessage());
+			return 0;
+		}
+		return 1;
+	}
+}
