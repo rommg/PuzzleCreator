@@ -9,12 +9,12 @@ INSERT INTO ENTITIES (name)
 
 CREATE TABLE TEMP_ANSWERS (
 answer varchar(50) NOT NULL,
-entity varchar(50) NOT NULL,
-additional_information varchar(20) 
+entity varchar(100) NOT NULL,
+additional_information varchar(25) 
 );
 
 
-LOAD DATA LOCAL INFILE  'C:\\PuzzleCreator\\sql\\filesToLoad\\yagoHumanAnswers.tsv'
+LOAD DATA LOCAL INFILE  'c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\sql\\filesToLoad\\yagoHumanAnswers.tsv'
 INTO TABLE TEMP_ANSWERS
 	fields terminated by '\t'
 	lines terminated by '\n'
