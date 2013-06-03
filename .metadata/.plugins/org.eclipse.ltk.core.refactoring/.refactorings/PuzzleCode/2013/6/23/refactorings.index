@@ -1,0 +1,6 @@
+1370171366411	Convert local variable 'hintCounterLabel' to field
+1370174774431	Rename compilation unit 'SearchBox.java'
+1370175236847	Convert local variable 'panel' to field
+1370175331327	Convert local variable 'suggestor' to field
+1370175599014	Delete element
+1370243880745	Rename type 'AutoSuggest'

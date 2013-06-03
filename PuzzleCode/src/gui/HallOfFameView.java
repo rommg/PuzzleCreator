@@ -1,8 +1,14 @@
 package gui;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import java.awt.BorderLayout;
 import javax.swing.JButton;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -20,6 +26,7 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 
 import sun.applet.Main;
+import javax.swing.border.EtchedBorder;
 
 public class HallOfFameView extends JPanel {
 
@@ -32,6 +39,10 @@ public class HallOfFameView extends JPanel {
 	 * Create the panel.
 	 */
 	private HallOfFameView() {
+		initialize();
+	}
+
+	private void initialize() {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_1 = new JPanel();
@@ -44,7 +55,11 @@ public class HallOfFameView extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 
-		JButton btnBack = new JButton("Back");
+		JButton btnBack = new JButton();
+		btnBack.setFont(btnBack.getFont().deriveFont(15f));
+		btnBack.setIcon(new ImageIcon(HallOfFameView.class.getResource("/resources/back.png")));
+
+		btnBack.addActionListener(new BackButtonListener());
 		panel.add(btnBack);
 
 		JPanel gridPanel = new JPanel();
@@ -65,14 +80,14 @@ public class HallOfFameView extends JPanel {
 		gridPanel.add(leftPanel, gbc_leftPanel);
 
 		tablePanel = new JPanel();
-		tablePanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		tablePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
 		gbc_tablePanel.fill = GridBagConstraints.BOTH;
 		gbc_tablePanel.insets = new Insets(0, 0, 0, 5);
 		gbc_tablePanel.gridx = 1;
 		gbc_tablePanel.gridy = 0;
 		gridPanel.add(tablePanel, gbc_tablePanel);
-		tablePanel.setLayout(new GridLayout(10, 2, 0, 0));
+		tablePanel.setLayout(new GridLayout(0, 3, 0, 0));
 
 		JPanel rightPanel = new JPanel();
 		GridBagConstraints gbc_rightPanel = new GridBagConstraints();
@@ -82,33 +97,41 @@ public class HallOfFameView extends JPanel {
 		gridPanel.add(rightPanel, gbc_rightPanel);
 
 		populateTablePanel();
-
-		initialize();
-	}
-
-	private void initialize() {
-
 	}
 
 	private void populateTablePanel() {
-		
+
+		Border border = LineBorder.createGrayLineBorder();
+
+		for (int i = 0; i<10; i++ ) {
+			JLabel rank = new JLabel("#" + (i+1), SwingConstants.CENTER);
+			rank.setBorder(border);
+			rank.setOpaque(true);
+			rank.setBackground(Color.PINK);
+
+			JLabel nameLabel = new JLabel();
+			nameLabel.setBorder(border);
+
+			JLabel scoreLabel = new JLabel();
+			scoreLabel.setBorder(border);
+
+			tablePanel.add(rank);
+			tablePanel.add(nameLabel);
+			tablePanel.add(scoreLabel);
+
+		}
 		List <Map<String,Object>> dataRows = getBestScores();
 		if (dataRows == null) {
 			return;
 		}
-		
-		Border border = LineBorder.createGrayLineBorder();
-		
+
+		int cellCounter =0 ;
+		JLabel temp = null;
+
 		for (Map<String,Object>row : dataRows) {
-			JLabel nameLabel = new JLabel();
-			nameLabel.setBorder(border);
-			nameLabel.setText((String)row.get("name"));
-			JLabel scoreLabel = new JLabel();
-			scoreLabel.setBorder(border);
-			nameLabel.setText(((Integer)row.get("score")).toString());
-			
-			tablePanel.add(nameLabel);
-			tablePanel.add(scoreLabel);
+			temp = (JLabel) tablePanel.getComponent(cellCounter++);
+			temp.setText((String)row.get("name"));
+			temp.setText(((Integer)row.get("score")).toString());
 		}
 	}
 
@@ -121,7 +144,7 @@ public class HallOfFameView extends JPanel {
 		return null;
 
 	}
-	
+
 	private class BackButtonListener implements ActionListener {
 
 		@Override

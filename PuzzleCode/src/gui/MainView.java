@@ -54,8 +54,10 @@ public class MainView {
 	JButton[] menuPanelBtnsArray;
 	Map<JButton, JLabel> btnLabels; 
 
+	//views instances
 	private JPanel crosswordView = null;
-	private JPanel welcomePanel;
+	private JPanel welcomePanel = null;
+	private JPanel addHintView = null;
 
 
 	/**
@@ -217,6 +219,10 @@ public class MainView {
 	void hallOfFameBtnClicked() {
 		showHallOfFameView();
 	}
+	
+	void addHintsClicked() {
+		showAddHintView();
+	}
 
 	/**
 	 * switch to PrepareView card
@@ -228,9 +234,9 @@ public class MainView {
 		}
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		setSizes();
+		cl.show(cardPanel, Window.PrepareGame.toString());
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		cl.show(cardPanel, Window.PrepareGame.toString());
 	}
 
 	/**
@@ -244,9 +250,9 @@ public class MainView {
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		((CrosswordView)crosswordView).setSizes();
+		cl.show(cardPanel,Window.Crossword.toString());
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		cl.show(cardPanel,Window.Crossword.toString());
 	}
 
 	/**
@@ -270,7 +276,11 @@ public class MainView {
 		}
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		setSizes();
 		cl.show(cardPanel,Window.Welcome.toString());
+
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 	}
 
 	/**
@@ -279,9 +289,32 @@ public class MainView {
 	void showHallOfFameView() {
 		HallOfFameView view = HallOfFameView.start();
 		cardPanel.add(view, Window.HallOfFame.toString());
-
+		setSizes();
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.HallOfFame.toString());
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+
+	}
+	
+	/**
+	 * switch to addHint view
+	 */
+	void showAddHintView() {
+		if (addHintView == null) {
+			addHintView = AddHintsView.start();
+			cardPanel.add(addHintView, Window.AddHint.toString());
+		}
+		
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.AddHint.toString());
+		setSizes();
+
+		frame.setMinimumSize(new Dimension(FRAME_WIDTH *2, FRAME_HEIGHT));
+		frame.setPreferredSize(new Dimension(FRAME_WIDTH*2, FRAME_HEIGHT));
+		frame.setMaximumSize(new Dimension(FRAME_WIDTH*2, FRAME_HEIGHT));
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 	}
 
 

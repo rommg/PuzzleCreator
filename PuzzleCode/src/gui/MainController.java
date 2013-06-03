@@ -29,6 +29,11 @@ class MainController extends AbstractController<MainModel, MainView>{
 				view.hallOfFameBtnClicked();
 				return;
 			}
+			
+			if (lbl.getText().compareTo("Add Hints") == 0) {
+				view.addHintsClicked();
+				return;
+			}
 				
 		}
 	}

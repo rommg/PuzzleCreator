@@ -1,5 +1,7 @@
 package gui;
 
+import gui.CrosswordView.HintCounterLabel;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,22 +24,23 @@ import javax.swing.JPopupMenu;
  */
 final class HintPopupMenu extends JPopupMenu {
 	private Hint[] hintArray;
-	private int usedHintsCounter;
 	JDefinitionLabel label;
+	HintCounterLabel hintCounterLabel;
 
-	HintPopupMenu(JDefinitionLabel label, int entityID) {
+	HintPopupMenu(JDefinitionLabel label, int entityID, HintCounterLabel hintCounterLabel) {
 		//GuiDBConnector conn = new GuiDDBconnectorImpl();
 		//hintsList = conn.getHints(entityID);
 		// for now
 		// hintList = Hint[hintsList.size]; static decleration
 		hintArray = new Hint[5];// for now
 		this.label = label;
+		this.hintCounterLabel = hintCounterLabel;
 		buildPopupSubMenus();
 	}
-
-	public int getUsedHintsCounter() {
-		return usedHintsCounter;
-	}
+//
+//	public int getUsedHintsCounter() {
+//		return usedHintsCounter;
+//	}
 
 	private void buildPopupSubMenus() {
 
@@ -62,6 +65,7 @@ final class HintPopupMenu extends JPopupMenu {
 			add(new HintItem(hintArray[i].getHintText()));
 		}
 	}
+	
 
 	private class HintItem extends JPanel {
 		private final String hintText;
@@ -102,7 +106,7 @@ final class HintPopupMenu extends JPopupMenu {
 					JButton btn = (JButton) e.getSource();
 					btn.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/unlocked.png")));
 					btn.setEnabled(false);
-					HintPopupMenu.this.usedHintsCounter++; // increment the hints used in this popup
+					HintPopupMenu.this.hintCounterLabel.updateCounter();
 					this.lbl.setText("<html><p><left>&nbsp;&nbsp;&nbsp;&nbsp;" + HintItem.this.hintText);
 
 				}
