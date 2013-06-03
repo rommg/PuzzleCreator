@@ -109,4 +109,12 @@ PRIMARY KEY(id),
 CONSTRAINT fk_PredicateHintId FOREIGN KEY(predicate_id) REFERENCES PREDICATES(id),
 CONSTRAINT fk_EntityHintId FOREIGN KEY(entity_id) REFERENCES ENTITIES(id)
 );
+
+
+CREATE TABLE BEST_SCORES (
+user_name varchar(100) NOT NULL, 
+score int NOT NULL, 
+date datetime NOT NULL
+);
+
 -- ------------------------------------------------------------------------------------------------
