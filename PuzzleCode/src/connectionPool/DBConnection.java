@@ -117,6 +117,7 @@ public class DBConnection {
 		String str = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = getConnection();
+		conn.setAutoCommit(false);
 		Statement stmt = conn.createStatement();
 		Logger.writeToLog("Start to execute SQL script file: " + sqlScriptPath);
 
@@ -136,7 +137,6 @@ public class DBConnection {
 			// Use ";" as a delimiter for each request
 			String[] instruction = strBuffer.toString().split(";");
 
-			conn.setAutoCommit(false);
 			for(int i = 0; i<instruction.length; i++) {
 				if(!instruction[i].trim().equals("")) {
 					stmt.executeUpdate(instruction[i]);
@@ -169,10 +169,22 @@ public class DBConnection {
 				}
 			}
 			if (conn != null) {
+				safelySetAutoCommit(conn);
 				freeConnection(conn);					 
 			}
 		}	
 
+	}
+	
+	/**
+	 * Attempts to set the connection back to auto-commit, ignoring errors.
+	 */
+	private static void safelySetAutoCommit(Connection conn) {
+		try {
+			conn.setAutoCommit(true);
+		} catch (Exception e) {
+			Logger.writeErrorToLog("failed to set auto commit" + e.getMessage());
+		}
 	}
 
 	// Methods from DBConnector, not yet used here: //
