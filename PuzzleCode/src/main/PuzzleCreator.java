@@ -32,7 +32,8 @@ public class PuzzleCreator {
 	public static void main(String[] args) {
 		
 		if (args.length != 2){
-			Logger.writeErrorToLog("Wrong number of arguments");
+			//Logger hasn't been initialized yet
+			System.out.println("Wrong number of arguments");
 			return;
 		}
 		appDir = args[0];
@@ -53,6 +54,11 @@ public class PuzzleCreator {
 
 		//createDB();
 
+		//MassiveImporter.runMassiveImporter();
+		//AlgorithmRunner.runAlgorithm();
+		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
+		
+		
 		//TODO: move the call to closeAllDBConnections to the MainView thread. 
 		//closeAllDBConnections();
 
@@ -68,21 +74,21 @@ public class PuzzleCreator {
 	}
 
 	/**
-	 * This method runs SQL scripts 01 02 03 04 
+	 * Create the database - run the SQL scripts. 
 	 */
 	private static void createDB() {
 		try {
+			DBConnection.executeSqlScript(appDir + "sql\\00 create_schema_and_tables.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\01 insert_default_topics.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\02 insert_default_definitions.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\03 insert_default_definitions_topics.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\04 insert_default_predicates.sql");
+			DBConnection.executeSqlScript(appDir + "sql\\05 load_yago_data.sql");
+			DBConnection.executeSqlScript(appDir + "sql\\06 create_relevant_data.sql");
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("Executing SQL script failed" + e.getMessage());
+			//TODO: Report an issue to the user through GUI
 		}
-
-		MassiveImporter.runMassiveImporter();
-		AlgorithmRunner.runAlgorithm();
-		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
 	}
 
 }

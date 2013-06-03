@@ -106,12 +106,19 @@ public class DBConnection {
 		return resultList;
 	}
 
+	/**
+	 * 
+	 * @param sqlScriptPath - file path of the SQL script file. 
+	 * Comments in the script must appear after "--" in a new line. 
+	 * @throws SQLException - if roll-backing didn't succeed 
+	 */
 	public static void executeSqlScript(String sqlScriptPath) throws SQLException
 	{
 		String str = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = getConnection();
 		Statement stmt = conn.createStatement();
+		Logger.writeToLog("Start to execute SQL script file: " + sqlScriptPath);
 
 		try
 		{
@@ -119,6 +126,9 @@ public class DBConnection {
 			BufferedReader bufferedReader = new BufferedReader(fr);
 
 			while((str = bufferedReader.readLine()) != null) {
+				if(str.startsWith("--")) {
+					continue;
+				}
 				strBuffer.append(str);
 			}
 			bufferedReader.close();
@@ -126,12 +136,26 @@ public class DBConnection {
 			// Use ";" as a delimiter for each request
 			String[] instruction = strBuffer.toString().split(";");
 
+			conn.setAutoCommit(false);
 			for(int i = 0; i<instruction.length; i++) {
 				if(!instruction[i].trim().equals("")) {
 					stmt.executeUpdate(instruction[i]);
-					Logger.writeToLog(instruction[i]);
+					Logger.writeToLog(instruction[i]+";");
 				}
-			}             
+			}
+			conn.commit();
+			Logger.writeToLog("Commited transaction Successfully");
+		}
+		catch(SQLException sqlE) {
+			Logger.writeErrorToLog("Update transaction is not complete: " + sqlE.getMessage());
+			try {
+				conn.rollback();
+				Logger.writeToLog("Rollback Successfully");
+			} catch (SQLException sqlE2) {
+				Logger.writeErrorToLog("failed when rollbacking - " + sqlE.getMessage());
+				throw new SQLException();
+				// TODO: figure out how to handle that, throw exception? then what?
+			}
 		}
 		catch(Exception e) {
 			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());

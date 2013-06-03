@@ -40,7 +40,8 @@ CONSTRAINT fk_DefinitionId FOREIGN KEY(definition_id) REFERENCES DEFINITIONS(id)
 
 CREATE TABLE PREDICATES (
 id int NOT NULL AUTO_INCREMENT, 
-yago_predicate varchar(50) NOT NULL, -- predicate
+-- predicate
+yago_predicate varchar(50) NOT NULL,
 subject_str varchar(250),
 object_str varchar(250),
 PRIMARY KEY(id),
@@ -101,8 +102,10 @@ CONSTRAINT fk_EntityForWordId FOREIGN KEY(entity_id) REFERENCES ENTITIES(id)
 
 CREATE TABLE HINTS (
 id int NOT NULL AUTO_INCREMENT, 
-predicate_id int NOT NULL, -- predicate
-yago_hint varchar(250) NOT NULL, -- subject or object
+-- predicate
+predicate_id int NOT NULL,
+-- subject or object
+yago_hint varchar(250) NOT NULL,
 entity_id int NOT NULL, 
 is_entity_subject boolean NOT NULL, 
 PRIMARY KEY(id),
