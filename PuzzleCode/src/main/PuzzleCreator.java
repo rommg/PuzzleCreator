@@ -30,14 +30,14 @@ public class PuzzleCreator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Logger.initialize(true);
+		
 		if (args.length != 2){
 			Logger.writeErrorToLog("Wrong number of arguments");
 			return;
 		}
 		appDir = args[0];
 		String password = args[1]; 
-		
+		Logger.initialize(true);
 
 		connectionPool = new ConnectionPool("jdbc:mysql://"+ dbServerAddress +":"+ dbServerPort +"/"+ schemaName,
 				username, password);
@@ -53,15 +53,19 @@ public class PuzzleCreator {
 
 		//createDB();
 
+		//TODO: move the call to closeAllDBConnections to the MainView thread. 
+		//closeAllDBConnections();
+
+	}
+
+	public static void closeAllDBConnections() {
 		try {
 			connectionPool.closeConnections();
 			Logger.writeToLog("Closed all connections");
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("ConnectionPool failed to close connections" + e.getMessage());
 		}
-
 	}
-
 
 	/**
 	 * This method runs SQL scripts 01 02 03 04 
