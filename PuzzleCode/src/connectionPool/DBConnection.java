@@ -106,12 +106,20 @@ public class DBConnection {
 		return resultList;
 	}
 
+	/**
+	 * 
+	 * @param sqlScriptPath - file path of the SQL script file. 
+	 * Comments in the script must appear after "--" in a new line. 
+	 * @throws SQLException - if roll-backing didn't succeed 
+	 */
 	public static void executeSqlScript(String sqlScriptPath) throws SQLException
 	{
 		String str = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = getConnection();
+		conn.setAutoCommit(false);
 		Statement stmt = conn.createStatement();
+		Logger.writeToLog("Start to execute SQL script file: " + sqlScriptPath);
 
 		try
 		{
@@ -119,6 +127,9 @@ public class DBConnection {
 			BufferedReader bufferedReader = new BufferedReader(fr);
 
 			while((str = bufferedReader.readLine()) != null) {
+				if(str.startsWith("--")) {
+					continue;
+				}
 				strBuffer.append(str);
 			}
 			bufferedReader.close();
@@ -129,9 +140,22 @@ public class DBConnection {
 			for(int i = 0; i<instruction.length; i++) {
 				if(!instruction[i].trim().equals("")) {
 					stmt.executeUpdate(instruction[i]);
-					Logger.writeToLog(instruction[i]);
+					Logger.writeToLog(instruction[i]+";");
 				}
-			}             
+			}
+			conn.commit();
+			Logger.writeToLog("Commited transaction Successfully");
+		}
+		catch(SQLException sqlE) {
+			Logger.writeErrorToLog("Update transaction is not complete: " + sqlE.getMessage());
+			try {
+				conn.rollback();
+				Logger.writeToLog("Rollback Successfully");
+			} catch (SQLException sqlE2) {
+				Logger.writeErrorToLog("failed when rollbacking - " + sqlE.getMessage());
+				throw new SQLException();
+				// TODO: figure out how to handle that, throw exception? then what?
+			}
 		}
 		catch(Exception e) {
 			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());
@@ -145,10 +169,22 @@ public class DBConnection {
 				}
 			}
 			if (conn != null) {
+				safelySetAutoCommit(conn);
 				freeConnection(conn);					 
 			}
 		}	
 
+	}
+	
+	/**
+	 * Attempts to set the connection back to auto-commit, ignoring errors.
+	 */
+	private static void safelySetAutoCommit(Connection conn) {
+		try {
+			conn.setAutoCommit(true);
+		} catch (Exception e) {
+			Logger.writeErrorToLog("failed to set auto commit" + e.getMessage());
+		}
 	}
 
 	// Methods from DBConnector, not yet used here: //

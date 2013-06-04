@@ -57,33 +57,43 @@ public class PuzzleCreator {
 		//
 		MainView.start();
 
-		// createDB();
+		//createDB();
 
+		//MassiveImporter.runMassiveImporter();
+		//AlgorithmRunner.runAlgorithm();
+		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
+		
+		
+		//TODO: move the call to closeAllDBConnections to the MainView thread. 
+		//closeAllDBConnections();
+
+	}
+
+	public static void closeAllDBConnections() {
 		try {
 			connectionPool.closeConnections();
 			Logger.writeToLog("Closed all connections");
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("ConnectionPool failed to close connections" + e.getMessage());
 		}
-
 	}
 
 	/**
-	 * This method runs SQL scripts 01 02 03 04
+	 * Create the database - run the SQL scripts. 
 	 */
 	private static void createDB() {
 		try {
+			DBConnection.executeSqlScript(appDir + "sql\\00 create_schema_and_tables.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\01 insert_default_topics.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\02 insert_default_definitions.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\03 insert_default_definitions_topics.sql");
 			DBConnection.executeSqlScript(appDir + "sql\\04 insert_default_predicates.sql");
+			DBConnection.executeSqlScript(appDir + "sql\\05 load_yago_data.sql");
+			DBConnection.executeSqlScript(appDir + "sql\\06 create_relevant_data.sql");
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("Executing SQL script failed" + e.getMessage());
+			//TODO: Report an issue to the user through GUI
 		}
-
-		MassiveImporter.runMassiveImporter();
-		// AlgorithmRunner.runAlgorithm();
-		// GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
 	}
 
 }
