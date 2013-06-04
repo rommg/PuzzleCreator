@@ -21,19 +21,19 @@ public class AlgorithmRunner {
 	protected static List<Answer> answers = new ArrayList<Answer>();
 
 	/**
-	 * @param args
+	 * 
+	 * @param topics - an array of id numbers of puzzle topics
+	 * @param difficulty - integer for easy, medium or hard
+	 * @return
 	 */
-	public static BoardSolution runAlgorithm() {
-		String[] topics = { "geo", "general", "israel" };
+	public static BoardSolution runAlgorithm(int[] topics, int difficulty) {
 		BoardSolution result = null;
-		//DBUtils.getPossibleAnswers(topics, 12); - guy asked to comment this
 
-		// if (!readAnswersFile(filePath)) {
-		// return false;
-		// }
-
-		//TODO remove use of mock function after tests
-		createMockAnswers();
+		//TODO remove use of mock function after tests and mock max length
+		int maxLength = 8;
+		//createMockAnswers();
+		answers = DBUtils.getPossibleAnswers(topics, 8);
+		
 		Logger.writeToLog("Number of answers = " + answers.size());
 
 		board = createBoard(13);
@@ -48,6 +48,7 @@ public class AlgorithmRunner {
 			Logger.writeErrorToLog("impossible data");
 			result = new BoardSolution(null,null,false);
 		} else {
+			DBUtils.setHintsAndDefinitions(definitions);
 			result = new BoardSolution(board, definitions, true);
 			//AlgorithmUtils.drawBoard(board, definitions);
 			printResults();

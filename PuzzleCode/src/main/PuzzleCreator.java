@@ -9,49 +9,55 @@ import connectionPool.*;
 import puzzleAlgorithm.*;
 import utils.*;
 import massiveImport.*;
+
 public class PuzzleCreator {
 
 	/**
 	 * appDir should end with file separator
 	 */
-	public static String appDir = ""; 
+	public static String appDir = "";
 	public static String homeDir = System.getProperty("user.home");
 	public static ConnectionPool connectionPool = null;
 
-	// These parameters won't be hard coded, need to retrieve them from the user through GUI
+	// These parameters won't be hard coded, need to retrieve them from the user
+	// through GUI
 	public static String dbServerAddress = "localhost";
 	public static String dbServerPort = "3306";
 	public static String username = "root";
-	//public static String password = ""; // enter your password 
+	// public static String password = ""; // enter your password
 	public static String schemaName = "riddle";
-
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Logger.initialize(true);
-		if (args.length != 2){
-			Logger.writeErrorToLog("Wrong number of arguments");
+
+		if (args.length != 2) {
+			System.out.println("Wrong number of arguments");
 			return;
 		}
 		appDir = args[0];
-		String password = args[1]; 
-		
+		String password = args[1];
 
-		connectionPool = new ConnectionPool("jdbc:mysql://"+ dbServerAddress +":"+ dbServerPort +"/"+ schemaName,
+		Logger.initialize(true);
+		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
 				username, password);
-		if(!connectionPool.createPool()) {
+		if (!connectionPool.createPool()) {
 			Logger.writeErrorToLog("Failed to create the Connections Pool");
 			return;
 		}
 		Logger.writeToLog("Connections Pool was created");
-		//TODO: To Delete
-//		DBUtils.test();
+
+		// TODO: remove debug algorithm run
+//		int[] topics = {4,5};
+//		AlgorithmRunner.runAlgorithm(topics, 1);
+		
+		// TODO: To Delete
+		// DBUtils.test();
 		//
 		MainView.start();
 
-		//createDB();
+		// createDB();
 
 		try {
 			connectionPool.closeConnections();
@@ -62,9 +68,8 @@ public class PuzzleCreator {
 
 	}
 
-
 	/**
-	 * This method runs SQL scripts 01 02 03 04 
+	 * This method runs SQL scripts 01 02 03 04
 	 */
 	private static void createDB() {
 		try {
@@ -77,8 +82,8 @@ public class PuzzleCreator {
 		}
 
 		MassiveImporter.runMassiveImporter();
-		AlgorithmRunner.runAlgorithm();
-		//GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
+		// AlgorithmRunner.runAlgorithm();
+		// GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
 	}
 
 }

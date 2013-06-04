@@ -11,7 +11,7 @@ import utils.Logger;
 public class CrosswordModel {
 
 	private static BoardSolution getBoard() {
-		return AlgorithmUtils.createPuzzle(null, null); // right now no need to pass anything, only mockup
+		return AlgorithmUtils.createPuzzle(0, null); // right now no need to pass anything, only mockup
 	}
 
 	private static void draw(CrosswordView view, BoardSolution solution) {
