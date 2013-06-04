@@ -67,8 +67,6 @@ final class AddHintsView extends JPanel {
 	private JPanel objectPanel;
 
 	private List<String> entityList;
-	private List<String> predicateSubjectList;
-	private List<String> predicateObjectList;
 	private List<String> predicateList; // merging of predicateSubjectList + predicateObjectList
 
 
@@ -98,7 +96,7 @@ final class AddHintsView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				predicatePanel.getComponent(0).setEnabled(true);
+				predicatePanel.setVisible(true);
 			}
 		});
 		subjectSearchPanel.add(box1);
@@ -106,10 +104,10 @@ final class AddHintsView extends JPanel {
 
 
 		predicatePanel = new JPanel();
+		predicatePanel.setVisible(false);
 		predicatePanel.setBorder(new TitledBorder("Knowledge Relation"));
 		JComboBox<String> box2 = createAutoCompleteBox(predicateList);
 		box2.addItemListener(new PredicatedItemListener());
-		box2.setEnabled(false);
 		predicatePanel.add(box2);
 		knowledgeDetailsPanel.add(predicatePanel);
 
@@ -155,8 +153,6 @@ final class AddHintsView extends JPanel {
 	private void getPredicates() {
 		// query DB for predicates
 		// tempPredicateList = 
-		predicateSubjectList = new ArrayList<String>();
-		predicateObjectList = new ArrayList<String>();
 		literalFacts = new ArrayList<String>();
 		
 		List<Map<String,String>> tempPredicateList = new ArrayList<Map<String,String>>();
@@ -166,21 +162,18 @@ final class AddHintsView extends JPanel {
 			if ( object == null) {
 				literalFacts.add(subject); // object_str is a string for a literal fact
 			}
-			else {
-				predicateSubjectList.add(object);
-			}
-			predicateSubjectList.add(subject);
+			predicateList.add(subject);
+			predicateList.add(object);
 		}
 
 		predicateList = new ArrayList<String>();
-		predicateSubjectList.add("Populated by ? people");
-		literalFacts.add("Populated by ? people");
-		predicateSubjectList.add("Created");
-		predicateObjectList.add("was created by");
-
 		predicateList.add("");
-		predicateList.addAll(predicateSubjectList);
-		predicateList.addAll(predicateObjectList);
+		predicateList.add("Populated by ? people");
+		literalFacts.add("Populated by ? people");
+		predicateList.add("Created ?");
+		predicateList.add("was created by ?");
+
+		
 
 
 	}
@@ -341,13 +334,7 @@ final class AddHintsView extends JPanel {
 	 */
 	private void addHintLbl(String subject, String predicate, String object) {
 		if (subject != "" && predicate != "" && object != "")
-			if (predicateSubjectList.contains(predicate)) { // need to replace ? with object
 				lbl.setText(subject + ": " + predicate.replaceAll("\\?", object.toString()));
-			}
-			else { // need to replace ? with subject
-				lbl.setText(object + ": " + predicate.replaceAll("\\?", subject.toString()));
-			}
-
 	}
 }
 
