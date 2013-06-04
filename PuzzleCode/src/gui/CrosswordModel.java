@@ -11,7 +11,7 @@ import utils.Logger;
 public class CrosswordModel {
 
 	private static BoardSolution getBoard() {
-		return AlgorithmUtils.createPuzzle(null, null); // right now no need to pass anything, only mockup
+		return AlgorithmUtils.createPuzzle(0, null); // right now no need to pass anything, only mockup
 	}
 
 	private static void draw(CrosswordView view, BoardSolution solution) {
@@ -70,5 +70,15 @@ public class CrosswordModel {
 			}
 		}
 		return result;
+	}
+	
+	Integer calculateScore(long timeElapsed, Integer usedHints) {
+		double TimeScore = 1000 * Math.pow(0.9, 30000 - timeElapsed);
+		double ManipulatorScore = 1 * Math.pow(0.9, 0 - usedHints);
+		
+		double score = TimeScore + ManipulatorScore;
+		return (int) Math.round(score);
+		//Score = sqrt(TimeScore * ManipulatorScore);
+		
 	}
 }

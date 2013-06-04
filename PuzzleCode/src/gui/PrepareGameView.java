@@ -1,6 +1,7 @@
 package gui;
 
 
+import gui.PrepareGameController.BackListener;
 import gui.PrepareGameController.GoListener;
 
 import javax.swing.AbstractButton;
@@ -45,7 +46,8 @@ public class PrepareGameView extends JPanel {
 	private JPanel centerPanel;
 	private static PrepareGameModel model;
 	private JButton goBtn;
-	private JPanel topicsNamesPanel;
+	private JButton backBtn;
+	private JPanel topicsPanel;
 
 	public PrepareGameView() {
 		initialize();
@@ -74,7 +76,7 @@ public class PrepareGameView extends JPanel {
 		JRadioButton easyRadioBtn = new JRadioButton("Easy");
 		difficultyPanel.add(easyRadioBtn);
 		difficultyBtnsGrp.add(easyRadioBtn);
-		
+
 		JRadioButton mediumHardBtn = new JRadioButton("Medium");
 		difficultyPanel.add(mediumHardBtn);
 		mediumHardBtn.setSelected(true);
@@ -87,18 +89,23 @@ public class PrepareGameView extends JPanel {
 		centerPanel = new JPanel();
 		add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
-		
-		topicsNamesPanel = new JPanel();
-		topicsNamesPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		centerPanel.add(topicsNamesPanel);
-		topicsNamesPanel.setLayout(new GridLayout(0, 2, 0, 0));
-		
-		JPanel panel_1 = new JPanel();
-		centerPanel.add(panel_1);
-		
-				goBtn = new JButton();
-				panel_1.add(goBtn);
-				goBtn.setIcon(new ImageIcon(PrepareGameView.class.getResource("/resources/start-icon.png")));
+
+		JPanel middlePanel = new JPanel();
+		middlePanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		centerPanel.add(middlePanel);
+		middlePanel.setLayout(new GridLayout(0, 2, 0, 0));
+
+		topicsPanel = new JPanel();
+		middlePanel.add(topicsPanel);
+		topicsPanel.setLayout(new GridLayout(4, 2, 0, 0));
+
+		JPanel btnPanel = new JPanel();
+		centerPanel.add(btnPanel);
+
+		goBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/forward.png")));
+		backBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/back.png")));
+		btnPanel.add(backBtn);
+		btnPanel.add(goBtn);
 
 		addTopicsCheckBoxes();
 	}
@@ -115,20 +122,20 @@ public class PrepareGameView extends JPanel {
 		}
 		return lst;
 	}
-	
+
 	public int getDifficulty() {
-		 for (Enumeration<AbstractButton> buttons = difficultyBtnsGrp.getElements(); buttons.hasMoreElements();) {
-	            AbstractButton button = buttons.nextElement();
-	            if (button.isSelected()) {
-	                if (button.getText().compareTo("Easy") == 0)
-	                	return 0;
-	                if (button.getText().compareTo("Medium") == 0)
-	                	return 1;
-	                if (button.getText().compareTo("Hard") == 0)
-	                	return 2;
-	            }
-	        }
-		 return -1; //Error - no btn selected.
+		for (Enumeration<AbstractButton> buttons = difficultyBtnsGrp.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+			if (button.isSelected()) {
+				if (button.getText().compareTo("Easy") == 0)
+					return 0;
+				if (button.getText().compareTo("Medium") == 0)
+					return 1;
+				if (button.getText().compareTo("Hard") == 0)
+					return 2;
+			}
+		}
+		return -1; //Error - no btn selected.
 
 	}
 
@@ -137,7 +144,7 @@ public class PrepareGameView extends JPanel {
 		for (String topic : TopicsList) {
 			JCheckBox box = new JCheckBox();
 			box.setText(topic);
-			topicsNamesPanel.add(box);
+			topicsPanel.add(box);
 		}
 	}
 
@@ -156,5 +163,9 @@ public class PrepareGameView extends JPanel {
 
 	void addGoListener(GoListener listener) {
 		goBtn.addActionListener(listener);
+	}
+	
+	void addBackListener(BackListener listener) {
+		backBtn.addActionListener(listener);
 	}
 }

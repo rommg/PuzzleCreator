@@ -10,9 +10,16 @@ import puzzleAlgorithm.PuzzleSquare;
 public class AlgorithmUtils {
 	
 	
-	public static BoardSolution createPuzzle(String difficulty, List<String> topics){
-		//TODO
-		return AlgorithmRunner.runAlgorithm();
+	public static BoardSolution createPuzzle(int difficulty, int[] topics){
+		//TODO remove condition and mock topics
+		if (topics == null){
+			topics = new int[3];
+			topics[0] = 3;
+			topics[1] = 4;
+			topics[2] = 5;
+		}
+		
+		return AlgorithmRunner.runAlgorithm(topics,difficulty);
 		
 	}
 	

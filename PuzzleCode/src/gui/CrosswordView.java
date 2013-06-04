@@ -53,6 +53,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.BorderLayout;
 
 
@@ -76,18 +78,19 @@ public class CrosswordView extends JPanel {
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<JSquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
 	private List<HintPopupMenu> hintPopupMenuList;
-	
+
 	//CrosswordView dimensions
 	private final int PANEL_WIDTH = 1300;
 	private final int PANEL_HEIGHT = 1000;
 
 	//getters & setters 
-	
+
 	List<PuzzleDefinition> getDefinitions() {
 		return definitions;
 	}
 
 	List<PuzzleDefinition> definitions;
+	private HintCounterLabel hintCounterLabel;
 
 	static JPanel start() {
 		CrosswordView view = new CrosswordView();
@@ -114,7 +117,7 @@ public class CrosswordView extends JPanel {
 		timer = new TimerJLabel();
 		timer.start();
 		statsPanel.add(timer);
-		HintCounterLabel hintCounterLabel = new HintCounterLabel();
+		hintCounterLabel = new HintCounterLabel();
 		hintCounterLabel.setFont(timer.getFont());
 		statsPanel.add(hintCounterLabel);
 		add(statsPanel, BorderLayout.NORTH);
@@ -138,7 +141,7 @@ public class CrosswordView extends JPanel {
 		CrosswordModel.getBoardSolutionAndDraw(this);
 
 	}
-	
+
 	void setSizes() {
 		MainView.view.frame.setMinimumSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
 		MainView.view.frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -244,7 +247,7 @@ public class CrosswordView extends JPanel {
 		addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); 
 
 		addPopupMenusToDefinitions();
-		
+
 		boardPanel.repaint();	
 	}
 
@@ -256,7 +259,7 @@ public class CrosswordView extends JPanel {
 
 		//add popups to definitionLabels
 		for (JDefinitionLabel lbl : definitionLabelList) {
-			HintPopupMenu popup = new HintPopupMenu(lbl, lbl.getDef().getEntityId());
+			HintPopupMenu popup = new HintPopupMenu(lbl, lbl.getDef().getEntityId(), hintCounterLabel);
 			hintPopupMenuList.add(popup);
 
 			lbl.add(popup);
@@ -271,7 +274,7 @@ public class CrosswordView extends JPanel {
 			}
 		}
 	}
-	
+
 	/*
 	 * technical need to map (i,j) - > Definition
 	 */
@@ -443,35 +446,25 @@ public class CrosswordView extends JPanel {
 	void addPauseListener(ActionListener listener) {
 		btnPause.addActionListener(listener);
 	}
-	
+
 	/**
 	 * inner class for hint usage counter
 	 * @author yonatan
 	 *
 	 */
-	private class HintCounterLabel extends JLabel{
-		private Timer t;
-		public HintCounterLabel() {
-			super(new ImageIcon(CrosswordView.class.getResource("/resources/tip_big.png")),SwingConstants.LEADING);
-			t = new Timer(500, new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					int sum = 0;
-					for (HintPopupMenu popupmenu : hintPopupMenuList) { // sum the counters over all popupmenus
-						sum+=popupmenu.getUsedHintsCounter();
-					}
-					
-					//build string to represent counter
-					String text = new Integer(sum / 10).toString() + new Integer(sum % 10).toString();
-					//update counter text
-					HintCounterLabel.this.setText(text); 
-				}
-			});
-			t.setInitialDelay(0);
-			t.start();
-		}
-	
-	}
+	class HintCounterLabel extends JLabel{
+		private int counter = 0;
 
+		void updateCounter() {
+			counter++;
+			//build string to represent counter
+			String text = new Integer(counter / 10).toString() + new Integer(counter % 10).toString();
+			//update counter text
+			this.setText(text); 
+		}
+		HintCounterLabel() {
+			super(new ImageIcon(CrosswordView.class.getResource("/resources/tip_big.png")),SwingConstants.LEADING);
+			this.setText("00");
+		}
+	}
 }
