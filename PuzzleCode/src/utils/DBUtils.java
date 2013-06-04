@@ -67,7 +67,11 @@ public class DBUtils {
 		for (PuzzleDefinition puzzleDefinition : pDefinitions) {
 			int entityId = puzzleDefinition.getEntityId();
 			int rand = (int)(Math.random() * definitions.get(entityId).size());
-			puzzleDefinition.setDefinition(definitions.get(entityId).get(rand));
+			try {
+				puzzleDefinition.setDefinition(definitions.get(entityId).get(rand));
+			} catch (Exception ex){
+				System.out.println("bla bla");
+			}
 			definitions.get(entityId).remove(rand);
 			if (definitions.get(entityId).size() != 0){
 				if (hints.keySet().contains(entityId)){
@@ -151,7 +155,7 @@ public class DBUtils {
 				System.out.println("ERROR: too long answer");
 			}
 		}
-		
+
 		List<PuzzleDefinition> pDefinitions = new ArrayList<PuzzleDefinition>();
 		for (int i = 1; i < 32683; i++) {
 			PuzzleDefinition pd = new PuzzleDefinition(0, 0, 0, 0, 0, 'R');
@@ -186,6 +190,11 @@ public class DBUtils {
 			System.out.println("All Entities have definitions!");
 		}
 	}
-	
+
 	//TODO: end to remove
+
+	public String[] getTriviaQuestion(){
+		//TODO saleet
+		return null;
+	}
 }
