@@ -76,7 +76,7 @@ public class CrosswordView extends JPanel {
 
 
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
-	private List<JSquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
+	private List<SquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
 	private List<HintPopupMenu> hintPopupMenuList;
 
 	//CrosswordView dimensions
@@ -92,8 +92,8 @@ public class CrosswordView extends JPanel {
 	List<PuzzleDefinition> definitions;
 	private HintCounterLabel hintCounterLabel;
 
-	static JPanel start() {
-		CrosswordView view = new CrosswordView();
+	static JPanel start(BoardSolution solution) {
+		CrosswordView view = new CrosswordView(solution);
 		@SuppressWarnings("unused")
 		CrosswordController controller = new CrosswordController(null, view);
 		return view;
@@ -101,8 +101,9 @@ public class CrosswordView extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	private CrosswordView() {
+	private CrosswordView(BoardSolution solution) {
 		initialize();
+		drawBoard(solution.getBoard(), solution.getDefinitions());
 		this.setVisible(true);
 	}
 
@@ -137,9 +138,6 @@ public class CrosswordView extends JPanel {
 
 		JButton btnDone = new JButton("Done");
 		BtnPanel.add(btnDone);
-
-		CrosswordModel.getBoardSolutionAndDraw(this);
-
 	}
 
 	void setSizes() {
@@ -154,7 +152,7 @@ public class CrosswordView extends JPanel {
 		boardDefCount = new int[size][size];
 		boardDefs =  new HashMap<Integer, Map<Integer, List<PuzzleDefinition>>>(); // Map required because cannot make such an array
 		definitionLabelList = new ArrayList<JDefinitionLabel>();
-		sqaureTextFieldList = new ArrayList<JSquareTextField>();
+		sqaureTextFieldList = new ArrayList<SquareTextField>();
 
 		initializeCellToDefMap(size); 
 
@@ -173,7 +171,7 @@ public class CrosswordView extends JPanel {
 			for (int j=0; j<size; j++) {
 				switch (boardDefCount[i][j]) {
 				case 0 : { // regular square
-					JSquareTextField txtLbl = new JSquareTextField();
+					SquareTextField txtLbl = new SquareTextField();
 					boardPanelHolders[i][j] = new RegularSquare(txtLbl, i, j);
 					sqaureTextFieldList.add(txtLbl);
 					break;
@@ -314,28 +312,28 @@ public class CrosswordView extends JPanel {
 		case 'r': {
 			for (int col = def.getBeginColumn(); col<def.getBeginColumn() + def.getAnswer().length; col++) {
 				boardPanelHolders[def.getBeginRow()][col].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
+				((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}
 		case 'l':{
 			for (int col = def.getBeginColumn(); col>def.getBeginColumn() - def.getAnswer().length; col--) {
 				boardPanelHolders[def.getBeginRow()][col].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
+				((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}
 		case 'u': {
 			for (int row = def.getBeginRow(); row>def.getBeginRow() - def.getAnswer().length; row--) {
 				boardPanelHolders[row][def.getBeginColumn()].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
+				((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}
 		case 'd': {
 			for (int row = def.getBeginRow(); row<def.getBeginRow() + def.getAnswer().length; row++) {
 				boardPanelHolders[row][def.getBeginColumn()].getComponent(0).setBackground(color);
-				((JSquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
+				((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
 		}

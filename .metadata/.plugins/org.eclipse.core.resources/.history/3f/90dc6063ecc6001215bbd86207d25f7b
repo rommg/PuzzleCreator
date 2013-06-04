@@ -1,8 +1,0 @@
-package gui;
-
-abstract class Controller<T,S> {
-	protected T view;
-	protected S model;
-	
-	class()
-}

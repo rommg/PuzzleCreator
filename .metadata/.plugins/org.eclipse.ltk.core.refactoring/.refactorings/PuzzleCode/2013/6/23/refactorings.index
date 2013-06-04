@@ -4,3 +4,32 @@
 1370175331327	Convert local variable 'suggestor' to field
 1370175599014	Delete element
 1370243880745	Rename type 'AutoSuggest'
+1370251896325	Convert local variable 'objectPanel' to field
+1370253675453	Convert local variable 'predicatePanel' to field
+1370253961694	Convert local variable 'knowledgeDetailsPanel' to field
+1370335406636	Convert local variable 'subjectSearchPanel' to field
+1370335931969	Convert local variable 'encapsulatingPanel' to field
+1370336192075	Rename field 'knowledge'
+1370342675161	Delete element
+1370342720939	Delete element
+1370342733601	Delete element
+1370343166465	Rename method 'addHintsClicked'
+1370343359824	Convert local variable 'btnSkip' to field
+1370345305019	Convert local variable 'animationLbl' to field
+1370346672983	Convert local variable 'animationPanel' to field
+1370352600502	Rename field 'encapsulatingPanel'
+1370356874660	Rename compilation unit 'AutoCompleteTextField.java'
+1370356901901	Delete element
+1370357359224	Rename type variable 'E'
+1370358057699	Delete element
+1370359468183	Rename method 'createComboBox'
+1370359588724	Rename local variable 'panel_1'
+1370359597946	Rename local variable 'panel_2'
+1370360456192	Delete element
+1370360708589	Delete element
+1370364033107	Rename type 'JSquareTextField'
+1370364132446	Delete element
+1370364600411	Delete element
+1370367754862	Convert local variable 'list' to field
+1370371446493	Convert local variable 'addBtn' to field
+1370372955112	Rename method 'addHintToList'

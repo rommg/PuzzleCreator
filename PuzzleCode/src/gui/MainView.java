@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JSeparator;
 import javax.swing.JPanel;
@@ -21,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
+
+import puzzleAlgorithm.BoardSolution;
 
 import com.sun.java.swing.plaf.windows.resources.windows;
 
@@ -113,14 +116,39 @@ public class MainView {
 		menuPanelBtnsArray = new JButton[MAX_NUM_BUTTONS_IN_MENU];
 		btnLabels = new HashMap<JButton,JLabel>();
 
+		JButton btn = null; 
+
 		// top buttons
-		createButton("Play", "game.png");
-		createButton("Continue Game", "continue.png");
-		createButton("Hall of Fame", "best.png");
+		btn = createButton("Play", "game.png");
+		btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				playBtnClicked();
+			}
+		});
+
+		btn = createButton("Continue Game", "continue.png");
+
+		btn = createButton("Hall of Fame", "best.png");
+		btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hallOfFameBtnClicked();
+			}
+		});
 
 		// middle buttons
 		createButton("Add Definition", "add.png");
-		createButton("Add Hints", "add.png");
+		btn = createButton("Add Hints", "add.png");
+		btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addHintsBtnClicked();
+			}
+		});
 		createButton("Massive Import", "addDB.png");
 
 		// bottom buttons
@@ -152,7 +180,7 @@ public class MainView {
 		frame.setMaximumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 	}
 
-	private void createButton(String text, String resourceName) {
+	private JButton createButton(String text, String resourceName) {
 		JButton btn = new JButton();
 		btn.setLayout(new BorderLayout());
 		JLabel label = new JLabel(text);
@@ -163,6 +191,7 @@ public class MainView {
 		btn.add(image, BorderLayout.WEST);
 		menuPanelBtns.put(text, btn);
 		menuPanelBtnsArray[menuBtnCounter++] = btn;
+		return btn;
 	}
 
 	/**
@@ -215,12 +244,12 @@ public class MainView {
 	void playBtnClicked() {
 		showPrepareView();
 	}
-	
+
 	void hallOfFameBtnClicked() {
 		showHallOfFameView();
 	}
-	
-	void addHintsClicked() {
+
+	void addHintsBtnClicked() {
 		showAddHintView();
 	}
 
@@ -228,10 +257,11 @@ public class MainView {
 	 * switch to PrepareView card
 	 */
 	void showPrepareView() {
-		if (prepareGame == null) {
-			prepareGame = PrepareGameView.start();
-			cardPanel.add(prepareGame, Window.PrepareGame.toString());
-		}
+
+		//create PrepareView Windows afresh
+		prepareGame = PrepareGameView.start();
+		cardPanel.add(prepareGame, Window.PrepareGame.toString());
+
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		setSizes();
 		cl.show(cardPanel, Window.PrepareGame.toString());
@@ -242,9 +272,9 @@ public class MainView {
 	/**
 	 * switch to CrosswordView
 	 */
-	void showCrosswordview() {
+	void showCrosswordview(BoardSolution solution) {
 		if (crosswordView == null) {
-			crosswordView = CrosswordView.start();
+			crosswordView = CrosswordView.start(solution);
 			cardPanel.add(crosswordView, Window.Crossword.toString());
 		}
 
@@ -259,7 +289,8 @@ public class MainView {
 	 * switch to WaitView
 	 */
 	void showWaitView() {
-		JPanel waitView = WaitView.start();
+
+		JPanel waitView = WaitView.start((PrepareGameView) prepareGame);
 		cardPanel.add(waitView, Window.Wait.toString());
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
@@ -296,7 +327,7 @@ public class MainView {
 		frame.setLocationRelativeTo(null);
 
 	}
-	
+
 	/**
 	 * switch to addHint view
 	 */
@@ -305,14 +336,14 @@ public class MainView {
 			addHintView = AddHintsView.start();
 			cardPanel.add(addHintView, Window.AddHint.toString());
 		}
-		
+
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.AddHint.toString());
 		setSizes();
 
-		frame.setMinimumSize(new Dimension(FRAME_WIDTH *2, FRAME_HEIGHT));
-		frame.setPreferredSize(new Dimension(FRAME_WIDTH*2, FRAME_HEIGHT));
-		frame.setMaximumSize(new Dimension(FRAME_WIDTH*2, FRAME_HEIGHT));
+		frame.setMinimumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
+		frame.setPreferredSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
+		frame.setMaximumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}

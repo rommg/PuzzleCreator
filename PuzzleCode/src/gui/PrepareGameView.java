@@ -1,9 +1,4 @@
 package gui;
-
-
-import gui.PrepareGameController.BackListener;
-import gui.PrepareGameController.GoListener;
-
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
@@ -30,21 +25,15 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-
-import puzzleAlgorithm.PuzzleSquare;
-import utils.GuiDBConnector;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class PrepareGameView extends JPanel {
 	private final ButtonGroup difficultyBtnsGrp = new ButtonGroup();
-	List<String> TopicsList;
+	List<String> topicsList;
 	private List<JCheckBox> topicsCheckBoxes;
 	private JPanel centerPanel;
-	private static PrepareGameModel model;
 	private JButton goBtn;
 	private JButton backBtn;
 	private JPanel topicsPanel;
@@ -55,11 +44,7 @@ public class PrepareGameView extends JPanel {
 	}
 
 	static JPanel start() {
-		PrepareGameView view = new PrepareGameView();
-		model = new PrepareGameModel();
-		@SuppressWarnings("unused")
-		PrepareGameController controller = new PrepareGameController(model, view);
-		return view;
+		return new PrepareGameView();
 	}
 
 	private void initialize() {
@@ -103,12 +88,33 @@ public class PrepareGameView extends JPanel {
 		centerPanel.add(btnPanel);
 
 		goBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/forward.png")));
+		goBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				goBtnClicked();
+			}
+		});
 		backBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/back.png")));
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainView.view.showWelcomeView();
+			}
+		});
 		btnPanel.add(backBtn);
 		btnPanel.add(goBtn);
 
 		addTopicsCheckBoxes();
 	}
+
+	void goBtnClicked() {
+		if (getUserSelectedTopics().size() < 1) { // must choose at least one topic
+			// Dialog Box
+			System.out.println("Error veze");
+		}
+		else {
+			MainView.view.showWaitView();
+		}
+	}
+
 
 	/**
 	 * 
@@ -120,6 +126,9 @@ public class PrepareGameView extends JPanel {
 			if (box.isSelected())
 				lst.add(box.getText());
 		}
+
+		//queryDB for topic IDs
+
 		return lst;
 	}
 
@@ -141,9 +150,10 @@ public class PrepareGameView extends JPanel {
 
 	private void addTopicsCheckBoxes() {
 		topicsCheckBoxes = new LinkedList<JCheckBox>();
-		for (String topic : TopicsList) {
+		for (String topic :topicsList) {
 			JCheckBox box = new JCheckBox();
 			box.setText(topic);
+			topicsCheckBoxes.add(box);
 			topicsPanel.add(box);
 		}
 	}
@@ -151,21 +161,13 @@ public class PrepareGameView extends JPanel {
 	private void getTopics() {
 		//topicsList =GuiDBConnector.getTopics();
 		//for now - fixed values
-		TopicsList = new LinkedList<String>();
+		topicsList = new LinkedList<String>();
 
-		TopicsList.add("Geography");
-		TopicsList.add("Cinema");
-		TopicsList.add("Music");
-		TopicsList.add("Television");
-		TopicsList.add("General");
-		TopicsList.add("Israel");
-	}
-
-	void addGoListener(GoListener listener) {
-		goBtn.addActionListener(listener);
-	}
-	
-	void addBackListener(BackListener listener) {
-		backBtn.addActionListener(listener);
+		topicsList.add("Geography");
+		topicsList.add("Cinema");
+		topicsList.add("Music");
+		topicsList.add("Television");
+		topicsList.add("General");
+		topicsList.add("Israel");
 	}
 }

@@ -10,13 +10,13 @@ import java.awt.Color;
  */
 final class RegularSquare extends AbstractSquarePanel{
 	
-	JSquareTextField field;
+	SquareTextField field;
 
-	public JSquareTextField getField() {
+	public SquareTextField getField() {
 		return field;
 	}
 
-	public RegularSquare(JSquareTextField field, int row, int col) {
+	public RegularSquare(SquareTextField field, int row, int col) {
 		super(row, col);
 		super.labelCount = 1;
 		setLayout(new BorderLayout());

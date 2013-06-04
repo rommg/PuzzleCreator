@@ -31,7 +31,7 @@ class MainController extends AbstractController<MainModel, MainView>{
 			}
 			
 			if (lbl.getText().compareTo("Add Hints") == 0) {
-				view.addHintsClicked();
+				view.addHintsBtnClicked();
 				return;
 			}
 				

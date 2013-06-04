@@ -141,9 +141,6 @@ public class DBUtils {
 		return ret;
 	}
 
-
-
-
 	//TODO: remove!!!!
 	public static void test(){
 		int[] topics = {1};
