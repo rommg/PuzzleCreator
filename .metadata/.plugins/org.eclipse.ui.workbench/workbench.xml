@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="41" version="2.0">
+<workbench progressCount="45" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="295" y="154">
 <fastViewData fastViewLocation="1024">
@@ -15,7 +15,7 @@
 <coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="61" y="22"/>
 <coolItem id="adt.actionSet.lint" itemType="typeToolBarContribution" x="53" y="22"/>
 <coolItem id="adt.actionSet.wizards" itemType="typeToolBarContribution" x="38" y="22"/>
-<coolItem id="org.eclipse.datatools.sqltools.sqlscrapbook.SQLScrapbookEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.datatools.sqltools.sqlscrapbook.SQLScrapbookEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="129" y="22"/>
 <coolItem id="org.eclipse.jdt.ui.ClassFileEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
@@ -47,6 +47,13 @@
 <part id="5"/>
 <part id="6"/>
 <part id="7"/>
+<part id="8"/>
+<part id="9"/>
+<part id="10"/>
+<part id="11"/>
+<part id="12"/>
+<part id="13"/>
+<part id="14"/>
 </presentation>
 </folder>
 </info>
@@ -63,10 +70,6 @@
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/MainView.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="38" selectionOffset="8965" selectionTopPixel="4275"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AddHintsView.java" partName="AddHintsView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/AddHintsView.java" title="AddHintsView.java" tooltip="PuzzleCode/src/gui/AddHintsView.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/AddHintsView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="8240" selectionTopPixel="2692"/>
-</editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SquareTextField.java" partName="SquareTextField.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/SquareTextField.java" title="SquareTextField.java" tooltip="PuzzleCode/src/gui/SquareTextField.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/SquareTextField.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="686" selectionTopPixel="52"/>
@@ -81,7 +84,39 @@
 </editor>
 <editor activePart="true" focus="true" id="org.eclipse.wb.core.guiEditor" name="AddHintsView.java" partName="AddHintsView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/AddHintsView.java" title="AddHintsView.java" tooltip="PuzzleCode/src/gui/AddHintsView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/AddHintsView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="36" selectionOffset="4436" selectionTopPixel="602"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="8784" selectionTopPixel="4187"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AddHintsView.java" partName="AddHintsView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/AddHintsView.java" title="AddHintsView.java" tooltip="PuzzleCode/src/gui/AddHintsView.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/AddHintsView.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="10083" selectionTopPixel="2670"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PuzzleCreator.java" partName="PuzzleCreator.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/main/PuzzleCreator.java" title="PuzzleCreator.java" tooltip="PuzzleCode/src/main/PuzzleCreator.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/main/PuzzleCreator.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1451" selectionTopPixel="472"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBConnection.java" partName="DBConnection.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/connectionPool/DBConnection.java" title="DBConnection.java" tooltip="PuzzleCode/src/connectionPool/DBConnection.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/connectionPool/DBConnection.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="7161" selectionTopPixel="2947"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="GuiDBConnector.java" partName="GuiDBConnector.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/utils/GuiDBConnector.java" title="GuiDBConnector.java" tooltip="PuzzleCode/src/utils/GuiDBConnector.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/GuiDBConnector.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBUtilsTest.java" partName="DBUtilsTest.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/utils/DBUtilsTest.java" title="DBUtilsTest.java" tooltip="PuzzleCode/src/utils/DBUtilsTest.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/DBUtilsTest.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="97"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBConnector.java" partName="DBConnector.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/utils/DBConnector.java" title="DBConnector.java" tooltip="PuzzleCode/src/utils/DBConnector.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/DBConnector.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBUtils.java" partName="DBUtils.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/utils/DBUtils.java" title="DBUtils.java" tooltip="PuzzleCode/src/utils/DBUtils.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/DBUtils.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="2200"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AlgorithmUtils.java" partName="AlgorithmUtils.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/utils/AlgorithmUtils.java" title="AlgorithmUtils.java" tooltip="PuzzleCode/src/utils/AlgorithmUtils.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/AlgorithmUtils.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
@@ -113,9 +148,8 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings (89 items)"/>
-<category IMemento.internal.id="Errors"/>
 <category IMemento.internal.id="Warnings"/>
+<category IMemento.internal.id="Warnings (100 of 122 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="300"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -160,10 +194,10 @@
 <viewState/>
 </view>
 <view id="org.eclipse.dltk.debug.ui.ScriptDisplayView" partName="Interactive Console"/>
+<view id="org.eclipse.jdt.ui.SourceView" partName="Declaration"/>
 <view id="org.eclipse.help.ui.HelpView" partName="Help">
 <viewState pageId="context-help-page"/>
 </view>
-<view id="org.eclipse.jdt.ui.SourceView" partName="Declaration"/>
 <view id="org.eclipse.wst.server.ui.ServersView" partName="Servers"/>
 <view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
 </views>
@@ -479,146 +513,164 @@
 <editors>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wb.core.guiEditor" path="/PuzzleCode/src/gui/AddHintsView.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/AddHintsView.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/JSquareTextField.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/SquareTextField.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/LimitedTextField.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/AutoSuggestPanel.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/ButtonColumn.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/main/PuzzleCreator.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/connectionPool/DBConnection.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/utils/GuiDBConnector.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/utils/DBUtilsTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/utils/DBConnector.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/utils/DBUtils.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/utils/AlgorithmUtils.java"/>
+<editor connInfoName="Undefined:::" editorInputType="SQLScrapbookEditorInput" factoryID="org.eclipse.datatools.sqltools.internal.sqlscrapbook.editor.SQLScrapbookEditorInputFactory" id="org.eclipse.datatools.sqltools.sqlscrapbook.SQLScrapbookEditor" path="/PuzzleCode/src/massiveImport/test.sql"/>
 </editors>
 <item historyLabel="AddHintsView.java" index="1">
-<position/>
+<position info="not_deleted" x="10090" y="78"/>
 </item>
 <item historyLabel="AddHintsView.java" index="1">
-<position/>
+<position info="not_deleted" x="10312" y="77"/>
 </item>
 <item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="10230" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="4332" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="4329" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="4577" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="5248" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="10188" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="10207" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="10223" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="10484" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="10227" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="10088" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="1">
+<position info="not_deleted" x="3121" y="0"/>
+</item>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="10914" y="80"/>
+</item>
+<item historyLabel="AddHintsView.java" index="0">
 <position/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="5913" y="0"/>
+<position info="not_deleted" x="6076" y="105"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position/>
+<position info="not_deleted" x="2135" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="6901" y="70"/>
+<position info="not_deleted" x="6076" y="105"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="5784" y="0"/>
+<position info="not_deleted" x="2390" y="38"/>
+</item>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="6076" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="1">
-<position/>
+<position info="not_deleted" x="4450" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position/>
+<item historyLabel="PuzzleCreator.java" index="2">
+<position info="not_deleted" x="1321" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position/>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="4450" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position/>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="2994" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position/>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="5093" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position/>
+<item historyLabel="DBConnection.java" index="3">
+<position info="not_deleted" x="1083" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position info="not_deleted" x="8255" y="0"/>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="5093" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position info="not_deleted" x="8337" y="0"/>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="4857" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position info="not_deleted" x="8227" y="0"/>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="4968" y="0"/>
 </item>
-<item historyLabel="JSquareTextField.java" index="2">
+<item historyLabel="GuiDBConnector.java" index="4">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="SquareTextField.java" index="3">
-<position info="not_deleted" x="831" y="0"/>
-</item>
-<item historyLabel="LimitedTextField.java" index="4">
+<item historyLabel="DBUtilsTest.java" index="5">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="SquareTextField.java" index="3">
-<position info="not_deleted" x="551" y="916"/>
-</item>
-<item historyLabel="LimitedTextField.java" index="4">
-<position info="not_deleted" x="368" y="0"/>
-</item>
-<item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="8227" y="0"/>
-</item>
-<item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="8290" y="0"/>
-</item>
-<item historyLabel="LimitedTextField.java" index="4">
-<position info="not_deleted" x="368" y="0"/>
-</item>
-<item historyLabel="SquareTextField.java" index="3">
-<position info="not_deleted" x="686" y="0"/>
-</item>
-<item historyLabel="AddHintsView.java" index="1">
-<position info="not_deleted" x="8383" y="0"/>
-</item>
-<item historyLabel="LimitedTextField.java" index="4">
-<position info="not_deleted" x="368" y="0"/>
-</item>
-<item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="8290" y="0"/>
-</item>
-<item historyLabel="LimitedTextField.java" index="4">
-<position info="not_deleted" x="367" y="0"/>
-</item>
-<item historyLabel="AutoSuggestPanel.java" index="5">
-<position info="not_deleted" x="1817" y="0"/>
-</item>
-<item historyLabel="LimitedTextField.java" index="4">
-<position info="not_deleted" x="367" y="0"/>
-</item>
-<item historyLabel="ButtonColumn.java" index="6">
+<item historyLabel="DBConnector.java" index="6">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="1">
-<position info="not_deleted" x="8382" y="0"/>
-</item>
-<item historyLabel="AddHintsView.java" index="0">
+<item historyLabel="DBUtils.java" index="7">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="3141" y="0"/>
+<item historyLabel="AlgorithmUtils.java" index="8">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="test.sql" index="9">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="AlgorithmUtils.java" index="8">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="DBConnection.java" index="3">
+<position info="not_deleted" x="7161" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="2825" y="0"/>
+<position info="not_deleted" x="4968" y="0"/>
+</item>
+<item historyLabel="PuzzleCreator.java" index="2">
+<position info="not_deleted" x="1451" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="2939" y="0"/>
+<position info="not_deleted" x="4968" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="3141" y="0"/>
+<position info="not_deleted" x="7358" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="2598" y="4"/>
+<position info="not_deleted" x="6890" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="3141" y="0"/>
+<position info="not_deleted" x="9684" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position/>
+<position info="not_deleted" x="9725" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="4867" y="0"/>
+<position info="not_deleted" x="6581" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="4890" y="0"/>
+<position info="not_deleted" x="6583" y="0"/>
 </item>
 <item historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="4867" y="0"/>
+<position info="not_deleted" x="9689" y="38"/>
+</item>
+<item historyLabel="AddHintsView.java" index="0">
+<position info="not_deleted" x="9630" y="57"/>
 </item>
 <item active="true" historyLabel="AddHintsView.java" index="0">
-<position info="not_deleted" x="2993" y="49"/>
+<position info="not_deleted" x="6509" y="74"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -638,7 +690,31 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wb.core.guiEditor" name="AddHintsView.java" tooltip="PuzzleCode/src/gui/AddHintsView.java">
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.datatools.sqltools.sqlscrapbook.SQLScrapbookEditor" name="test.sql" tooltip="PuzzleCode/src/massiveImport/test.sql">
+<persistable path="/PuzzleCode/src/massiveImport/test.sql"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AlgorithmUtils.java" tooltip="PuzzleCode/src/utils/AlgorithmUtils.java">
+<persistable path="/PuzzleCode/src/utils/AlgorithmUtils.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBUtils.java" tooltip="PuzzleCode/src/utils/DBUtils.java">
+<persistable path="/PuzzleCode/src/utils/DBUtils.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBConnector.java" tooltip="PuzzleCode/src/utils/DBConnector.java">
+<persistable path="/PuzzleCode/src/utils/DBConnector.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBUtilsTest.java" tooltip="PuzzleCode/src/utils/DBUtilsTest.java">
+<persistable path="/PuzzleCode/src/utils/DBUtilsTest.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="GuiDBConnector.java" tooltip="PuzzleCode/src/utils/GuiDBConnector.java">
+<persistable path="/PuzzleCode/src/utils/GuiDBConnector.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBConnection.java" tooltip="PuzzleCode/src/connectionPool/DBConnection.java">
+<persistable path="/PuzzleCode/src/connectionPool/DBConnection.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PuzzleCreator.java" tooltip="PuzzleCode/src/main/PuzzleCreator.java">
+<persistable path="/PuzzleCode/src/main/PuzzleCreator.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AddHintsView.java" tooltip="PuzzleCode/src/gui/AddHintsView.java">
 <persistable path="/PuzzleCode/src/gui/AddHintsView.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ButtonColumn.java" tooltip="PuzzleCode/src/gui/ButtonColumn.java">
@@ -658,15 +734,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Java2sAutoComboBox.java" tooltip="PuzzleCode/src/gui/Java2sAutoComboBox.java">
 <persistable path="/PuzzleCode/src/gui/Java2sAutoComboBox.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AutoCompleteTextField.java" tooltip="PuzzleCode/src/gui/AutoCompleteTextField.java">
-<persistable path="/PuzzleCode/src/gui/AutoCompleteTextField.java"/>
-</file>
-<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="JComboBox.class" tooltip="javax.swing.JComboBox">
-<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=PuzzleCode/C:\/Program Files\/Java\/jre7\/lib\/rt.jar&lt;javax.swing(JComboBox.class"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AutoSuggestPanel.java" tooltip="PuzzleCode/src/gui/AutoSuggestPanel.java">
-<persistable path="/PuzzleCode/src/gui/AutoSuggestPanel.java"/>
 </file>
 </mruList>
 </workbench>

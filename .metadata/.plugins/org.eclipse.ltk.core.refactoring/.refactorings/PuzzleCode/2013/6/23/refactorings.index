@@ -33,3 +33,4 @@
 1370367754862	Convert local variable 'list' to field
 1370371446493	Convert local variable 'addBtn' to field
 1370372955112	Rename method 'addHintToList'
+1370414989617	Convert local variable 'addBtn' to field

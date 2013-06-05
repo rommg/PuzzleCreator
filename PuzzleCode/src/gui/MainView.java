@@ -61,6 +61,7 @@ public class MainView {
 	private JPanel crosswordView = null;
 	private JPanel welcomePanel = null;
 	private JPanel addHintView = null;
+	private JPanel addDefView = null;
 
 
 	/**
@@ -140,7 +141,15 @@ public class MainView {
 		});
 
 		// middle buttons
-		createButton("Add Definition", "add.png");
+		btn = createButton("Add Definition", "add.png");
+		btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				addDefBtnClicked();
+			}
+		});
+		
 		btn = createButton("Add Hints", "add.png");
 		btn.addActionListener(new ActionListener() {
 
@@ -252,6 +261,10 @@ public class MainView {
 	void addHintsBtnClicked() {
 		showAddHintView();
 	}
+	
+	void addDefBtnClicked() {
+		showAddDefView();
+	}
 
 	/**
 	 * switch to PrepareView card
@@ -341,11 +354,22 @@ public class MainView {
 		cl.show(cardPanel,Window.AddHint.toString());
 		setSizes();
 
-		frame.setMinimumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
-		frame.setPreferredSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
-		frame.setMaximumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
-		frame.pack();
-		frame.setLocationRelativeTo(null);
+//		frame.setMinimumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
+//		frame.setPreferredSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
+//		frame.setMaximumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
+//		frame.pack();
+//		frame.setLocationRelativeTo(null);
+	}
+	
+	void showAddDefView() {
+		if (addDefView == null) {
+			addDefView = AddDefView.start();
+			cardPanel.add(addDefView, Window.AddDefinition.toString());
+		}
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.AddDefinition.toString());
+		setSizes();
 	}
 
 

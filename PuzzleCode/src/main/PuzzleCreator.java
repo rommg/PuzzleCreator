@@ -50,7 +50,7 @@ public class PuzzleCreator {
 
 		// TODO: remove debug algorithm run
 		int[] topics = {4,5};
-		AlgorithmRunner.runAlgorithm(topics, 1);
+	//	AlgorithmRunner.runAlgorithm(topics, 1);
 		
 		// TODO: To Delete
 		// DBUtils.test();

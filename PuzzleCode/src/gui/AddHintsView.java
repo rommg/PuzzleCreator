@@ -80,6 +80,56 @@ final class AddHintsView extends JPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	private AddHintsView() {
+		
+		
+		initialize();
+
+	}
+
+	private void getEntities() {
+		//queryDB for entites
+		entityList = new ArrayList<String>();
+		entityList.add("");
+		entityList.add("baaaaaaaaaaaa");
+		entityList.add("aghhhhhhhh");
+	}
+
+	private void getPredicates() {
+		// query DB for predicates
+		// tempPredicateList = 
+		literalFacts = new ArrayList<String>();
+
+		List<Map<String,String>> tempPredicateList = new ArrayList<Map<String,String>>();
+		for (Map<String, String> row : tempPredicateList) {
+			String subject = row.get("subject_str");
+			String object = row.get("object_str");
+			if ( object == null) {
+				literalFacts.add(subject); // object_str is a string for a literal fact
+			}
+			predicateList.add(subject);
+			predicateList.add(object);
+		}
+
+		predicateList = new ArrayList<String>();
+		predicateList.add("");
+		predicateList.add("Populated by ? people");
+		literalFacts.add("Populated by ? people");
+		predicateList.add("Created ?");
+		predicateList.add("was created by ?");
+
+
+
+
+	}
+	private JComboBox<String> createAutoCompleteBox(List<String> valueList) {
+
+		JComboBox<String> box = new JComboBox<String>();
+		AutoCompleteSupport<Object> autoBox =  AutoCompleteSupport.install(box, GlazedLists.eventListOf(valueList.toArray()));
+		autoBox.setStrict(true);
+		return box;
+	}
+
+	private void initialize() {
 		setLayout(new GridLayout(5, 1, 0, 0));
 
 		knowledgeDetailsPanel = new JPanel();
@@ -134,59 +184,6 @@ final class AddHintsView extends JPanel {
 			}
 		});
 		addHintPanel.add(btnBack);
-
-		JButton btnClear = new JButton(new ImageIcon(AddHintsView.class.getResource("/resources/cancel.png")));
-		addHintPanel.add(btnClear);
-
-		initialize();
-
-	}
-
-	private void getEntities() {
-		//queryDB for entites
-		entityList = new ArrayList<String>();
-		entityList.add("");
-		entityList.add("baaaaaaaaaaaa");
-		entityList.add("aghhhhhhhh");
-	}
-
-	private void getPredicates() {
-		// query DB for predicates
-		// tempPredicateList = 
-		literalFacts = new ArrayList<String>();
-		
-		List<Map<String,String>> tempPredicateList = new ArrayList<Map<String,String>>();
-		for (Map<String, String> row : tempPredicateList) {
-			String subject = row.get("subject_str");
-			String object = row.get("object_str");
-			if ( object == null) {
-				literalFacts.add(subject); // object_str is a string for a literal fact
-			}
-			predicateList.add(subject);
-			predicateList.add(object);
-		}
-
-		predicateList = new ArrayList<String>();
-		predicateList.add("");
-		predicateList.add("Populated by ? people");
-		literalFacts.add("Populated by ? people");
-		predicateList.add("Created ?");
-		predicateList.add("was created by ?");
-
-		
-
-
-	}
-	private JComboBox<String> createAutoCompleteBox(List<String> valueList) {
-
-		JComboBox<String> box = new JComboBox<String>();
-		AutoCompleteSupport<Object> autoBox =  AutoCompleteSupport.install(box, GlazedLists.eventListOf(valueList.toArray()));
-		autoBox.setStrict(true);
-		return box;
-	}
-
-	private void initialize() {
-		
 	}
 
 	private class PredicatedItemListener implements ItemListener {
@@ -205,15 +202,21 @@ final class AddHintsView extends JPanel {
 					Logger.writeErrorToLog("PredicatedItemListener.itemStateChanged : " + exception.getMessage());
 				}
 				predicateTxt = txtBox.getSelectedItem().toString(); 
+				if (addBtn != null){
+					knowledgeDetailsPanel.remove(addBtn);
+				}
 				if (literalFacts.contains(predicateTxt)) { // need to draw special LiteralPanel (object is a literal)
-					if (objectPanel != null)
+					if (objectPanel != null) {
 						knowledgeDetailsPanel.remove(objectPanel);
+					}	
 					// create NumberLiteralBox
 					if (predicateTxt.compareTo("Populated by ? people") == 0)
 						objectPanel = new NumberPanel();					
 					else { // all other literal boxes are dates
 						objectPanel = new DatePanel();
 					}
+					
+					((LiteralPanel)objectPanel).addKeyListener(new JTextFieldListener());
 				}
 				else { // draw regular AutoComplete (object is an entity)
 					if (objectPanel != null)
@@ -221,54 +224,79 @@ final class AddHintsView extends JPanel {
 
 					objectPanel = new JPanel();
 					JComboBox<String> box = createAutoCompleteBox(entityList);
+					box.addItemListener(new objectComboBoxListener());
 					objectPanel.setBorder(new TitledBorder("Knowledge Piece #2"));
 					objectPanel.add(box);
 				}
 
 
 				knowledgeDetailsPanel.add(objectPanel);
-
-
-				if (addBtn == null)  {
-					addBtn = new JButton(new ImageIcon(AddHintsView.class.getResource("/resources/add.png")));
-					addBtn.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
-							boolean sendSucceded = true;
-							//Send to DB, check it doesnt already exist
-							if (sendSucceded) {
-								String subjectText = ((JComboBox<String>)subjectSearchPanel.getComponent(0)).getSelectedItem().toString();
-								Component comp = objectPanel.getComponent(0);
-								String objectText;
-								if (comp instanceof JComboBox<?>) 
-									objectText = ((JComboBox<String>)comp).getSelectedItem().toString();
-								else 
-									objectText = ((JTextField)comp).getText();
-
-								addHintLbl(subjectText, predicateTxt, objectText);
-							}
-						}
-					});
-				}
-				else {
-					knowledgeDetailsPanel.remove(addBtn); // remove if already was added once
-				}
-				knowledgeDetailsPanel.add(addBtn);
 				//	knowledgeDetailsPanel.validate();
 				knowledgeDetailsPanel.getParent().validate();
 				knowledgeDetailsPanel.getParent().repaint();
 			}
 		}
+
+		private class objectComboBoxListener implements ItemListener {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				addAddHintBtn();
+			}
+		}
+		
+		private class JTextFieldListener extends KeyAdapter {
+			public void keyTyped(KeyEvent e) {  
+				addAddHintBtn();
+			} 
+		}
+		
+		/**
+		 * adds the AddBtn after all fields have been filled
+		 */
+		private void addAddHintBtn() {
+			if (addBtn != null)  {
+				knowledgeDetailsPanel.remove(addBtn); // remove if already was added once
+			}
+				addBtn = new JButton(new ImageIcon(AddHintsView.class.getResource("/resources/add.png")));
+				addBtn.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						boolean sendSucceded = true;
+						//Send to DB, check it doesnt already exist
+						if (sendSucceded) {
+							String subjectText = ((JComboBox<String>)subjectSearchPanel.getComponent(0)).getSelectedItem().toString();
+							Component comp = objectPanel.getComponent(0);
+							String objectText;
+							if (comp instanceof JComboBox<?>) 
+								objectText = ((JComboBox<String>)comp).getSelectedItem().toString();
+							else 
+								objectText = ((JTextField)comp).getText();
+
+							addHintLbl(subjectText, predicateTxt, objectText);
+						}
+					}
+				});
+
+			knowledgeDetailsPanel.add(addBtn);
+			knowledgeDetailsPanel.getParent().validate();
+			knowledgeDetailsPanel.getParent().repaint();
+		}
 	}
 
+
 	private abstract class LiteralPanel extends JPanel {
+		
+		JTextField field = null;
+		
 		LiteralPanel(String borderText) {
 			setLayout(new BorderLayout());
 			setBorder(new TitledBorder(borderText));
 		}
 
 		protected void addTextField(JTextField tf) {
+			this.field = tf;
 			tf.addKeyListener(new KeyAdapter() { // ignore non numerical values
 				public void keyTyped(KeyEvent e) {  
 					char c = e.getKeyChar(); // Get the typed character  
@@ -283,6 +311,10 @@ final class AddHintsView extends JPanel {
 				} 
 			});
 			this.add(tf, BorderLayout.CENTER);
+		}
+		
+		private final void addKeyListener(KeyAdapter adapter) {
+			this.field.addKeyListener(adapter);
 		}
 	}
 
@@ -334,7 +366,7 @@ final class AddHintsView extends JPanel {
 	 */
 	private void addHintLbl(String subject, String predicate, String object) {
 		if (subject != "" && predicate != "" && object != "")
-				lbl.setText(subject + ": " + predicate.replaceAll("\\?", object.toString()));
+			lbl.setText(subject + ": " + predicate.replaceAll("\\?", object.toString()));
 	}
 }
 
