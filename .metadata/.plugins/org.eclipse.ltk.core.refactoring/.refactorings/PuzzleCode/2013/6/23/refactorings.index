@@ -34,3 +34,13 @@
 1370371446493	Convert local variable 'addBtn' to field
 1370372955112	Rename method 'addHintToList'
 1370414989617	Convert local variable 'addBtn' to field
+1370420414940	Convert local variable 'mainPanel' to field
+1370424462139	Convert local variable 'definitionBox' to field
+1370424467693	Convert local variable 'topicBox' to field
+1370424474138	Convert local variable 'field' to field
+1370425101094	Rename field 'field'
+1370425273969	Convert local variable 'label' to field
+1370426485788	Rename local variable 'box2'
+1370426496390	Rename local variable 'box1'
+1370426662196	Convert local variable 'subjectBox' to field
+1370427054635	Convert local variable 'predicateBox' to field

@@ -47,6 +47,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 
@@ -62,8 +63,6 @@ final class AddHintsView extends JPanel {
 	private List<String> literalFacts = null;
 
 	private JPanel knowledgeDetailsPanel;
-	private JPanel subjectSearchPanel;
-	private JPanel predicatePanel;
 	private JPanel objectPanel;
 
 	private List<String> entityList;
@@ -72,16 +71,17 @@ final class AddHintsView extends JPanel {
 
 	private JLabel lbl;
 
+	private JComboBox<String> subjectBox;
+
+	private JComboBox<String> predicateBox;
+
 	static AddHintsView start() {
 		return new AddHintsView();
 	}
 	/**
 	 * Create the panel.
 	 */
-	@SuppressWarnings("unchecked")
 	private AddHintsView() {
-		
-		
 		initialize();
 
 	}
@@ -133,36 +133,37 @@ final class AddHintsView extends JPanel {
 		setLayout(new GridLayout(5, 1, 0, 0));
 
 		knowledgeDetailsPanel = new JPanel();
+		knowledgeDetailsPanel.setBorder(new BevelBorder(BevelBorder.RAISED));
 		knowledgeDetailsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		add(knowledgeDetailsPanel);
 
 		getEntities(); //in another thread
 		getPredicates(); // in another thread 
 
-		subjectSearchPanel = new JPanel();
+		final JPanel subjectSearchPanel = new JPanel();
+		final JPanel predicatePanel = new JPanel();
 		subjectSearchPanel.setBorder(new TitledBorder("Knowledge Piece #1"));
-		JComboBox<String> box1 = createAutoCompleteBox(entityList);
-		box1.addActionListener(new ActionListener() {
+		subjectBox = createAutoCompleteBox(entityList);
+		subjectBox.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				predicatePanel.setVisible(true);
 			}
 		});
-		subjectSearchPanel.add(box1);
+		subjectSearchPanel.add(subjectBox);
 		knowledgeDetailsPanel.add(subjectSearchPanel);
 
 
-		predicatePanel = new JPanel();
+
 		predicatePanel.setVisible(false);
 		predicatePanel.setBorder(new TitledBorder("Knowledge Relation"));
-		JComboBox<String> box2 = createAutoCompleteBox(predicateList);
-		box2.addItemListener(new PredicatedItemListener());
-		predicatePanel.add(box2);
+		predicateBox = createAutoCompleteBox(predicateList);
+		predicateBox.addItemListener(new PredicatedItemListener());
+		predicatePanel.add(predicateBox);
 		knowledgeDetailsPanel.add(predicatePanel);
 
 		JPanel listPanel = new JPanel();
-		listPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Created Hints", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(listPanel);
 		listPanel.setLayout(new BorderLayout(0, 0));
 
@@ -215,7 +216,7 @@ final class AddHintsView extends JPanel {
 					else { // all other literal boxes are dates
 						objectPanel = new DatePanel();
 					}
-					
+
 					((LiteralPanel)objectPanel).addKeyListener(new JTextFieldListener());
 				}
 				else { // draw regular AutoComplete (object is an entity)
@@ -244,13 +245,13 @@ final class AddHintsView extends JPanel {
 				addAddHintBtn();
 			}
 		}
-		
+
 		private class JTextFieldListener extends KeyAdapter {
 			public void keyTyped(KeyEvent e) {  
 				addAddHintBtn();
 			} 
 		}
-		
+
 		/**
 		 * adds the AddBtn after all fields have been filled
 		 */
@@ -258,26 +259,41 @@ final class AddHintsView extends JPanel {
 			if (addBtn != null)  {
 				knowledgeDetailsPanel.remove(addBtn); // remove if already was added once
 			}
-				addBtn = new JButton(new ImageIcon(AddHintsView.class.getResource("/resources/add.png")));
-				addBtn.addActionListener(new ActionListener() {
+			addBtn = new JButton(new ImageIcon(AddHintsView.class.getResource("/resources/add.png")));
+			addBtn.addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
+				@SuppressWarnings("unchecked")
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					// get relevant texts needed for hint
+
+					String subjectText = subjectBox.getSelectedItem().toString();
+					String predicateText = predicateBox.getSelectedItem().toString();
+					Component comp = objectPanel.getComponent(0);
+					String objectText;
+					if (comp instanceof JComboBox<?>) 
+						objectText = ((JComboBox<String>)comp).getSelectedItem().toString();
+					else 
+						objectText = ((JTextField)comp).getText();
+					if (subjectText != "" && predicateText != "" && objectText != "") {
+
 						boolean sendSucceded = true;
 						//Send to DB, check it doesnt already exist
 						if (sendSucceded) {
-							String subjectText = ((JComboBox<String>)subjectSearchPanel.getComponent(0)).getSelectedItem().toString();
-							Component comp = objectPanel.getComponent(0);
-							String objectText;
-							if (comp instanceof JComboBox<?>) 
-								objectText = ((JComboBox<String>)comp).getSelectedItem().toString();
-							else 
-								objectText = ((JTextField)comp).getText();
-
-							addHintLbl(subjectText, predicateTxt, objectText);
+							lbl.setIcon(new ImageIcon(AddHintsView.class.getResource("/resources/check.png")));
+							lbl.setText("<html><p><left>ADDED New Hint:" +
+									"<br>Hint added to: " + subjectText  +
+									"<br>Hint text: " +  predicateText.replaceAll("\\?", objectText.toString()) + "</p></html>");							
+						}
+						else {
+							lbl.setIcon(new ImageIcon(AddHintsView.class.getResource("/resources/fail.png")));
+							lbl.setText("FAILED TO ADD New Hint:" +
+									"Hint added to: " + subjectText  +
+									"Hint text: " +  predicateText.replaceAll("\\?", objectText.toString()));	
 						}
 					}
-				});
+				}
+			});
 
 			knowledgeDetailsPanel.add(addBtn);
 			knowledgeDetailsPanel.getParent().validate();
@@ -287,9 +303,9 @@ final class AddHintsView extends JPanel {
 
 
 	private abstract class LiteralPanel extends JPanel {
-		
+
 		JTextField field = null;
-		
+
 		LiteralPanel(String borderText) {
 			setLayout(new BorderLayout());
 			setBorder(new TitledBorder(borderText));
@@ -312,7 +328,7 @@ final class AddHintsView extends JPanel {
 			});
 			this.add(tf, BorderLayout.CENTER);
 		}
-		
+
 		private final void addKeyListener(KeyAdapter adapter) {
 			this.field.addKeyListener(adapter);
 		}
@@ -357,18 +373,8 @@ final class AddHintsView extends JPanel {
 		}
 
 	}
-
-	/**
-	 * writes the hint label on the screen
-	 * @param subject
-	 * @param predicate
-	 * @param object
-	 */
-	private void addHintLbl(String subject, String predicate, String object) {
-		if (subject != "" && predicate != "" && object != "")
-			lbl.setText(subject + ": " + predicate.replaceAll("\\?", object.toString()));
-	}
 }
+
 
 
 
