@@ -13,7 +13,7 @@ INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasOff
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<holdsPoliticalPosition>', '?', 'The political position ? holds');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isInterestedIn>', 'Person who is interested in ?', '? is interested in it');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isMarriedTo>', 'Married to ?', 'Married to ?');
-INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<livesIn>', 'Person who lives in ?', '? lives there');
+-- INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<livesIn>', 'Person who lives in ?', '? lives there');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<playsFor>', 'Plays for ?', '? plays for it');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wasBornIn>', 'Was born in ?', '? was born there');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasWonPrize>', 'Has won the ?', '? has won it');
