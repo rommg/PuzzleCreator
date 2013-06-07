@@ -90,36 +90,54 @@ public class WaitView extends JPanel {
 		panel_1.add(nextBtn);
 		add(centerPanel, BorderLayout.CENTER);	
 
-		SwingWorker<Boolean,Boolean> worker = new SwingWorker<Boolean,Boolean> () {
-
-			
-			@Override
-			protected Boolean doInBackground() throws Exception {
-			//	int[] selectedTopics = view.getUserSelectedTopics(); 
-				int difficulty = view.getDifficulty();
-				board = AlgorithmUtils.createPuzzle(difficulty, null); // send request for board	
-				return board.isFound();
-			}
-
-			@Override
-			protected void done() {
-				super.done();
-				animationPanel.remove(animationLbl);
-				animationPanel.invalidate();
-				
-				//replace rotating animation with skip button
-				btnSkip = new JButton("Skip");
-				btnSkip.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						MainView.view.showCrosswordview(board); // must be available only after BoardSolution was created (board != null)
-					}
-				});
-				animationPanel.add(btnSkip);
-				animationPanel.invalidate();
-			}
-		};
 		
-		worker.execute();
+		//int[] selectedTopics = view.getUserSelectedTopics(); 
+		int difficulty = view.getDifficulty();
+		board = AlgorithmUtils.createPuzzle(difficulty, null); // send request for board	
+		animationPanel.remove(animationLbl);
+		animationPanel.invalidate();
+		
+		//replace rotating animation with skip button
+		btnSkip = new JButton("Skip");
+		btnSkip.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainView.view.showCrosswordview(board); // must be available only after BoardSolution was created (board != null)
+			}
+		});
+		animationPanel.add(btnSkip);
+		animationPanel.invalidate();
+		
+		
+//		SwingWorker<Boolean,Boolean> worker = new SwingWorker<Boolean,Boolean> () {
+//
+//			
+//			@Override
+//			protected Boolean doInBackground() throws Exception {
+//			//	int[] selectedTopics = view.getUserSelectedTopics(); 
+//				int difficulty = view.getDifficulty();
+//				board = AlgorithmUtils.createPuzzle(difficulty, null); // send request for board	
+//				return board.isFound();
+//			}
+//
+//			@Override
+//			protected void done() {
+//				super.done();
+//				animationPanel.remove(animationLbl);
+//				animationPanel.invalidate();
+//				
+//				//replace rotating animation with skip button
+//				btnSkip = new JButton("Skip");
+//				btnSkip.addActionListener(new ActionListener() {
+//					public void actionPerformed(ActionEvent e) {
+//						MainView.view.showCrosswordview(board); // must be available only after BoardSolution was created (board != null)
+//					}
+//				});
+//				animationPanel.add(btnSkip);
+//				animationPanel.invalidate();
+//			}
+//		};
+//		
+//		worker.execute();
 	}
 
 
