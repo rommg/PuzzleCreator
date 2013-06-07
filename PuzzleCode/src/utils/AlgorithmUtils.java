@@ -13,10 +13,11 @@ public class AlgorithmUtils {
 	public static BoardSolution createPuzzle(int difficulty, int[] topics){
 		//TODO remove condition and mock topics
 		if (topics == null){
-			topics = new int[3];
+			topics = new int[4];
 			topics[0] = 3;
 			topics[1] = 4;
 			topics[2] = 5;
+			topics[3] = 2;
 		}
 		
 		return AlgorithmRunner.runAlgorithm(topics,difficulty);
