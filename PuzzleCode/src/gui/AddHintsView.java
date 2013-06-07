@@ -154,8 +154,6 @@ final class AddHintsView extends JPanel {
 		subjectSearchPanel.add(subjectBox);
 		knowledgeDetailsPanel.add(subjectSearchPanel);
 
-
-
 		predicatePanel.setVisible(false);
 		predicatePanel.setBorder(new TitledBorder("Knowledge Relation"));
 		predicateBox = createAutoCompleteBox(predicateList);
@@ -171,6 +169,9 @@ final class AddHintsView extends JPanel {
 		listPanel.add(lbl, BorderLayout.CENTER);
 
 		JPanel emptyPanel = new JPanel();
+		add(emptyPanel);
+		
+		emptyPanel = new JPanel();
 		add(emptyPanel);
 
 		JPanel addHintPanel = new JPanel();
