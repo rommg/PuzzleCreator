@@ -1,5 +1,11 @@
 package puzzleAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +13,8 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import main.PuzzleCreator;
 
 import utils.DBUtils;
 import utils.Logger;
@@ -30,8 +38,8 @@ public class AlgorithmRunner {
 
 		//TODO remove use of mock function after tests and mock max length
 		int maxLength = 8;
-//		createMockAnswers();
-		answers = DBUtils.getPossibleAnswers(topics, 8);
+		createMockAnswers();
+//		answers = DBUtils.getPossibleAnswers(topics, 8);
 		
 		Logger.writeToLog("Number of answers = " + answers.size());
 
@@ -277,139 +285,6 @@ public class AlgorithmRunner {
 
 	}
 
-	private static void insertDefinitions() {
-		int row = 0;
-
-		insertDefinition(row, 1, 4, 'd', 0, 0);
-
-		insertDefinition(row, 3, 5, 'd', 0, 2);
-
-		insertDefinition(row, 5, 3, 'd', 0, 6);
-
-		insertDefinition(row, 8, 7, 'd', 0, 7);
-
-		insertDefinition(row, 10, 3, 'd', 0, 9);
-
-		insertDefinition(row, 12, 3, 'd', 0, 11);
-
-		row = 1;
-
-		insertDefinition(row, 0, 6, 'r', 0,0);
-
-		insertDefinition(row, 4, 4, 'd');
-
-		insertDefinition(row, 7, 6, 'r');
-
-		insertDefinition(row, 7, 3, 'd');
-
-		insertDefinition(row, 11, 4, 'd');
-
-		row = 2;
-
-		insertDefinition(row, 3, 6, 'r');
-
-		insertDefinition(row, 6, 4, 'd');
-
-		insertDefinition(row, 10, 3, 'r');
-
-		row = 3;
-
-		insertDefinition(row, 0, 5, 'r', 2, 0);
-
-		insertDefinition(row, 2, 5, 'd');
-
-		insertDefinition(row, 6, 4, 'r');
-
-		insertDefinition(row, 9, 6, 'd');
-
-		row = 4;
-
-		insertDefinition(row, 2, 5, 'r');
-
-		insertDefinition(row, 5, 5, 'd');
-
-		insertDefinition(row, 8, 5, 'r');
-
-		insertDefinition(row, 10, 4, 'd');
-
-		insertDefinition(row, 12, 4, 'd');
-
-		row = 5;
-
-		insertDefinition(row, 0, 3, 'r', 4, 0);
-
-		insertDefinition(row, 1, 6, 'd');
-
-		insertDefinition(row, 5, 6, 'r');
-
-		row = 6;
-
-		insertDefinition(row, 1, 3, 'r');
-
-		insertDefinition(row, 3, 3, 'd');
-
-		insertDefinition(row, 8, 5, 'r');
-
-		insertDefinition(row, 11, 3, 'd');
-
-		row = 7;
-
-		insertDefinition(row, 0, 8, 'r', 6, 0);
-
-		insertDefinition(row, 4, 6, 'd');
-
-		insertDefinition(row, 6, 3, 'd');
-
-		insertDefinition(row, 7, 4, 'd');
-
-		insertDefinition(row, 9, 4, 'r');
-
-		row = 8;
-
-		insertDefinition(row, 3, 5, 'r');
-
-		row = 9;
-
-		insertDefinition(row, 0, 3, 'r', 8, 0);
-
-		insertDefinition(row, 2, 4, 'd');
-
-		insertDefinition(row, 6, 3, 'r');
-
-		insertDefinition(row, 8, 4, 'd');
-
-		insertDefinition(row, 10, 4, 'd');
-
-		insertDefinition(row, 12, 4, 'd');
-
-		row = 10;
-
-		insertDefinition(row, 1, 5, 'r');
-
-		insertDefinition(row, 3, 3, 'd');
-
-		insertDefinition(row, 5, 3, 'd');
-
-		insertDefinition(row, 7, 6, 'r');
-
-		insertDefinition(row, 9, 3, 'd');
-
-		insertDefinition(row, 11, 3, 'd');
-
-		row = 11;
-
-		insertDefinition(row, 2, 5, 'r');
-
-		insertDefinition(row, 8, 5, 'r');
-
-		row = 12;
-
-		insertDefinition(row, 0, 6, 'r', 11, 0);
-
-		insertDefinition(row, 7, 6, 'r');
-
-	}
-
 	/**
 	 * Create a new definition with the function params Insert definition to
 	 * board definitions collection For each relevant square - add the
@@ -624,6 +499,139 @@ public class AlgorithmRunner {
 		return board;
 	}
 
+	private static void insertDefinitions() {
+		int row = 0;
+	
+		insertDefinition(row, 1, 4, 'd', 0, 0);
+	
+		insertDefinition(row, 3, 5, 'd', 0, 2);
+	
+		insertDefinition(row, 5, 3, 'd', 0, 6);
+	
+		insertDefinition(row, 8, 7, 'd', 0, 7);
+	
+		insertDefinition(row, 10, 3, 'd', 0, 9);
+	
+		insertDefinition(row, 12, 3, 'd', 0, 11);
+	
+		row = 1;
+	
+		insertDefinition(row, 0, 6, 'r', 0,0);
+	
+		insertDefinition(row, 4, 4, 'd');
+	
+		insertDefinition(row, 7, 6, 'r');
+	
+		insertDefinition(row, 7, 3, 'd');
+	
+		insertDefinition(row, 11, 4, 'd');
+	
+		row = 2;
+	
+		insertDefinition(row, 3, 6, 'r');
+	
+		insertDefinition(row, 6, 4, 'd');
+	
+		insertDefinition(row, 10, 3, 'r');
+	
+		row = 3;
+	
+		insertDefinition(row, 0, 5, 'r', 2, 0);
+	
+		insertDefinition(row, 2, 5, 'd');
+	
+		insertDefinition(row, 6, 4, 'r');
+	
+		insertDefinition(row, 9, 6, 'd');
+	
+		row = 4;
+	
+		insertDefinition(row, 2, 5, 'r');
+	
+		insertDefinition(row, 5, 5, 'd');
+	
+		insertDefinition(row, 8, 5, 'r');
+	
+		insertDefinition(row, 10, 4, 'd');
+	
+		insertDefinition(row, 12, 4, 'd');
+	
+		row = 5;
+	
+		insertDefinition(row, 0, 3, 'r', 4, 0);
+	
+		insertDefinition(row, 1, 6, 'd');
+	
+		insertDefinition(row, 5, 6, 'r');
+	
+		row = 6;
+	
+		insertDefinition(row, 1, 3, 'r');
+	
+		insertDefinition(row, 3, 3, 'd');
+	
+		insertDefinition(row, 8, 5, 'r');
+	
+		insertDefinition(row, 11, 3, 'd');
+	
+		row = 7;
+	
+		insertDefinition(row, 0, 8, 'r', 6, 0);
+	
+		insertDefinition(row, 4, 6, 'd');
+	
+		insertDefinition(row, 6, 3, 'd');
+	
+		insertDefinition(row, 7, 4, 'd');
+	
+		insertDefinition(row, 9, 4, 'r');
+	
+		row = 8;
+	
+		insertDefinition(row, 3, 5, 'r');
+	
+		row = 9;
+	
+		insertDefinition(row, 0, 3, 'r', 8, 0);
+	
+		insertDefinition(row, 2, 4, 'd');
+	
+		insertDefinition(row, 6, 3, 'r');
+	
+		insertDefinition(row, 8, 4, 'd');
+	
+		insertDefinition(row, 10, 4, 'd');
+	
+		insertDefinition(row, 12, 4, 'd');
+	
+		row = 10;
+	
+		insertDefinition(row, 1, 5, 'r');
+	
+		insertDefinition(row, 3, 3, 'd');
+	
+		insertDefinition(row, 5, 3, 'd');
+	
+		insertDefinition(row, 7, 6, 'r');
+	
+		insertDefinition(row, 9, 3, 'd');
+	
+		insertDefinition(row, 11, 3, 'd');
+	
+		row = 11;
+	
+		insertDefinition(row, 2, 5, 'r');
+	
+		insertDefinition(row, 8, 5, 'r');
+	
+		row = 12;
+	
+		insertDefinition(row, 0, 6, 'r', 11, 0);
+	
+		insertDefinition(row, 7, 6, 'r');
+	
+	}
+
 	/**
 	 * This method checks if param word contains only english letters
 	 * 
@@ -832,6 +840,52 @@ public class AlgorithmRunner {
 		answers.add(ans);
 		ans = new Answer("ardent", entityId++);
 		answers.add(ans);
+		
+	}
+
+	private static void outputBoard(){
+		File templateFile = new File(PuzzleCreator.appDir,"13x13_1.tmp");
+		try{
+			templateFile.createNewFile();
+			FileWriter out = new FileWriter(templateFile, true);
+			BufferedWriter bout = new BufferedWriter(out);
+			String boardData = "boardsize:" + board.length;
+			bout.write(boardData);
+			bout.newLine();
+			boardData = "";
+			//write squares
+			
+			for (int row = 0;row < board.length; row++){
+				for (int column = 0; column <board.length; column++){
+					boardData="Puzzle square: column:" + column + " row:" + row + " emptySquare:" + board[column][row].isLetter();
+					bout.write(boardData);
+					bout.newLine();
+				}
+			}
+			
+			bout.newLine();
+			boardData = "Definitions:";
+			bout.write(boardData);
+			bout.newLine();
+			
+			for (PuzzleDefinition def :definitions){
+				boardData = "Definition: row:" + def.getBeginRow() + " column:" + def.getBeginColumn() + " length:" + def.getLength() + 
+						" direction:" + def.getDirection() + " textRow:" + def.getTextRow() + " textCol:" + def.getTextCol();
+				bout.write(boardData);
+				bout.newLine();
+			}
+			
+			
+			bout.close();
+			out.close();
+			
+			
+		} catch (IOException ex){
+			Logger.writeErrorToLog("failed to create");
+		}
+		
+		
+		
 		
 	}
 }

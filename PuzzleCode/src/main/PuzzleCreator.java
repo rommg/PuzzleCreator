@@ -47,7 +47,7 @@ public class PuzzleCreator {
 			return;
 		}
 		Logger.writeToLog("Connections Pool was created");
-
+		
 		// TODO: To Delete
 		// DBUtils.test();
 		//
