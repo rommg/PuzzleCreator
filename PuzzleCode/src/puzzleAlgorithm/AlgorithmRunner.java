@@ -29,22 +29,21 @@ public class AlgorithmRunner {
 
 	/**
 	 * 
-	 * @param topics - an array of id numbers of puzzle topics
-	 * @param difficulty - integer for easy, medium or hard
+	 * @param topics
+	 *            - an array of id numbers of puzzle topics
+	 * @param difficulty
+	 *            - integer for easy, medium or hard
 	 * @return
 	 */
 	public static BoardSolution runAlgorithm(int[] topics, int difficulty) {
 		BoardSolution result = null;
+		int size = 13;
+		// TODO remove use of mock function after tests
+		// createMockAnswers();
+		answers = DBUtils.getPossibleAnswers(topics, 8);
 
-		//TODO remove use of mock function after tests and mock max length
-		int maxLength = 8;
-		createMockAnswers();
-//		answers = DBUtils.getPossibleAnswers(topics, 8);
-		
 		Logger.writeToLog("Number of answers = " + answers.size());
-
-		board = createBoard(13);
-		insertDefinitions();
+		createBoardFromTemplateFile(size, 2);
 		Collections.sort(definitions);
 		printBoard();
 		printBoardStatus();
@@ -53,11 +52,12 @@ public class AlgorithmRunner {
 
 		if (!fillBoard()) {
 			Logger.writeErrorToLog("impossible data");
-			result = new BoardSolution(null,null,false);
+			result = new BoardSolution(null, null, false);
 		} else {
+			Logger.writeToLog("success");
 			DBUtils.setHintsAndDefinitions(definitions);
 			result = new BoardSolution(board, definitions, true);
-			//AlgorithmUtils.drawBoard(board, definitions);
+			// AlgorithmUtils.drawBoard(board, definitions);
 			printResults();
 		}
 		return result;
@@ -83,15 +83,17 @@ public class AlgorithmRunner {
 				}
 				int index = (int) Math.floor(Math.random() * possibleAnswers.size());
 				Answer currentAnswer = possibleAnswers.get(index);
-				
-				/* check if this answers's entity was already used
-				 * TODO The possible answers should be updated by entity id when the problematic answer is assigned
+
+				/*
+				 * check if this answers's entity was already used TODO The
+				 * possible answers should be updated by entity id when the
+				 * problematic answer is assigned
 				 */
-				if (usedEntities.contains(currentAnswer.getEntityId())){
+				if (usedEntities.contains(currentAnswer.getEntityId())) {
 					possibleAnswers.remove(currentAnswer);
 					continue innerLoop;
 				}
-				
+
 				int row = def.getBeginRow();
 				int column = def.getBeginColumn();
 				char direction = def.getDirection();
@@ -160,9 +162,9 @@ public class AlgorithmRunner {
 		BoardState bs = new BoardState(size);
 		List<PuzzleDefinition> clonedDefinitions = bs.getDefinitions();
 		PuzzleSquare[][] clonedBoard = bs.getBoard();
-		
+
 		Set<Integer> stateUsedEntities = bs.getUsedEntites();
-		for (int entityId : usedEntities){
+		for (int entityId : usedEntities) {
 			stateUsedEntities.add(entityId);
 		}
 
@@ -236,7 +238,7 @@ public class AlgorithmRunner {
 		definitions.addAll(bs.getDefinitions());
 		usedEntities.clear();
 		usedEntities.addAll(bs.getUsedEntites());
-		
+
 		unSolved.clear();
 		for (PuzzleDefinition def : definitions) {
 			if (!def.isSolved()) {
@@ -286,38 +288,6 @@ public class AlgorithmRunner {
 	}
 
 	/**
-	 * Create a new definition with the function params Insert definition to
-	 * board definitions collection For each relevant square - add the
-	 * definition to it's definitions
-	 * 
-	 * 
-	 * @return
-	 */
-	private static boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow,
-			int textCol) {
-		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow, beginCol, length, direction);
-		definitions.add(def);
-
-		switch (direction) {
-		case 'r':
-			for (int col = beginCol; col < beginCol + length; col++) {
-				board[col][beginRow].addDefinition(def);
-			}
-			break;
-		case 'd':
-			for (int row = beginRow; row < beginRow + length; row++) {
-				board[beginCol][row].addDefinition(def);
-			}
-			break;
-		default:
-			Logger.writeErrorToLog("unknow direction '" + direction + "'");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * This function calculates the location of the definition text, and than
 	 * calls insertDefinition with the calculated params
 	 * 
@@ -357,279 +327,36 @@ public class AlgorithmRunner {
 		return true;
 	}
 
-	private static PuzzleSquare[][] createBoard(int size) {
+	/**
+	 * Create a new definition with the function params Insert definition to
+	 * board definitions collection For each relevant square - add the
+	 * definition to it's definitions
+	 * 
+	 * 
+	 * @return
+	 */
+	private static boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow,
+			int textCol) {
+		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow, beginCol, length, direction);
+		definitions.add(def);
 
-		PuzzleSquare[][] board = new PuzzleSquare[size][size];
-		// create specific example http://www.puzzlechoice.com/cw/Arrow03x.html
-		int row = 0;
-		for (int i = 0; i < 7; i++) {
-			if (i % 2 == 0) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
+		switch (direction) {
+		case 'r':
+			for (int col = beginCol; col < beginCol + length; col++) {
+				board[col][beginRow].addDefinition(def);
 			}
-		}
-		for (int i = 7; i < size; i++) {
-			if (i % 2 == 0) {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(false, i, row);
+			break;
+		case 'd':
+			for (int row = beginRow; row < beginRow + length; row++) {
+				board[beginCol][row].addDefinition(def);
 			}
-		}
-
-		row = 1;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 6) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 2;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 0 || i == 2 || i == 9) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
+			break;
+		default:
+			Logger.writeErrorToLog("unknow direction '" + direction + "'");
+			return false;
 		}
 
-		row = 3;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 5 || i == 10 || i == 12) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-		row = 4;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 0 || i == 1 || i == 7) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 5;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 3 || i == 4 || i == 11) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 6;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 0 || i == 4 || i == 6 || i == 7) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 7;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 8) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 8;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 0 || i == 2 || i == 8 || i == 10 || i == 12) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 9;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 3 || i == 5 || i == 9 || i == 11) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 10;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 0 || i == 6) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 11;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 0 || i == 1 || i == 7) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		row = 12;
-
-		for (int i = 0; i < size; i++) {
-			if (i == 6) {
-				board[i][row] = new PuzzleSquare(false, i, row);
-			} else {
-				board[i][row] = new PuzzleSquare(true, i, row);
-			}
-		}
-
-		return board;
-	}
-
-	private static void insertDefinitions() {
-		int row = 0;
-	
-		insertDefinition(row, 1, 4, 'd', 0, 0);
-	
-		insertDefinition(row, 3, 5, 'd', 0, 2);
-	
-		insertDefinition(row, 5, 3, 'd', 0, 6);
-	
-		insertDefinition(row, 8, 7, 'd', 0, 7);
-	
-		insertDefinition(row, 10, 3, 'd', 0, 9);
-	
-		insertDefinition(row, 12, 3, 'd', 0, 11);
-	
-		row = 1;
-	
-		insertDefinition(row, 0, 6, 'r', 0,0);
-	
-		insertDefinition(row, 4, 4, 'd');
-	
-		insertDefinition(row, 7, 6, 'r');
-	
-		insertDefinition(row, 7, 3, 'd');
-	
-		insertDefinition(row, 11, 4, 'd');
-	
-		row = 2;
-	
-		insertDefinition(row, 3, 6, 'r');
-	
-		insertDefinition(row, 6, 4, 'd');
-	
-		insertDefinition(row, 10, 3, 'r');
-	
-		row = 3;
-	
-		insertDefinition(row, 0, 5, 'r', 2, 0);
-	
-		insertDefinition(row, 2, 5, 'd');
-	
-		insertDefinition(row, 6, 4, 'r');
-	
-		insertDefinition(row, 9, 6, 'd');
-	
-		row = 4;
-	
-		insertDefinition(row, 2, 5, 'r');
-	
-		insertDefinition(row, 5, 5, 'd');
-	
-		insertDefinition(row, 8, 5, 'r');
-	
-		insertDefinition(row, 10, 4, 'd');
-	
-		insertDefinition(row, 12, 4, 'd');
-	
-		row = 5;
-	
-		insertDefinition(row, 0, 3, 'r', 4, 0);
-	
-		insertDefinition(row, 1, 6, 'd');
-	
-		insertDefinition(row, 5, 6, 'r');
-	
-		row = 6;
-	
-		insertDefinition(row, 1, 3, 'r');
-	
-		insertDefinition(row, 3, 3, 'd');
-	
-		insertDefinition(row, 8, 5, 'r');
-	
-		insertDefinition(row, 11, 3, 'd');
-	
-		row = 7;
-	
-		insertDefinition(row, 0, 8, 'r', 6, 0);
-	
-		insertDefinition(row, 4, 6, 'd');
-	
-		insertDefinition(row, 6, 3, 'd');
-	
-		insertDefinition(row, 7, 4, 'd');
-	
-		insertDefinition(row, 9, 4, 'r');
-	
-		row = 8;
-	
-		insertDefinition(row, 3, 5, 'r');
-	
-		row = 9;
-	
-		insertDefinition(row, 0, 3, 'r', 8, 0);
-	
-		insertDefinition(row, 2, 4, 'd');
-	
-		insertDefinition(row, 6, 3, 'r');
-	
-		insertDefinition(row, 8, 4, 'd');
-	
-		insertDefinition(row, 10, 4, 'd');
-	
-		insertDefinition(row, 12, 4, 'd');
-	
-		row = 10;
-	
-		insertDefinition(row, 1, 5, 'r');
-	
-		insertDefinition(row, 3, 3, 'd');
-	
-		insertDefinition(row, 5, 3, 'd');
-	
-		insertDefinition(row, 7, 6, 'r');
-	
-		insertDefinition(row, 9, 3, 'd');
-	
-		insertDefinition(row, 11, 3, 'd');
-	
-		row = 11;
-	
-		insertDefinition(row, 2, 5, 'r');
-	
-		insertDefinition(row, 8, 5, 'r');
-	
-		row = 12;
-	
-		insertDefinition(row, 0, 6, 'r', 11, 0);
-	
-		insertDefinition(row, 7, 6, 'r');
-	
+		return true;
 	}
 
 	/**
@@ -734,7 +461,7 @@ public class AlgorithmRunner {
 		Logger.writeToLog("Total number of possible answers = " + counter);
 	}
 
-	private static void createMockAnswers(){
+	private static void createMockAnswers() {
 		int entityId = 0;
 		Answer ans = new Answer("oboe", entityId++);
 		answers.add(ans);
@@ -840,12 +567,12 @@ public class AlgorithmRunner {
 		answers.add(ans);
 		ans = new Answer("ardent", entityId++);
 		answers.add(ans);
-		
+
 	}
 
-	private static void outputBoard(){
-		File templateFile = new File(PuzzleCreator.appDir,"13x13_1.tmp");
-		try{
+	private static void outputBoard() {
+		File templateFile = new File(PuzzleCreator.appDir, "13x13_1.tmp");
+		try {
 			templateFile.createNewFile();
 			FileWriter out = new FileWriter(templateFile, true);
 			BufferedWriter bout = new BufferedWriter(out);
@@ -853,50 +580,141 @@ public class AlgorithmRunner {
 			bout.write(boardData);
 			bout.newLine();
 			boardData = "";
-			//write squares
-			
-			for (int row = 0;row < board.length; row++){
-				for (int column = 0; column <board.length; column++){
-					boardData="Puzzle square: column:" + column + " row:" + row + " emptySquare:" + board[column][row].isLetter();
+			// write squares
+
+			for (int row = 0; row < board.length; row++) {
+				for (int column = 0; column < board.length; column++) {
+					boardData = "Puzzle square: column:" + column + " row:" + row + " emptySquare:"
+							+ board[column][row].isLetter();
 					bout.write(boardData);
 					bout.newLine();
 				}
 			}
-			
+
 			bout.newLine();
 			boardData = "Definitions:";
 			bout.write(boardData);
 			bout.newLine();
-			
-			for (PuzzleDefinition def :definitions){
-				boardData = "Definition: row:" + def.getBeginRow() + " column:" + def.getBeginColumn() + " length:" + def.getLength() + 
-						" direction:" + def.getDirection() + " textRow:" + def.getTextRow() + " textCol:" + def.getTextCol();
+
+			for (PuzzleDefinition def : definitions) {
+				boardData = "Definition: row:" + def.getBeginRow() + " column:" + def.getBeginColumn() + " length:"
+						+ def.getLength() + " direction:" + def.getDirection() + " textRow:" + def.getTextRow()
+						+ " textCol:" + def.getTextCol();
 				bout.write(boardData);
 				bout.newLine();
 			}
-			
-			
+
 			bout.close();
 			out.close();
-			
-			
-		} catch (IOException ex){
+
+		} catch (IOException ex) {
 			Logger.writeErrorToLog("failed to create");
 		}
 	}
-	
-	private static boolean createBoardFromTemplateFile(int size, int templateNum){
-		//TODO add templates dir
-		String fileName = "" + size + "x" + "size" + "_" + templateNum + ".tmp";
-		File templateFile = new File(PuzzleCreator.appDir,fileName);
-		try{
+
+	private static boolean createBoardFromTemplateFile(int size, int templateNum) {
+		board = new PuzzleSquare[size][size];
+		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
+		File templateFile = new File(PuzzleCreator.appDir + System.getProperty("file.separator") + "templates",
+				fileName);
+		try {
 			FileReader in = new FileReader(templateFile);
 			BufferedReader bin = new BufferedReader(in);
-			
-			
+			bin.readLine();
+			String line = bin.readLine();
+			int row;
+			int column;
+			boolean emptySquare;
+			int columnIndex;
+			int rowIndex;
+			int emptySquareIndex;
+			String columnValue;
+			String rowValue;
+			while (line.startsWith("Puzzle")) {
+				columnIndex = line.indexOf("column:");
+				rowIndex = line.indexOf("row:");
+				emptySquareIndex = line.indexOf("emptySquare:");
+				if (rowIndex - columnIndex == 10) {
+					columnValue = line.substring(columnIndex + 7, columnIndex + 9);
+				} else {
+					columnValue = "" + line.charAt(columnIndex + 7);
+				}
+
+				if (emptySquareIndex - rowIndex == 7) {
+					rowValue = line.substring(rowIndex + 4, rowIndex + 6);
+				} else {
+					rowValue = "" + line.charAt(rowIndex + 4);
+				}
+
+				emptySquare = line.endsWith("true");
+
+				column = Integer.parseInt(columnValue);
+				row = Integer.parseInt(rowValue);
+				board[column][row] = new PuzzleSquare(emptySquare, column, row);
+				line = bin.readLine();
+			}
+
+			line = bin.readLine();
+			int lengthIndex;
+			String lengthValue;
+			int length;
+			int directionIndex;
+			char direction;
+			int textRowIndex;
+			String textRowValue;
+			int textRow;
+			int textColIndex;
+			String textColValue;
+			int textCol;
+
+			while (line != null) {
+				rowIndex = line.indexOf("row:");
+				columnIndex = line.indexOf("column:");
+				lengthIndex = line.indexOf("length:");
+				directionIndex = line.indexOf("direction:");
+				textRowIndex = line.indexOf("textRow:");
+				textColIndex = line.indexOf("textCol:");
+
+				if (columnIndex - rowIndex == 7) {
+					rowValue = line.substring(rowIndex + 4, rowIndex + 6);
+				} else {
+					rowValue = "" + line.charAt(rowIndex + 4);
+				}
+
+				if (lengthIndex - columnIndex == 10) {
+					columnValue = line.substring(columnIndex + 7, columnIndex + 9);
+				} else {
+					columnValue = "" + line.charAt(columnIndex + 7);
+				}
+
+				if (directionIndex - lengthIndex == 10) {
+					lengthValue = line.substring(lengthIndex + 7, lengthIndex + 9);
+				} else {
+					lengthValue = "" + line.charAt(lengthIndex + 7);
+				}
+
+				direction = line.charAt(directionIndex + 10);
+
+				if (textColIndex - textRowIndex == 11) {
+					textRowValue = line.substring(textRowIndex + 8, textRowIndex + 10);
+				} else {
+					textRowValue = "" + line.charAt(textRowIndex + 8);
+				}
+
+				textColValue = line.substring(textColIndex + 8);
+				row = Integer.parseInt(rowValue);
+				column = Integer.parseInt(columnValue);
+				length = Integer.parseInt(lengthValue);
+				textRow = Integer.parseInt(textRowValue);
+				textCol = Integer.parseInt(textColValue);
+
+				insertDefinition(row, column, length, direction, textRow, textCol);
+				line = bin.readLine();
+			}
+
 			bin.close();
 			in.close();
-		} catch (IOException ex){
+		} catch (IOException ex) {
 			Logger.writeErrorToLog("failed to read template file : " + fileName);
 			return false;
 		}
