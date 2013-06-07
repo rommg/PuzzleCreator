@@ -883,9 +883,23 @@ public class AlgorithmRunner {
 		} catch (IOException ex){
 			Logger.writeErrorToLog("failed to create");
 		}
-		
-		
-		
-		
+	}
+	
+	private static boolean createBoardFromTemplateFile(int size, int templateNum){
+		//TODO add templates dir
+		String fileName = "" + size + "x" + "size" + "_" + templateNum + ".tmp";
+		File templateFile = new File(PuzzleCreator.appDir,fileName);
+		try{
+			FileReader in = new FileReader(templateFile);
+			BufferedReader bin = new BufferedReader(in);
+			
+			
+			bin.close();
+			in.close();
+		} catch (IOException ex){
+			Logger.writeErrorToLog("failed to read template file : " + fileName);
+			return false;
+		}
+		return true;
 	}
 }
