@@ -1,15 +1,13 @@
 package puzzleAlgorithm;
 
-import gui.CrosswordView;
-import gui.MainView;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import utils.AlgorithmUtils;
 import utils.DBUtils;
 import utils.Logger;
 
@@ -19,6 +17,7 @@ public class AlgorithmRunner {
 	protected static List<PuzzleDefinition> definitions = new ArrayList<PuzzleDefinition>();
 	private static List<PuzzleDefinition> unSolved = new ArrayList<PuzzleDefinition>();
 	protected static List<Answer> answers = new ArrayList<Answer>();
+	protected static Set<Integer> usedEntities = new HashSet<Integer>();
 
 	/**
 	 * 
@@ -31,7 +30,7 @@ public class AlgorithmRunner {
 
 		//TODO remove use of mock function after tests and mock max length
 		int maxLength = 8;
-		//createMockAnswers();
+//		createMockAnswers();
 		answers = DBUtils.getPossibleAnswers(topics, 8);
 		
 		Logger.writeToLog("Number of answers = " + answers.size());
@@ -54,7 +53,6 @@ public class AlgorithmRunner {
 			printResults();
 		}
 		return result;
-
 	}
 
 	private static boolean fillBoard() {
@@ -77,6 +75,15 @@ public class AlgorithmRunner {
 				}
 				int index = (int) Math.floor(Math.random() * possibleAnswers.size());
 				Answer currentAnswer = possibleAnswers.get(index);
+				
+				/* check if this answers's entity was already used
+				 * TODO The possible answers should be updated by entity id when the problematic answer is assigned
+				 */
+				if (usedEntities.contains(currentAnswer.getEntityId())){
+					possibleAnswers.remove(currentAnswer);
+					continue innerLoop;
+				}
+				
 				int row = def.getBeginRow();
 				int column = def.getBeginColumn();
 				char direction = def.getDirection();
@@ -141,12 +148,15 @@ public class AlgorithmRunner {
 	 * @param stack
 	 */
 	private static boolean pushBoardState(Deque<BoardState> stack, PuzzleDefinition lastDef, Answer currentAnswer) {
-		// TODO when poping from stack, remove the answer of lastDef from it's
-		// answers
 		int size = board[0].length;
 		BoardState bs = new BoardState(size);
 		List<PuzzleDefinition> clonedDefinitions = bs.getDefinitions();
 		PuzzleSquare[][] clonedBoard = bs.getBoard();
+		
+		Set<Integer> stateUsedEntities = bs.getUsedEntites();
+		for (int entityId : usedEntities){
+			stateUsedEntities.add(entityId);
+		}
 
 		for (int row = 0; row < size; row++) {
 			for (int col = 0; col < size; col++) {
@@ -213,9 +223,12 @@ public class AlgorithmRunner {
 		}
 		lastDef.setAnswer(new Answer("", -1));
 
-		// reset definitions
+		// reset definitions and used entities
 		definitions.clear();
 		definitions.addAll(bs.getDefinitions());
+		usedEntities.clear();
+		usedEntities.addAll(bs.getUsedEntites());
+		
 		unSolved.clear();
 		for (PuzzleDefinition def : definitions) {
 			if (!def.isSolved()) {
@@ -259,6 +272,7 @@ public class AlgorithmRunner {
 
 		def.setAnswer(currentAnswer);
 		def.markSolved();
+		usedEntities.add(currentAnswer.getEntityId());
 		// printBoard();
 
 	}
@@ -713,109 +727,110 @@ public class AlgorithmRunner {
 	}
 
 	private static void createMockAnswers(){
-		Answer ans = new Answer("oboe", -1);
+		int entityId = 0;
+		Answer ans = new Answer("oboe", entityId++);
 		answers.add(ans);
-		ans = new Answer("callow", -1);
+		ans = new Answer("callow", entityId++);
 		answers.add(ans);
-		ans = new Answer("eject", -1);
+		ans = new Answer("eject", entityId++);
 		answers.add(ans);
-		ans = new Answer("arid", -1);
+		ans = new Answer("arid", entityId++);
 		answers.add(ans);
-		ans = new Answer("noise", -1);
+		ans = new Answer("noise", entityId++);
 		answers.add(ans);
-		ans = new Answer("tic", -1);
+		ans = new Answer("tic", entityId++);
 		answers.add(ans);
-		ans = new Answer("one", -1);
+		ans = new Answer("one", entityId++);
 		answers.add(ans);
-		ans = new Answer("anew", -1);
+		ans = new Answer("anew", entityId++);
 		answers.add(ans);
-		ans = new Answer("trance", -1);
+		ans = new Answer("trance", entityId++);
 		answers.add(ans);
-		ans = new Answer("odd", -1);
+		ans = new Answer("odd", entityId++);
 		answers.add(ans);
-		ans = new Answer("ensue", -1);
+		ans = new Answer("ensue", entityId++);
 		answers.add(ans);
-		ans = new Answer("gum", -1);
+		ans = new Answer("gum", entityId++);
 		answers.add(ans);
-		ans = new Answer("idle", -1);
+		ans = new Answer("idle", entityId++);
 		answers.add(ans);
-		ans = new Answer("den", -1);
+		ans = new Answer("den", entityId++);
 		answers.add(ans);
-		ans = new Answer("age", -1);
+		ans = new Answer("age", entityId++);
 		answers.add(ans);
-		ans = new Answer("epic", -1);
+		ans = new Answer("epic", entityId++);
 		answers.add(ans);
-		ans = new Answer("profess", -1);
+		ans = new Answer("profess", entityId++);
 		answers.add(ans);
-		ans = new Answer("liar", -1);
+		ans = new Answer("liar", entityId++);
 		answers.add(ans);
-		ans = new Answer("tropic", -1);
+		ans = new Answer("tropic", entityId++);
 		answers.add(ans);
-		ans = new Answer("cud", -1);
+		ans = new Answer("cud", entityId++);
 		answers.add(ans);
-		ans = new Answer("ebb", -1);
+		ans = new Answer("ebb", entityId++);
 		answers.add(ans);
-		ans = new Answer("unit", -1);
+		ans = new Answer("unit", entityId++);
 		answers.add(ans);
-		ans = new Answer("fade", -1);
+		ans = new Answer("fade", entityId++);
 		answers.add(ans);
-		ans = new Answer("leap", -1);
+		ans = new Answer("leap", entityId++);
 		answers.add(ans);
-		ans = new Answer("new", -1);
+		ans = new Answer("new", entityId++);
 		answers.add(ans);
-		ans = new Answer("din", -1);
+		ans = new Answer("din", entityId++);
 		answers.add(ans);
-		ans = new Answer("fee", -1);
+		ans = new Answer("fee", entityId++);
 		answers.add(ans);
-		ans = new Answer("teem", -1);
+		ans = new Answer("teem", entityId++);
 		answers.add(ans);
-		ans = new Answer("watt", -1);
+		ans = new Answer("watt", entityId++);
 		answers.add(ans);
-		ans = new Answer("abroad", -1);
+		ans = new Answer("abroad", entityId++);
 		answers.add(ans);
-		ans = new Answer("arable", -1);
+		ans = new Answer("arable", entityId++);
 		answers.add(ans);
-		ans = new Answer("indigo", -1);
+		ans = new Answer("indigo", entityId++);
 		answers.add(ans);
-		ans = new Answer("bee", -1);
+		ans = new Answer("bee", entityId++);
 		answers.add(ans);
-		ans = new Answer("geese", -1);
+		ans = new Answer("geese", entityId++);
 		answers.add(ans);
-		ans = new Answer("deft", -1);
+		ans = new Answer("deft", entityId++);
 		answers.add(ans);
-		ans = new Answer("jewel", -1);
+		ans = new Answer("jewel", entityId++);
 		answers.add(ans);
-		ans = new Answer("erupt", -1);
+		ans = new Answer("erupt", entityId++);
 		answers.add(ans);
-		ans = new Answer("ace", -1);
+		ans = new Answer("ace", entityId++);
 		answers.add(ans);
-		ans = new Answer("nelson", -1);
+		ans = new Answer("nelson", entityId++);
 		answers.add(ans);
-		ans = new Answer("act", -1);
+		ans = new Answer("act", entityId++);
 		answers.add(ans);
-		ans = new Answer("spine", -1);
+		ans = new Answer("spine", entityId++);
 		answers.add(ans);
-		ans = new Answer("altitude", -1);
+		ans = new Answer("altitude", entityId++);
 		answers.add(ans);
-		ans = new Answer("item", -1);
+		ans = new Answer("item", entityId++);
 		answers.add(ans);
-		ans = new Answer("creep", -1);
+		ans = new Answer("creep", entityId++);
 		answers.add(ans);
-		ans = new Answer("boa", -1);
+		ans = new Answer("boa", entityId++);
 		answers.add(ans);
-		ans = new Answer("nil", -1);
+		ans = new Answer("nil", entityId++);
 		answers.add(ans);
-		ans = new Answer("wrong", -1);
+		ans = new Answer("wrong", entityId++);
 		answers.add(ans);
-		ans = new Answer("cicada", -1);
+		ans = new Answer("cicada", entityId++);
 		answers.add(ans);
-		ans = new Answer("incur", -1);
+		ans = new Answer("incur", entityId++);
 		answers.add(ans);
-		ans = new Answer("audit", -1);
+		ans = new Answer("audit", entityId++);
 		answers.add(ans);
-		ans = new Answer("redeem", -1);
+		ans = new Answer("redeem", entityId++);
 		answers.add(ans);
-		ans = new Answer("ardent", -1);
+		ans = new Answer("ardent", entityId++);
 		answers.add(ans);
 		
 	}

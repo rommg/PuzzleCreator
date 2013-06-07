@@ -49,8 +49,8 @@ public class PuzzleCreator {
 		Logger.writeToLog("Connections Pool was created");
 
 		// TODO: remove debug algorithm run
-		int[] topics = {4,5};
-	//	AlgorithmRunner.runAlgorithm(topics, 1);
+		int[] topics = {2,3,4,5};
+		AlgorithmRunner.runAlgorithm(topics, 1);
 		
 		// TODO: To Delete
 		// DBUtils.test();

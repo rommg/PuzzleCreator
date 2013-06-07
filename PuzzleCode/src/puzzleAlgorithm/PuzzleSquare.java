@@ -26,7 +26,7 @@ public class PuzzleSquare {
 	public PuzzleSquare cloneSquare(){
 		PuzzleSquare cloned = new PuzzleSquare(isLetter, column, row);
 		if (this.letter != 0){
-			cloned.setLetter(letter);
+			cloned.letter= letter;
 		}
 		return cloned;
 	}
@@ -66,11 +66,6 @@ public class PuzzleSquare {
 	
 	public void addDefinition(PuzzleDefinition def){
 		this.definitions.add(def);
-	}
-	
-	public boolean setLetter(char c){
-		this.letter = c;
-		return true;
 	}
 
 	public boolean checkLetter(char c, boolean setLetter){

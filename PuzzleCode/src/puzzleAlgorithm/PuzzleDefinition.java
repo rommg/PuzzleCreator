@@ -154,7 +154,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		} else if (direction != other.getDirection()) {
 			return direction - other.getDirection();
 		} else {
-			int rowDiff = beginRow - other.getBeginColumn();
+			int rowDiff = beginRow - other.getBeginRow();
 			int colDiff = beginColumn - other.getBeginColumn();
 			if (rowDiff != 0) {
 				return rowDiff;
