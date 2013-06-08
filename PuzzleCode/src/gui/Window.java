@@ -10,6 +10,7 @@ enum Window {
 	HallOfFame("HallOfFame"),
 	Crossword("CrosswordView"),
 	AddDefinition("AddDefinition"),
+	Management("Management"),
 	AddHint("AddHint"),
 	MassiveImport("MassiveImport"),
 	Help("Help"),

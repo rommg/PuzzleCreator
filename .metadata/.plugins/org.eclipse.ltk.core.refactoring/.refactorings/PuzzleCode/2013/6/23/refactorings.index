@@ -44,3 +44,19 @@
 1370426496390	Rename local variable 'box1'
 1370426662196	Convert local variable 'subjectBox' to field
 1370427054635	Convert local variable 'predicateBox' to field
+1370615194127	Rename type 'KnowledgeManagementView'
+1370618626869	Convert local variable 'definitions' to field
+1370620555457	Move compilation unit
+1370620830661	Delete element
+1370622232099	Rename field 'definitions'
+1370622237219	Convert local variable 'definitions' to field
+1370623273039	Rename method 'getTopicIDsAndNames'
+1370624256052	Convert local variable 'topicPanel' to field
+1370624260697	Convert local variable 'defPanel' to field
+1370624280282	Convert local variable 'btnPanel' to field
+1370627480695	Delete element
+1370629360188	Convert local variable 'allDefinitions' to field
+1370632280048	Rename field 'lockBtn'
+1370632699816	Rename local variable 'panel_1'
+1370632705207	Convert local variable 'definitionPanel' to field
+1370638950483	Convert local variable 'btnPanel' to field

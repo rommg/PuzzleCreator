@@ -1,9 +1,11 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import connectionPool.DBConnection;
 import puzzleAlgorithm.Answer;
@@ -138,11 +140,107 @@ public class DBUtils {
 		}
 		return definitions;
 	}
+	
+	private static Map<Integer, List<Object>> createResultSetPKMap(List<Map<String, Object>> definitionsRs) {
+		Map<Integer, List<Object>> definitions = new HashMap<Integer, List<Object>>();
+
+		for (Map<String, Object> row : definitionsRs) {
+			int entityId = Integer.parseInt(row.get("id").toString());
+			String definition = row.get("definition").toString();
+			if (definitions.keySet().contains(entityId)){
+				definitions.get(entityId).add(definition);
+			}
+			else{
+				List<Object> definitionList = new ArrayList<Object>();
+				definitionList.add(definition); 
+				definitions.put(entityId, definitionList);
+			}
+		}
+		return definitions;
+	}
 
 	private static String getProperName(String string) {
 		String ret = string.substring(string.indexOf('<')+1, string.indexOf('>'));
 		ret = ret.replace('_', ' ');
 		return ret;
+	}
+	
+	/**
+	 * GUI SQLs
+	 */
+	public static Map<String,Integer> getAllTopicIDsAndNames() {
+		String sql = "select topics.id,topics.name " +
+				"from topics";
+		
+		Map<String,Integer> retMap = new HashMap<String, Integer>();
+		List<Map<String,Object>> results =  DBConnection.executeQuery(sql);
+		for (Map<String,Object> result : results) {
+			retMap.put(result.get("name").toString(), (Integer) result.get("id"));
+		}
+		return retMap;
+	}
+	
+	public static Map<String, Integer> getDefinitionsByEntityID(int entityID){
+		Map<Integer,List<String>> map = getDefinitions(createINString(Collections.singletonList(entityID)));
+		Map<String,Integer> retMap = new HashMap<String,Integer>();
+		
+		for (Entry<Integer,List<String>> entry : map.entrySet()) {
+			retMap.put(entry.getValue().get(0), entry.getKey());
+		}
+		return retMap;
+	}
+	
+	/**
+	 * map of definition name to definition ID
+	 * @return
+	 */
+	public static Map<String,Integer> getAllDefinitions() {
+		String sql = "select definitions.id,defintions.name " +
+				"from definitions";
+		Map<String,Integer> map = new HashMap<String,Integer>();
+	
+		List<Map<String,Object>> queryMap = DBConnection.executeQuery(sql);
+		for (Map<String,Object> row : queryMap) {
+			map.put((String)row.get("name"),(Integer)row.get("id"));
+		}
+		
+		return map;
+	}
+	
+	/**
+	 * This Map works because Topic name is unique
+	 * @param definitionIDs
+	 * @return
+	 */
+	public static Map<String, Integer> getTopicByDefinitionIDs(List<Integer> definitionIDs) {
+		String sql = "SELECT topics.id, topics.name " +
+				"FROM topics, definitions_topics, definitions" +
+				"WHERE (topics.id = definitions_topics.topic_id) " +
+				"AND (definitions_topics.definition_id = definitions.definition) " +
+				"AND (definitions.id IN " + createINString(definitionIDs) + ");";
+		
+		List<Map<String,Object>> lst = DBConnection.executeQuery(sql);
+		Map<String,Integer> rows = new HashMap<String, Integer>();
+		
+		for (Map<String,Object> item : lst) {
+			rows.put((String)item.get("name"),(Integer)item.get("id"));
+		}
+		
+		return rows; 
+	}
+	
+	private static String createINString(List<?> lst) {
+		StringBuilder strBlder = new StringBuilder();
+		strBlder.append('(');
+		for (Object obj : lst) {
+			strBlder.append(obj.toString());
+			strBlder.append(',');
+		}
+		
+		strBlder.deleteCharAt(strBlder.length()); // delete last ','
+		strBlder.append(')');
+		
+		return strBlder.toString();
 	}
 
 	//TODO: remove!!!!

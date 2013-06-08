@@ -25,6 +25,9 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+
+import utils.DBUtils;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -74,15 +77,11 @@ public class PrepareGameView extends JPanel {
 		centerPanel = new JPanel();
 		add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
-
-		JPanel middlePanel = new JPanel();
-		middlePanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		centerPanel.add(middlePanel);
-		middlePanel.setLayout(new GridLayout(0, 2, 0, 0));
-
-		topicsPanel = new JPanel();
-		middlePanel.add(topicsPanel);
-		topicsPanel.setLayout(new GridLayout(4, 2, 0, 0));
+		
+				topicsPanel = new JPanel();
+				topicsPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				centerPanel.add(topicsPanel);
+				topicsPanel.setLayout(new GridLayout(4, 2, 0, 0));
 
 		JPanel btnPanel = new JPanel();
 		centerPanel.add(btnPanel);
@@ -159,15 +158,7 @@ public class PrepareGameView extends JPanel {
 	}
 
 	private void getTopics() {
-		//topicsList =GuiDBConnector.getTopics();
-		//for now - fixed values
-		topicsList = new LinkedList<String>();
-
-		topicsList.add("Geography");
-		topicsList.add("Cinema");
-		topicsList.add("Music");
-		topicsList.add("Television");
-		topicsList.add("General");
-		topicsList.add("Israel");
+		topicsList =new ArrayList<String>();
+		topicsList.addAll(DBUtils.getAllTopicIDsAndNames().keySet());
 	}
 }

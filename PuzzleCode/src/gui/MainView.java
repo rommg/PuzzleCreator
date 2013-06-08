@@ -62,7 +62,7 @@ public class MainView {
 	private JPanel welcomePanel = null;
 	private JPanel addHintView = null;
 	private JPanel addDefView = null;
-
+	private JPanel management = null;
 
 	/**
 	 * Launch the application.
@@ -141,12 +141,12 @@ public class MainView {
 		});
 
 		// middle buttons
-		btn = createButton("Add Definition", "add.png");
+		btn = createButton("<html>Knowledge<br>Management</html>", "add.png");
 		btn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				addDefBtnClicked();
+				mamangementBtnClick();
 			}
 		});
 		
@@ -265,6 +265,10 @@ public class MainView {
 	void addDefBtnClicked() {
 		showAddDefView();
 	}
+	
+	void mamangementBtnClick() {
+		showManagemntView();
+	}
 
 	/**
 	 * switch to PrepareView card
@@ -369,6 +373,17 @@ public class MainView {
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.AddDefinition.toString());
+		setSizes();
+	}
+
+	void showManagemntView() {
+		if (management == null) {
+			management = ManagementView.start();
+			cardPanel.add(management, Window.Management.toString());
+		}
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.Management.toString());
 		setSizes();
 	}
 
