@@ -66,3 +66,6 @@
 1370686445837	Rename method 'getProperName'
 1370686586746	Delete element
 1370692442007	Convert local variable 'tabbedPane' to field
+1370711378587	Rename method 'getDifficulty'
+1370712718196	Rename local variable 'panel'
+1370720077946	Delete element

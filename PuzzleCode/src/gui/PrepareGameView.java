@@ -110,12 +110,15 @@ public class PrepareGameView extends JPanel {
 	}
 
 	void goBtnClicked() {
-		if (getUserSelectedTopics().length < 1) { // must choose at least one topic
+		int[] selectedTopicIDs = getUserSelectedTopics();
+		int difficulty = getUserSelectedDifficulty();
+		
+		if (selectedTopicIDs.length < 1) { // must choose at least one topic
 			// TODO Dialog Box
 			System.out.println("Error veze");
 		}
 		else {
-			MainView.view.showWaitView();
+			MainView.view.showWaitView(selectedTopicIDs,difficulty);
 		}
 	}
 
@@ -156,7 +159,7 @@ public class PrepareGameView extends JPanel {
 		return this.selectedTopicsId;
 	}
 
-	public int getDifficulty() {
+	public int getUserSelectedDifficulty() {
 		for (Enumeration<AbstractButton> buttons = difficultyBtnsGrp.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();
 			if (button.isSelected()) {

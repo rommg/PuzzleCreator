@@ -53,6 +53,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		this.answer = new Answer("", -1, "");
 		this.possibleAnswers = new ArrayList<Answer>();
 		possibleAnswers.addAll(answers);
+		this.hints = new ArrayList<String>();
 
 		this.letters = new char[length];
 		for (int i = 0; i < letters.length; i++) {
@@ -230,6 +231,9 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	}
 
 	public void setHints(List<String> hints) {
+		if (hints == null){
+			this.hints.clear();
+		}
 		this.hints = hints;
 	}
 	

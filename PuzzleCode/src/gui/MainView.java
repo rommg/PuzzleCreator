@@ -63,6 +63,7 @@ public class MainView {
 	private JPanel addHintView = null;
 	private JPanel addDefView = null;
 	private JPanel management = null;
+	private JPanel massive = null;
 
 	/**
 	 * Launch the application.
@@ -269,6 +270,10 @@ public class MainView {
 	void mamangementBtnClick() {
 		showManagemntView();
 	}
+	
+	void massiveImportBtnClicked() {
+		showMassiveImportView();
+	}
 
 	/**
 	 * switch to PrepareView card
@@ -285,19 +290,21 @@ public class MainView {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
+	
+	public void setCrosswordView(CrosswordView view) {
+		crosswordView = view;
+		cardPanel.add(view, Window.Crossword.toString());
+	}
 
 	/**
 	 * switch to CrosswordView
 	 */
-	public void showCrosswordview(BoardSolution solution) {
-		if (crosswordView == null) {
-			crosswordView = CrosswordView.start(solution);
-			cardPanel.add(crosswordView, Window.Crossword.toString());
-		}
-
+	public void showCrosswordview() {
+		
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		((CrosswordView)crosswordView).setSizes();
 		cl.show(cardPanel,Window.Crossword.toString());
+		
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
@@ -305,9 +312,9 @@ public class MainView {
 	/**
 	 * switch to WaitView
 	 */
-	void showWaitView() {
+	void showWaitView(int[] topics, int difficulty) {
 
-		JPanel waitView = WaitView.start((PrepareGameView) prepareGame);
+		JPanel waitView = WaitView.start(topics, difficulty);
 		cardPanel.add(waitView, Window.Wait.toString());
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
@@ -386,6 +393,18 @@ public class MainView {
 		cl.show(cardPanel,Window.Management.toString());
 		setSizes();
 	}
+	
+	void showMassiveImportView() {
+		if (massive == null) {
+			massive = MassiveImportView.start();
+			cardPanel.add(massive, Window.MassiveImport.toString());
+		}
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.MassiveImport.toString());
+		setSizes();
+	}
+
 
 
 
