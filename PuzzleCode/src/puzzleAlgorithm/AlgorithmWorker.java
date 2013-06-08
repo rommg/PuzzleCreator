@@ -32,17 +32,16 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	protected static List<Answer> answers = new ArrayList<Answer>();
 	protected static Set<Integer> usedEntities = new HashSet<Integer>();
 
-	private int[] topics;
+	private int[] topicsIds;
 	private int difficulty;
 
 	public AlgorithmWorker(int[] topics, int difficulty) {
-		this.topics = topics;
+		this.topicsIds = topics;
 		this.difficulty = difficulty;
 	}
 
 	@Override
 	protected BoardSolution doInBackground() throws Exception {
-		int[] topics = { 3, 4, 5 };
 		BoardSolution result = null;
 		int size = 13;
 		switch (difficulty) {
@@ -62,7 +61,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		publish("Retrieving possible answers from DataBase");
 		// TODO remove use of mock function after tests
 //		createMockAnswers();
-		answers = DBUtils.getPossibleAnswers(topics, 8);
+		answers = DBUtils.getPossibleAnswers(this.topicsIds, 10);
 		Logger.writeToLog("Number of answers = " + answers.size());
 		
 		publish("Creating puzzle board");
@@ -81,12 +80,10 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 			publish("Retrieving hints and definitions from DataBase");
 			DBUtils.setHintsAndDefinitions(definitions);
 			result = new BoardSolution(board, definitions, true);
-			// AlgorithmUtils.drawBoard(board, definitions);
 			printResults();
 			publish("finished");
 		}
 		return result;
-
 	}
 
 	@Override
