@@ -104,41 +104,6 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		//TODO show the messages on screen while the board is built
 	}
 
-	/**
-	 * 
-	 * @param topics
-	 *            - an array of id numbers of puzzle topics
-	 * @param difficulty
-	 *            - integer for easy, medium or hard
-	 * @return
-	 */
-	public static BoardSolution runAlgorithm(int[] topics, int difficulty) {
-		BoardSolution result = null;
-		int size = 13;
-		// TODO remove use of mock function after tests
-		// createMockAnswers();
-		answers = DBUtils.getPossibleAnswers(topics, 8);
-
-		Logger.writeToLog("Number of answers = " + answers.size());
-		createBoardFromTemplateFile(size, 2);
-		Collections.sort(definitions);
-		printBoard();
-		printBoardStatus();
-		optimizeBoard();
-		printBoardStatus();
-
-		if (!fillBoard()) {
-			Logger.writeErrorToLog("impossible data");
-			result = new BoardSolution(null, null, false);
-		} else {
-			Logger.writeToLog("success");
-			DBUtils.setHintsAndDefinitions(definitions);
-			result = new BoardSolution(board, definitions, true);
-			// AlgorithmUtils.drawBoard(board, definitions);
-			printResults();
-		}
-		return result;
-	}
 
 	private static boolean fillBoard() {
 		Deque<BoardState> stack = new ArrayDeque<BoardState>();
