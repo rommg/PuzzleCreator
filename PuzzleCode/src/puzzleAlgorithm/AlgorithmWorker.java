@@ -81,12 +81,10 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 			publish("Retrieving hints and definitions from DataBase");
 			DBUtils.setHintsAndDefinitions(definitions);
 			result = new BoardSolution(board, definitions, true);
-			// AlgorithmUtils.drawBoard(board, definitions);
 			printResults();
 			publish("finished");
 		}
 		return result;
-
 	}
 
 	@Override
