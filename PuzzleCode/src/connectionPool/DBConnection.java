@@ -22,14 +22,22 @@ public class DBConnection {
 
 	private static void freeConnection(Connection conn) {
 		if (conn != null) {
-			PuzzleCreator.connectionPool.returnConnection(conn);
+			if (PuzzleCreator.connectionPool.returnConnection(conn)) {
+				Logger.writeToLog("DBConnection freeConnection: Successfully free the connection");
+			} else {
+				Logger.writeErrorToLog("DBConnection freeConnection: Failed to free the connection");
+			}			
 		}
 	}
 
 	/**
-	 * 
-	 * @param sqlQuery - the string query you wish to execute
-	 * @return List of Map<String, Object>> where String is the attribute and Object is the data
+	 * This method executes a SQL query : pools a free connection,
+	 * creates statement and uses its executeQuery(String query) function.
+	 * When finished it closes the resources and return the connection
+	 * back to the connection pool.
+	 * @param sqlQuery - the string query that need to be execute.
+	 * @return List of Map<String, Object>> where String is the attribute and Object is the data,
+	 * the list is null if there's an SQL Exception.
 	 */
 	public static List<Map<String,Object>> executeQuery(String sqlQuery) {
 		Connection conn = null;
@@ -71,22 +79,46 @@ public class DBConnection {
 		return returnList;
 	}
 
-	// NOT TO USE YET
-	@SuppressWarnings("unused")
-	private static List<Map<String,Object>> executeUpdate(String sqlUpdate) {
+	/**
+	 * This method executes a SQL update statement : pools a free connection,
+	 * creates statement and uses its executeUpdate(String query) function.
+	 * When finished it closes the resources and return the connection
+	 * back to the connection pool.
+	 * @param sqlUpdate - the update statement that need to be execute.
+	 * @return an integer - the numbers of rows that were updated (DML) or 0 (DDL),
+	 * -1 on failure. 
+	 */
+	public static int executeUpdate(String sqlUpdate) {
 		Connection conn = null;
+		Statement stmt = null;
+		int result = -1;
+		
 		try {
 			conn = getConnection();
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection failed to get connection from pool " + e.getMessage());
 		}
-		Statement stmt = null;
-		ResultSet rs = null;
-		List<Map<String,Object>> returnList = null;
+	
+		try {
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sqlUpdate);
+		} catch (SQLException e) {
+			Logger.writeErrorToLog("DBConnection executeUpdate: " + e.getMessage());
+		}
+		finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					Logger.writeErrorToLog("DBConnection executeQuery:" + e.getMessage());
+				}
+			}
+			if (conn != null) {
+				freeConnection(conn);					 
+			}
+		}
 		
-		//TODO 
-		
-		return returnList;
+		return result;
 	}
 
 	private static List<Map<String,Object>> mapResultSet(ResultSet rs) throws SQLException {
@@ -108,6 +140,7 @@ public class DBConnection {
 
 	/**
 	 * 
+	 * The method reads a SQL script file and execute each SQL statement.
 	 * @param sqlScriptPath - file path of the SQL script file. 
 	 * Comments in the script must appear after "--" in a new line. 
 	 * @throws SQLException - if roll-backing didn't succeed 
@@ -147,14 +180,15 @@ public class DBConnection {
 			Logger.writeToLog("Commited transaction Successfully");
 		}
 		catch(SQLException sqlE) {
-			Logger.writeErrorToLog("Update transaction is not complete: " + sqlE.getMessage());
+			Logger.writeErrorToLog("Transaction is not complete: " + sqlE.getMessage());
 			try {
+				// try rolling back
 				conn.rollback();
 				Logger.writeToLog("Rollback Successfully");
 			} catch (SQLException sqlE2) {
-				Logger.writeErrorToLog("failed when rollbacking - " + sqlE.getMessage());
+				Logger.writeErrorToLog("failed when rollbacking - " + sqlE2.getMessage());
 				throw new SQLException();
-				// TODO: figure out how to handle that, throw exception? then what?
+				// alert the calling method that committing the script had failed
 			}
 		}
 		catch(Exception e) {
@@ -177,7 +211,7 @@ public class DBConnection {
 	}
 	
 	/**
-	 * Attempts to set the connection back to auto-commit, ignoring errors.
+	 * Attempts to set the connection back to auto-commit, writing errors to log.
 	 */
 	private static void safelySetAutoCommit(Connection conn) {
 		try {
