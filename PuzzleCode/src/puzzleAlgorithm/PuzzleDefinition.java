@@ -231,6 +231,9 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 	}
 
 	public void setHints(List<String> hints) {
+		if (hints == null){
+			this.hints.clear();
+		}
 		this.hints = hints;
 	}
 	
