@@ -91,7 +91,7 @@ public class CrosswordView extends JPanel {
 	List<PuzzleDefinition> definitions;
 	private HintCounterLabel hintCounterLabel;
 
-	static JPanel start(BoardSolution solution) {
+	public static JPanel start(BoardSolution solution) {
 		CrosswordView view = new CrosswordView(solution);
 		@SuppressWarnings("unused")
 		CrosswordController controller = new CrosswordController(null, view);
@@ -107,8 +107,6 @@ public class CrosswordView extends JPanel {
 	}
 
 	private void initialize() {
-
-		setSizes();
 		setLayout(new BorderLayout(0, 0));
 
 		// set statistics panel

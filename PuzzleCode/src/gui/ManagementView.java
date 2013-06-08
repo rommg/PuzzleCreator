@@ -36,6 +36,7 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import utils.DBUtils;
 import javax.swing.JTabbedPane;
+import java.awt.Color;
 
 public class ManagementView extends JPanel {
 	private int definitionCounter = 0;
@@ -76,7 +77,7 @@ public class ManagementView extends JPanel {
 
 		JPanel topBtnPanel = new JPanel();
 		panel.add(topBtnPanel, BorderLayout.EAST);
-		topBtnPanel.setLayout(new GridLayout(2, 0, 1, 0));
+		topBtnPanel.setLayout(new GridLayout(2, 1, 0, 5));
 
 		final JButton btnAddNewFact = new JButton("");
 		btnAddNewFact.setIcon(new ImageIcon(ManagementView.class.getResource("/resources/add_tiny.png")));
@@ -84,7 +85,9 @@ public class ManagementView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				buildEmptyDefinitionPanel();
+				String entityText = newTextField.getText(); 
+				if (!entityText.isEmpty())
+					buildEmptyDefinitionPanel();
 			}
 		});
 		topBtnPanel.add(btnAddNewFact);
@@ -109,45 +112,6 @@ public class ManagementView extends JPanel {
 					buildDefinitionPanel(id); 
 					buildHintsPanel(id);
 				}
-
-				//				if (existingTextField.getText().isEmpty())
-				//					return; // do nothing if no text entered
-				//				
-				//				String searchText = existingTextField.getText().toLowerCase(); // the entity to search for
-				//
-				//				// there may be more than one matching result. collect and show them to the user
-				//				List<EntityTuple> foundResults = new ArrayList<EntityTuple>();
-				//				EntityTuple current = allEntities[0];
-				//
-				//				int res;
-				//				int index =0; 
-				//				while ((res = searchText.compareTo(current.getProperName())) >= 0) {
-				//					if (res == 0) { // entity matches
-				//						foundResults.add(current);
-				//					}
-				//
-				//					index++;
-				//					if (index == allEntities.length) // reached end
-				//						break;
-				//					else 
-				//						current = allEntities[index];
-				//				}
-				//
-				//				if (foundResults.size() > 0) { // one or more results were found
-				//					int id =0;
-				//					if (foundResults.size() > 1) {
-				//						// show Dialog JList window
-				//						//id = ... 
-				//					}
-				//					else // exactly one answer returned
-				//						id = foundResults.get(0).getId(); 
-				//
-				//					buildDefinitionPanel(id); // 
-				//					buildHintsPanel(id);
-				//				}
-				//				else {
-				//					existingTextField.requestFocusInWindow();
-				//				}
 			}
 		});
 
@@ -155,7 +119,6 @@ public class ManagementView extends JPanel {
 
 		JPanel radioBtnPanel = new JPanel();
 		panel.add(radioBtnPanel, BorderLayout.WEST);
-		radioBtnPanel.setLayout(new BoxLayout(radioBtnPanel, BoxLayout.Y_AXIS));
 
 		JRadioButton newCheckBox = new JRadioButton("New Knowledge Fact");
 		newCheckBox.setSelected(true);
@@ -178,6 +141,7 @@ public class ManagementView extends JPanel {
 				}
 			}
 		});
+		radioBtnPanel.setLayout(new GridLayout(2, 1, 0, 5));
 
 		buttonGroup.add(newCheckBox);
 		radioBtnPanel.add(newCheckBox);
@@ -208,7 +172,7 @@ public class ManagementView extends JPanel {
 
 		JPanel fieldPanel = new JPanel();
 		panel.add(fieldPanel, BorderLayout.CENTER);
-		fieldPanel.setLayout(new BoxLayout(fieldPanel, BoxLayout.Y_AXIS));
+		fieldPanel.setLayout(new GridLayout(2, 1, 0, 5));
 
 		newTextField = new JTextField();
 		fieldPanel.add(newTextField);
@@ -219,6 +183,7 @@ public class ManagementView extends JPanel {
 		fieldPanel.add(existingTextField);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(Color.LIGHT_GRAY);
 		add(tabbedPane, BorderLayout.CENTER);
 
 		definitionPanel = new JPanel();
