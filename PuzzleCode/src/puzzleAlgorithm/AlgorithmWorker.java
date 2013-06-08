@@ -1,5 +1,7 @@
 package puzzleAlgorithm;
 
+import gui.MainView;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,19 +15,97 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
+import javax.swing.SwingWorker;
 
 import main.PuzzleCreator;
 
 import utils.DBUtils;
 import utils.Logger;
 
-public class AlgorithmRunner {
+public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	// System.getProperty("file.separator")
 	protected static PuzzleSquare[][] board;
 	protected static List<PuzzleDefinition> definitions = new ArrayList<PuzzleDefinition>();
 	private static List<PuzzleDefinition> unSolved = new ArrayList<PuzzleDefinition>();
 	protected static List<Answer> answers = new ArrayList<Answer>();
 	protected static Set<Integer> usedEntities = new HashSet<Integer>();
+
+	private int[] topics;
+	private int difficulty;
+
+	public AlgorithmWorker(int[] topics, int difficulty) {
+		this.topics = topics;
+		this.difficulty = difficulty;
+	}
+
+	@Override
+	protected BoardSolution doInBackground() throws Exception {
+		int[] topics = { 3, 4, 5 };
+		BoardSolution result = null;
+		int size = 13;
+		switch (difficulty) {
+		case 0:
+			size = 8;
+			break;
+		case 1:
+			size = 11;
+			break;
+		case 2:
+			size = 13;
+			break;
+		default:
+			break;
+		}
+		
+		publish("Retrieving possible answers from DataBase");
+		// TODO remove use of mock function after tests
+//		createMockAnswers();
+		answers = DBUtils.getPossibleAnswers(topics, 8);
+		Logger.writeToLog("Number of answers = " + answers.size());
+		
+		publish("Creating puzzle board");
+		createBoardFromTemplateFile(size, 1);
+		Collections.sort(definitions);
+		printBoard();
+		printBoardStatus();
+		optimizeBoard();
+		printBoardStatus();
+		publish("Sorting answers on board");
+		if (!fillBoard()) {
+			Logger.writeErrorToLog("impossible data");
+			result = new BoardSolution(null, null, false);
+		} else {
+			Logger.writeToLog("success");
+			publish("Retrieving hints and definitions from DataBase");
+			DBUtils.setHintsAndDefinitions(definitions);
+			result = new BoardSolution(board, definitions, true);
+			// AlgorithmUtils.drawBoard(board, definitions);
+			printResults();
+			publish("finished");
+		}
+		return result;
+
+	}
+
+	@Override
+	protected void done() {
+		try {
+			MainView.view.showCrosswordview(get());
+		} catch (InterruptedException e) {
+			Logger.writeErrorToLog("InterruptedException in algorithm worker:");
+			Logger.writeErrorToLog("" + e.getStackTrace());
+		} catch (ExecutionException e) {
+			Logger.writeErrorToLog("ExecutionException in algorithm worker:");
+			Logger.writeErrorToLog("" + e.getStackTrace());
+		}
+	}
+	
+	@Override
+	public void process(List<String> messages){
+		//TODO show the messages on screen while the board is built
+	}
 
 	/**
 	 * 
@@ -287,46 +367,7 @@ public class AlgorithmRunner {
 
 	}
 
-	/**
-	 * This function calculates the location of the definition text, and than
-	 * calls insertDefinition with the calculated params
-	 * 
-	 * @param beginRow
-	 * @param beginCol
-	 * @param length
-	 * @param direction
-	 * @return
-	 */
-	private static boolean insertDefinition(int beginRow, int beginCol, int length, char direction) {
-		int textRow;
-		int textCol;
-		switch (direction) {
-		case 'r':
-			if (beginCol < 1) {
-				Logger.writeErrorToLog("defintion text out of board. col=" + beginCol + " row=" + beginRow
-						+ " direction=" + direction);
-				return false;
-			}
-			textRow = beginRow;
-			textCol = beginCol - 1;
-			break;
-		case 'd':
-			if (beginRow < 1) {
-				Logger.writeErrorToLog("defintion text out of board. col=" + beginCol + " row=" + beginRow
-						+ " direction=" + direction);
-				return false;
-			}
-			textRow = beginRow - 1;
-			textCol = beginCol;
-			break;
-		default:
-			Logger.writeErrorToLog("unknow direction '" + direction + "'");
-			return false;
-		}
-		insertDefinition(beginRow, beginCol, length, direction, textRow, textCol);
-		return true;
-	}
-
+	
 	/**
 	 * Create a new definition with the function params Insert definition to
 	 * board definitions collection For each relevant square - add the
@@ -359,67 +400,7 @@ public class AlgorithmRunner {
 		return true;
 	}
 
-	/**
-	 * This method checks if param word contains only english letters
-	 * 
-	 * @param word
-	 *            - must be in lower case only
-	 * @return
-	 */
-	private static boolean checkWordLetters(String word) {
-		for (int letterIndex = 0; letterIndex < word.length(); letterIndex++) {
-			if (!(word.charAt(letterIndex) >= 'a' && word.charAt(letterIndex) <= 'z')) {
-				return false;
-			}
-		}
-		return true;
-	}
 
-	// private static boolean readAnswersFile(String path) {
-	// Logger.writeToLog("Reading answers file");
-	// answers = new ArrayList<String>();
-	// try {
-	// FileReader in = new FileReader(path);
-	// BufferedReader bin = new BufferedReader(in);
-	// String line = bin.readLine();
-	// String first;
-	// String second;
-	// String full;
-	//
-	// while (line != null) {
-	// if (line.indexOf('.') != -1 || line.indexOf('-') != -1) {
-	// line = bin.readLine();
-	// continue;
-	// }
-	// int index = line.indexOf('_');
-	// if (index != -1) {
-	// first = line.substring(0, index);
-	// second = line.substring(index + 1);
-	// full = first + second;
-	// if (checkWordLetters(first.toLowerCase()))
-	// answers.add(first.toLowerCase());
-	// if (checkWordLetters(second.toLowerCase()))
-	// answers.add(second.toLowerCase());
-	// if (checkWordLetters(full.toLowerCase()))
-	// answers.add(full.toLowerCase());
-	// } else {
-	// if (checkWordLetters(line.toLowerCase()))
-	// answers.add(line.toLowerCase());
-	// }
-	// line = bin.readLine();
-	// }
-	//
-	// bin.close();
-	// in.close();
-	//
-	// } catch (Exception ex) {
-	// System.out.println(ex.getMessage());
-	// return false;
-	// }
-	// Logger.writeToLog("Finished reading answersr. Number of answers = " +
-	// answers.size());
-	// return true;
-	// }
 
 	private static void printResults() {
 		printBoard();
@@ -720,4 +701,5 @@ public class AlgorithmRunner {
 		}
 		return true;
 	}
+
 }

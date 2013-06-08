@@ -17,9 +17,8 @@ import java.awt.Color;
 import java.awt.CardLayout;
 import javax.swing.UIManager;
 
+import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.BoardSolution;
-import puzzleAlgorithm.PuzzleSquare;
-import utils.AlgorithmUtils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -91,9 +90,11 @@ public class WaitView extends JPanel {
 		add(centerPanel, BorderLayout.CENTER);	
 
 		
-		//int[] selectedTopics = view.getUserSelectedTopics(); 
 		int difficulty = view.getDifficulty();
-		board = AlgorithmUtils.createPuzzle(difficulty, null); // send request for board	
+		//int[] selectedTopics = view.getUserSelectedTopics();
+		AlgorithmWorker worker = new AlgorithmWorker(null, difficulty);
+		worker.execute();
+		
 		animationPanel.remove(animationLbl);
 		animationPanel.invalidate();
 		
@@ -107,38 +108,9 @@ public class WaitView extends JPanel {
 		animationPanel.add(btnSkip);
 		animationPanel.invalidate();
 		
-		
-//		SwingWorker<Boolean,Boolean> worker = new SwingWorker<Boolean,Boolean> () {
-//
-//			
-//			@Override
-//			protected Boolean doInBackground() throws Exception {
-//			//	int[] selectedTopics = view.getUserSelectedTopics(); 
-//				int difficulty = view.getDifficulty();
-//				board = AlgorithmUtils.createPuzzle(difficulty, null); // send request for board	
-//				return board.isFound();
-//			}
-//
-//			@Override
-//			protected void done() {
-//				super.done();
-//				animationPanel.remove(animationLbl);
-//				animationPanel.invalidate();
-//				
-//				//replace rotating animation with skip button
-//				btnSkip = new JButton("Skip");
-//				btnSkip.addActionListener(new ActionListener() {
-//					public void actionPerformed(ActionEvent e) {
-//						MainView.view.showCrosswordview(board); // must be available only after BoardSolution was created (board != null)
-//					}
-//				});
-//				animationPanel.add(btnSkip);
-//				animationPanel.invalidate();
-//			}
-//		};
-//		
-//		worker.execute();
 	}
+	
+	
 
 
 }

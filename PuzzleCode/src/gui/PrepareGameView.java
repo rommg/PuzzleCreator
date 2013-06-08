@@ -68,7 +68,7 @@ public class PrepareGameView extends JPanel {
 		JRadioButton mediumHardBtn = new JRadioButton("Medium");
 		difficultyPanel.add(mediumHardBtn);
 		mediumHardBtn.setSelected(true);
-		difficultyBtnsGrp.add(easyRadioBtn);
+		difficultyBtnsGrp.add(mediumHardBtn);
 
 
 		JRadioButton hardRadioBtn = new JRadioButton("Hard");
