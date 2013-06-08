@@ -129,7 +129,7 @@ public class MainView {
 			}
 		});
 
-		btn = createButton("Continue Game", "continue.png");
+		//btn = createButton("Continue Game", "continue.png");
 
 		btn = createButton("Hall of Fame", "best.png");
 		btn.addActionListener(new ActionListener() {
@@ -141,7 +141,7 @@ public class MainView {
 		});
 
 		// middle buttons
-		btn = createButton("<html>Knowledge<br>Management</html>", "add.png");
+		btn = createButton("<html><center>Knowledge<br>Management</html>", "add.png");
 		btn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -150,14 +150,14 @@ public class MainView {
 			}
 		});
 		
-		btn = createButton("Add Hints", "add.png");
-		btn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addHintsBtnClicked();
-			}
-		});
+//		btn = createButton("Add Hints", "add.png");
+//		btn.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				addHintsBtnClicked();
+//			}
+//		});
 		createButton("Massive Import", "addDB.png");
 
 		// bottom buttons
@@ -221,9 +221,9 @@ public class MainView {
 		int buttonCounter = 0;
 
 		// add buttons to Jpanel
-		for (row = 0; row <=9; row++ ) {
+		for (row = 0; row <=7; row++ ) {
 			btnConstraint.gridy = row;
-			if ((row == 3) || (row== 7)) { // seperator cells
+			if ((row == 2) || (row== 5)) { // seperator cells
 				JSeparator seperator = new JSeparator();
 				seperator.setPreferredSize(new Dimension(1,1));
 				btnConstraint.insets = new Insets(0, 0, 0, 0);

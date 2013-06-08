@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import massiveImport.YagoFileHandler;
+
 import connectionPool.DBConnection;
 import puzzleAlgorithm.Answer;
 import puzzleAlgorithm.PuzzleDefinition;
@@ -181,11 +183,31 @@ public class DBUtils {
 	}
 	
 	public static Map<String, Integer> getDefinitionsByEntityID(int entityID){
-		Map<Integer,List<String>> map = getDefinitions(createINString(Collections.singletonList(entityID)));
+		String sql = "SELECT definitions.id, definitions.definition " +
+				"FROM definitions, entities_definitions, entities " +
+				"WHERE entities.id = entities_definitions.entity_id AND " +
+				"definitions.id = entities_definitions.definition_id " +
+				"AND entities_definitions.entity_id IN " + createINString(Collections.singletonList(entityID)) + ";";
+		List<Map<String, Object>> resultSet = DBConnection.executeQuery(sql);
+		
 		Map<String,Integer> retMap = new HashMap<String,Integer>();
 		
-		for (Entry<Integer,List<String>> entry : map.entrySet()) {
-			retMap.put(entry.getValue().get(0), entry.getKey());
+		for (Map<String,Object> map : resultSet) {
+			retMap.put( map.get("definition").toString(),(Integer) map.get("id"));
+		}
+		return retMap;
+	}
+	
+	public static Map<String,Integer> getAllEntities() {
+		String sql = "SELECT entities.id, entities.name " +
+				"FROM entities;" ;
+		
+		Map<String,Integer> retMap = new HashMap<String,Integer>();
+		
+		List<Map<String,Object>> results = DBConnection.executeQuery(sql);
+		
+		for (Map<String,Object> result : results) {
+			retMap.put(getProperName(result.get("name").toString()),(Integer)result.get("id"));
 		}
 		return retMap;
 	}
@@ -195,13 +217,13 @@ public class DBUtils {
 	 * @return
 	 */
 	public static Map<String,Integer> getAllDefinitions() {
-		String sql = "select definitions.id,defintions.name " +
-				"from definitions";
+		String sql = "SELECT definitions.id,definitions.definition " +
+				"FROM definitions";
 		Map<String,Integer> map = new HashMap<String,Integer>();
 	
 		List<Map<String,Object>> queryMap = DBConnection.executeQuery(sql);
 		for (Map<String,Object> row : queryMap) {
-			map.put((String)row.get("name"),(Integer)row.get("id"));
+			map.put((String)row.get("definition"),(Integer)row.get("id"));
 		}
 		
 		return map;
@@ -237,7 +259,7 @@ public class DBUtils {
 			strBlder.append(',');
 		}
 		
-		strBlder.deleteCharAt(strBlder.length()); // delete last ','
+		strBlder.deleteCharAt(strBlder.length()-1); // delete last ','
 		strBlder.append(')');
 		
 		return strBlder.toString();

@@ -6,55 +6,55 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Component;
+import java.awt.FlowLayout;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JRadioButton;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.ButtonGroup;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.swing.JButton;
-import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
-import javax.swing.JScrollPane;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import utils.DBUtils;
+import javax.swing.JTabbedPane;
 
 public class ManagementView extends JPanel {
+	private int definitionCounter = 0;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField newTextField;
-	private JTextField existingTextField;
+	private JComboBox<String> existingTextField;
 	private Map<String,Integer> topics;
-	private Map<String,Integer> allTopics;
-	private String[] allTopicsArray;
-	private Map<String, Integer> definitions;
-	private int definitionCounter = 0;
+	private Map<String,Integer> allTopics; // map of all topics
+	private Map<String,Integer> allEntities; // Map of entity PROPER NAME - which is unique.
+	private String[] allTopicNamesArray;
+	private Map<String, Integer> definitions; // definitions for an entity as queries from DB
 	private Set<String> allDefinitions = null;
 
 
 	private static final int ADD_ROWS_NUM = 1;
+	private static final int MAX_NUM_DEFS = 10;
+
 	private JPanel definitionPanel;
+	private JTabbedPane tabbedPane;
 
 
 	static JPanel start() {
@@ -64,10 +64,13 @@ public class ManagementView extends JPanel {
 	 * Create the panel.
 	 */
 	private ManagementView() {
+
+		initialize(); // get all DB knowledge
+
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Select Knowledge Fact", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(null, "Choose Knowledge Fact", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
 
@@ -75,25 +78,133 @@ public class ManagementView extends JPanel {
 		panel.add(topBtnPanel, BorderLayout.EAST);
 		topBtnPanel.setLayout(new GridLayout(2, 0, 1, 0));
 
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon(ManagementView.class.getResource("/resources/add_tiny.png")));
-		topBtnPanel.add(btnNewButton);
+		final JButton btnAddNewFact = new JButton("");
+		btnAddNewFact.setIcon(new ImageIcon(ManagementView.class.getResource("/resources/add_tiny.png")));
+		btnAddNewFact.addActionListener(new ActionListener() {
 
-		JButton btnNewButton_1 = new JButton("");
-		btnNewButton_1.setIcon(new ImageIcon(ManagementView.class.getResource("/resources/search_tiny.png")));
-		topBtnPanel.add(btnNewButton_1);
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				buildEmptyDefinitionPanel();
+			}
+		});
+		topBtnPanel.add(btnAddNewFact);
+
+		final JButton btnSearchFact = new JButton("");
+		btnSearchFact.setEnabled(false);
+		btnSearchFact.setIcon(new ImageIcon(ManagementView.class.getResource("/resources/search_tiny.png")));
+		btnSearchFact.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String searchText = existingTextField.getSelectedItem().toString();
+
+				if (searchText.isEmpty())
+					return; // do nothing if no text entered
+
+
+				Integer id = allEntities.get(searchText);
+
+				if (id != null) { // found
+					buildDefinitionPanel(id); 
+					buildHintsPanel(id);
+				}
+
+				//				if (existingTextField.getText().isEmpty())
+				//					return; // do nothing if no text entered
+				//				
+				//				String searchText = existingTextField.getText().toLowerCase(); // the entity to search for
+				//
+				//				// there may be more than one matching result. collect and show them to the user
+				//				List<EntityTuple> foundResults = new ArrayList<EntityTuple>();
+				//				EntityTuple current = allEntities[0];
+				//
+				//				int res;
+				//				int index =0; 
+				//				while ((res = searchText.compareTo(current.getProperName())) >= 0) {
+				//					if (res == 0) { // entity matches
+				//						foundResults.add(current);
+				//					}
+				//
+				//					index++;
+				//					if (index == allEntities.length) // reached end
+				//						break;
+				//					else 
+				//						current = allEntities[index];
+				//				}
+				//
+				//				if (foundResults.size() > 0) { // one or more results were found
+				//					int id =0;
+				//					if (foundResults.size() > 1) {
+				//						// show Dialog JList window
+				//						//id = ... 
+				//					}
+				//					else // exactly one answer returned
+				//						id = foundResults.get(0).getId(); 
+				//
+				//					buildDefinitionPanel(id); // 
+				//					buildHintsPanel(id);
+				//				}
+				//				else {
+				//					existingTextField.requestFocusInWindow();
+				//				}
+			}
+		});
+
+		topBtnPanel.add(btnSearchFact);
 
 		JPanel radioBtnPanel = new JPanel();
 		panel.add(radioBtnPanel, BorderLayout.WEST);
 		radioBtnPanel.setLayout(new BoxLayout(radioBtnPanel, BoxLayout.Y_AXIS));
 
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("New Knowledge Fact");
-		buttonGroup.add(rdbtnNewRadioButton_1);
-		radioBtnPanel.add(rdbtnNewRadioButton_1);
+		JRadioButton newCheckBox = new JRadioButton("New Knowledge Fact");
+		newCheckBox.setSelected(true);
+		newCheckBox.addItemListener(new ItemListener() {
 
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Existing Knowledge Fact");
-		buttonGroup.add(rdbtnNewRadioButton);
-		radioBtnPanel.add(rdbtnNewRadioButton);
+			void setEnabled(boolean flag) {
+				btnAddNewFact.setEnabled(flag);
+				newTextField.setEnabled(flag);
+				if (!flag) {
+					definitionPanel.removeAll();
+					definitionPanel.revalidate();
+				}
+			}
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == e.SELECTED) {
+					setEnabled(true);
+				}
+				else {
+					setEnabled(false);
+				}
+			}
+		});
+
+		buttonGroup.add(newCheckBox);
+		radioBtnPanel.add(newCheckBox);
+
+		JRadioButton existingCheckBox = new JRadioButton("Existing Knowledge Fact");
+		existingCheckBox.addItemListener(new ItemListener() {
+
+			void setEnabled(boolean flag) {
+				btnSearchFact.setEnabled(flag);
+				existingTextField.setEnabled(flag);
+				if (!flag) {
+					definitionPanel.removeAll();
+					definitionPanel.revalidate();
+				}
+			}
+			
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == e.SELECTED) {
+					setEnabled(true);
+				}
+				else { 
+					setEnabled(false);
+				}
+			}
+		});
+		buttonGroup.add(existingCheckBox);
+		radioBtnPanel.add(existingCheckBox);
 
 		JPanel fieldPanel = new JPanel();
 		panel.add(fieldPanel, BorderLayout.CENTER);
@@ -103,57 +214,86 @@ public class ManagementView extends JPanel {
 		fieldPanel.add(newTextField);
 		newTextField.setColumns(10);
 
-		existingTextField = new JTextField();
+		existingTextField = createAutoCompleteBox(allEntities.keySet(), "", true);
+		existingTextField.setEnabled(false);
 		fieldPanel.add(existingTextField);
-		existingTextField.setColumns(10);
 
-		JPanel detailsPanel = new JPanel();
-		add(detailsPanel, BorderLayout.CENTER);
-		detailsPanel.setLayout(new GridLayout(2, 0, 1, 0));
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		add(tabbedPane, BorderLayout.CENTER);
 
 		definitionPanel = new JPanel();
-		definitionPanel.setBorder(new TitledBorder(null, "Definitions", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		detailsPanel.add(definitionPanel);
-		definitionPanel.setLayout(new BorderLayout(0, 0));
-
-		JPanel hintPanel = new JPanel();
-		hintPanel.setBorder(new TitledBorder(null, "Hints", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		detailsPanel.add(hintPanel);
+		
 
 	}
 
 	private void initialize() {
-		allDefinitions = DBUtils.getAllDefinitions().keySet();
-		allTopics = DBUtils.getAllTopicIDsAndNames();
-		allTopicsArray = (String[]) topics.keySet().toArray(); // topic array for JList combobox
+
+		allDefinitions = DBUtils.getAllDefinitions().keySet(); // get all definition strings in definitions table
+		allTopics = DBUtils.getAllTopicIDsAndNames(); // get all pairs of topic: topic ID, topic name
+		Object[] array = allTopics.keySet().toArray(); // topic array for JList combobox
+		allTopicNamesArray = new String[array.length];
+
+		for (int i = 0 ; i< array.length; i++) {
+			allTopicNamesArray[i] = array[i].toString();
+		}
+
+		//get all entities for search from DB
+		allEntities = DBUtils.getAllEntities();
 	}
 
-	private void getTopics() {
+	private void getTopicsForDefinitions() {
 		topics = DBUtils.getTopicByDefinitionIDs(new ArrayList<Integer>(definitions.values()));
 	}
 
-	private void getDefinitionsForEntity(String entityName) {
-		//definitions = DBUtils.getDefinitionsByEntityName(entityName); // SALEET need to create Map<Entity_id,ProperEntityName> can then send this  ID to entity_definitions
+	private void getDefinitionsForEntity(int entityID) {
+		definitions = DBUtils.getDefinitionsByEntityID(entityID);
 		definitionCounter = definitions.size();
 	}
 
-	private void buildDefinitionPanel(String entityName) {
+	private void buildEmptyDefinitionPanel() {
+
+		tabbedPane.removeAll();
+		definitionPanel = new JPanel();
+		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+
+		for (int i = 0; i<MAX_NUM_DEFS; i++) {
+			definitionPanel.add(new NewDefinitionResultLine());
+		}
+		definitionPanel.revalidate();
+		tabbedPane.add("Definitions", definitionPanel);
+	}
+	private void buildDefinitionPanel(int entityID) {
+		
+		getDefinitionsForEntity(entityID);
+
 		int row_num = definitions.size();
 
-		definitionPanel.setLayout(new GridLayout(row_num + ADD_ROWS_NUM, 1, 0, 5));
+		tabbedPane.remove(definitionPanel);
+		// refreshes panel
+		definitionPanel = new JPanel();
+		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
 		for (String definition : definitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
 			ResultLine line = new ResultLine(definition);
 			definitionPanel.add(line);
 		}
+		for (int i = 0; i<ADD_ROWS_NUM; i++) { // add new definition lines
+			definitionPanel.add(new NewDefinitionResultLine());
+		}
 
-		definitionPanel.add(new NewDefinitionResultLine());
+		// add padding lines, if needed
+		for (int i = 0; i<MAX_NUM_DEFS - ADD_ROWS_NUM - row_num; i++) {
+			definitionPanel.add(new JPanel());
+		}
 
-		return  ;
+		definitionPanel.revalidate();
+		tabbedPane.addTab("Definitions", null, definitionPanel,null);
+		tabbedPane.revalidate();
 
+		return;
 	}
 
-	private void buildHintsPanel(String entityName) {
+	private void buildHintsPanel(int entityID) {
 
 	}
 
@@ -161,6 +301,7 @@ public class ManagementView extends JPanel {
 
 		JComboBox<String> box = new JComboBox<String>();
 		AutoCompleteSupport<Object> autoBox =  AutoCompleteSupport.install(box, GlazedLists.eventListOf(valueList.toArray()));
+		autoBox.setFirstItem(firstvalue);
 		autoBox.setStrict(strict);
 		return box;
 	}
@@ -171,40 +312,19 @@ public class ManagementView extends JPanel {
 		protected JButton saveBtn;
 		protected JButton deleteBtn;
 
-		public JComboBox<String> getTopic() {
-			return topicBox;
-		}
-
-		public JComboBox<String> getDefinition() {
-			return definitionBox;
-		}
-
-		public JButton getLockBtn() {
-			return saveBtn;
-		}
-
-		public JButton getDeleteBtn() {
-			return deleteBtn;
-		}
-
-		public JButton getAddBtn() {
-			return addBtn;
-		}
-
-		private JButton addBtn;
 		protected JPanel btnPanel;
 
 		public ResultLine(String definition) {
 			setLayout(new BorderLayout());
 
-			topicBox = new JComboBox<String>();
-			topicBox.setRenderer(new TopicComboboxRenderer(allTopicsArray));
-			topicBox.setEnabled(false);
+			//			topicBox = MultiSelectionComboBox.getNewMultiSelectionComboBox();
+			topicBox = createAutoCompleteBox(allTopics.keySet(), "" , true);
 			super.add(topicBox, BorderLayout.WEST);
-			definitionBox = createAutoCompleteBox(definitions.keySet(), definition, true);
-			super.add(definitionBox, BorderLayout.EAST);
+			definitionBox = createAutoCompleteBox(allDefinitions, definition, true);
+			super.add(definitionBox, BorderLayout.CENTER);
 
 			btnPanel = new JPanel();
+			btnPanel.setLayout(new GridLayout(1,2));
 			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
@@ -220,8 +340,8 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (definitionCounter - 1 < 1){
-						if (topicBox.getSelectedItem().toString() != "" &&
-								definitionBox.getSelectedItem().toString() != "") {
+						if (!topicBox.getSelectedItem().toString().isEmpty() &&
+								!definitionBox.getSelectedItem().toString().isEmpty()) {
 							//delete row from DB
 						}
 					}
@@ -230,6 +350,7 @@ public class ManagementView extends JPanel {
 					}
 				}
 			});
+
 			btnPanel.add(saveBtn);
 			btnPanel.add(deleteBtn);
 			add(btnPanel, BorderLayout.EAST);
@@ -244,18 +365,18 @@ public class ManagementView extends JPanel {
 		NewDefinitionResultLine() {
 
 			setLayout(new BorderLayout());
-			
-			topicField = createAutoCompleteBox(topics.keySet(), "", false);
+
+			topicField = createAutoCompleteBox(allTopics.keySet(), "", false);
 			add(topicField, BorderLayout.WEST);
 			field = new LimitedTextField(20);
 			add(field, BorderLayout.CENTER);
 
-			JButton saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/delete_small.png")));
+			JButton saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if ((topicField.getSelectedItem().toString()) != "" && (field.getText() != "")) {
+					if ((!topicField.getSelectedItem().toString().isEmpty()) && (!field.getText().isEmpty())) {
 						//call DB Save procedure
 					}
 				}
@@ -278,8 +399,8 @@ public class ManagementView extends JPanel {
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value,
 				int index, boolean isSelected, boolean hasFocus) {
-			JCheckBox box = new JCheckBox(allTopicsArray[index]); // Create here a JCheckBox
-			if (topics.keySet().contains(allTopicsArray[index])) {
+			JCheckBox box = new JCheckBox(allTopicNamesArray[index]); // Create here a JCheckBox
+			if (topics.keySet().contains(allTopicNamesArray[index])) {
 				setSelected(index, true);
 			}
 			list.add(box);
@@ -294,4 +415,35 @@ public class ManagementView extends JPanel {
 
 
 	}
+
+	//	/**
+	//	 * This class is essential because need to be able to hold ID together with Entity Name which is not unique.
+	//	 * @author yonatan
+	//	 *
+	//	 */
+	//	private class EntityTuple implements Comparable<EntityTuple> {
+	//		private int id;
+	//		private String properName;
+	//
+	//		public int getId() {
+	//			return id;
+	//		}
+	//
+	//		public String getProperName() {
+	//			return properName;
+	//		}
+	//
+	//		public EntityTuple(int id, String properName) {
+	//			this.id = id;
+	//			this.properName = properName;
+	//		}
+	//
+	//		@Override
+	//		public int compareTo(EntityTuple o) {
+	//			return this.properName.compareTo(o.getProperName());
+	//		}
+	//
+	//
+	//	}
+
 }

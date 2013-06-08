@@ -77,11 +77,11 @@ public class PrepareGameView extends JPanel {
 		centerPanel = new JPanel();
 		add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
-		
-				topicsPanel = new JPanel();
-				topicsPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-				centerPanel.add(topicsPanel);
-				topicsPanel.setLayout(new GridLayout(4, 2, 0, 0));
+
+		topicsPanel = new JPanel();
+		topicsPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		centerPanel.add(topicsPanel);
+		topicsPanel.setLayout(new GridLayout(4, 2, 0, 0));
 
 		JPanel btnPanel = new JPanel();
 		centerPanel.add(btnPanel);
@@ -151,6 +151,7 @@ public class PrepareGameView extends JPanel {
 		topicsCheckBoxes = new LinkedList<JCheckBox>();
 		for (String topic :topicsList) {
 			JCheckBox box = new JCheckBox();
+			box.setSelected(true);
 			box.setText(topic);
 			topicsCheckBoxes.add(box);
 			topicsPanel.add(box);

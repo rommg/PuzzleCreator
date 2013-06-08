@@ -166,12 +166,16 @@ public class YagoFileHandler {
 		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),"UTF-8"));
 	}
 
-	private String getProperName(String input) {
+	/**
+	 * This method takes a yago entity string, e.g <Abraham_Lincoln_(band)> and returns the corresponding answer, e.g. abraham lincoln
+	 * @param input
+	 * @return
+	 */
+	public static String getProperAnswerName(String input) {
 
 		String returnString;
 		returnString= input.replace('_', ' ').replace('-', ' ').replaceAll("\\.", "");  // remove .,- and add spaces
-		returnString = returnString.substring(1, returnString.length()-1); // trim <,>
-		//remove _(....)
+		returnString = returnString.substring(1, returnString.lastIndexOf('>')); // trim <,>
 		int i = returnString.lastIndexOf('(');
 		if (i<=0) // also for entities with 1 char e.g. (_)
 			return returnString.toLowerCase();
@@ -207,7 +211,7 @@ public class YagoFileHandler {
 				else {
 					if ((lineColumns[1].length() <=50) && entityTypes.contains(lineColumns[3])) {
 
-						String properName = getProperName(lineColumns[1]); // get clean entity name
+						String properName = getProperAnswerName(lineColumns[1]); // get clean entity name
 						if (!containsNonEnglishChars(properName)) { // subject is of a relevant type and English letters only
 							relevantEntities.add(lineColumns[1]);
 
@@ -305,7 +309,7 @@ public class YagoFileHandler {
 					}
 
 					if (subjectHit && (lineColumns[1].length() <= 50) && (lineColumns[2].compareTo(HAS_GENDER) == 0)) { // subject is human
-						String properName = getProperName(lineColumns[1]); // human name in this predicate is in the subject
+						String properName = getProperAnswerName(lineColumns[1]); // human name in this predicate is in the subject
 						int index = properName.indexOf(' ');
 						String answerLine = null;
 						if (index != -1)  { // at least one name
