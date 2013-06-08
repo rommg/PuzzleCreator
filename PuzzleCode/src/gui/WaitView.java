@@ -91,8 +91,8 @@ public class WaitView extends JPanel {
 
 		
 		int difficulty = view.getDifficulty();
-		//int[] selectedTopics = view.getUserSelectedTopics();
-		AlgorithmWorker worker = new AlgorithmWorker(null, difficulty);
+		int[] selectedTopics = view.getSelectedTopicsIds();
+		AlgorithmWorker worker = new AlgorithmWorker(selectedTopics, difficulty);
 		worker.execute();
 		
 		animationPanel.remove(animationLbl);
