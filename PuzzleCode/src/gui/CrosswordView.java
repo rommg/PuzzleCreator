@@ -29,13 +29,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 
-import puzzleAlgorithm.AlgorithmRunner;
+import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.BoardSolution;
 import puzzleAlgorithm.PuzzleDefinition;
 import puzzleAlgorithm.PuzzleSquare;
 import sun.applet.Main;
 import sun.security.krb5.internal.PAEncTSEnc;
-import utils.AlgorithmUtils;
 import utils.GuiDBConnector;
 import utils.Logger;
 

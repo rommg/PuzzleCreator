@@ -2,10 +2,9 @@ package gui;
 
 import javax.swing.JPanel;
 
-import puzzleAlgorithm.AlgorithmRunner;
+import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.BoardSolution;
 import puzzleAlgorithm.PuzzleDefinition;
-import utils.AlgorithmUtils;
 import utils.Logger;
 
 public class CrosswordModel {

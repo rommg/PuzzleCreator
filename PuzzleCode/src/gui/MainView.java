@@ -289,7 +289,7 @@ public class MainView {
 	/**
 	 * switch to CrosswordView
 	 */
-	void showCrosswordview(BoardSolution solution) {
+	public void showCrosswordview(BoardSolution solution) {
 		if (crosswordView == null) {
 			crosswordView = CrosswordView.start(solution);
 			cardPanel.add(crosswordView, Window.Crossword.toString());

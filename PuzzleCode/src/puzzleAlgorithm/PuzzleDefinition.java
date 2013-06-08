@@ -35,7 +35,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		this(textRow, textCol, beginRow, beginColumn, length, direction, new ArrayList<Answer>());
 
 		this.possibleAnswers = new ArrayList<Answer>();
-		for (Answer ans : AlgorithmRunner.answers) {
+		for (Answer ans : AlgorithmWorker.answers) {
 			if (ans.length == length) {
 				possibleAnswers.add(ans);
 			}
@@ -175,7 +175,7 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 			row = getBeginRow();
 			column = getBeginColumn();
 			for (int letterIndex = 0; letterIndex < this.length; letterIndex++) {
-				if (!(AlgorithmRunner.board[column][row].isPossibleLetter(answer.getAnswerString().charAt(letterIndex)))) {
+				if (!(AlgorithmWorker.board[column][row].isPossibleLetter(answer.getAnswerString().charAt(letterIndex)))) {
 					possibleAnswers.remove(answer);
 				}
 				switch (direction) {

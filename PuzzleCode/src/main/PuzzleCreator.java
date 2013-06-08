@@ -88,7 +88,7 @@ public class PuzzleCreator {
 			DBConnection.executeSqlScript(appDir + "sql\\06 create_relevant_data.sql");
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("Executing SQL script failed" + e.getMessage());
-			//TODO: Report an issue to the user through GUI
+			//TODO: Report an issue to the GUI
 		}
 	}
 

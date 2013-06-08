@@ -20,11 +20,15 @@ import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+
+import connectionPool.DBConnection;
 
 import utils.DBUtils;
 
@@ -40,6 +44,7 @@ public class PrepareGameView extends JPanel {
 	private JButton goBtn;
 	private JButton backBtn;
 	private JPanel topicsPanel;
+	private int[] selectedTopicsId;
 
 	public PrepareGameView() {
 		initialize();
@@ -68,7 +73,7 @@ public class PrepareGameView extends JPanel {
 		JRadioButton mediumHardBtn = new JRadioButton("Medium");
 		difficultyPanel.add(mediumHardBtn);
 		mediumHardBtn.setSelected(true);
-		difficultyBtnsGrp.add(easyRadioBtn);
+		difficultyBtnsGrp.add(mediumHardBtn);
 
 
 		JRadioButton hardRadioBtn = new JRadioButton("Hard");
@@ -105,8 +110,8 @@ public class PrepareGameView extends JPanel {
 	}
 
 	void goBtnClicked() {
-		if (getUserSelectedTopics().size() < 1) { // must choose at least one topic
-			// Dialog Box
+		if (getUserSelectedTopics().length < 1) { // must choose at least one topic
+			// TODO Dialog Box
 			System.out.println("Error veze");
 		}
 		else {
@@ -119,16 +124,36 @@ public class PrepareGameView extends JPanel {
 	 * 
 	 * @return user selected topics
 	 */
-	public List<String> getUserSelectedTopics() {
-		List<String> lst = new LinkedList<String>();
-		for (JCheckBox box : topicsCheckBoxes) {
-			if (box.isSelected())
-				lst.add(box.getText());
+	public int[] getUserSelectedTopics() {
+				
+		List<Integer> selectedTopics = new ArrayList<Integer>();
+		String sqlQuery = "SELECT DISTINCT id,name " +
+                "FROM topics;" ;
+		List<Map<String, Object>> rs = DBConnection.executeQuery(sqlQuery);
+		Map<String, Integer> topics = new HashMap<String,Integer>();
+		for (Map<String,Object> topic :rs){
+			topics.put(topic.get("name").toString(), Integer.parseInt(topic.get("id").toString()));
 		}
 
+		for (JCheckBox box : topicsCheckBoxes) {
+			if (box.isSelected()){
+				selectedTopics.add(topics.get(box.getText()));
+			}
+		}
+		
+				
 		//queryDB for topic IDs
-
-		return lst;
+		int[] topicsArray = new int[selectedTopics.size()];
+		for (int i = 0; i < selectedTopics.size(); i++){
+			topicsArray[i] = selectedTopics.get(i);
+		}
+		
+		this.selectedTopicsId = topicsArray;
+		return topicsArray;
+	}
+	
+	public int[] getSelectedTopicsIds() {
+		return this.selectedTopicsId;
 	}
 
 	public int getDifficulty() {
