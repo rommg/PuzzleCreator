@@ -37,30 +37,37 @@ final class HintPopupMenu extends JPopupMenu {
 	 */ 
 	HintPopupMenu(JDefinitionLabel label, int entityID, HintCounterLabel hintCounterLabel) {
 		List<String> hintLst = label.getDef().getHints();
-		int i = 0;
-		for (String hintText : hintLst) {
-			hintArray[i++] = hintText;
+		if (hintLst == null) {
+			hintArray = new String[0];
+		}
+		else {
+			hintArray = new String[hintLst.size()];
+			int i = 0;
+
+			for (String hintText : hintLst) {
+				hintArray[i++] = hintText;
+			}
 		}
 
 		this.label = label;
 		this.hintCounterLabel = hintCounterLabel;
 		buildPopupSubMenus();
 	}
-//
-//	public int getUsedHintsCounter() {
-//		return usedHintsCounter;
-//	}
+	//
+	//	public int getUsedHintsCounter() {
+	//		return usedHintsCounter;
+	//	}
 
 	private void buildPopupSubMenus() {
 
-		
+
 		Arrays.sort(hintArray); // sort before replace with entity name
 
 		//		// add the hints to the popup menu
 		//		for (int i=0; i<hintArray.length; i++){ // sorted by predicate
 		//			add(new HintPopupSubmenu("Hint #" + (i+1), hintArray[i].getHintText())); 
 		//		}
-		
+
 		JMenuItem item = new JMenuItem(label.getText());
 		item.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/tip.png")));
 		add(item);
@@ -70,7 +77,7 @@ final class HintPopupMenu extends JPopupMenu {
 			add(new HintItem(hintArray[i]));
 		}
 	}
-	
+
 
 	private class HintItem extends JPanel {
 		private final String hintText;

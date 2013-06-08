@@ -30,20 +30,34 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 	}
 
 	void addTop(JDefinitionLabel lbl) {
+		this.TopDefinitionLbl = lbl;
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
 		lbl.setBackground(Color.GRAY);
-		lbl.setFont(this.getFont().deriveFont(8f));
+		lbl.setFont(this.getFont().deriveFont(getFontSize(lbl)));
 		lbl.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		add(lbl);
 	}
+	
+
 
 	void addBottom(JDefinitionLabel lbl) {
+		this.bottomDefinitionLbl = lbl;
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
 		lbl.setBackground(Color.GRAY);
-		lbl.setFont(this.getFont().deriveFont(8f));
+		lbl.setFont(this.getFont().deriveFont(getFontSize(lbl)));
 		add(lbl);
+	}
+	
+	@Override
+	protected float getFontSize(JDefinitionLabel lbl) {
+		switch (lbl.boardSize) {
+		case 0 : return 15f;
+		case 1: return 10f;
+		case 2: return 5f;
+		}
+		return -1;
 	}
 
 	public TwoDefinitionSquare(int row, int col) {

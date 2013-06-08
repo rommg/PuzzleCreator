@@ -28,6 +28,8 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
+import net.sf.sevenzipjbinding.ExtractAskMode;
+
 
 import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.BoardSolution;
@@ -77,6 +79,13 @@ public class CrosswordView extends JPanel {
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<SquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
 	private List<HintPopupMenu> hintPopupMenuList;
+	
+	//Sizes to difficulty
+	Map<Integer,Integer> sizesToDifficulty;
+	private final int EASY_SIZE = 8; 
+	private final int MEDIUM_SIZE = 10;
+	private final int HARD_SIZE = 13;
+
 
 	//CrosswordView dimensions
 	private final int PANEL_WIDTH = 1300;
@@ -107,6 +116,12 @@ public class CrosswordView extends JPanel {
 	}
 
 	private void initialize() {
+		
+		sizesToDifficulty = new HashMap<Integer,Integer>();
+		sizesToDifficulty.put(EASY_SIZE, 0);
+		sizesToDifficulty.put(MEDIUM_SIZE, 1);
+		sizesToDifficulty.put(HARD_SIZE, 2);
+		
 		setLayout(new BorderLayout(0, 0));
 
 		// set statistics panel
@@ -245,7 +260,7 @@ public class CrosswordView extends JPanel {
 
 		boardPanel.repaint();	
 	}
-
+	
 	/*
 	 * upon intialization, add HintPopups to all definitions
 	 */
@@ -298,8 +313,8 @@ public class CrosswordView extends JPanel {
 	}
 
 	private JDefinitionLabel createDefinitionLabel(int i,int j, int defNum) {
-		//JLabel lbl = new JLabel("<html><p>" + boardDefs.get(i).get(j).get(defNum) + "</p></html>");
-		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum)); 
+		
+		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum), sizesToDifficulty.get(size)); 
 	}
 
 	private void colorDefinitionArea(PuzzleDefinition def, Color color,Color caretColor) {

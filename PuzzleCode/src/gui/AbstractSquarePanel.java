@@ -52,5 +52,7 @@ abstract class AbstractSquarePanel extends JPanel {
 	    this.setFocusTraversalKeys(strokeid, set);
 	    set.add(up);
 	}
+	
+	protected abstract float getFontSize(JDefinitionLabel lbl);
     
 }
