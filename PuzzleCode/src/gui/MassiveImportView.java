@@ -11,10 +11,13 @@ import javax.swing.border.TitledBorder;
 
 public class MassiveImportView extends JPanel {
 
+	static MassiveImportView start() {
+		return new MassiveImportView();
+	}
 	/**
 	 * Create the panel.
 	 */
-	public MassiveImportView() {
+	private MassiveImportView() {
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();

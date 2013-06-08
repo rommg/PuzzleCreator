@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -23,16 +25,23 @@ import javax.swing.JPopupMenu;
  *
  */
 final class HintPopupMenu extends JPopupMenu {
-	private Hint[] hintArray;
+	private String[] hintArray;
 	JDefinitionLabel label;
 	HintCounterLabel hintCounterLabel;
 
+	/**
+	 * 
+	 * @param label
+	 * @param entityID
+	 * @param hintCounterLabel - the counter to update wheneve a hint is used
+	 */ 
 	HintPopupMenu(JDefinitionLabel label, int entityID, HintCounterLabel hintCounterLabel) {
-		//GuiDBConnector conn = new GuiDDBconnectorImpl();
-		//hintsList = conn.getHints(entityID);
-		// for now
-		// hintList = Hint[hintsList.size]; static decleration
-		hintArray = new Hint[5];// for now
+		List<String> hintLst = label.getDef().getHints();
+		int i = 0;
+		for (String hintText : hintLst) {
+			hintArray[i++] = hintText;
+		}
+
 		this.label = label;
 		this.hintCounterLabel = hintCounterLabel;
 		buildPopupSubMenus();
@@ -44,11 +53,7 @@ final class HintPopupMenu extends JPopupMenu {
 
 	private void buildPopupSubMenus() {
 
-		for (int i=0; i<hintArray.length; i++) {
-			Hint hint = new Hint("19/2/84", "Was Born On ?", this); //replacer replaces "?" in predicateString
-			hintArray[i] = hint;
-		}
-
+		
 		Arrays.sort(hintArray); // sort before replace with entity name
 
 		//		// add the hints to the popup menu
@@ -62,7 +67,7 @@ final class HintPopupMenu extends JPopupMenu {
 
 		for (int i=0; i<hintArray.length; i++) {
 			addSeparator();
-			add(new HintItem(hintArray[i].getHintText()));
+			add(new HintItem(hintArray[i]));
 		}
 	}
 	

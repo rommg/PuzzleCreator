@@ -1,6 +1,8 @@
 package puzzleAlgorithm;
 
+import gui.CrosswordView;
 import gui.MainView;
+import gui.WaitView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,10 +36,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	private int[] topicsIds;
 	private int difficulty;
+	private WaitView view; // parent window which activated this thread
 
-	public AlgorithmWorker(int[] topics, int difficulty) {
+	public AlgorithmWorker(WaitView view, int[] topics, int difficulty) {
 		this.topicsIds = topics;
 		this.difficulty = difficulty;
+		this.view = view;
 	}
 
 	@Override
@@ -57,51 +61,56 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		default:
 			break;
 		}
-		
-		publish("Retrieving possible answers from DataBase");
+
+		publish("Retrieving possible answers from DataBase...");
 		// TODO remove use of mock function after tests
-//		createMockAnswers();
+		//		createMockAnswers();
 		answers = DBUtils.getPossibleAnswers(this.topicsIds, 10);
 		Logger.writeToLog("Number of answers = " + answers.size());
-		
-		publish("Creating puzzle board");
+
+		publish("Creating puzzle board...");
 		createBoardFromTemplateFile(size, 1);
 		Collections.sort(definitions);
 		printBoard();
 		printBoardStatus();
 		optimizeBoard();
 		printBoardStatus();
-		publish("Sorting answers on board");
+		publish("Sorting answers on board...");
 		if (!fillBoard()) {
 			Logger.writeErrorToLog("impossible data");
 			result = new BoardSolution(null, null, false);
 		} else {
 			Logger.writeToLog("success");
-			publish("Retrieving hints and definitions from DataBase");
+			publish("Retrieving hints and definitions from DataBase...");
 			DBUtils.setHintsAndDefinitions(definitions);
 			result = new BoardSolution(board, definitions, true);
 			printResults();
-			publish("finished");
+			publish("Finished!");
 		}
 		return result;
 	}
 
 	@Override
 	protected void done() {
-		try {
-			MainView.view.showCrosswordview(get());
-		} catch (InterruptedException e) {
-			Logger.writeErrorToLog("InterruptedException in algorithm worker:");
-			Logger.writeErrorToLog("" + e.getStackTrace());
-		} catch (ExecutionException e) {
-			Logger.writeErrorToLog("ExecutionException in algorithm worker:");
-			Logger.writeErrorToLog("" + e.getStackTrace());
-		}
+		//		try {
+		view.setProgressMessage("Finished!"); // to verify that this message appears
+		
+		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true));
+		MainView.view.setCrosswordView(crosswordView); // adds JPanel to MainView card
+		view.setSkipBtnEnabled();
+		// view.setBoard(new BoardSolution(board, definitions, true));
+		//		} catch (InterruptedException e) {
+		//			Logger.writeErrorToLog("InterruptedException in algorithm worker:");
+		//			Logger.writeErrorToLog("" + e.getStackTrace());
+		//		} catch (ExecutionException e) {
+		//			Logger.writeErrorToLog("ExecutionException in algorithm worker:");
+		//			Logger.writeErrorToLog("" + e.getStackTrace());
+		//		}
 	}
-	
+
 	@Override
 	public void process(List<String> messages){
-		//TODO show the messages on screen while the board is built
+		view.setProgressMessage(messages.get(0));
 	}
 
 
@@ -329,7 +338,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	}
 
-	
+
 	/**
 	 * Create a new definition with the function params Insert definition to
 	 * board definitions collection For each relevant square - add the
