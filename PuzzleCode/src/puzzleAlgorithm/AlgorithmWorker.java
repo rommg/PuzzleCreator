@@ -62,7 +62,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		publish("Retrieving possible answers from DataBase");
 		// TODO remove use of mock function after tests
 //		createMockAnswers();
-		answers = DBUtils.getPossibleAnswers(topics, 8);
+		answers = DBUtils.getPossibleAnswers(topics, 10);
 		Logger.writeToLog("Number of answers = " + answers.size());
 		
 		publish("Creating puzzle board");
