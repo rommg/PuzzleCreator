@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import utils.DBConnector;
+import connectionPool.DBConnection;
 import utils.Logger;
 
 
@@ -33,7 +33,7 @@ public class YagoFileHandler {
 	private static final String TSV_FILE_DEST_DIR = TEMP_DIR + "tsv_files" +  System.getProperty("file.separator");
 	private static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
 	private static final String HAS_GENDER = "<hasGender>";
-	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an"));
+	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr."));
 
 	// static yago files names
 	public static final String YAGO_TYPES = "yagoTypes";
@@ -72,7 +72,7 @@ public class YagoFileHandler {
 		String columnName = "yago_" + entityType;
 		List<Map<String,Object>> rs = null;
 		String query = "SELECT " + tableName + "." + columnName +  " FROM " + tableName + ";";
-		rs = DBConnector.executeQuery(schema,query);
+		rs = DBConnection.executeQuery(query);
 		for (Map<String,Object> row : rs )
 			collection.add((String)row.get(columnName));
 	}
