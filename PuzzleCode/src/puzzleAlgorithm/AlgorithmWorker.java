@@ -96,7 +96,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		view.setProgressMessage("Finished!"); // to verify that this message appears
 		
 		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true));
-		MainView.view.setCrosswordView(crosswordView); // adds JPanel to MainView card
+		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
 		view.setSkipBtnEnabled();
 		// view.setBoard(new BoardSolution(board, definitions, true));
 		//		} catch (InterruptedException e) {

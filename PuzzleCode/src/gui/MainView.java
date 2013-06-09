@@ -38,9 +38,18 @@ import java.util.Map;
  */
 public class MainView {
 
-	public static MainView view = null; 
+	private static MainView view = null; 
 
-	JFrame frame;
+	public static MainView getView() {
+		return view;
+	}
+
+	JFrame getFrame() {
+		return frame;
+	}
+
+
+	private JFrame frame = null;
 	private JPanel menuPanel; // left side menu 
 	private Map<String,JButton> menuPanelBtns; //mapping from windows name to the button that leads to it
 	private JPanel cardPanel; // This is the main panel in the application; this is what switches "screens"
@@ -60,8 +69,6 @@ public class MainView {
 	//views instances
 	private JPanel crosswordView = null;
 	private JPanel welcomePanel = null;
-	private JPanel addHintView = null;
-	private JPanel addDefView = null;
 	private JPanel management = null;
 	private JPanel massive = null;
 
@@ -79,8 +86,6 @@ public class MainView {
 				try {
 					if (view == null) {
 						view = new MainView();
-						@SuppressWarnings("unused")
-						MainController controller = new MainController(null, view);
 						view.frame.setVisible(true);
 					}
 				} catch (Exception e) {
@@ -259,14 +264,6 @@ public class MainView {
 		showHallOfFameView();
 	}
 
-	void addHintsBtnClicked() {
-		showAddHintView();
-	}
-	
-	void addDefBtnClicked() {
-		showAddDefView();
-	}
-	
 	void mamangementBtnClick() {
 		showManagemntView();
 	}
@@ -350,37 +347,6 @@ public class MainView {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 
-	}
-
-	/**
-	 * switch to addHint view
-	 */
-	void showAddHintView() {
-		if (addHintView == null) {
-			addHintView = AddHintsView.start();
-			cardPanel.add(addHintView, Window.AddHint.toString());
-		}
-
-		CardLayout cl = (CardLayout)(cardPanel.getLayout());
-		cl.show(cardPanel,Window.AddHint.toString());
-		setSizes();
-
-//		frame.setMinimumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
-//		frame.setPreferredSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
-//		frame.setMaximumSize(new Dimension((int)Math.rint(FRAME_WIDTH * 1.5), FRAME_HEIGHT));
-//		frame.pack();
-//		frame.setLocationRelativeTo(null);
-	}
-	
-	void showAddDefView() {
-		if (addDefView == null) {
-			addDefView = AddDefView.start();
-			cardPanel.add(addDefView, Window.AddDefinition.toString());
-		}
-
-		CardLayout cl = (CardLayout)(cardPanel.getLayout());
-		cl.show(cardPanel,Window.AddDefinition.toString());
-		setSizes();
 	}
 
 	void showManagemntView() {

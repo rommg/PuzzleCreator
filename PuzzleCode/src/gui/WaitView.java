@@ -85,7 +85,7 @@ public class WaitView extends JPanel {
 		btnSkip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				MainView.view.showCrosswordview(); // must be available only after BoardSolution was created (board != null)
+				MainView.getView().showCrosswordview(); // must be available only after BoardSolution was created (board != null)
 			}
 		});
 		animationPanel.add(btnSkip);

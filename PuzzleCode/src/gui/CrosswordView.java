@@ -83,7 +83,7 @@ public class CrosswordView extends JPanel {
 	//Sizes to difficulty
 	Map<Integer,Integer> sizesToDifficulty;
 	private final int EASY_SIZE = 8; 
-	private final int MEDIUM_SIZE = 10;
+	private final int MEDIUM_SIZE = 11;
 	private final int HARD_SIZE = 13;
 
 
@@ -153,8 +153,8 @@ public class CrosswordView extends JPanel {
 	}
 
 	void setSizes() {
-		MainView.view.frame.setMinimumSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
-		MainView.view.frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		MainView.getView().getFrame().setMinimumSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+		MainView.getView().getFrame().setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 	}
 	void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
 		this.definitions = definitions; // save a reference in crossview
@@ -420,7 +420,7 @@ public class CrosswordView extends JPanel {
 		if (!isPaused) { // release => pause
 			timer.pause();
 			isPaused = true;
-			enableComponents(boardPanel, false);
+			Utils.enableComponents(boardPanel, false);
 			btnPause.setText("Resume");
 			for (JDefinitionLabel lbl : definitionLabelList) {
 				for (MouseListener listener : lbl.getMouseListeners()) {
@@ -436,22 +436,13 @@ public class CrosswordView extends JPanel {
 			timer.resume();
 			isPaused = false;
 			boardPanel.setEnabled(true);
-			enableComponents(boardPanel, true);
+			Utils.enableComponents(boardPanel, true);
 			btnPause.setText("Pause");
 			addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); // return the definition square listener to all definition squares
 			boardPanel.setEnabled(true);
 		}
 	}
 
-	void enableComponents(Container container, boolean enable) {
-		Component[] components = container.getComponents();
-		for (Component component : components) {
-			component.setEnabled(enable);
-			if (component instanceof Container) {
-				enableComponents((Container)component, enable);
-			}
-		}
-	}
 
 	void addPauseListener(ActionListener listener) {
 		btnPause.addActionListener(listener);

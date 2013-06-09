@@ -1,31 +1,27 @@
 package gui;
 
-import gui.MainController.BtnListener;
-
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Component;
 import java.awt.FlowLayout;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,6 +51,7 @@ public class ManagementView extends JPanel {
 	private static final int MAX_NUM_DEFS = 10;
 
 	private JPanel definitionPanel;
+	private JPanel hintsPanel;
 	private JTabbedPane tabbedPane;
 
 
@@ -135,9 +132,11 @@ public class ManagementView extends JPanel {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == e.SELECTED) {
 					setEnabled(true);
+					Utils.enableComponents(tabbedPane, true);
 				}
 				else {
 					setEnabled(false);
+					Utils.enableComponents(tabbedPane, false);
 				}
 			}
 		});
@@ -157,7 +156,7 @@ public class ManagementView extends JPanel {
 					definitionPanel.revalidate();
 				}
 			}
-			
+
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == e.SELECTED) {
 					setEnabled(true);
@@ -187,9 +186,21 @@ public class ManagementView extends JPanel {
 		add(tabbedPane, BorderLayout.CENTER);
 
 		definitionPanel = new JPanel();
+		hintsPanel = new JPanel();
+
+		JPanel btnPanel = new JPanel();
+		btnPanel.setAlignmentX(FlowLayout.CENTER);
+		JButton btnBack = new JButton();
+		btnBack.setFont(btnBack.getFont().deriveFont(15f));
+		btnBack.setIcon(new ImageIcon(HallOfFameView.class.getResource("/resources/back.png")));
+
+		btnBack.addActionListener(new BackButtonListener());
+		btnPanel.add(btnBack);
+		add(btnPanel, BorderLayout.SOUTH);
 		
 
 	}
+	
 
 	private void initialize() {
 
@@ -228,7 +239,7 @@ public class ManagementView extends JPanel {
 		tabbedPane.add("Definitions", definitionPanel);
 	}
 	private void buildDefinitionPanel(int entityID) {
-		
+
 		getDefinitionsForEntity(entityID);
 
 		int row_num = definitions.size();
@@ -239,7 +250,7 @@ public class ManagementView extends JPanel {
 		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
 		for (String definition : definitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
-			ResultLine line = new ResultLine(definition);
+			DefinitionResultLine line = new DefinitionResultLine(definition);
 			definitionPanel.add(line);
 		}
 		for (int i = 0; i<ADD_ROWS_NUM; i++) { // add new definition lines
@@ -259,7 +270,40 @@ public class ManagementView extends JPanel {
 	}
 
 	private void buildHintsPanel(int entityID) {
+		Map<Integer,List<String>> hintResults = DBUtils.getHintsByEntityID(entityID);
+		List<HintTuple> hintTupleLst = new ArrayList<HintTuple>();
+		
+		for (int id : hintResults.keySet()) {
+			hintTupleLst.add(new HintTuple(id, hintResults.get(id).get(0)));
+		}
 
+
+		int row_num = hintResults.size();
+
+		tabbedPane.remove(hintsPanel);
+
+		// refreshes panel
+		hintsPanel = new JPanel();
+		hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+
+		for (HintTuple hint : hintTupleLst) { 
+			HintResultLine line = new HintResultLine(hint);
+			hintsPanel.add(line);
+		}
+		for (int i = 0; i<ADD_ROWS_NUM; i++) { // add new definition lines
+			hintsPanel.add(new NewHintLine());
+		}
+
+		// add padding lines, if needed
+		for (int i = 0; i<MAX_NUM_DEFS - ADD_ROWS_NUM - row_num; i++) {
+			hintsPanel.add(new JPanel());
+		}
+
+		hintsPanel.revalidate();
+		tabbedPane.addTab("Hints", null, hintsPanel,null);
+		tabbedPane.revalidate();
+
+		return;
 	}
 
 	private JComboBox<String> createAutoCompleteBox(Set<String> valueList, String firstvalue, boolean strict) {
@@ -271,7 +315,7 @@ public class ManagementView extends JPanel {
 		return box;
 	}
 
-	private class ResultLine extends JPanel {
+	private class DefinitionResultLine extends JPanel {
 		protected JComboBox<String> topicBox;
 		protected JComboBox<String> definitionBox;
 		protected JButton saveBtn;
@@ -279,7 +323,7 @@ public class ManagementView extends JPanel {
 
 		protected JPanel btnPanel;
 
-		public ResultLine(String definition) {
+		public DefinitionResultLine(String definition) {
 			setLayout(new BorderLayout());
 
 			//			topicBox = MultiSelectionComboBox.getNewMultiSelectionComboBox();
@@ -311,8 +355,60 @@ public class ManagementView extends JPanel {
 						}
 					}
 					else { // popup error message
-
+						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
+							    "Knowledge Fact must have at least one definition.");
 					}
+				}
+			});
+
+			btnPanel.add(saveBtn);
+			btnPanel.add(deleteBtn);
+			add(btnPanel, BorderLayout.EAST);
+		}
+	}
+
+	private class HintResultLine extends JPanel {
+
+		protected JButton saveBtn;
+		protected JButton deleteBtn;
+		protected JPanel btnPanel;
+		private HintTuple hint;
+		
+
+		public HintResultLine(HintTuple hint) {
+			setLayout(new BorderLayout());
+			this.hint = hint;
+
+			JTextField field = new JTextField(hint.getText());
+			field.setEditable(true);
+			field.addKeyListener(new KeyAdapter() {
+
+				@Override
+				public void keyTyped(KeyEvent arg0) {
+					saveBtn.setEnabled(true);					
+				}
+			});
+
+			add(field, BorderLayout.CENTER);
+
+			btnPanel = new JPanel();
+			btnPanel.setLayout(new GridLayout(1,2));
+			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
+			saveBtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+
+				}
+			});
+			deleteBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/delete_small.png")));		
+			deleteBtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//do delete
+					btnPanel.getParent().remove(HintResultLine.this);
+					btnPanel.getParent().revalidate();
 				}
 			});
 
@@ -342,7 +438,7 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if ((!topicField.getSelectedItem().toString().isEmpty()) && (!field.getText().isEmpty())) {
-						//call DB Save procedure
+						//call DB add procedure
 					}
 				}
 			});
@@ -351,7 +447,66 @@ public class ManagementView extends JPanel {
 
 	}
 
-	public class TopicComboboxRenderer implements ListCellRenderer {
+	private class NewHintLine extends JPanel {
+
+
+		private JButton saveBtn;
+		private JTextField field;
+
+
+		NewHintLine() {
+			setLayout(new BorderLayout());
+
+			field = new JTextField();
+			add(field, BorderLayout.CENTER);
+			field.addKeyListener(new KeyAdapter() {
+
+				@Override
+				public void keyTyped(KeyEvent arg0) {
+					saveBtn.setEnabled(true);					
+				}
+			});
+
+			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/add_small.png")));
+			saveBtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if (!field.getText().isEmpty()) {
+						//call DB add procedure
+					}
+				}
+			});
+			add(saveBtn, BorderLayout.EAST);
+		}
+	}
+	
+
+	/**
+	 * because hint text may not be unique, keep the ID and String together
+	 * @author yonatan
+	 *
+	 */
+	private class HintTuple {
+		private int id;
+		private String text;
+		
+		public HintTuple(int id, String text) {
+			this.id = id;
+			this.text = text;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public String getText() {
+			return text;
+		}
+	}
+
+
+	class TopicComboboxRenderer implements ListCellRenderer {
 
 		private String[] items;
 		private boolean[] selected;
@@ -380,35 +535,13 @@ public class ManagementView extends JPanel {
 
 
 	}
+	
+	private class BackButtonListener implements ActionListener {
 
-	//	/**
-	//	 * This class is essential because need to be able to hold ID together with Entity Name which is not unique.
-	//	 * @author yonatan
-	//	 *
-	//	 */
-	//	private class EntityTuple implements Comparable<EntityTuple> {
-	//		private int id;
-	//		private String properName;
-	//
-	//		public int getId() {
-	//			return id;
-	//		}
-	//
-	//		public String getProperName() {
-	//			return properName;
-	//		}
-	//
-	//		public EntityTuple(int id, String properName) {
-	//			this.id = id;
-	//			this.properName = properName;
-	//		}
-	//
-	//		@Override
-	//		public int compareTo(EntityTuple o) {
-	//			return this.properName.compareTo(o.getProperName());
-	//		}
-	//
-	//
-	//	}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			MainView.getView().showWelcomeView();
+		}
+	}
 
 }

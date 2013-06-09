@@ -142,24 +142,6 @@ public class DBUtils {
 		}
 		return definitions;
 	}
-	
-	private static Map<Integer, List<Object>> createResultSetPKMap(List<Map<String, Object>> definitionsRs) {
-		Map<Integer, List<Object>> definitions = new HashMap<Integer, List<Object>>();
-
-		for (Map<String, Object> row : definitionsRs) {
-			int entityId = Integer.parseInt(row.get("id").toString());
-			String definition = row.get("definition").toString();
-			if (definitions.keySet().contains(entityId)){
-				definitions.get(entityId).add(definition);
-			}
-			else{
-				List<Object> definitionList = new ArrayList<Object>();
-				definitionList.add(definition); 
-				definitions.put(entityId, definitionList);
-			}
-		}
-		return definitions;
-	}
 
 	private static String getProperName(String string) {
 		String ret = string.substring(string.indexOf('<')+1, string.indexOf('>'));
@@ -210,6 +192,10 @@ public class DBUtils {
 			retMap.put(getProperName(result.get("name").toString()),(Integer)result.get("id"));
 		}
 		return retMap;
+	}
+	
+	public static Map<Integer, List<String>> getHintsByEntityID(int entityID) {
+		return getHints(createINString(Collections.singletonList(entityID)));
 	}
 	
 	/**

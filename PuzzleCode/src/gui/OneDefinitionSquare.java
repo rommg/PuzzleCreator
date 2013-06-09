@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+
+import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 
 final class OneDefinitionSquare extends AbstractSquarePanel{
@@ -25,6 +27,8 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 
 	void addTop(JDefinitionLabel lbl) {
 		this.definitionLbl = lbl;
+		lbl.setHorizontalAlignment(JLabel.CENTER);
+		lbl.setVerticalAlignment(JLabel.TOP);
 		setLayout(new BorderLayout());
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
@@ -42,10 +46,10 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 
 	@Override
 	protected float getFontSize(JDefinitionLabel lbl) {
-		switch (lbl.boardSize) {
-		case 0 : return 20f;
-		case 1: return 15f;
-		case 2: return 10f;
+		switch (lbl.difficulty) {
+		case 0 : return lbl.EASY_ONE;
+		case 1: return lbl.MEDIUM_ONE;
+		case 2: return lbl.HARD_ONE;
 		}
 		return -1;
 	}

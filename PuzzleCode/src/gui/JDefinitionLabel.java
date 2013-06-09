@@ -15,18 +15,18 @@ import puzzleAlgorithm.PuzzleDefinition;
  */
 public class JDefinitionLabel extends JLabel{
 
-	protected int boardSize;
+	protected int difficulty;
 	private PuzzleDefinition definition;
 	private AbstractSquarePanel parentPanel;
 	
-	static final float EASY_ONE = 30f;
-	static final float EASY_TWO = 15f;
+	final float EASY_ONE = 18;
+	final float EASY_TWO = 15f;
 
-	static final float MEDIUM_ONE = 20f;
-	static final float MEDIUM_TWO = 10f;
+	final float MEDIUM_ONE = 14f;
+	final float MEDIUM_TWO = 10f;
 
-	static final float HARD_ONE = 10f;
-	static final float HARD_TWO = 5f;
+	final float HARD_ONE = 15;
+	final float HARD_TWO = 5f;
 
 
 	public void setParentPanel(AbstractSquarePanel parentPanel) {
@@ -43,11 +43,14 @@ public class JDefinitionLabel extends JLabel{
 	}
 	
 
-	public JDefinitionLabel(PuzzleDefinition definition, int boardSize) {
-		//super("<html><p>" + def.getDefinition() + "</p></html>");
-		super("<html><p><center>" + definition.getDefinition() + "</p></html>");
-		super.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	public JDefinitionLabel(PuzzleDefinition definition, int difficulty) {
+	
+		super("<html><p><center>" + definition.getDefinition() + 
+				"<br> " + definition.getAdditionalInformation() + "</p></html>");
+		super.setHorizontalAlignment(JLabel.CENTER);
+		super.setVerticalAlignment(JLabel.NORTH);
 		this.definition = definition;
+		super.setToolTipText(definition.getDefinition());
 		setForeground(Color.LIGHT_GRAY);
 		setForeground(Color.BLACK);
 		setFocusable(false);

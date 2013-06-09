@@ -149,7 +149,7 @@ public class HallOfFameView extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			MainView.view.showWelcomeView();
+			MainView.getView().showWelcomeView();
 		}
 	}
 

@@ -2,6 +2,7 @@ package gui;
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.awt.Dimension;
@@ -100,7 +101,7 @@ public class PrepareGameView extends JPanel {
 		backBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/back.png")));
 		backBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MainView.view.showWelcomeView();
+				MainView.getView().showWelcomeView();
 			}
 		});
 		btnPanel.add(backBtn);
@@ -114,11 +115,11 @@ public class PrepareGameView extends JPanel {
 		int difficulty = getUserSelectedDifficulty();
 		
 		if (selectedTopicIDs.length < 1) { // must choose at least one topic
-			// TODO Dialog Box
-			System.out.println("Error veze");
+			JOptionPane.showMessageDialog(MainView.getView().getFrame(),
+				    "At least one Topic should be selected.");
 		}
 		else {
-			MainView.view.showWaitView(selectedTopicIDs,difficulty);
+			MainView.getView().showWaitView(selectedTopicIDs,difficulty);
 		}
 	}
 
