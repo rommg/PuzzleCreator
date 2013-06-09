@@ -318,4 +318,24 @@ public class DBUtils {
 		
 		return ret;
 	}
+	
+	public static void deleteEntityDefinition(int entity_id, int definition_id){
+		String sqlQuery = "DELETE FROM entities_definition WHERE entity_id = " + entity_id + " AND definition_id = " + definition_id + ";";
+		DBConnection.executeQuery(sqlQuery);
+	}
+	
+	public static void deleteHint(int hint_id){
+		String sqlQuery = "DELETE FROM hints WHERE id = " + hint_id + ";";
+		DBConnection.executeQuery(sqlQuery);
+	}
+
+	
+	public static void addDefinitionToEntitiy(int entity_id, String definition){
+		//TODO: saleet
+	}
+	
+	public static void addHint(int entity_id, String hint){
+		//TODO: saleet
+	}
+
 }
