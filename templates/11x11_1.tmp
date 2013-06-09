@@ -115,7 +115,7 @@ Puzzle square: column:2 row:10 emptySquare:false
 Puzzle square: column:3 row:10 emptySquare:true
 Puzzle square: column:4 row:10 emptySquare:true
 Puzzle square: column:5 row:10 emptySquare:true
-Puzzle square: column:6 row:10 emptySquare:false
+Puzzle square: column:6 row:10 emptySquare:true
 Puzzle square: column:7 row:10 emptySquare:false
 Puzzle square: column:8 row:10 emptySquare:true
 Puzzle square: column:9 row:10 emptySquare:true
@@ -150,5 +150,5 @@ Definition: row:8 column:8 length:3 direction:r textRow:8 textCol:7
 Definition: row:9 column:0 length:5 direction:r textRow:8 textCol:0
 Definition: row:9 column:6 length:2 direction:r textRow:9 textCol:5
 Definition: row:9 column:9 length:2 direction:r textRow:9 textCol:8
-Definition: row:10 column:3 length:3 direction:r textRow:10 textCol:2
+Definition: row:10 column:3 length:4 direction:r textRow:10 textCol:2
 Definition: row:10 column:8 length:3 direction:r textRow:10 textCol:7
