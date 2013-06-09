@@ -69,10 +69,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Logger.writeToLog("Number of answers = " + answers.size());
 
 		publish("Creating puzzle board...");
-		createBoardFromTemplateFile(size, 1);
+		createBoardFromTemplateFile(size, 2);
 		Collections.sort(definitions);
 		printBoard();
+		printTopics();
 		printBoardStatus();
+		Logger.writeToLog("Optimizing board");
 		optimizeBoard();
 		printBoardStatus();
 		publish("Sorting answers on board...");
@@ -562,6 +564,15 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		} catch (IOException ex) {
 			Logger.writeErrorToLog("failed to create");
 		}
+	}
+
+	private void printTopics() {
+		String topicsString = "Topics Ids: ";
+		for (int i = 0; i < topicsIds.length; i++){
+			topicsString += topicsIds[i] + " ,";
+		}
+		Logger.writeToLog(topicsString);
+		
 	}
 
 	private static boolean createBoardFromTemplateFile(int size, int templateNum) {
