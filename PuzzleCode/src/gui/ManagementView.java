@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.TabExpander;
+
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
@@ -83,8 +85,10 @@ public class ManagementView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String entityText = newTextField.getText(); 
-				if (!entityText.isEmpty())
+				if (!entityText.isEmpty()) {
 					buildEmptyDefinitionPanel();
+					buildEmptyHintPanel();
+				}
 			}
 		});
 		topBtnPanel.add(btnAddNewFact);
@@ -125,18 +129,15 @@ public class ManagementView extends JPanel {
 				btnAddNewFact.setEnabled(flag);
 				newTextField.setEnabled(flag);
 				if (!flag) {
-					definitionPanel.removeAll();
-					definitionPanel.revalidate();
+					tabbedPane.removeAll();
 				}
 			}
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					setEnabled(true);
-					Utils.enableComponents(tabbedPane, true);
 				}
 				else {
 					setEnabled(false);
-					Utils.enableComponents(tabbedPane, false);
 				}
 			}
 		});
@@ -152,8 +153,7 @@ public class ManagementView extends JPanel {
 				btnSearchFact.setEnabled(flag);
 				existingTextField.setEnabled(flag);
 				if (!flag) {
-					definitionPanel.removeAll();
-					definitionPanel.revalidate();
+					tabbedPane.removeAll();
 				}
 			}
 
@@ -228,16 +228,18 @@ public class ManagementView extends JPanel {
 
 	private void buildEmptyDefinitionPanel() {
 
-		tabbedPane.removeAll();
+		tabbedPane.remove(definitionPanel);
+		
 		definitionPanel = new JPanel();
 		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
 		for (int i = 0; i<MAX_NUM_DEFS; i++) {
-			definitionPanel.add(new NewDefinitionResultLine());
+			definitionPanel.add(new NewDefinitionLine());
 		}
 		definitionPanel.revalidate();
 		tabbedPane.add("Definitions", definitionPanel);
 	}
+	
 	private void buildDefinitionPanel(int entityID) {
 
 		getDefinitionsForEntity(entityID);
@@ -250,11 +252,11 @@ public class ManagementView extends JPanel {
 		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
 		for (String definition : definitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
-			DefinitionResultLine line = new DefinitionResultLine(definition);
+			DefinitionLine line = new DefinitionLine(definition);
 			definitionPanel.add(line);
 		}
 		for (int i = 0; i<ADD_ROWS_NUM; i++) { // add new definition lines
-			definitionPanel.add(new NewDefinitionResultLine());
+			definitionPanel.add(new NewDefinitionLine());
 		}
 
 		// add padding lines, if needed
@@ -305,6 +307,19 @@ public class ManagementView extends JPanel {
 
 		return;
 	}
+	
+	private void buildEmptyHintPanel() {
+		tabbedPane.remove(hintsPanel);
+		
+		hintsPanel = new JPanel();
+		hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+
+		for (int i = 0; i<MAX_NUM_DEFS; i++) {
+			hintsPanel.add(new NewHintLine());
+		}
+		hintsPanel.revalidate();
+		tabbedPane.add("Hints", hintsPanel);
+	}
 
 	private JComboBox<String> createAutoCompleteBox(Set<String> valueList, String firstvalue, boolean strict) {
 
@@ -315,7 +330,12 @@ public class ManagementView extends JPanel {
 		return box;
 	}
 
-	private class DefinitionResultLine extends JPanel {
+	/**
+	 * one line in definitions tab: topic(s),definition,edit/delete buttons
+	 * @author yonatan
+	 *
+	 */
+	private class DefinitionLine extends JPanel {
 		protected JComboBox<String> topicBox;
 		protected JComboBox<String> definitionBox;
 		protected JButton saveBtn;
@@ -323,7 +343,7 @@ public class ManagementView extends JPanel {
 
 		protected JPanel btnPanel;
 
-		public DefinitionResultLine(String definition) {
+		public DefinitionLine(String definition) {
 			setLayout(new BorderLayout());
 
 			//			topicBox = MultiSelectionComboBox.getNewMultiSelectionComboBox();
@@ -418,12 +438,12 @@ public class ManagementView extends JPanel {
 		}
 	}
 
-	private class NewDefinitionResultLine extends JPanel {
+	private class NewDefinitionLine extends JPanel {
 
 		JTextField field;
 		JComboBox<String> topicField;
 
-		NewDefinitionResultLine() {
+		NewDefinitionLine() {
 
 			setLayout(new BorderLayout());
 

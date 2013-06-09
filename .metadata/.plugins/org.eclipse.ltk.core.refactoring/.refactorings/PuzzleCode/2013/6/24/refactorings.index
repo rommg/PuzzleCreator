@@ -10,3 +10,5 @@
 1370774689847	Rename field 'panel_1'
 1370774697271	Rename field 'choosePanel'
 1370775055687	Convert local variable 'success' to field
+1370818440473	Rename type 'NewDefinitionResultLine'
+1370818454051	Rename type 'DefinitionResultLine'

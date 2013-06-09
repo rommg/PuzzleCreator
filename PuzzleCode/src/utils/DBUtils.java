@@ -237,6 +237,25 @@ public class DBUtils {
 		return rows; 
 	}
 	
+	public static String[][] getTenBestScores() {
+		String sql = "SELECT best_scores.user_name, best_scores.score " +
+				"FROM best_scores " +
+				"ORDER BY best_scores.score DESC " +
+				"LIMIT 10;";
+		
+		List<Map<String,Object>> lst = DBConnection.executeQuery(sql);
+		String[][] returnArray  = new String[lst.size()][2]; // each of the 10 cells is a tuple [name,score]
+		
+		int index = 0;
+		for (Map<String,Object> row : lst) {
+			returnArray[index][0] = row.get("user_name").toString();
+			returnArray[index][1] = row.get("score").toString();
+			index++;
+		}
+		return returnArray;
+				
+	}
+	
 	private static String createINString(List<?> lst) {
 		StringBuilder strBlder = new StringBuilder();
 		strBlder.append('(');

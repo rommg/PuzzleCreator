@@ -9,9 +9,11 @@ import java.awt.FontMetrics;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
@@ -37,6 +39,7 @@ import puzzleAlgorithm.PuzzleDefinition;
 import puzzleAlgorithm.PuzzleSquare;
 import sun.applet.Main;
 import sun.security.krb5.internal.PAEncTSEnc;
+import utils.DBUtils;
 import utils.GuiDBConnector;
 import utils.Logger;
 
@@ -61,25 +64,30 @@ import java.awt.BorderLayout;
 
 public class CrosswordView extends JPanel {
 
+	private boolean isPaused = false;
+	private int size;
+
 	private TimerJLabel timer;
 	private JButton btnPause;
-	private boolean isPaused = false;
 	private JPanel boardPanel;
-	private Map<Integer, Map<Integer,List<PuzzleDefinition>>> boardDefs;
+	private Map<Integer, Map<Integer,List<PuzzleDefinition>>> boardDefs; // maps (i,j) - > square Definition
+	private String[][] bestScores;
 	private AbstractSquarePanel[][] boardPanelHolders;
+	private HintCounterLabel hintCounterLabel;
+
+
 	public AbstractSquarePanel[][] getBoardPanelHolders() {
 		return boardPanelHolders;
 	}
 
 	private JButton btnCheck;
-	private int size;
-	private int[][] boardDefCount;
+	private int[][] boardDefCount; 
 
 
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<SquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
 	private List<HintPopupMenu> hintPopupMenuList;
-	
+
 	//Sizes to difficulty
 	Map<Integer,Integer> sizesToDifficulty;
 	private final int EASY_SIZE = 8; 
@@ -98,7 +106,6 @@ public class CrosswordView extends JPanel {
 	}
 
 	List<PuzzleDefinition> definitions;
-	private HintCounterLabel hintCounterLabel;
 
 	public static JPanel start(BoardSolution solution) {
 		CrosswordView view = new CrosswordView(solution);
@@ -111,17 +118,20 @@ public class CrosswordView extends JPanel {
 	 */
 	private CrosswordView(BoardSolution solution) {
 		initialize();
-		drawBoard(solution.getBoard(), solution.getDefinitions());
+		drawBoard(solution.getBoard(), solution.getDefinitions()); // draws board
+		getHighScores(); // query DB for 10 best scores
+		CrosswordModel.writeLettersCorrect(this);
 		this.setVisible(true);
+
 	}
 
 	private void initialize() {
-		
+
 		sizesToDifficulty = new HashMap<Integer,Integer>();
 		sizesToDifficulty.put(EASY_SIZE, 0);
 		sizesToDifficulty.put(MEDIUM_SIZE, 1);
 		sizesToDifficulty.put(HARD_SIZE, 2);
-		
+
 		setLayout(new BorderLayout(0, 0));
 
 		// set statistics panel
@@ -142,20 +152,47 @@ public class CrosswordView extends JPanel {
 		add(BtnPanel, BorderLayout.SOUTH);
 
 		btnCheck = new JButton("Check");
+		btnCheck.addActionListener(new ActionListener() {
 
-		btnPause = new JButton("Pause");
-		btnPause.setPreferredSize(new Dimension(100, btnPause.getPreferredSize().height + 10));
-		BtnPanel.add(btnPause);
-		BtnPanel.add(btnCheck);
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int score = CrosswordModel.calculateScore(timer.calcElapsedMilli(), Integer.parseInt(hintCounterLabel.getText()));
+				if (CrosswordModel.isCorrect(CrosswordView.this)) {
+					btnCheck.setBackground(Color.GREEN);
+					String message = "Congratulations!";
+					if (isHighScore(score)) {
+						String name = JOptionPane.showInputDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Enter your name for fame and glory.</html>");
+						//DBUtils.saveNewScore(name, score);
+					}
+					else 	
+						JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> " + message + " You scored " + score + " points! <br> Play again and make a high score!</html>");
+				}
+				else {
+					JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> We know you rock,<br> but this is WRONG.</html>");
 
-		JButton btnDone = new JButton("Done");
-		BtnPanel.add(btnDone);
+				}
+			}
+		});
+
+					btnPause = new JButton("Pause");
+					btnPause.setPreferredSize(new Dimension(100, btnPause.getPreferredSize().height + 10));
+					BtnPanel.add(btnPause);
+					BtnPanel.add(btnCheck);
+
+					JButton btnDone = new JButton("Done");
+					BtnPanel.add(btnDone);
+
 	}
 
 	void setSizes() {
 		MainView.getView().getFrame().setMinimumSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
 		MainView.getView().getFrame().setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 	}
+
+	private void getHighScores() {
+		bestScores = DBUtils.getTenBestScores();	
+	}
+
 	void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
 		this.definitions = definitions; // save a reference in crossview
 
@@ -260,7 +297,7 @@ public class CrosswordView extends JPanel {
 
 		boardPanel.repaint();	
 	}
-	
+
 	/*
 	 * upon intialization, add HintPopups to all definitions
 	 */
@@ -300,10 +337,6 @@ public class CrosswordView extends JPanel {
 		}
 	}
 
-	private void drawArrows() {
-
-	}
-
 	private boolean isDefinitionTop(PuzzleDefinition def, int row) {
 		return (def.getBeginRow() == row - 1);
 	}
@@ -313,7 +346,7 @@ public class CrosswordView extends JPanel {
 	}
 
 	private JDefinitionLabel createDefinitionLabel(int i,int j, int defNum) {
-		
+
 		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum), sizesToDifficulty.get(size)); 
 	}
 
@@ -467,5 +500,15 @@ public class CrosswordView extends JPanel {
 			super(new ImageIcon(CrosswordView.class.getResource("/resources/tip_big.png")),SwingConstants.LEADING);
 			this.setText("00");
 		}
+	}
+
+	private boolean isHighScore(int score) {
+		if (bestScores.length == 0)
+			return true;
+		for (int i = 0; i<bestScores.length; i++) {
+			if (score > Integer.parseInt(bestScores[i][1]))
+				return true;
+		}
+		return false;
 	}
 }
