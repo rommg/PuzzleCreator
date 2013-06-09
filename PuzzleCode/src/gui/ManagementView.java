@@ -130,7 +130,7 @@ public class ManagementView extends JPanel {
 				}
 			}
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == e.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					setEnabled(true);
 					Utils.enableComponents(tabbedPane, true);
 				}
@@ -158,7 +158,7 @@ public class ManagementView extends JPanel {
 			}
 
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == e.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					setEnabled(true);
 				}
 				else { 

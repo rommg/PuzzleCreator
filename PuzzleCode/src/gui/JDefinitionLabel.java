@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import puzzleAlgorithm.PuzzleDefinition;
 
@@ -20,10 +21,10 @@ public class JDefinitionLabel extends JLabel{
 	private AbstractSquarePanel parentPanel;
 	
 	final float EASY_ONE = 18;
-	final float EASY_TWO = 15f;
+	final float EASY_TWO = 14f;
 
 	final float MEDIUM_ONE = 14f;
-	final float MEDIUM_TWO = 10f;
+	final float MEDIUM_TWO = 8f;
 
 	final float HARD_ONE = 15;
 	final float HARD_TWO = 5f;
@@ -45,10 +46,10 @@ public class JDefinitionLabel extends JLabel{
 
 	public JDefinitionLabel(PuzzleDefinition definition, int difficulty) {
 	
-		super("<html><p><center>" + definition.getDefinition() + 
-				"<br> " + definition.getAdditionalInformation() + "</p></html>");
-		super.setHorizontalAlignment(JLabel.CENTER);
-		super.setVerticalAlignment(JLabel.NORTH);
+		super("<html><center>" + definition.getDefinition() + 
+				"<br> " + definition.getAdditionalInformation() + "</html>");
+		super.setHorizontalAlignment(SwingConstants.CENTER);
+		super.setVerticalAlignment(SwingConstants.CENTER);
 		this.definition = definition;
 		super.setToolTipText(definition.getDefinition());
 		setForeground(Color.LIGHT_GRAY);

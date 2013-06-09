@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import ca.odell.glazedlists.impl.filter.TextSearchStrategy.Factory;
 
 import connectionPool.DBConnection;
 import utils.Logger;
@@ -65,6 +68,18 @@ public class YagoFileHandler {
 	private void getLiteralTypes() { // can be changed in the future
 		litertalTypes = new HashSet<String>(); 
 		fillCollectionEntitiesFromDB("riddle", "predicates", "predicate", litertalTypes);
+
+	}
+	
+	public static boolean containsFiles(File directory) {
+		 
+		if (!directory.isDirectory())
+			return false;
+		File types = new File(directory + System.getProperty("file.separator") + YAGO_TYPES + TSV);
+		File facts = new File(directory + System.getProperty("file.separator") + YAGO_FACTS + TSV);
+		File literalFacts = new File(directory + System.getProperty("file.separator") + YAGO_LITERAL_FACTS + TSV);
+		
+		return (literalFacts.exists() && facts.exists() && types.exists());
 
 	}
 
@@ -314,13 +329,13 @@ public class YagoFileHandler {
 						String answerLine = null;
 						if (index != -1)  { // at least one name
 							if (!ILLEGAL_ANSWERS.contains(properName.substring(0, index).toLowerCase())){
-								answerLine = lineColumns[1] + decomposedYagoID[1] + "\t" + properName.substring(0, index) + "\tfirstname"; 
+								answerLine = lineColumns[1] + decomposedYagoID[1] + "\t" + properName.substring(0, index) + "\t(First Name)"; 
 								bwAnswers.write(answerLine);
 								bwAnswers.newLine();	
 							}
 							index = properName.lastIndexOf(' ');
 							if(!ILLEGAL_ANSWERS.contains(properName.substring(index + 1, properName.length()).toLowerCase())){
-								answerLine = lineColumns[1] + decomposedYagoID[1] + "\t" + properName.substring(index + 1, properName.length()) + "\tlastname";
+								answerLine = lineColumns[1] + decomposedYagoID[1] + "\t" + properName.substring(index + 1, properName.length()) + "\t(Last Name)";
 								bwAnswers.write(answerLine);
 								bwAnswers.newLine();
 							}

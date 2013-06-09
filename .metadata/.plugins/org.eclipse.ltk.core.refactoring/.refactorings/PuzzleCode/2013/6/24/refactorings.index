@@ -4,3 +4,9 @@
 1370768565130	Delete element
 1370768568282	Delete element
 1370768823549	Delete element
+1370773233289	Convert local variable 'btnOpen' to field
+1370774449243	Convert local variable 'panel_1' to field
+1370774626560	Convert local variable 'btnStartImport' to field
+1370774689847	Rename field 'panel_1'
+1370774697271	Rename field 'choosePanel'
+1370775055687	Convert local variable 'success' to field

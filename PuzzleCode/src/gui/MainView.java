@@ -156,15 +156,14 @@ public class MainView {
 			}
 		});
 		
-//		btn = createButton("Add Hints", "add.png");
-//		btn.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				addHintsBtnClicked();
-//			}
-//		});
-		createButton("Massive Import", "addDB.png");
+		btn = createButton("Massive Import", "addDB.png");
+		btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				massiveImportBtnClicked();
+			}
+		});
 
 		// bottom buttons
 
@@ -358,6 +357,8 @@ public class MainView {
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.Management.toString());
 		setSizes();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 	}
 	
 	void showMassiveImportView() {
@@ -369,9 +370,8 @@ public class MainView {
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.MassiveImport.toString());
 		setSizes();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 	}
-
-
-
 
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 final class OneDefinitionSquare extends AbstractSquarePanel{
@@ -27,8 +28,6 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 
 	void addTop(JDefinitionLabel lbl) {
 		this.definitionLbl = lbl;
-		lbl.setHorizontalAlignment(JLabel.CENTER);
-		lbl.setVerticalAlignment(JLabel.TOP);
 		setLayout(new BorderLayout());
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
