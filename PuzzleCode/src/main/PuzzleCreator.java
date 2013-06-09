@@ -51,6 +51,7 @@ public class PuzzleCreator {
 		// TODO: To Delete
 		// DBUtils.test();
 		//
+		DBUtils.getTriviaQuestion();
 		MainView.start();
 
 		//createDB();
