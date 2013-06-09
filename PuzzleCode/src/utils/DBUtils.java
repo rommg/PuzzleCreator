@@ -318,8 +318,43 @@ public class DBUtils {
 
 	//TODO: end to remove
 
-	public String[] getTriviaQuestion(){
-		//TODO saleet
-		return null;
+	public static String[] getTriviaQuestion(){
+		String sqlQuery = "SELECT id FROM entities ORDER BY RAND() LIMIT 1;";
+		List<Map<String,Object>> rs = DBConnection.executeQuery(sqlQuery);
+		int randEntity = (Integer)rs.get(0).get("id");
+		sqlQuery = "SELECT a.answer, d.definition, a.additional_information " +
+				   "FROM entities e, answers a, definitions d, entities_definitions ed " +
+				   "WHERE 	e.id = ed.entity_id AND " +
+				   		   "ed.definition_id = d.id AND " +
+				   		   "e.id = a.entity_id AND " +
+				   		   "e.id = " + randEntity + " " +
+				   		   "ORDER BY a.length " +
+				   		   "LIMIT 1; ";
+		rs = DBConnection.executeQuery(sqlQuery);
+		String[] ret = new String[2];
+		ret[0] = (String)rs.get(0).get("answer");
+		ret[1] = (String)rs.get(0).get("definition") + " (" + (String)rs.get(0).get("additional_information") + ") ";
+		
+		return ret;
 	}
+	
+	public static void deleteEntityDefinition(int entity_id, int definition_id){
+		String sqlQuery = "DELETE FROM entities_definition WHERE entity_id = " + entity_id + " AND definition_id = " + definition_id + ";";
+		DBConnection.executeQuery(sqlQuery);
+	}
+	
+	public static void deleteHint(int hint_id){
+		String sqlQuery = "DELETE FROM hints WHERE id = " + hint_id + ";";
+		DBConnection.executeQuery(sqlQuery);
+	}
+
+	
+	public static void addDefinitionToEntitiy(int entity_id, String definition){
+		//TODO: saleet
+	}
+	
+	public static void addHint(int entity_id, String hint){
+		//TODO: saleet
+	}
+
 }
