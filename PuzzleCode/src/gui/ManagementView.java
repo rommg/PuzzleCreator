@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 
+import javax.swing.JApplet;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -29,6 +30,8 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.TabExpander;
+import org.japura.gui.CheckComboBox;
+import org.japura.gui.model.ListCheckModel;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
@@ -199,10 +202,8 @@ public class ManagementView extends JPanel {
 		btnBack.addActionListener(new BackButtonListener());
 		btnPanel.add(btnBack);
 		add(btnPanel, BorderLayout.SOUTH);
-		
-
 	}
-	
+
 
 	private void initialize() {
 
@@ -231,7 +232,7 @@ public class ManagementView extends JPanel {
 	private void buildEmptyDefinitionPanel() {
 
 		tabbedPane.remove(definitionPanel);
-		
+
 		definitionPanel = new JPanel();
 		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
@@ -241,7 +242,7 @@ public class ManagementView extends JPanel {
 		definitionPanel.revalidate();
 		tabbedPane.add("Definitions", definitionPanel);
 	}
-	
+
 	private void buildDefinitionPanel(int entityID) {
 
 		getDefinitionsForEntity(entityID);
@@ -276,7 +277,7 @@ public class ManagementView extends JPanel {
 	private void buildHintsPanel(int entityID) {
 		Map<Integer,List<String>> hintResults = DBUtils.getHintsByEntityID(entityID);
 		List<HintTuple> hintTupleLst = new ArrayList<HintTuple>();
-		
+
 		for (int id : hintResults.keySet()) {
 			hintTupleLst.add(new HintTuple(id, hintResults.get(id).get(0)));
 		}
@@ -309,10 +310,10 @@ public class ManagementView extends JPanel {
 
 		return;
 	}
-	
+
 	private void buildEmptyHintPanel() {
 		tabbedPane.remove(hintsPanel);
-		
+
 		hintsPanel = new JPanel();
 		hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
@@ -323,14 +324,14 @@ public class ManagementView extends JPanel {
 		tabbedPane.add("Hints", hintsPanel);
 	}
 
-	
+
 	/**
 	 * one line in definitions tab: topic(s),definition,edit/delete buttons
 	 * @author yonatan
 	 *
 	 */
 	private class DefinitionLine extends JPanel {
-		protected JComboBox topicBox;
+		protected CheckComboBox topicBox;
 		protected JComboBox<String> definitionBox;
 		protected JButton saveBtn;
 		protected JButton deleteBtn;
@@ -340,7 +341,8 @@ public class ManagementView extends JPanel {
 		public DefinitionLine(int definitionID, String definition) {
 			setLayout(new BorderLayout());
 
-			topicBox = createCheckComboBoxWithTopics(definitionID);
+			Map<String,Integer> topics = getTopicsForDefinition(definitionID);
+			topicBox = new TopicsCheckComboBox(allTopics.keySet(), topics.keySet(), true);
 			super.add(topicBox, BorderLayout.WEST);
 			definitionBox = createAutoCompleteBox(allDefinitions, definition, true);
 			super.add(definitionBox, BorderLayout.CENTER);
@@ -362,19 +364,19 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (definitionCounter - 1 < 1){
-						if (!topicBox.getSelectedItem().toString().isEmpty() &&
-								!definitionBox.getSelectedItem().toString().isEmpty()) {
-							//delete row from DB
-						}
+						//						if (!topicBox.getSelectedItem().toString().isEmpty() &&
+						//								!definitionBox.getSelectedItem().toString().isEmpty()) {
+						//							//delete row from DB
+						//						}
 					}
 					else { // popup error message
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
-							    "Knowledge Fact must have at least one definition.");
+								"Knowledge Fact must have at least one definition.");
 					}
 				}
 			});
 
-			btnPanel.add(saveBtn);
+			//btnPanel.add(saveBtn);
 			btnPanel.add(deleteBtn);
 			add(btnPanel, BorderLayout.EAST);
 		}
@@ -386,7 +388,7 @@ public class ManagementView extends JPanel {
 		protected JButton deleteBtn;
 		protected JPanel btnPanel;
 		private HintTuple hint;
-		
+
 
 		public HintResultLine(HintTuple hint) {
 			setLayout(new BorderLayout());
@@ -405,15 +407,16 @@ public class ManagementView extends JPanel {
 			add(field, BorderLayout.CENTER);
 
 			btnPanel = new JPanel();
-			btnPanel.setLayout(new GridLayout(1,2));
-			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
-			saveBtn.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-
-				}
-			});
+			btnPanel.setLayout(new BorderLayout());
+			//			btnPanel.setLayout(new GridLayout(1,2));
+			//			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
+			//			saveBtn.addActionListener(new ActionListener() {
+			//
+			//				@Override
+			//				public void actionPerformed(ActionEvent arg0) {
+			//
+			//				}
+			//			});
 			deleteBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
@@ -425,12 +428,12 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			btnPanel.add(saveBtn);
-			btnPanel.add(deleteBtn);
+			//			btnPanel.add(saveBtn);
+			btnPanel.add(deleteBtn, BorderLayout.CENTER);
 			add(btnPanel, BorderLayout.EAST);
 		}
 	}
-	
+
 	private List<Integer> getUserSelectedTopics(Object[] selected) {
 		List<Integer>  lst = new ArrayList<Integer>();
 		for (Object object : selected) {
@@ -442,13 +445,13 @@ public class ManagementView extends JPanel {
 	private class NewDefinitionLine extends JPanel {
 
 		JTextField field;
-		JComboBox topicField;
+		CheckComboBox topicField;
 
 		NewDefinitionLine() {
 
 			setLayout(new BorderLayout());
 
-			topicField = createCheckComboBoxWithAllTopics();
+			topicField = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , false);
 			add(topicField, BorderLayout.WEST);
 			field = new LimitedTextField(20);
 			add(field, BorderLayout.CENTER);
@@ -458,16 +461,22 @@ public class ManagementView extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if ((!topicField.getSelectedItem().toString().isEmpty()) && (!field.getText().isEmpty())) {
-						//call DB add procedure
+					if ((!field.getText().isEmpty()) && (isValidString(field.getText()))) {
+						//add DB procedure
+						System.out.println("blH");
 					}
+					else  { // show error message
+						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
+								"<html><center>Invalid Text.</html>");
+					}
+
 				}
 			});
 			add(saveBtn, BorderLayout.EAST);
 		}
 
 	}
-	
+
 	private class NewHintLine extends JPanel {
 
 
@@ -493,15 +502,19 @@ public class ManagementView extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if (!field.getText().isEmpty()) {
+					if (!field.getText().isEmpty() && isValidString(field.getText())) {
 						//call DB add procedure
+					}
+					else  { // show error message
+						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
+								"Invalid Text.");
 					}
 				}
 			});
 			add(saveBtn, BorderLayout.EAST);
 		}
 	}
-	
+
 
 	/**
 	 * because hint text may not be unique, keep the ID and String together
@@ -511,7 +524,7 @@ public class ManagementView extends JPanel {
 	private class HintTuple {
 		private int id;
 		private String text;
-		
+
 		public HintTuple(int id, String text) {
 			this.id = id;
 			this.text = text;
@@ -526,7 +539,7 @@ public class ManagementView extends JPanel {
 		}
 	}
 
-	
+
 	private class BackButtonListener implements ActionListener {
 
 		@Override
@@ -534,22 +547,8 @@ public class ManagementView extends JPanel {
 			MainView.getView().showWelcomeView();
 		}
 	}
-	
-	CheckComboBox createCheckComboBoxWithTopics(int definitionID) {
-		Map<String,Integer> topics = getTopicsForDefinition(definitionID);
-		if (topics == null) {
-			Logger.writeErrorToLog("No topics retrived for definition " + definitionID);
-			return null;
-		}
-		CheckComboBox box = new CheckComboBox(allTopics.keySet(), topics.keySet());
-		return box;
-	}
-	
-	CheckComboBox createCheckComboBoxWithAllTopics() {
-		CheckComboBox box = new CheckComboBox(allTopics.keySet());
-		return box;
-	}
-	
+
+
 	/**
 	 * AutoComplete for SearchBox
 	 * @param valueList
@@ -566,5 +565,41 @@ public class ManagementView extends JPanel {
 		return box;
 	}
 
+
+	private boolean isValidString(String string) {
+		return string.matches("[a-zA-Z0-9 \\(\\)]+");
+	}
+
+	class TopicsCheckComboBox extends CheckComboBox {
+		private boolean lock;
+		private Set<String> allTopics;
+		private Set<String> topics;
+
+		public TopicsCheckComboBox(Set<String> allTopics, Set<String> topics, boolean lock) {
+			this.lock = lock;
+			this.allTopics = allTopics;
+			this.topics = topics;
+
+			super.setTextFor(CheckComboBox.NONE, "* no items selected *"); 
+			super.setTextFor(CheckComboBox.MULTIPLE, "* multiple items *"); 
+			super.setTextFor(CheckComboBox.ALL, "* all selected *"); 
+			
+			addTopicCheckBoxes();
+			
+		}
+
+		private void addTopicCheckBoxes() {
+			ListCheckModel model = this.getModel(); 
+			for (String topic : allTopics) { 
+				model.addElement(topic);
+				if (topics.contains(topic)) {
+					model.addCheck(topic);
+				}
+			}
+			if (lock)
+				model.lockAll();
+
+		}
+	}
 
 }

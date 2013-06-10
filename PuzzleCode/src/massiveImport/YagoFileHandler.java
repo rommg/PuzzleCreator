@@ -207,8 +207,7 @@ public class YagoFileHandler {
 	}
 
 	private boolean containsNonEnglishChars(String input) {
-		boolean i =  !input.matches("[a-z0-9 ]+");
-		return i;
+		return !input.matches("[a-z0-9 ]+");
 
 	}
 	private int parseYagoTypes() throws IOException {
