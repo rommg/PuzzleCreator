@@ -2,6 +2,7 @@
 CREATE SCHEMA IF NOT EXISTS RIDDLE;
 USE RIDDLE;
 
+DROP TABLE IF EXISTS BEST_SCORES;
 DROP TABLE IF EXISTS HINTS;
 DROP TABLE IF EXISTS ANSWERS;
 DROP TABLE IF EXISTS ENTITIES_DEFINITIONS;
@@ -94,7 +95,7 @@ answer varchar(50) NOT NULL,
 length int,
 frequency int,
 entity_id int, 
-additional_information varchar(20),
+additional_information varchar(25),
 PRIMARY KEY(id), 
 CONSTRAINT fk_EntityForWordId FOREIGN KEY(entity_id) REFERENCES ENTITIES(id)
 -- CONSTRAINT uc_Answers UNIQUE (answer)
