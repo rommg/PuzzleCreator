@@ -158,7 +158,7 @@ public class CrosswordView extends JPanel {
 						JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> " + message + " You scored " + score + " points! <br> Play again and make a high score!</html>");
 				}
 				else {
-					JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> We know you rock,<br> but this is WRONG.</html>");
+					JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> We know you rock,<br> but something in your answers is WRONG.</html>");
 
 				}
 			}
