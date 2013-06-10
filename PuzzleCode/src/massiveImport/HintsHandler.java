@@ -23,10 +23,12 @@ public class HintsHandler {
 			}
 		}
 		
-		String idsToDelete = hintIdToDelete.toString().replace('[', '(').replace(']', ')');
-		String sql = "DELETE FROM hints WHERE id IN " + idsToDelete + ";";
-		DBConnection.executeQuery(sql);
-		DBConnection.executeQuery("commit;");
+//		DBConnection.excuteDeleteHintsByIds(hintIdToDelete);
+		
+//		String idsToDelete = hintIdToDelete.toString().replace('[', '(').replace(']', ')');
+//		String sql = "DELETE FROM hints WHERE id IN " + idsToDelete + ";";
+//		DBConnection.executeQuery(sql);
+//		DBConnection.executeQuery("commit;");
 	}
 
 	private static void addHintsToRemoveList(Integer entityId, long numOfhintsToDelete) {
