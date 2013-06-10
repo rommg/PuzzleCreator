@@ -80,6 +80,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		publish("Sorting answers on board...");
 		if (!fillBoard()) {
 			Logger.writeErrorToLog("impossible data");
+			publish("failed to create Puzzle");
 			result = new BoardSolution(null, null, false);
 		} else {
 			Logger.writeToLog("success");
@@ -93,13 +94,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	}
 
 	@Override
-	protected void done() {
-		//		try {
-		view.setProgressMessage("Finished!"); // to verify that this message appears
-		
+	protected void done() {		
 		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true));
 		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
 		view.setSkipBtnEnabled();
+		
+		this.cancel(true);
 		// view.setBoard(new BoardSolution(board, definitions, true));
 		//		} catch (InterruptedException e) {
 		//			Logger.writeErrorToLog("InterruptedException in algorithm worker:");
@@ -112,7 +112,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	@Override
 	public void process(List<String> messages){
-		view.setProgressMessage(messages.get(0));
+		view.setProgressMessage(messages.get(messages.size()-1));
 	}
 
 

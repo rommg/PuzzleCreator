@@ -24,6 +24,7 @@ import connectionPool.DBConnection;
 import utils.Logger;
 
 
+import main.PuzzleCreator;
 import net.sf.sevenzipjbinding.SevenZipException;
 
 public class YagoFileHandler {
@@ -31,11 +32,11 @@ public class YagoFileHandler {
 	//private static fields
 	private static final String TSV = ".tsv";
 	private static final String TSV_7Z = TSV + ".7z";
-	private static final String HOME_DIR = main.PuzzleCreator.appDir + System.getProperty("file.separator") +"sql" + System.getProperty("file.separator");
-	private static final String TEMP_DIR = HOME_DIR +"temp_yago_files" +  System.getProperty("file.separator");
+	private static final String APP_HOME_DIR = PuzzleCreator.appDir + System.getProperty("file.separator");
+	private static final String TEMP_DIR = APP_HOME_DIR +"temp_yago_files" +  System.getProperty("file.separator");
 	private static final String ZIP_FILE_DEST_DIR = TEMP_DIR + "7z_files" +  System.getProperty("file.separator");
 	private static final String TSV_FILE_DEST_DIR = TEMP_DIR + "tsv_files" +  System.getProperty("file.separator");
-	private static final String FILTERED_TSV_FILE_DEST_DIR = HOME_DIR + "filesToLoad" +  System.getProperty("file.separator");
+	private static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
 	private static final String HAS_GENDER = "<hasGender>";
 	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr."));
 
@@ -46,29 +47,35 @@ public class YagoFileHandler {
 	public static final String YAGO_HUMAN_ANSWERS = "yagoHumanAnswers";
 
 	// instance fields
+	private String tsvDirectory = null;
 	private Set<String> entityTypes = null;
 	private Set<String> predicateTypes = null;
 	private Set<String> litertalTypes = null;
 	private Set<String> relevantEntities= null;
 
-	public YagoFileHandler() {
-		getTypes();
+	public YagoFileHandler(File direcotry) {
+		if (direcotry == null)
+			this.tsvDirectory = TSV_FILE_DEST_DIR;
+		else
+			this.tsvDirectory = direcotry.getAbsolutePath() + System.getProperty("file.separator");
+		
+		getTypes(); // gets types from DB
 		relevantEntities = new HashSet<String>(); // will contain names of interesting entities
 	}
 
 	private void getEntityTypes()  { // can be changed in the future
 		entityTypes = new HashSet<String>(); 
-		fillCollectionEntitiesFromDB("riddle","definitions", "type", entityTypes);
+		fillCollectionEntitiesFromDB("definitions", "type", entityTypes);
 	}
 
 	private void getPredicateTypes() { // can be changed in the future
 		predicateTypes = new HashSet<String>(); 
-		fillCollectionEntitiesFromDB("riddle", "predicates", "predicate", predicateTypes);
+		fillCollectionEntitiesFromDB("predicates", "predicate", predicateTypes);
 	}
 
 	private void getLiteralTypes() { // can be changed in the future
 		litertalTypes = new HashSet<String>(); 
-		fillCollectionEntitiesFromDB("riddle", "predicates", "predicate", litertalTypes);
+		fillCollectionEntitiesFromDB("predicates", "predicate", litertalTypes);
 
 	}
 	
@@ -84,7 +91,7 @@ public class YagoFileHandler {
 
 	}
 
-	private void fillCollectionEntitiesFromDB(String schema, String tableName, String entityType, Set<String> collection) {
+	private void fillCollectionEntitiesFromDB(String tableName, String entityType, Set<String> collection) {
 		String columnName = "yago_" + entityType;
 		List<Map<String,Object>> rs = null;
 		String query = "SELECT " + tableName + "." + columnName +  " FROM " + tableName + ";";
@@ -105,7 +112,7 @@ public class YagoFileHandler {
 	}
 
 
-	private int getFileFromURL(String yagoFile) {
+	private int getTSVFileFromURL(String yagoFile) {
 		URI uri = null;
 		String zip_7z_file_path = ZIP_FILE_DEST_DIR + yagoFile + TSV_7Z;
 		File zip_7z_file = new File(zip_7z_file_path);
@@ -166,7 +173,7 @@ public class YagoFileHandler {
 
 		// file should have been created by now by getFileFromURL
 
-		return new BufferedReader(new InputStreamReader (new FileInputStream(TSV_FILE_DEST_DIR + yagoFile + TSV),"UTF-8"));
+		return new BufferedReader(new InputStreamReader (new FileInputStream(tsvDirectory + yagoFile + TSV),"UTF-8"));
 	}
 
 	private BufferedWriter getFileWriter(String yagoFile) throws IOException {
@@ -200,8 +207,7 @@ public class YagoFileHandler {
 	}
 
 	private boolean containsNonEnglishChars(String input) {
-		boolean i =  !input.matches("[a-z0-9 ]+");
-		return i;
+		return !input.matches("[a-z0-9 ]+");
 
 	}
 	private int parseYagoTypes() throws IOException {
@@ -418,6 +424,21 @@ public class YagoFileHandler {
 
 		return 1;
 	}
+	
+	public void importFilesToDB() throws SQLException {
+		
+		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
+				"sql" + System.getProperty("file.separator") + "05 load_yago_data.sql");
+		
+		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
+				"sql" + System.getProperty("file.separator") + "05 load_yago_data.sql");
+	}
+	
+	public void populateDB() throws SQLException {
+
+		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
+				"sql" + System.getProperty("file.separator") + "06 create_relevant_data.sql");
+	}
 
 	public void deleteAllYagoFiles() {
 		deleteYagoFile(YAGO_TYPES);
@@ -464,9 +485,8 @@ public class YagoFileHandler {
 
 	public void getFilesFromURL() {
 
-		getFileFromURL(YAGO_TYPES);
-		getFileFromURL(YAGO_FACTS);
-		getFileFromURL(YAGO_LITERAL_FACTS);
+		getTSVFileFromURL(YAGO_TYPES);
+		getTSVFileFromURL(YAGO_FACTS);
+		getTSVFileFromURL(YAGO_LITERAL_FACTS);
 	}
-	
 }

@@ -14,7 +14,7 @@ additional_information varchar(25)
 );
 
 
-LOAD DATA LOCAL INFILE  'c:\\Users\\duvid\\Documents\\PuzzleCreator\\sql\\filesToLoad\\yagoHumanAnswers.tsv'
+LOAD DATA LOCAL INFILE  'c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\sql\\filesToLoad\\yagoHumanAnswers.tsv'
 INTO TABLE TEMP_ANSWERS
 	fields terminated by '\t'
 	lines terminated by '\n'
@@ -23,7 +23,7 @@ INTO TABLE TEMP_ANSWERS
 INSERT INTO ANSWERS (answer, length, additional_information, entity_id)
 	SELECT DISTINCT yago.answer, LENGTH(yago.answer), yago.additional_information, entities.id
 	FROM yago_type AS yago, entities 
-	WHERE yago.subject = entities.name AND LENGTH(yago.answer) < 16;
+	WHERE yago.subject = entities.name; -- AND LENGTH(yago.answer) < 16;
 
 INSERT INTO ANSWERS (answer, length, additional_information, entity_id)
 	SELECT temp.answer, LENGTH(temp.answer), temp.additional_information, entities.id

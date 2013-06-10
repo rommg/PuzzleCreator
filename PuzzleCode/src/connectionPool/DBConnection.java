@@ -48,7 +48,7 @@ public class DBConnection {
 		}
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<Map<String,Object>> returnList = null;
+		List<Map<String,Object>> returnList = new ArrayList<Map<String,Object>>();
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sqlQuery);

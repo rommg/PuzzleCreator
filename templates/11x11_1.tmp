@@ -127,7 +127,7 @@ Definition: row:0 column:7 length:4 direction:d textRow:0 textCol:8
 Definition: row:0 column:9 length:4 direction:d textRow:0 textCol:10
 Definition: row:1 column:0 length:5 direction:r textRow:0 textCol:0
 Definition: row:1 column:3 length:10 direction:d textRow:0 textCol:3
-Definition: row:1 column:6 length:9 direction:d textRow:0 textCol:6
+Definition: row:1 column:6 length:10 direction:d textRow:0 textCol:6
 Definition: row:1 column:6 length:5 direction:r textRow:1 textCol:5
 Definition: row:2 column:3 length:5 direction:r textRow:2 textCol:2
 Definition: row:3 column:0 length:5 direction:r textRow:2 textCol:0

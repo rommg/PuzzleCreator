@@ -9,22 +9,24 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="true" key="casesensitive"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
-		<item value="true" key="wholeword"/>
-		<item value="size" key="selection"/>
+		<item value="false" key="wholeword"/>
+		<item value="getTopicsForDefinition" key="selection"/>
 		<list key="findhistory">
-			<item value="size"/>
-			<item value="crea"/>
-			<item value="Hint"/>
-			<item value="setHintsAndDefinitions"/>
-			<item value="hints"/>
-			<item value="JDefinitionLabel"/>
-			<item value="addHint"/>
-			<item value="btnCont"/>
+			<item value="getTopicsForDefinition"/>
+			<item value="none"/>
+			<item value="select none"/>
+			<item value="select nonr"/>
+			<item value="getTopicByDefinitionIDs"/>
+			<item value="btnPause"/>
+			<item value="iscorr"/>
+			<item value="is"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
+			<item value="answerLength"/>
 			<item value="SmartAutoCompleteTextField"/>
 			<item value="SmartAutoComplete"/>
 			<item value="MainView"/>

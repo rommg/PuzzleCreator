@@ -23,8 +23,8 @@ public class JDefinitionLabel extends JLabel{
 	final float EASY_ONE = 18;
 	final float EASY_TWO = 14f;
 
-	final float MEDIUM_ONE = 14f;
-	final float MEDIUM_TWO = 8f;
+	final float MEDIUM_ONE = 13f;
+	final float MEDIUM_TWO = 7f;
 
 	final float HARD_ONE = 15;
 	final float HARD_TWO = 5f;
@@ -56,7 +56,5 @@ public class JDefinitionLabel extends JLabel{
 		setForeground(Color.BLACK);
 		setFocusable(false);
 	}
-	
-	
 	
 }

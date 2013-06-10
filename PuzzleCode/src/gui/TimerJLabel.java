@@ -61,6 +61,11 @@ class TimerJLabel extends JLabel{
 		return (new Date().getTime() - lastResumeTimeInMilli) + elapsedTimeLastPause;
 	}
 	
+	
+	void killTimer() {
+		t.stop();
+	}
+	
 	private class clockListener implements ActionListener {
 		private boolean isForeground = false;
 		private Color bg = TimerJLabel.this.getBackground();
@@ -87,4 +92,5 @@ class TimerJLabel extends JLabel{
 		}
 
 	}
+
 }
