@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,11 +31,11 @@ public class YagoFileHandler {
 	//private static fields
 	private static final String TSV = ".tsv";
 	private static final String TSV_7Z = TSV + ".7z";
-	private static final String HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
+	private static final String HOME_DIR = main.PuzzleCreator.appDir + System.getProperty("file.separator") +"sql" + System.getProperty("file.separator");
 	private static final String TEMP_DIR = HOME_DIR +"temp_yago_files" +  System.getProperty("file.separator");
 	private static final String ZIP_FILE_DEST_DIR = TEMP_DIR + "7z_files" +  System.getProperty("file.separator");
 	private static final String TSV_FILE_DEST_DIR = TEMP_DIR + "tsv_files" +  System.getProperty("file.separator");
-	private static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
+	private static final String FILTERED_TSV_FILE_DEST_DIR = HOME_DIR + "filesToLoad" +  System.getProperty("file.separator");
 	private static final String HAS_GENDER = "<hasGender>";
 	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr."));
 
@@ -467,4 +468,5 @@ public class YagoFileHandler {
 		getFileFromURL(YAGO_FACTS);
 		getFileFromURL(YAGO_LITERAL_FACTS);
 	}
+	
 }
