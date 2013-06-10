@@ -332,6 +332,7 @@ public class DBUtils {
 				"ORDER BY a.length " +
 				"LIMIT 1; ";
 		rs = DBConnection.executeQuery(sqlQuery);
+		//TODO rs can be an empty List - need to show an error on screen
 		String[] ret = new String[2];
 		ret[0] = (String)rs.get(0).get("answer");
 		//		ret[1] = (String)rs.get(0).get("definition") + " (" + (String)rs.get(0).get("additional_information") + ") ";
