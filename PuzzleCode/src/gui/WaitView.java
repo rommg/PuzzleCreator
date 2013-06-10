@@ -8,19 +8,29 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
 import java.awt.Font;
 import javax.swing.JButton;
+
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Color;
 
 import puzzleAlgorithm.AlgorithmWorker;
+import puzzleAlgorithm.Answer;
 import puzzleAlgorithm.BoardSolution;
+import sun.net.www.content.audio.aiff;
+import utils.DBUtils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.Time;
+import java.util.Random;
+
 import javax.swing.border.BevelBorder;
 
 /**
@@ -30,15 +40,17 @@ import javax.swing.border.BevelBorder;
  */
 public class WaitView extends JPanel {
 
-	private BoardSolution board = null;
 	private JButton btnSkip;
 	private JLabel infoLabel;
 	private JPanel animationPanel;
 	private int[] topics;
 	private int difficulty;
+	private JLabel responseLabel;
+	private JLabel questionLabel;
+	private JPanel answerPanel; // holds squares
+	private String answer;
 
-	public void setBoard(BoardSolution solution) {
-		this.board = solution;
+	public void setBoard() {
 	}
 	/**
 	 * 
@@ -61,9 +73,10 @@ public class WaitView extends JPanel {
 
 		setLayout(new BorderLayout(0, 0));
 
-		JLabel lblWeArePreparing = new JLabel("<HTML><center>Get Your Juices Going!</HTML>");
+		JLabel lblWeArePreparing = new JLabel("<HTML><center>We're Preparing A Crossword Tailored For You.<br> Meanwhile, Get Your Juices Going!</HTML>");
 		lblWeArePreparing.setBackground(Color.WHITE);
-		lblWeArePreparing.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 35));
+		lblWeArePreparing.setOpaque(true);
+		lblWeArePreparing.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 25));
 		lblWeArePreparing.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblWeArePreparing, BorderLayout.NORTH);
 
@@ -84,21 +97,82 @@ public class WaitView extends JPanel {
 		btnSkip.setEnabled(false);
 		btnSkip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				MainView.getView().showCrosswordview(); // must be available only after BoardSolution was created (board != null)
 			}
 		});
 		animationPanel.add(btnSkip);
 		animationPanel.invalidate();
 
-		JPanel centerPanel = new JPanel();
-		centerPanel.setBackground(Color.WHITE);
-		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
-		add(centerPanel, BorderLayout.CENTER);	
-
 		// start running algorithm in background
 		startAlgorithmCalculationThread(topics, difficulty);
 
+		//trivia question 
+
+		JPanel centerPanel = new JPanel();
+		centerPanel.setBackground(Color.WHITE);
+		add(centerPanel, BorderLayout.CENTER);	
+		centerPanel.setLayout(new GridLayout(7, 1));
+
+		drawTriviaQuestion(centerPanel);
+
+		final JPanel checkPanel = new JPanel();
+		checkPanel.setBackground(Color.WHITE);
+		JButton  btnCheck = new JButton("Check My Answer!", new ImageIcon(WaitView.class.getResource("/resources/check_btn.png")));
+		btnCheck.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				boolean isCorrect = isCorrectAnswer(answerPanel, answer);
+				if (isCorrect) {
+					responseLabel.setIcon(new ImageIcon(WaitView.class.getResource("/resources/check_medium.png")));
+				}
+				else 
+					responseLabel.setIcon(new ImageIcon(WaitView.class.getResource("/resources/fail_medium.png")));
+			}
+		});
+		
+		checkPanel.add(btnCheck);
+
+		responseLabel = new JLabel();
+		checkPanel.add(responseLabel);
+
+		centerPanel.add(checkPanel);
+	}
+	private void drawTriviaQuestion(JPanel centerPanel) {
+		questionLabel = new JLabel("New label");
+		questionLabel.setFont(questionLabel.getFont().deriveFont(15f));
+		questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		centerPanel.add(questionLabel);
+
+		String[] triviaQuestion = DBUtils.getTriviaQuestion();	
+		String question = triviaQuestion[1];
+		answer = triviaQuestion[0];
+
+		questionLabel.setText("<html><p><Center>" + question + "</p></html>");
+
+		answerPanel = new JPanel();
+		answerPanel.setLayout(new GridLayout(1, answer.length()));
+
+		Random rand = new Random();
+		// ideally want different letters revealed, but one is OK too.
+		int firstLetterIndex  = rand.nextInt(answer.length());
+		int secondLetterIndex = rand.nextInt(answer.length());
+		int thirdLetterIndex =  (answer.length() < 5) ? -1 : rand.nextInt(answer.length());
+		int fourthLetterIndex = (answer.length() < 7) ? -1 : rand.nextInt(answer.length());
+
+		for (int i= 0; i<answer.length(); i++) {
+			SquareTextField field = new SquareTextField();
+			RegularSquare square = new RegularSquare(field, 0, i);
+			if (i == firstLetterIndex || i == secondLetterIndex || i == thirdLetterIndex || i == fourthLetterIndex) {
+				field.setText(Character.toString(answer.charAt(i)));
+				field.setEditable(false);
+				field.setFocusable(false);
+				field.setBackground(Color.LIGHT_GRAY);
+			}
+			answerPanel.add(square);	
+		}
+
+		centerPanel.add(answerPanel);
 	}
 
 	private void startAlgorithmCalculationThread(int[] topics, int difficulty)  {
@@ -115,6 +189,20 @@ public class WaitView extends JPanel {
 		infoLabel.setText(text);
 	}
 
+	private boolean isCorrectAnswer(JPanel answerPanel, String answer) {
+		int index = 0;
+		for (Component comp : answerPanel.getComponents()) {
+			RegularSquare square = (RegularSquare) comp;
+			String letterString = square.getField().getText().toLowerCase();
+			if (letterString.length() < 1) {
+				return false;
+			}
+
+			if (letterString.toLowerCase().charAt(0) != answer.charAt(index++))
+				return false;
+		}
+		return true;
+	}
 
 
 

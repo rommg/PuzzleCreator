@@ -30,6 +30,8 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
+import com.mysql.jdbc.Util;
+
 import net.sf.sevenzipjbinding.ExtractAskMode;
 
 
@@ -37,28 +39,20 @@ import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.BoardSolution;
 import puzzleAlgorithm.PuzzleDefinition;
 import puzzleAlgorithm.PuzzleSquare;
-import sun.applet.Main;
-import sun.security.krb5.internal.PAEncTSEnc;
 import utils.DBUtils;
-import utils.GuiDBConnector;
 import utils.Logger;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.awt.BorderLayout;
 
 
@@ -106,6 +100,7 @@ public class CrosswordView extends JPanel {
 	}
 
 	List<PuzzleDefinition> definitions;
+	private JButton btnSurrender;
 
 	public static JPanel start(BoardSolution solution) {
 		CrosswordView view = new CrosswordView(solution);
@@ -120,7 +115,6 @@ public class CrosswordView extends JPanel {
 		initialize();
 		drawBoard(solution.getBoard(), solution.getDefinitions()); // draws board
 		getHighScores(); // query DB for 10 best scores
-		CrosswordModel.writeLettersCorrect(this);
 		this.setVisible(true);
 
 	}
@@ -151,13 +145,14 @@ public class CrosswordView extends JPanel {
 		JPanel BtnPanel = new JPanel();
 		add(BtnPanel, BorderLayout.SOUTH);
 
-		btnCheck = new JButton("Check");
+		btnCheck = new JButton("Check my Answers!", new ImageIcon(CrosswordView.class.getResource("/resources/check_medium.png")));
+		btnCheck.setFont(btnCheck.getFont().deriveFont(15f));
 		btnCheck.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int score = CrosswordModel.calculateScore(timer.calcElapsedMilli(), Integer.parseInt(hintCounterLabel.getText()));
-				if (CrosswordModel.isCorrect(CrosswordView.this)) {
+				if (isCorrect()) {
 					btnCheck.setBackground(Color.GREEN);
 					String message = "Congratulations!";
 					if (isHighScore(score)) {
@@ -174,14 +169,40 @@ public class CrosswordView extends JPanel {
 			}
 		});
 
-					btnPause = new JButton("Pause");
-					btnPause.setPreferredSize(new Dimension(100, btnPause.getPreferredSize().height + 10));
-					BtnPanel.add(btnPause);
-					BtnPanel.add(btnCheck);
+		btnPause = new JButton("Pause", new ImageIcon(CrosswordView.class.getResource("/resources/pause_btn.png")));
+		btnPause.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				pauseBtnClicked();
+			}
+		});
 
-					JButton btnDone = new JButton("Done");
-					BtnPanel.add(btnDone);
-
+		btnPause.setFont(btnCheck.getFont().deriveFont(15f));
+		
+		btnSurrender = new JButton(new ImageIcon(CrosswordView.class.getResource("/resources/surrender.png")));
+		btnSurrender.setToolTipText("Surrender Game");
+		btnSurrender.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				surrenderBtnClicked();
+			}
+		});
+		
+		JButton btnBack = new JButton(new ImageIcon(CrosswordView.class.getResource("/resources/back_small.png")));
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainView.getView().showWelcomeView();
+			}
+		});
+		
+		BtnPanel.add(btnBack);
+		BtnPanel.add(btnPause);
+		BtnPanel.add(btnCheck);
+		BtnPanel.add(btnSurrender);
 	}
 
 	void setSizes() {
@@ -437,10 +458,6 @@ public class CrosswordView extends JPanel {
 		}
 	}
 
-	void addCheckListener(ActionListener listener) {
-		btnCheck.addActionListener(listener);
-	}
-
 	void notifyCorrectness(boolean isCorrect) { // show to user that he was correct or wrong
 		if (isCorrect) {
 			btnCheck.setBackground(Color.GREEN);
@@ -476,11 +493,6 @@ public class CrosswordView extends JPanel {
 		}
 	}
 
-
-	void addPauseListener(ActionListener listener) {
-		btnPause.addActionListener(listener);
-	}
-
 	/**
 	 * inner class for hint usage counter
 	 * @author yonatan
@@ -502,13 +514,136 @@ public class CrosswordView extends JPanel {
 		}
 	}
 
+	private boolean isCorrect() {
+
+		JPanel[][] boardPanelHolders = this.getBoardPanelHolders();
+		boolean result = true;
+		char[] answer;
+
+		for (PuzzleDefinition def : this.getDefinitions()) { // iterate each definition to check if the letters in its domain are correct
+			int answerLength =  def.getAnswer().length;
+			int indexInAnswer = 0;
+			String squareString;
+
+			answer = def.getAnswer().getAnswerString().toLowerCase().toCharArray(); // turn correct answer to char array
+			char direction = def.getDirection();
+			switch (direction) { // iterate the specific definition domain
+			case 'r': {
+				for (int col = def.getBeginColumn(); col<def.getBeginColumn() + answerLength; col++) {
+					// compare the letter in the JSqaureTextField with the correct letter
+					squareString = ((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).getText().trim();
+
+					if (squareString.length() < 1)
+						return false;
+					char letter = squareString.toLowerCase().charAt(0); 					
+					result &= (letter == answer[indexInAnswer++]);
+				}
+				break;
+			}
+			case 'l':{
+				for (int col = def.getBeginColumn(); col>def.getBeginColumn() - answerLength; col--) {
+					squareString = ((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).getText().trim();
+
+					if (squareString.length() < 1)
+						return false;
+					char letter = squareString.toLowerCase().charAt(0); 
+					result &= (letter == answer[indexInAnswer++]);
+				}
+				break;
+			}
+			case 'u': {
+				for (int row = def.getBeginRow(); row>def.getBeginRow() - answerLength; row--) {
+					squareString  = ((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).getText().trim();
+
+					if (squareString.length() < 1)
+						return false;
+					char letter = squareString.toLowerCase().charAt(0); 
+					result &= (letter == answer[indexInAnswer++]);
+				}
+				break;
+			}
+			case 'd': {
+				for (int row = def.getBeginRow(); row<def.getBeginRow() + answerLength; row++) {
+					squareString  = ((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).getText().trim();
+
+					if (squareString.length() < 1)
+						return false;
+					char letter = squareString.toLowerCase().charAt(0); 
+					result &= (letter == answer[indexInAnswer++]);
+				}
+				break;
+			}
+			default: {
+				Logger.writeErrorToLog("Invalid direction in puzzle definition");
+			}
+			}
+		}
+		return result;
+	}
+
+	private void writeCorrectLetters() {
+		JPanel[][] boardPanelHolders = this.getBoardPanelHolders();
+		char[] answer;
+		int	indexInAnswer;
+
+		for (PuzzleDefinition def : this.getDefinitions()) { // iterate each definition to check if the letters in its domain are correct
+			indexInAnswer = 0;
+			answer = def.getAnswer().getAnswerString().toCharArray(); // turn correct answer to char array
+			char direction = def.getDirection();
+			switch (direction) { // iterate the specific definition domain
+			case 'r': {
+				for (int col = def.getBeginColumn(); col<def.getBeginColumn() + def.getAnswer().length; col++) {
+					((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setText(Character.toString(answer[indexInAnswer++])); // there should be only one letter 
+
+				}
+				break;
+			}
+			case 'l':{
+				for (int col = def.getBeginColumn(); col>def.getBeginColumn() - def.getAnswer().length; col--) {
+					((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setText(Character.toString(answer[indexInAnswer++])); 
+				}
+				break;
+			}
+			case 'u': {
+				for (int row = def.getBeginRow(); row>def.getBeginRow() - def.getAnswer().length; row--) {
+					((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setText(Character.toString(answer[indexInAnswer++])); 
+				}
+				break;
+			}
+			case 'd': {
+				for (int row = def.getBeginRow(); row<def.getBeginRow() + def.getAnswer().length; row++) {
+					((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setText(Character.toString(answer[indexInAnswer++])); 
+				}
+				break;
+			}
+			default: {
+				Logger.writeErrorToLog("Invalid direction in puzzle definition");
+			}
+			}
+		}
+		return;
+	}
+
 	private boolean isHighScore(int score) {
-		if (bestScores.length == 0)
+		if (bestScores.length < 10)
 			return true;
 		for (int i = 0; i<bestScores.length; i++) {
 			if (score > Integer.parseInt(bestScores[i][1]))
 				return true;
 		}
 		return false;
+	}
+
+	private void pauseBtnClicked() {
+		this.pause();
+	}
+	
+	private void surrenderBtnClicked() {
+		writeCorrectLetters();
+		btnSurrender.setEnabled(false);
+		btnCheck.setEnabled(false);
+		btnPause.setEnabled(false);
+		timer.killTimer();
+		Utils.enableComponents(boardPanel, false);
 	}
 }

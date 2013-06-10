@@ -12,3 +12,14 @@
 1370775055687	Convert local variable 'success' to field
 1370818440473	Rename type 'NewDefinitionResultLine'
 1370818454051	Rename type 'DefinitionResultLine'
+1370847976529	Extract method 'drawTriviaQuestion'
+1370848596841	Convert local variable 'answerPanel' to field
+1370848635557	Convert local variable 'answer' to field
+1370853049654	Convert local variable 'btnSurrender' to field
+1370855648338	Rename method 'getFileFromURL'
+1370858216170	Convert local variable 'progressPanel' to field
+1370859200742	Convert local variable 'stopButton' to field
+1370859258622	Convert local variable 'worker' to field
+1370860315540	Rename field 'HOME_DIR'
+1370860560460	Convert local variable 'downloadCheckBox' to field
+1370860917328	Delete element

@@ -47,42 +47,27 @@ public class HallOfFameView extends JPanel {
 	private void initialize() {
 		setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_1 = new JPanel();
-		add(panel_1, BorderLayout.NORTH);
+		JPanel topPanel = new JPanel();
+		add(topPanel, BorderLayout.NORTH);
 
 		JLabel lblHallOfFame = new JLabel("Hall Of Fame");
-		lblHallOfFame.setFont(new Font("Tekton Pro", Font.PLAIN, 20));
-		panel_1.add(lblHallOfFame);
+		lblHallOfFame.setFont(new Font("Stencil", Font.PLAIN, 20));
+		topPanel.add(lblHallOfFame);
 
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.SOUTH);
+		JPanel btnPanel = new JPanel();
+		add(btnPanel, BorderLayout.SOUTH);
 
 		JButton btnBack = new JButton();
 		btnBack.setFont(btnBack.getFont().deriveFont(15f));
 		btnBack.setIcon(new ImageIcon(HallOfFameView.class.getResource("/resources/back.png")));
 
 		btnBack.addActionListener(new BackButtonListener());
-		panel.add(btnBack);
-
-		JPanel gridPanel = new JPanel();
-		add(gridPanel, BorderLayout.CENTER);
-		GridBagLayout gbl_gridPanel = new GridBagLayout();
-		gbl_gridPanel.columnWidths = new int[]{112, 112, 112, 0};
-		gbl_gridPanel.rowHeights = new int[]{267, 0};
-		gbl_gridPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_gridPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridPanel.setLayout(gbl_gridPanel);
-
-		tablePanel = new JPanel();
-		tablePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
-		gbc_tablePanel.gridwidth = 3;
-		gbc_tablePanel.fill = GridBagConstraints.BOTH;
-		gbc_tablePanel.insets = new Insets(0, 0, 0, 5);
-		gbc_tablePanel.gridx = 0;
-		gbc_tablePanel.gridy = 0;
-		gridPanel.add(tablePanel, gbc_tablePanel);
-		tablePanel.setLayout(new GridLayout(0, 3, 0, 0));
+		btnPanel.add(btnBack);
+		
+				tablePanel = new JPanel();
+				add(tablePanel, BorderLayout.CENTER);
+				tablePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+				tablePanel.setLayout(new GridLayout(0, 3, 0, 0));
 
 		populateTablePanel();
 	}

@@ -19,29 +19,10 @@ public class CrosswordController extends AbstractController<CrosswordModel, Cros
 	CrosswordController(CrosswordModel model, CrosswordView view) {
 		super(model,view);
 		//add Controller listeners to View
-		view.addPauseListener(new PauseListener());
-		view.addCheckListener(new CheckListener());
 		//view.addKeyListenerToSquares(new SquareKeyListener());
 
 	}
 
-	class PauseListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			view.pause();
-		}
-
-	}
-
-	class CheckListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			view.notifyCorrectness(CrosswordModel.isCorrect(view));
-		}
-
-	}
 
 //	class SquareKeyListener extends KeyAdapter {
 //		@Override
