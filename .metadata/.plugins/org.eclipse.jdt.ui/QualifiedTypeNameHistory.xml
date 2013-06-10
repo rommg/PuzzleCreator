@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.Collections"/>
-<fullyQualifiedTypeName name="gui.ManagementView.HintResultLine"/>
-<fullyQualifiedTypeName name="gui.ManagementView.HintTuple"/>
-<fullyQualifiedTypeName name="gui.HintPopupMenu"/>
-<fullyQualifiedTypeName name="java.awt.Container"/>
-<fullyQualifiedTypeName name="gui.Utils"/>
-<fullyQualifiedTypeName name="java.awt.FlowLayout"/>
-<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
-<fullyQualifiedTypeName name="javax.swing.JFileChooser"/>
-<fullyQualifiedTypeName name="com.sun.java.util.jar.pack.Package.File"/>
-<fullyQualifiedTypeName name="java.awt.event.ItemListener"/>
 <fullyQualifiedTypeName name="java.awt.event.ItemEvent"/>
 <fullyQualifiedTypeName name="javax.swing.filechooser.FileNameExtensionFilter"/>
 <fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
@@ -18,8 +7,6 @@
 <fullyQualifiedTypeName name="massiveImport.YagoFileHandler"/>
 <fullyQualifiedTypeName name="javax.swing.JDialog"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="utils.DBUtilsTest"/>
 <fullyQualifiedTypeName name="javax.swing.SwingConstants"/>
 <fullyQualifiedTypeName name="gui.ManagementView.NewHintLine"/>
@@ -27,15 +14,12 @@
 <fullyQualifiedTypeName name="utils.DBUtils"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="sun.net.www.content.audio.aiff"/>
-<fullyQualifiedTypeName name="javax.swing.JTextField"/>
-<fullyQualifiedTypeName name="gui.SquareTextField"/>
 <fullyQualifiedTypeName name="java.awt.GridLayout"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="java.lang.Comparable"/>
 <fullyQualifiedTypeName name="java.awt.Component"/>
 <fullyQualifiedTypeName name="puzzleAlgorithm.Answer"/>
-<fullyQualifiedTypeName name="gui.RegularSquare"/>
 <fullyQualifiedTypeName name="java.lang.Character"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
@@ -44,7 +28,6 @@
 <fullyQualifiedTypeName name="java.sql.Time"/>
 <fullyQualifiedTypeName name="com.mysql.jdbc.Util"/>
 <fullyQualifiedTypeName name="gui.CrosswordModel"/>
-<fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="gui.CrosswordView"/>
 <fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
 <fullyQualifiedTypeName name="gui.WaitView"/>
@@ -60,4 +43,21 @@
 <fullyQualifiedTypeName name="connectionPool.DBConnection"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+<fullyQualifiedTypeName name="gui.CheckComboBox"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="com.sun.istack.internal.logging.Logger"/>
+<fullyQualifiedTypeName name="gui.Utils"/>
+<fullyQualifiedTypeName name="utils.Logger"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyAdapter"/>
+<fullyQualifiedTypeName name="gui.CrosswordView.CrosswordKeyListener"/>
+<fullyQualifiedTypeName name="gui.RegularSquare"/>
+<fullyQualifiedTypeName name="javax.swing.JTextField"/>
+<fullyQualifiedTypeName name="gui.SquareTextField"/>
+<fullyQualifiedTypeName name="gui.AbstractController"/>
+<fullyQualifiedTypeName name="gui.AbstractSquarePanel"/>
 </qualifiedTypeNameHistroy>

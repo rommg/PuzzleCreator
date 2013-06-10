@@ -31,7 +31,7 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 		setLayout(new BorderLayout());
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
-		lbl.setFont(this.getFont().deriveFont(getFontSize(lbl)));
+		//lbl.setFont(this.getFont().deriveFont(getFontSize(lbl)));
 		add(lbl, BorderLayout.CENTER);
 	
 	}
@@ -43,14 +43,14 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 		setBorder(new BevelBorder(BevelBorder.RAISED));
 	}
 
-	@Override
-	protected float getFontSize(JDefinitionLabel lbl) {
-		switch (lbl.difficulty) {
-		case 0 : return lbl.EASY_ONE;
-		case 1: return lbl.MEDIUM_ONE;
-		case 2: return lbl.HARD_ONE;
-		}
-		return -1;
-	}
+//	@Override
+//	protected float getFontSize(JDefinitionLabel lbl) {
+//		switch (lbl.difficulty) {
+//		case 0 : return lbl.EASY_ONE;
+//		case 1: return lbl.MEDIUM_ONE;
+//		case 2: return lbl.HARD_ONE;
+//		}
+//		return -1;
+//	}
 
 }

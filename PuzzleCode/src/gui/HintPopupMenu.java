@@ -60,14 +60,6 @@ final class HintPopupMenu extends JPopupMenu {
 
 	private void buildPopupSubMenus() {
 
-
-		Arrays.sort(hintArray); // sort before replace with entity name
-
-		//		// add the hints to the popup menu
-		//		for (int i=0; i<hintArray.length; i++){ // sorted by predicate
-		//			add(new HintPopupSubmenu("Hint #" + (i+1), hintArray[i].getHintText())); 
-		//		}
-
 		JMenuItem item = new JMenuItem(label.getText());
 		item.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/tip.png")));
 		add(item);

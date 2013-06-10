@@ -44,6 +44,8 @@ import utils.Logger;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -68,11 +70,6 @@ public class CrosswordView extends JPanel {
 	private String[][] bestScores;
 	private AbstractSquarePanel[][] boardPanelHolders;
 	private HintCounterLabel hintCounterLabel;
-
-
-	public AbstractSquarePanel[][] getBoardPanelHolders() {
-		return boardPanelHolders;
-	}
 
 	private JButton btnCheck;
 	private int[][] boardDefCount; 
@@ -104,8 +101,6 @@ public class CrosswordView extends JPanel {
 
 	public static JPanel start(BoardSolution solution) {
 		CrosswordView view = new CrosswordView(solution);
-		@SuppressWarnings("unused")
-		CrosswordController controller = new CrosswordController(null, view);
 		return view;
 	}
 	/**
@@ -171,7 +166,7 @@ public class CrosswordView extends JPanel {
 
 		btnPause = new JButton("Pause", new ImageIcon(CrosswordView.class.getResource("/resources/pause_btn.png")));
 		btnPause.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				pauseBtnClicked();
@@ -179,26 +174,26 @@ public class CrosswordView extends JPanel {
 		});
 
 		btnPause.setFont(btnCheck.getFont().deriveFont(15f));
-		
+
 		btnSurrender = new JButton(new ImageIcon(CrosswordView.class.getResource("/resources/surrender.png")));
 		btnSurrender.setToolTipText("Surrender Game");
 		btnSurrender.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				surrenderBtnClicked();
 			}
 		});
-		
+
 		JButton btnBack = new JButton(new ImageIcon(CrosswordView.class.getResource("/resources/back_small.png")));
 		btnBack.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainView.getView().showWelcomeView();
 			}
 		});
-		
+
 		BtnPanel.add(btnBack);
 		BtnPanel.add(btnPause);
 		BtnPanel.add(btnCheck);
@@ -242,6 +237,7 @@ public class CrosswordView extends JPanel {
 				switch (boardDefCount[i][j]) {
 				case 0 : { // regular square
 					SquareTextField txtLbl = new SquareTextField();
+					txtLbl.addKeyListener(new CrosswordKeyListener());
 					boardPanelHolders[i][j] = new RegularSquare(txtLbl, i, j);
 					sqaureTextFieldList.add(txtLbl);
 					break;
@@ -516,7 +512,6 @@ public class CrosswordView extends JPanel {
 
 	private boolean isCorrect() {
 
-		JPanel[][] boardPanelHolders = this.getBoardPanelHolders();
 		boolean result = true;
 		char[] answer;
 
@@ -582,7 +577,6 @@ public class CrosswordView extends JPanel {
 	}
 
 	private void writeCorrectLetters() {
-		JPanel[][] boardPanelHolders = this.getBoardPanelHolders();
 		char[] answer;
 		int	indexInAnswer;
 
@@ -637,7 +631,7 @@ public class CrosswordView extends JPanel {
 	private void pauseBtnClicked() {
 		this.pause();
 	}
-	
+
 	private void surrenderBtnClicked() {
 		writeCorrectLetters();
 		btnSurrender.setEnabled(false);
@@ -645,5 +639,45 @@ public class CrosswordView extends JPanel {
 		btnPause.setEnabled(false);
 		timer.killTimer();
 		Utils.enableComponents(boardPanel, false);
+	}
+
+	/**
+	 * arrow traversal listener
+	 * @author yonatan
+	 *
+	 */
+	private class CrosswordKeyListener extends KeyAdapter{
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getSource() instanceof SquareTextField) {
+				RegularSquare square = (RegularSquare) ((Component) e.getSource()).getParent(); // parent of SquareTextField is a RegularSquare
+				int row = square.getRow();
+				int col = square.getCol();
+				int newRow, newCol;
+				AbstractSquarePanel newSquare = null;
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_UP:
+					newRow = (row == 0) ? size - 1 : row - 1;
+					newSquare = (AbstractSquarePanel) boardPanelHolders[newRow][col];
+					break;
+				case KeyEvent.VK_DOWN:
+					newRow = (row == (size -1)) ? 0 : row + 1;
+					newSquare = (AbstractSquarePanel) boardPanelHolders[newRow][col];
+					break;
+				case KeyEvent.VK_LEFT:
+					newCol = (col == 0) ? size - 1 : col -1;
+					newSquare = (AbstractSquarePanel) boardPanelHolders[row][newCol]; 
+					break;
+				case KeyEvent.VK_RIGHT:
+					newCol = (col == (size - 1)) ? 0 : col + 1;
+					newSquare = (AbstractSquarePanel) boardPanelHolders[row][newCol];
+					break;
+				default:
+					return;
+				}
+				newSquare.getComponent(0).requestFocus();
+			}
+		}
 	}
 }

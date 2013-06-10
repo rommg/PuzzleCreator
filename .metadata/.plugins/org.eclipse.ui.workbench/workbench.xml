@@ -64,6 +64,7 @@
 <part id="22"/>
 <part id="23"/>
 <part id="24"/>
+<part id="25"/>
 </presentation>
 </folder>
 </info>
@@ -74,39 +75,35 @@
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="JDefinitionLabel.java" partName="JDefinitionLabel.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/JDefinitionLabel.java" title="JDefinitionLabel.java" tooltip="PuzzleCode/src/gui/JDefinitionLabel.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/JDefinitionLabel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1195" selectionTopPixel="225"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1330" selectionTopPixel="200"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="OneDefinitionSquare.java" partName="OneDefinitionSquare.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/OneDefinitionSquare.java" title="OneDefinitionSquare.java" tooltip="PuzzleCode/src/gui/OneDefinitionSquare.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/OneDefinitionSquare.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="40" selectionOffset="783" selectionTopPixel="97"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="598" selectionTopPixel="95"/>
 </editor>
-<editor id="org.eclipse.wb.core.guiEditor" name="CrosswordView.java" partName="CrosswordView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/CrosswordView.java" title="CrosswordView.java" tooltip="PuzzleCode/src/gui/CrosswordView.java" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="org.eclipse.wb.core.guiEditor" name="CrosswordView.java" partName="CrosswordView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/CrosswordView.java" title="CrosswordView.java" tooltip="PuzzleCode/src/gui/CrosswordView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/CrosswordView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="51" selectionOffset="2941" selectionTopPixel="1500"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2965" selectionTopPixel="375"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TwoDefinitionSquare.java" partName="TwoDefinitionSquare.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/TwoDefinitionSquare.java" title="TwoDefinitionSquare.java" tooltip="PuzzleCode/src/gui/TwoDefinitionSquare.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/TwoDefinitionSquare.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="863" selectionTopPixel="315"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="856" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AbstractSquarePanel.java" partName="AbstractSquarePanel.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/AbstractSquarePanel.java" title="AbstractSquarePanel.java" tooltip="PuzzleCode/src/gui/AbstractSquarePanel.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/AbstractSquarePanel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="142"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1358" selectionTopPixel="140"/>
 </editor>
 <editor id="org.eclipse.wb.core.guiEditor" name="ManagementView.java" partName="ManagementView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/ManagementView.java" title="ManagementView.java" tooltip="PuzzleCode/src/gui/ManagementView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/ManagementView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4195" selectionTopPixel="1196"/>
+<editorState selectionHorizontalPixel="0" selectionLength="8" selectionOffset="9660" selectionTopPixel="4830"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DBUtils.java" partName="DBUtils.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/utils/DBUtils.java" title="DBUtils.java" tooltip="PuzzleCode/src/utils/DBUtils.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/DBUtils.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="11074" selectionTopPixel="4702"/>
+<editorState selectionHorizontalPixel="0" selectionLength="43" selectionOffset="11679" selectionTopPixel="4695"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Utils.java" partName="Utils.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/Utils.java" title="Utils.java" tooltip="PuzzleCode/src/gui/Utils.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/Utils.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="1" selectionOffset="407" selectionTopPixel="0"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PuzzleCreator.java" partName="PuzzleCreator.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/main/PuzzleCreator.java" title="PuzzleCreator.java" tooltip="PuzzleCode/src/main/PuzzleCreator.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/main/PuzzleCreator.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="30" selectionOffset="1462" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.wb.core.guiEditor" name="HallOfFameView.java" partName="HallOfFameView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/HallOfFameView.java" title="HallOfFameView.java" tooltip="PuzzleCode/src/gui/HallOfFameView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/HallOfFameView.java"/>
@@ -114,23 +111,19 @@
 </editor>
 <editor id="org.eclipse.wb.core.guiEditor" name="PrepareGameView.java" partName="PrepareGameView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/PrepareGameView.java" title="PrepareGameView.java" tooltip="PuzzleCode/src/gui/PrepareGameView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/PrepareGameView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3556" selectionTopPixel="1410"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1466" selectionTopPixel="1500"/>
 </editor>
 <editor id="org.eclipse.wb.core.guiEditor" name="WaitView.java" partName="WaitView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/WaitView.java" title="WaitView.java" tooltip="PuzzleCode/src/gui/WaitView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/WaitView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3661" selectionTopPixel="559"/>
-</editor>
-<editor id="org.eclipse.wb.core.guiEditor" name="MassiveImportView.java" partName="MassiveImportView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/MassiveImportView.java" title="MassiveImportView.java" tooltip="PuzzleCode/src/gui/MassiveImportView.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/MassiveImportView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4761" selectionTopPixel="1620"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3661" selectionTopPixel="1915"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SquareTextField.java" partName="SquareTextField.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/SquareTextField.java" title="SquareTextField.java" tooltip="PuzzleCode/src/gui/SquareTextField.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/SquareTextField.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="736" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RegularSquare.java" partName="RegularSquare.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/RegularSquare.java" title="RegularSquare.java" tooltip="PuzzleCode/src/gui/RegularSquare.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/RegularSquare.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="129" selectionOffset="603" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TimerJLabel.java" partName="TimerJLabel.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/TimerJLabel.java" title="TimerJLabel.java" tooltip="PuzzleCode/src/gui/TimerJLabel.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/TimerJLabel.java"/>
@@ -144,14 +137,6 @@
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/DBConnector.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="834"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CrosswordController.java" partName="CrosswordController.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/CrosswordController.java" title="CrosswordController.java" tooltip="PuzzleCode/src/gui/CrosswordController.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/CrosswordController.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="610" selectionTopPixel="0"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HintPopupMenu.java" partName="HintPopupMenu.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/HintPopupMenu.java" title="HintPopupMenu.java" tooltip="PuzzleCode/src/gui/HintPopupMenu.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/HintPopupMenu.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="875" selectionTopPixel="210"/>
-</editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HintsHandler.java" partName="HintsHandler.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/massiveImport/HintsHandler.java" title="HintsHandler.java" tooltip="PuzzleCode/src/massiveImport/HintsHandler.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/massiveImport/HintsHandler.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
@@ -160,13 +145,33 @@
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/utils/Logger.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="10" selectionOffset="1611" selectionTopPixel="525"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AlgorithmWorker.java" partName="AlgorithmWorker.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/puzzleAlgorithm/AlgorithmWorker.java" title="AlgorithmWorker.java" tooltip="PuzzleCode/src/puzzleAlgorithm/AlgorithmWorker.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/puzzleAlgorithm/AlgorithmWorker.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1784" selectionTopPixel="0"/>
-</editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MassiveImportView.java" partName="MassiveImportView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/MassiveImportView.java" title="MassiveImportView.java" tooltip="PuzzleCode/src/gui/MassiveImportView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/MassiveImportView.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="7137" selectionTopPixel="2765"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="7137" selectionTopPixel="3125"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Window.java" partName="Window.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/Window.java" title="Window.java" tooltip="PuzzleCode/src/gui/Window.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/Window.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.wb.core.guiEditor" name="MainView.java" partName="MainView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/MainView.java" title="MainView.java" tooltip="PuzzleCode/src/gui/MainView.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/MainView.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="3720"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CheckComboBox.java" partName="CheckComboBox.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/CheckComboBox.java" title="CheckComboBox.java" tooltip="PuzzleCode/src/gui/CheckComboBox.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/CheckComboBox.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2109" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="LimitedTextField.java" partName="LimitedTextField.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/LimitedTextField.java" title="LimitedTextField.java" tooltip="PuzzleCode/src/gui/LimitedTextField.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/LimitedTextField.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HintPopupMenu.java" partName="HintPopupMenu.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/HintPopupMenu.java" title="HintPopupMenu.java" tooltip="PuzzleCode/src/gui/HintPopupMenu.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/HintPopupMenu.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1507" selectionTopPixel="110"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CrosswordView.java" partName="CrosswordView.java" path="C:/Users/yonatan/PuzzleCreator/PuzzleCode/src/gui/CrosswordView.java" title="CrosswordView.java" tooltip="PuzzleCode/src/gui/CrosswordView.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/PuzzleCode/src/gui/CrosswordView.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="15" selectionOffset="21197" selectionTopPixel="8720"/>
 </editor>
 </editors>
 <views>
@@ -200,9 +205,9 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
+<category IMemento.internal.id="Warnings (100 of 147 items)"/>
 <category IMemento.internal.id="Warnings"/>
 <category IMemento.internal.id="Errors"/>
-<category IMemento.internal.id="Warnings (100 of 138 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="300"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -253,7 +258,7 @@
 <view id="org.eclipse.wst.server.ui.ServersView" partName="Servers"/>
 <view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.wb.core.guiEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.doc.actionSet"/>
@@ -354,7 +359,7 @@
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.17628205" ratioLeft="220" ratioRight="1028" relationship="2" relative="left"/>
+<info part="org.eclipse.ui.editorss" ratio="0.15937687" ratioLeft="266" ratioRight="1403" relationship="2" relative="left"/>
 <info folder="true" part="bottom" ratio="0.75054705" ratioLeft="686" ratioRight="228" relationship="4" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
@@ -537,7 +542,7 @@
 </folder>
 </info>
 <info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.5" ratioLeft="836" ratioRight="836" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
-<folder activePageID="org.eclipse.debug.ui.VariableView" appearance="2" expanded="2">
+<folder activePageID="org.eclipse.debug.ui.ExpressionView" appearance="2" expanded="2">
 <page content="org.eclipse.debug.ui.VariableView" label="Variables"/>
 <page content="org.eclipse.debug.ui.BreakpointView" label="Breakpoints"/>
 <page content="org.eclipse.debug.ui.ExpressionView" label="Expressions"/>
@@ -561,163 +566,161 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/massiveImport/YagoFileHandler.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/MassiveImportView.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/massiveImport/MassiveImporter.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/utils/DBUtils.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wb.core.guiEditor" path="/PuzzleCode/src/gui/WaitView.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/puzzleAlgorithm/AlgorithmWorker.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/JDefinitionLabel.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/LimitedTextField.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/RegularSquare.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wb.core.guiEditor" path="/PuzzleCode/src/gui/CrosswordView.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/CrosswordView.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/CrosswordController.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/SquareTextField.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/PuzzleCode/src/gui/AbstractSquarePanel.java"/>
 </editors>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7781" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="21730" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7863" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="22055" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7918" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="22056" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7965" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="6705" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8012" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8072" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8228" y="0"/>
+<item historyLabel="JDefinitionLabel.java" index="0">
+<position info="not_deleted" x="1330" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="9382" y="0"/>
+<item historyLabel="LimitedTextField.java" index="1">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7918" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7965" y="0"/>
+<item historyLabel="RegularSquare.java" index="2">
+<position info="not_deleted" x="603" y="129"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8012" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8072" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8228" y="0"/>
+<item historyLabel="CrosswordController.java" index="5">
+<position info="not_deleted" x="610" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="9382" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7918" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="21212" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7965" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="21165" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8012" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8072" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8228" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="21221" y="13"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="9382" y="0"/>
+<item historyLabel="SquareTextField.java" index="6">
+<position info="not_deleted" x="736" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7918" y="0"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="21165" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="7965" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8012" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8072" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8228" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8314" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8403" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="MassiveImportView.java" index="1">
-<position info="not_deleted" x="4761" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="MassiveImporter.java" index="2">
-<position info="not_deleted" x="300" y="652"/>
+<item historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="21165" y="0"/>
 </item>
-<item historyLabel="MassiveImportView.java" index="1">
-<position info="not_deleted" x="4761" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="8403" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="15231" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="14636" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="MassiveImportView.java" index="1">
-<position info="not_deleted" x="4761" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="14636" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position/>
 </item>
-<item historyLabel="MassiveImportView.java" index="1">
-<position info="not_deleted" x="7241" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21201" y="0"/>
 </item>
-<item historyLabel="MassiveImportView.java" index="1">
-<position info="not_deleted" x="6932" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21454" y="0"/>
 </item>
-<item historyLabel="MassiveImportView.java" index="1">
-<position info="not_deleted" x="4761" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21253" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="15230" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21386" y="0"/>
 </item>
-<item historyLabel="DBUtils.java" index="3">
-<position info="not_deleted" x="11074" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21418" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="15230" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21475" y="0"/>
 </item>
-<item historyLabel="YagoFileHandler.java" index="0">
-<position info="not_deleted" x="15258" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21512" y="0"/>
 </item>
-<item historyLabel="MassiveImportView.java" index="1">
-<position info="not_deleted" x="4761" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21724" y="0"/>
 </item>
-<item historyLabel="WaitView.java" index="4">
-<position info="not_deleted" x="3661" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21773" y="0"/>
 </item>
-<item historyLabel="AlgorithmWorker.java" index="5">
-<position info="not_deleted" x="2630" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="21839" y="0"/>
 </item>
-<item historyLabel="AlgorithmWorker.java" index="5">
-<position info="not_deleted" x="3372" y="0"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="22200" y="0"/>
 </item>
-<item historyLabel="CrosswordView.java" index="6">
-<position info="not_deleted" x="9872" y="44"/>
+<item historyLabel="CrosswordView.java" index="4">
+<position info="not_deleted" x="22190" y="0"/>
 </item>
-<item historyLabel="CrosswordView.java" index="6">
-<position info="not_deleted" x="3220" y="75"/>
+<item historyLabel="AbstractSquarePanel.java" index="7">
+<position info="not_deleted" x="1358" y="0"/>
 </item>
-<item historyLabel="CrosswordView.java" index="6">
-<position info="not_deleted" x="2941" y="51"/>
-</item>
-<item active="true" historyLabel="AlgorithmWorker.java" index="5">
-<position info="not_deleted" x="2696" y="113"/>
+<item active="true" historyLabel="CrosswordView.java" index="3">
+<position info="not_deleted" x="22184" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -737,29 +740,14 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MassiveImportView.java" tooltip="PuzzleCode/src/gui/MassiveImportView.java">
-<persistable path="/PuzzleCode/src/gui/MassiveImportView.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AlgorithmWorker.java" tooltip="PuzzleCode/src/puzzleAlgorithm/AlgorithmWorker.java">
-<persistable path="/PuzzleCode/src/puzzleAlgorithm/AlgorithmWorker.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Logger.java" tooltip="PuzzleCode/src/utils/Logger.java">
-<persistable path="/PuzzleCode/src/utils/Logger.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HintsHandler.java" tooltip="PuzzleCode/src/massiveImport/HintsHandler.java">
-<persistable path="/PuzzleCode/src/massiveImport/HintsHandler.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="WaitView.java" tooltip="PuzzleCode/src/gui/WaitView.java">
-<persistable path="/PuzzleCode/src/gui/WaitView.java"/>
-</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CrosswordView.java" tooltip="PuzzleCode/src/gui/CrosswordView.java">
 <persistable path="/PuzzleCode/src/gui/CrosswordView.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HintPopupMenu.java" tooltip="PuzzleCode/src/gui/HintPopupMenu.java">
 <persistable path="/PuzzleCode/src/gui/HintPopupMenu.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CrosswordController.java" tooltip="PuzzleCode/src/gui/CrosswordController.java">
-<persistable path="/PuzzleCode/src/gui/CrosswordController.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="LimitedTextField.java" tooltip="PuzzleCode/src/gui/LimitedTextField.java">
+<persistable path="/PuzzleCode/src/gui/LimitedTextField.java"/>
 </file>
 </mruList>
 </workbench>

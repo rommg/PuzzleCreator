@@ -26,10 +26,11 @@ final class RegularSquare extends AbstractSquarePanel{
 		add(field, BorderLayout.CENTER);
 	}
 
-	@Override
-	protected float getFontSize(JDefinitionLabel lbl) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	@Override
+//	protected float getFontSize(JDefinitionLabel lbl) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+
 
 }

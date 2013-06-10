@@ -53,6 +53,6 @@ abstract class AbstractSquarePanel extends JPanel {
 	    set.add(up);
 	}
 	
-	protected abstract float getFontSize(JDefinitionLabel lbl);
+//	protected abstract float getFontSize(JDefinitionLabel lbl);
     
 }
