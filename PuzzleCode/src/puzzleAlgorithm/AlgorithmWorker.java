@@ -99,7 +99,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
 		view.setSkipBtnEnabled();
 		
-		//this.cancel(true);
+		this.cancel(true);
 		// view.setBoard(new BoardSolution(board, definitions, true));
 		//		} catch (InterruptedException e) {
 		//			Logger.writeErrorToLog("InterruptedException in algorithm worker:");
