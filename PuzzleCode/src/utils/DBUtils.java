@@ -31,9 +31,9 @@ public class DBUtils {
 		}
 		topicsCondition.append(")");
 
-		String maxLenghtCondition = "answers.length <= " + maxLength;
+		String maxLenghtCondition = "answers.length <= " + maxLength + " AND answers.length >= 2";
 
-		String sqlQuery = "select answer, answers.entity_id as entity_id, additional_information " +
+		String sqlQuery = "select distinct answers.id, answer, answers.entity_id as entity_id, additional_information " +
 				"from answers, entities , entities_definitions, definitions, definitions_topics " +
 				"where " +
 				"answers.entity_id = entities.id and " +

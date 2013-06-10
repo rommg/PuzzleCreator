@@ -49,10 +49,18 @@ public class PuzzleCreator {
 		Logger.writeToLog("Connections Pool was created");
 		
 		// TODO: To Delete
-		// DBUtils.test();
+//		DBUtils.test();
 		//
+<<<<<<< HEAD
 		//HintsHandler.test();
 		DBUtils.getTriviaQuestion();
+=======
+//		int[] topics = {1,2};
+//		AlgorithmWorker aw = new AlgorithmWorker(null, topics, 0);
+		
+//		HintsHandler.test();
+//		DBUtils.getTriviaQuestion();
+>>>>>>> c4c4f12e4bc03d01cbe7e78a31ac6fba7ff0dd49
 		MainView.start();
 
 		//createDB();
