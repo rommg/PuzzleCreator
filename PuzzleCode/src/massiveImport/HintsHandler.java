@@ -10,6 +10,8 @@ import java.util.TreeSet;
 import connectionPool.DBConnection;
 
 public class HintsHandler {
+	
+	private static Set<Integer> hintIdToDelete = new TreeSet<Integer>();
 
 	private static final int MAXIMUM_NUMBER_OF_HINTS_PER_ENTITY = 10;
 
@@ -17,12 +19,17 @@ public class HintsHandler {
 		Set<Integer> entitiesIds = getAllEntitiesIds();
 		for (Integer entityId : entitiesIds) {
 			if(getNumOfHints(entityId) > 10){
-				removeHints(entityId, getNumOfHints(entityId)-MAXIMUM_NUMBER_OF_HINTS_PER_ENTITY);
+				addHintsToRemoveList(entityId, getNumOfHints(entityId)-MAXIMUM_NUMBER_OF_HINTS_PER_ENTITY);
 			}
 		}
+		
+		String idsToDelete = hintIdToDelete.toString().replace('[', '(').replace(']', ')');
+		String sql = "DELETE FROM hints WHERE id IN " + idsToDelete + ";";
+		DBConnection.executeQuery(sql);
+		DBConnection.executeQuery("commit;");
 	}
 
-	private static void removeHints(Integer entityId, long numOfhintsToDelete) {
+	private static void addHintsToRemoveList(Integer entityId, long numOfhintsToDelete) {
 		String sql = "SELECT id, predicate_id FROM hints WHERE entity_id = " + entityId + ";";
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sql);
 		Map<Integer, List<Integer>> hints = new HashMap<Integer, List<Integer>>();
@@ -40,7 +47,6 @@ public class HintsHandler {
 		}
 		int deleted = 0;
 		Set<Integer> predicates = hints.keySet();
-		Set<Integer> hintIdToDelete = new TreeSet<Integer>();
 		int minNumOfHintsPerPredicate = 1;
 		while (deleted < numOfhintsToDelete){
 			for (Integer predicate : predicates) {
@@ -49,16 +55,13 @@ public class HintsHandler {
 					hintIdToDelete.add(hints.get(predicate).get(rand));
 					hints.get(predicate).remove(rand);
 					deleted++;
+					break;
 				}
 			}
 			if (allSizeOne(hints)){
 				minNumOfHintsPerPredicate = 0;
 			}
 		}
-		
-		String idsToDelete = hintIdToDelete.toString().replace('[', '(').replace(']', ')');
-		sql = "DELETE FROM hints WHERE id IN " + idsToDelete + ";";
-		DBConnection.executeQuery(sql);
 	}
 
 	private static boolean allSizeOne(Map<Integer, List<Integer>> hints) {
