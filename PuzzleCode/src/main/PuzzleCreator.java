@@ -54,8 +54,8 @@ public class PuzzleCreator {
 //		int[] topics = {1,2};
 //		AlgorithmWorker aw = new AlgorithmWorker(null, topics, 0);
 		
-		HintsHandler.test();
-		DBUtils.getTriviaQuestion();
+//		HintsHandler.test();
+//		DBUtils.getTriviaQuestion();
 		MainView.start();
 
 		//createDB();
