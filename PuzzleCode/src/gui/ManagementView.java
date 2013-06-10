@@ -22,6 +22,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +34,8 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import utils.DBUtils;
+import utils.Logger;
+
 import javax.swing.JTabbedPane;
 import java.awt.Color;
 
@@ -41,7 +44,6 @@ public class ManagementView extends JPanel {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField newTextField;
 	private JComboBox<String> existingTextField;
-	private Map<String,Integer> topics;
 	private Map<String,Integer> allTopics; // map of all topics
 	private Map<String,Integer> allEntities; // Map of entity PROPER NAME - which is unique.
 	private String[] allTopicNamesArray;
@@ -217,8 +219,8 @@ public class ManagementView extends JPanel {
 		allEntities = DBUtils.getAllEntities();
 	}
 
-	private void getTopicsForDefinitions() {
-		topics = DBUtils.getTopicByDefinitionIDs(new ArrayList<Integer>(definitions.values()));
+	private Map<String,Integer> getTopicsForDefinition(int entityID) {
+		return DBUtils.getTopicsByDefinitionID(entityID);
 	}
 
 	private void getDefinitionsForEntity(int entityID) {
@@ -252,7 +254,7 @@ public class ManagementView extends JPanel {
 		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
 		for (String definition : definitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
-			DefinitionLine line = new DefinitionLine(definition);
+			DefinitionLine line = new DefinitionLine(definitions.get(definition), definition);
 			definitionPanel.add(line);
 		}
 		for (int i = 0; i<ADD_ROWS_NUM; i++) { // add new definition lines
@@ -321,33 +323,24 @@ public class ManagementView extends JPanel {
 		tabbedPane.add("Hints", hintsPanel);
 	}
 
-	private JComboBox<String> createAutoCompleteBox(Set<String> valueList, String firstvalue, boolean strict) {
-
-		JComboBox<String> box = new JComboBox<String>();
-		AutoCompleteSupport<Object> autoBox =  AutoCompleteSupport.install(box, GlazedLists.eventListOf(valueList.toArray()));
-		autoBox.setFirstItem(firstvalue);
-		autoBox.setStrict(strict);
-		return box;
-	}
-
+	
 	/**
 	 * one line in definitions tab: topic(s),definition,edit/delete buttons
 	 * @author yonatan
 	 *
 	 */
 	private class DefinitionLine extends JPanel {
-		protected JComboBox<String> topicBox;
+		protected JComboBox topicBox;
 		protected JComboBox<String> definitionBox;
 		protected JButton saveBtn;
 		protected JButton deleteBtn;
 
 		protected JPanel btnPanel;
 
-		public DefinitionLine(String definition) {
+		public DefinitionLine(int definitionID, String definition) {
 			setLayout(new BorderLayout());
 
-			//			topicBox = MultiSelectionComboBox.getNewMultiSelectionComboBox();
-			topicBox = createAutoCompleteBox(allTopics.keySet(), "" , true);
+			topicBox = createCheckComboBoxWithTopics(definitionID);
 			super.add(topicBox, BorderLayout.WEST);
 			definitionBox = createAutoCompleteBox(allDefinitions, definition, true);
 			super.add(definitionBox, BorderLayout.CENTER);
@@ -437,17 +430,25 @@ public class ManagementView extends JPanel {
 			add(btnPanel, BorderLayout.EAST);
 		}
 	}
+	
+	private List<Integer> getUserSelectedTopics(Object[] selected) {
+		List<Integer>  lst = new ArrayList<Integer>();
+		for (Object object : selected) {
+			lst.add((Integer)object);
+		}
+		return lst;
+	}
 
 	private class NewDefinitionLine extends JPanel {
 
 		JTextField field;
-		JComboBox<String> topicField;
+		JComboBox topicField;
 
 		NewDefinitionLine() {
 
 			setLayout(new BorderLayout());
 
-			topicField = createAutoCompleteBox(allTopics.keySet(), "", false);
+			topicField = createCheckComboBoxWithAllTopics();
 			add(topicField, BorderLayout.WEST);
 			field = new LimitedTextField(20);
 			add(field, BorderLayout.CENTER);
@@ -466,7 +467,7 @@ public class ManagementView extends JPanel {
 		}
 
 	}
-
+	
 	private class NewHintLine extends JPanel {
 
 
@@ -525,36 +526,6 @@ public class ManagementView extends JPanel {
 		}
 	}
 
-
-	class TopicComboboxRenderer implements ListCellRenderer {
-
-		private String[] items;
-		private boolean[] selected;
-
-		public TopicComboboxRenderer(String[] items){
-			this.items = items;
-			this.selected = new boolean[items.length];
-		}
-
-		@Override
-		public Component getListCellRendererComponent(JList list, Object value,
-				int index, boolean isSelected, boolean hasFocus) {
-			JCheckBox box = new JCheckBox(allTopicNamesArray[index]); // Create here a JCheckBox
-			if (topics.keySet().contains(allTopicNamesArray[index])) {
-				setSelected(index, true);
-			}
-			list.add(box);
-
-			return box;
-		}
-
-		public void setSelected(int i, boolean flag)
-		{
-			this.selected[i] = flag;
-		}
-
-
-	}
 	
 	private class BackButtonListener implements ActionListener {
 
@@ -563,5 +534,37 @@ public class ManagementView extends JPanel {
 			MainView.getView().showWelcomeView();
 		}
 	}
+	
+	CheckComboBox createCheckComboBoxWithTopics(int definitionID) {
+		Map<String,Integer> topics = getTopicsForDefinition(definitionID);
+		if (topics == null) {
+			Logger.writeErrorToLog("No topics retrived for definition " + definitionID);
+			return null;
+		}
+		CheckComboBox box = new CheckComboBox(allTopics.keySet(), topics.keySet());
+		return box;
+	}
+	
+	CheckComboBox createCheckComboBoxWithAllTopics() {
+		CheckComboBox box = new CheckComboBox(allTopics.keySet());
+		return box;
+	}
+	
+	/**
+	 * AutoComplete for SearchBox
+	 * @param valueList
+	 * @param firstvalue
+	 * @param strict
+	 * @return
+	 */
+	private JComboBox<String> createAutoCompleteBox(Set<String> valueList, String firstvalue, boolean strict) {
+
+		JComboBox<String> box = new JComboBox<String>();
+		AutoCompleteSupport<Object> autoBox =  AutoCompleteSupport.install(box, GlazedLists.eventListOf(valueList.toArray()));
+		autoBox.setFirstItem(firstvalue);
+		autoBox.setStrict(strict);
+		return box;
+	}
+
 
 }

@@ -273,7 +273,6 @@ public class MassiveImportView extends JPanel {
 			this.cancel(true);
 		}
 
-
 	}
 }
 

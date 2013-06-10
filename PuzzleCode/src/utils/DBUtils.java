@@ -148,14 +148,14 @@ public class DBUtils {
 		ret = ret.replace('_', ' ');
 		return ret;
 	}
-	
+
 	/**
 	 * GUI SQLs
 	 */
 	public static Map<String,Integer> getAllTopicIDsAndNames() {
 		String sql = "select topics.id,topics.name " +
 				"from topics";
-		
+
 		Map<String,Integer> retMap = new HashMap<String, Integer>();
 		List<Map<String,Object>> results =  DBConnection.executeQuery(sql);
 		for (Map<String,Object> result : results) {
@@ -163,7 +163,7 @@ public class DBUtils {
 		}
 		return retMap;
 	}
-	
+
 	public static Map<String, Integer> getDefinitionsByEntityID(int entityID){
 		String sql = "SELECT definitions.id, definitions.definition " +
 				"FROM definitions, entities_definitions, entities " +
@@ -171,33 +171,33 @@ public class DBUtils {
 				"definitions.id = entities_definitions.definition_id " +
 				"AND entities_definitions.entity_id IN " + createINString(Collections.singletonList(entityID)) + ";";
 		List<Map<String, Object>> resultSet = DBConnection.executeQuery(sql);
-		
+
 		Map<String,Integer> retMap = new HashMap<String,Integer>();
-		
+
 		for (Map<String,Object> map : resultSet) {
 			retMap.put( map.get("definition").toString(),(Integer) map.get("id"));
 		}
 		return retMap;
 	}
-	
+
 	public static Map<String,Integer> getAllEntities() {
 		String sql = "SELECT entities.id, entities.name " +
 				"FROM entities;" ;
-		
+
 		Map<String,Integer> retMap = new HashMap<String,Integer>();
-		
+
 		List<Map<String,Object>> results = DBConnection.executeQuery(sql);
-		
+
 		for (Map<String,Object> result : results) {
 			retMap.put(getProperName(result.get("name").toString()),(Integer)result.get("id"));
 		}
 		return retMap;
 	}
-	
+
 	public static Map<Integer, List<String>> getHintsByEntityID(int entityID) {
 		return getHints(createINString(Collections.singletonList(entityID)));
 	}
-	
+
 	/**
 	 * map of definition name to definition ID
 	 * @return
@@ -206,46 +206,47 @@ public class DBUtils {
 		String sql = "SELECT definitions.id,definitions.definition " +
 				"FROM definitions";
 		Map<String,Integer> map = new HashMap<String,Integer>();
-	
+
 		List<Map<String,Object>> queryMap = DBConnection.executeQuery(sql);
 		for (Map<String,Object> row : queryMap) {
 			map.put((String)row.get("definition"),(Integer)row.get("id"));
 		}
-		
+
 		return map;
 	}
-	
+
 	/**
 	 * This Map works because Topic name is unique
 	 * @param definitionIDs
 	 * @return
 	 */
-	public static Map<String, Integer> getTopicByDefinitionIDs(List<Integer> definitionIDs) {
+	public static Map<String, Integer> getTopicsByDefinitionID(int definitionID) {
 		String sql = "SELECT topics.id, topics.name " +
-				"FROM topics, definitions_topics, definitions" +
-				"WHERE (topics.id = definitions_topics.topic_id) " +
-				"AND (definitions_topics.definition_id = definitions.definition) " +
-				"AND (definitions.id IN " + createINString(definitionIDs) + ");";
+				"FROM topics, definitions_topics " +
+				"WHERE (topics.id = definitions_topics.topic_id) AND (definitions_topics.definition_id = " + definitionID + ");";
 		
 		List<Map<String,Object>> lst = DBConnection.executeQuery(sql);
 		Map<String,Integer> rows = new HashMap<String, Integer>();
-		
+
+		if (lst == null)
+			return null;
+
 		for (Map<String,Object> item : lst) {
 			rows.put((String)item.get("name"),(Integer)item.get("id"));
 		}
-		
+
 		return rows; 
 	}
-	
+
 	public static String[][] getTenBestScores() {
 		String sql = "SELECT best_scores.user_name, best_scores.score " +
 				"FROM best_scores " +
 				"ORDER BY best_scores.score DESC " +
 				"LIMIT 10;";
-		
+
 		List<Map<String,Object>> lst = DBConnection.executeQuery(sql);
 		String[][] returnArray  = new String[lst.size()][2]; // each of the 10 cells is a tuple [name,score]
-		
+
 		int index = 0;
 		for (Map<String,Object> row : lst) {
 			returnArray[index][0] = row.get("user_name").toString();
@@ -253,9 +254,9 @@ public class DBUtils {
 			index++;
 		}
 		return returnArray;
-				
+
 	}
-	
+
 	private static String createINString(List<?> lst) {
 		StringBuilder strBlder = new StringBuilder();
 		strBlder.append('(');
@@ -263,10 +264,10 @@ public class DBUtils {
 			strBlder.append(obj.toString());
 			strBlder.append(',');
 		}
-		
+
 		strBlder.deleteCharAt(strBlder.length()-1); // delete last ','
 		strBlder.append(')');
-		
+
 		return strBlder.toString();
 	}
 
@@ -323,37 +324,37 @@ public class DBUtils {
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sqlQuery);
 		int randEntity = (Integer)rs.get(0).get("id");
 		sqlQuery = "SELECT a.answer, d.definition, a.additional_information " +
-				   "FROM entities e, answers a, definitions d, entities_definitions ed " +
-				   "WHERE 	e.id = ed.entity_id AND " +
-				   		   "ed.definition_id = d.id AND " +
-				   		   "e.id = a.entity_id AND " +
-				   		   "e.id = " + randEntity + " " +
-				   		   "ORDER BY a.length " +
-				   		   "LIMIT 1; ";
+				"FROM entities e, answers a, definitions d, entities_definitions ed " +
+				"WHERE 	e.id = ed.entity_id AND " +
+				"ed.definition_id = d.id AND " +
+				"e.id = a.entity_id AND " +
+				"e.id = " + randEntity + " " +
+				"ORDER BY a.length " +
+				"LIMIT 1; ";
 		rs = DBConnection.executeQuery(sqlQuery);
 		String[] ret = new String[2];
 		ret[0] = (String)rs.get(0).get("answer");
-//		ret[1] = (String)rs.get(0).get("definition") + " (" + (String)rs.get(0).get("additional_information") + ") ";
+		//		ret[1] = (String)rs.get(0).get("definition") + " (" + (String)rs.get(0).get("additional_information") + ") ";
 		ret[1] = (String)rs.get(0).get("definition") + " " + (String)rs.get(0).get("additional_information");
-		
+
 		return ret;
 	}
-	
+
 	public static void deleteEntityDefinition(int entity_id, int definition_id){
 		String sqlQuery = "DELETE FROM entities_definition WHERE entity_id = " + entity_id + " AND definition_id = " + definition_id + ";";
 		DBConnection.executeQuery(sqlQuery);
 	}
-	
+
 	public static void deleteHint(int hint_id){
 		String sqlQuery = "DELETE FROM hints WHERE id = " + hint_id + ";";
 		DBConnection.executeQuery(sqlQuery);
 	}
 
-	
+
 	public static void addDefinitionToEntitiy(int entity_id, String definition){
 		//TODO: saleet
 	}
-	
+
 	public static void addHint(int entity_id, String hint){
 		//TODO: saleet
 	}
