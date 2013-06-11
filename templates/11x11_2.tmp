@@ -135,6 +135,7 @@ Definition: row:2 column:5 length:3 direction:d textRow:1 textCol:5
 Definition: row:2 column:9 length:2 direction:r textRow:2 textCol:8
 Definition: row:3 column:0 length:4 direction:r textRow:2 textCol:0
 Definition: row:3 column:5 length:6 direction:r textRow:3 textCol:4
+Definition: row:3 column:8 length:3 direction:d textRow:2 textCol:8
 Definition: row:4 column:3 length:4 direction:r textRow:4 textCol:2
 Definition: row:5 column:0 length:4 direction:r textRow:4 textCol:0
 Definition: row:5 column:1 length:6 direction:d textRow:4 textCol:1
