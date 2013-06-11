@@ -59,7 +59,7 @@ public class PuzzleCreator {
 ////		AlgorithmWorker aw = new AlgorithmWorker(null, topics, 0);
 //		
 //		HintsHandler.test();
-////		DBUtils.getTriviaQuestion();
+		DBUtils.getTriviaQuestion();
 
 		MainView.start();
 

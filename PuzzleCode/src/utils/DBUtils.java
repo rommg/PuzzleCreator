@@ -321,19 +321,14 @@ public class DBUtils {
 	//TODO: end to remove
 
 	public static String[] getTriviaQuestion(){
-		String sqlQuery = "SELECT id FROM entities ORDER BY RAND() LIMIT 1;";
+		String sqlQuery = "SELECT a.answer, a.additional_information, d.definition " +
+				   "FROM entities e, answers a, definitions d, entities_definitions ed " +
+				   "WHERE a.entity_id = e.id AND a.length < 10 AND e.id = ed.entity_id AND ed.definition_id = d.id " +
+				   "ORDER BY RAND() LIMIT 1;";
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sqlQuery);
-		int randEntity = (Integer)rs.get(0).get("id");
-		sqlQuery = "SELECT a.answer, d.definition, a.additional_information " +
-				"FROM entities e, answers a, definitions d, entities_definitions ed " +
-				"WHERE 	e.id = ed.entity_id AND " +
-				"ed.definition_id = d.id AND " +
-				"e.id = a.entity_id AND " +
-				"e.id = " + randEntity + " " +
-				"ORDER BY a.length " +
-				"LIMIT 1; ";
-		rs = DBConnection.executeQuery(sqlQuery);
-		//TODO rs can be an empty List - need to show an error on screen
+		while (rs.size() == 0){
+			rs = DBConnection.executeQuery(sqlQuery);
+		}
 		String[] ret = new String[2];
 		ret[0] = (String)rs.get(0).get("answer");
 		//		ret[1] = (String)rs.get(0).get("definition") + " (" + (String)rs.get(0).get("additional_information") + ") ";
@@ -353,7 +348,16 @@ public class DBUtils {
 	}
 
 
-	public static void addDefinitionToEntitiy(int entity_id, String definition){
+//	public static void addNewEntitiy(String entity, List<String> definitions, List<String> hints, List<Integer> topics){
+//	
+//	}
+	
+	
+	public static void addDefinitionToEntitiy(int entityId, String definition, List<Integer> topics){
+//		int definitionId = addDefinition(definition);
+//		addToDefinitionsTopics(definitionId, topics);
+//		addToEntitiesDefinitions(definitionId, entityId);
+//		
 		//TODO: saleet
 	}
 

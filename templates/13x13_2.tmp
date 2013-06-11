@@ -190,6 +190,7 @@ Definition: row:3 column:10 length:3 direction:r textRow:3 textCol:9
 Definition: row:4 column:3 length:3 direction:d textRow:3 textCol:3
 Definition: row:4 column:3 length:3 direction:r textRow:4 textCol:2
 Definition: row:4 column:7 length:5 direction:r textRow:4 textCol:6
+Definition: row:4 column:8 length:5 direction:d textRow:3 textCol:8
 Definition: row:5 column:0 length:4 direction:r textRow:4 textCol:0
 Definition: row:5 column:2 length:4 direction:d textRow:4 textCol:2
 Definition: row:5 column:5 length:4 direction:r textRow:5 textCol:4
