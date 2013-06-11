@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.ItemSelectable;
 
 import javax.swing.JApplet;
 import javax.swing.JCheckBox;
@@ -22,6 +23,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +43,8 @@ import utils.Logger;
 
 import javax.swing.JTabbedPane;
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class ManagementView extends JPanel {
 	private int definitionCounter = 0;
@@ -51,9 +55,10 @@ public class ManagementView extends JPanel {
 	private Map<String,Integer> allEntities; // Map of entity PROPER NAME - which is unique.
 	private String[] allTopicNamesArray;
 	private Map<String, Integer> definitions; // definitions for an entity as queries from DB
-	private Set<String> allDefinitions = null;
+	private Map<String,Integer> allDefinitions = null;
 
 
+	private static final String USER_UPDATES_TOPIC = "User Updates";
 	private static final int ADD_ROWS_NUM = 1;
 	private static final int MAX_NUM_DEFS = 10;
 
@@ -207,7 +212,7 @@ public class ManagementView extends JPanel {
 
 	private void initialize() {
 
-		allDefinitions = DBUtils.getAllDefinitions().keySet(); // get all definition strings in definitions table
+		allDefinitions = DBUtils.getAllDefinitions(); // get all definition strings in definitions table
 		allTopics = DBUtils.getAllTopicIDsAndNames(); // get all pairs of topic: topic ID, topic name
 		Object[] array = allTopics.keySet().toArray(); // topic array for JList combobox
 		allTopicNamesArray = new String[array.length];
@@ -332,7 +337,8 @@ public class ManagementView extends JPanel {
 	 */
 	private class DefinitionLine extends JPanel {
 		protected CheckComboBox topicBox;
-		protected JComboBox<String> definitionBox;
+		//protected JComboBox<String> definitionBox;
+		protected JTextField definitionBox;
 		protected JButton saveBtn;
 		protected JButton deleteBtn;
 
@@ -344,7 +350,10 @@ public class ManagementView extends JPanel {
 			Map<String,Integer> topics = getTopicsForDefinition(definitionID);
 			topicBox = new TopicsCheckComboBox(allTopics.keySet(), topics.keySet(), true);
 			super.add(topicBox, BorderLayout.WEST);
-			definitionBox = createAutoCompleteBox(allDefinitions, definition, true);
+			definitionBox = new LimitedTextField(30);
+			definitionBox.setText(definition);
+			definitionBox.setEditable(false);
+
 			super.add(definitionBox, BorderLayout.CENTER);
 
 			btnPanel = new JPanel();
@@ -363,7 +372,7 @@ public class ManagementView extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (definitionCounter - 1 < 1){
+					if (definitionCounter - 1 >= 1){
 						//						if (!topicBox.getSelectedItem().toString().isEmpty() &&
 						//								!definitionBox.getSelectedItem().toString().isEmpty()) {
 						//							//delete row from DB
@@ -444,16 +453,42 @@ public class ManagementView extends JPanel {
 
 	private class NewDefinitionLine extends JPanel {
 
-		JTextField field;
-		CheckComboBox topicField;
+		JComboBox<String> field;
+		CheckComboBox topicBox;
 
 		NewDefinitionLine() {
 
 			setLayout(new BorderLayout());
 
-			topicField = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , false);
-			add(topicField, BorderLayout.WEST);
-			field = new LimitedTextField(20);
+			topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , true);
+			add(topicBox, BorderLayout.WEST);
+			
+			field = createAutoCompleteBox(allDefinitions.keySet(), "", false);
+			field.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent itemEvent) { 
+					NewDefinitionLine.this.remove(topicBox);
+					ItemSelectable is = itemEvent.getItemSelectable();
+					String text =  selectedString(is);
+					if (allDefinitions.containsKey(text)) { // existing definition in definitions table
+						// show the topics linked to this definition, cannot be changed
+						Map<String,Integer> chosenDefinitionTopics = getTopicsForDefinition(allDefinitions.get(text)); 
+						topicBox = new TopicsCheckComboBox(allTopics.keySet(), chosenDefinitionTopics.keySet(), true);
+					}
+					else {
+						// user may choose topics himself, beacuse this is a new definition
+						topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.singleton(USER_UPDATES_TOPIC), false);
+					}
+					NewDefinitionLine.this.add(topicBox,BorderLayout.WEST);
+					NewDefinitionLine.this.revalidate();
+
+				}
+
+				private String selectedString(ItemSelectable is) {
+					Object selected[] = is.getSelectedObjects();
+					return ((selected.length == 0) ? "null" : (String) selected[0]);
+				}
+			});
+
 			add(field, BorderLayout.CENTER);
 
 			JButton saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/add_small.png")));
@@ -461,9 +496,8 @@ public class ManagementView extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if ((!field.getText().isEmpty()) && (isValidString(field.getText()))) {
+					if ((topicBox.getModel().getCheckeds().size() < 1) && (isValidString(field.getSelectedItem().toString()))) {
 						//add DB procedure
-						System.out.println("blH");
 					}
 					else  { // show error message
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
@@ -583,9 +617,9 @@ public class ManagementView extends JPanel {
 			super.setTextFor(CheckComboBox.NONE, "* no items selected *"); 
 			super.setTextFor(CheckComboBox.MULTIPLE, "* multiple items *"); 
 			super.setTextFor(CheckComboBox.ALL, "* all selected *"); 
-			
+
 			addTopicCheckBoxes();
-			
+
 		}
 
 		private void addTopicCheckBoxes() {
@@ -594,10 +628,14 @@ public class ManagementView extends JPanel {
 				model.addElement(topic);
 				if (topics.contains(topic)) {
 					model.addCheck(topic);
+					if (topic.compareTo(USER_UPDATES_TOPIC) == 0) { // if USER_UPDATES box should be checked, make it locked
+						model.addLock(topic);
+					}
 				}
 			}
 			if (lock)
 				model.lockAll();
+
 
 		}
 	}
