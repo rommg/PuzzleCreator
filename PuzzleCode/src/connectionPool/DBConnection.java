@@ -58,24 +58,9 @@ public class DBConnection {
 			Logger.writeErrorToLog("DBConnection executeQuery: " + e.getMessage());
 		}
 		finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					Logger.writeErrorToLog("DBConnection executeQuery: " + e.getMessage());
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					Logger.writeErrorToLog("DBConnection executeQuery:" + e.getMessage());
-				}
-			}
-			if (conn != null) {
-				freeConnection(conn);					 
-			}
+			safelyClose(rs, stmt, conn);
 		}		
+		
 		return returnList;
 	}
 
@@ -106,21 +91,57 @@ public class DBConnection {
 			Logger.writeErrorToLog("DBConnection executeUpdate: " + e.getMessage());
 		}
 		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					Logger.writeErrorToLog("DBConnection executeQuery:" + e.getMessage());
-				}
-			}
-			if (conn != null) {
-				freeConnection(conn);					 
-			}
+			safelyClose(null, stmt, conn);
 		}
 		
 		return result;
 	}
-
+	
+	/**
+	 * Delete from "hints" table all the rows with ID that included in 
+	 * the "hintIdToDelete" list. 
+	 * The method executes all DELETE updates as a single transaction.
+	 * @param hintIdToDelete - List of Integers indicating rows to be deleted
+	 * from the table.
+	 * @return 1 on success, 0 if commit failed but rollback succeed and
+	 * -1 if both commit and rollback failed.
+	 */
+	public static int excuteDeleteHintsByIds(List<Integer> hintIdToDelete) {
+		Connection conn = null;
+		Statement stmt = null;
+		int result = -1;
+		
+		try {
+			conn = getConnection();
+			conn.setAutoCommit(false);
+			stmt = conn.createStatement();
+			
+			for (Integer hintId : hintIdToDelete) {
+				stmt.addBatch( "DELETE FROM hints WHERE id=" + hintId + ";" );
+			}
+			stmt.executeBatch();
+			conn.commit();
+			Logger.writeToLog("Commited DELETE FROM hints Successfully");
+			result = 1;
+			
+		} catch (SQLException e) {
+			Logger.writeErrorToLog("excuteDeleteHintsByIds failed deletion, try rollback : " + e.getMessage());
+			try {
+				// try rolling back
+				conn.rollback();
+				Logger.writeToLog("excuteDeleteHintsByIds Rollback Successfully");
+				result = 0;
+			} catch (SQLException e2) {
+				Logger.writeErrorToLog("excuteDeleteHintsByIds failed when rollbacking - " + e2.getMessage());
+			}
+		}
+		finally {
+			safelySetAutoCommit(conn);
+			safelyClose(null, stmt, conn);			
+		}
+		return result;
+	}
+	
 	private static List<Map<String,Object>> mapResultSet(ResultSet rs) throws SQLException {
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> row = null;
@@ -195,21 +216,37 @@ public class DBConnection {
 			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());
 		}
 		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					Logger.writeErrorToLog("DBConnection executeSqlScript:" + e.getMessage());
-				}
-			}
-			if (conn != null) {
-				safelySetAutoCommit(conn);
-				freeConnection(conn);					 
-			}
+			safelySetAutoCommit(conn);
+			safelyClose(null, stmt, conn);
 		}	
 
 	}
 	
+	/**
+	 * Attempts to close all the given resources.
+	 * @param resources, any of which may be null.
+	 */
+	private static void safelyClose(ResultSet rs, Statement stmt, Connection conn) {
+		
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				Logger.writeErrorToLog("DBConnection safelyClose ResultSet: " + e.getMessage());
+			}
+		}
+		if (stmt != null) {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				Logger.writeErrorToLog("DBConnection safelyClose Statement:" + e.getMessage());
+			}
+		}
+		if (conn != null) {
+			freeConnection(conn);					 
+		}
+		
+	}
 	/**
 	 * Attempts to set the connection back to auto-commit, writing errors to log.
 	 */
