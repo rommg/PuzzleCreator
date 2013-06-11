@@ -40,12 +40,12 @@ import javax.swing.border.BevelBorder;
  */
 public class WaitView extends JPanel {
 
-	private JButton btnSkip;
+	private JButton btnGo;
+	private ActionListener goListener;
 	private JLabel infoLabel;
 	private JPanel animationPanel;
 	private int[] topics;
 	private int difficulty;
-	private JLabel responseLabel;
 	private JLabel questionLabel;
 	private JPanel answerPanel; // holds squares
 	private String answer;
@@ -81,30 +81,27 @@ public class WaitView extends JPanel {
 		add(lblWeArePreparing, BorderLayout.NORTH);
 
 		animationPanel = new JPanel();
+		animationPanel.setLayout(new BorderLayout());
 		animationPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		add(animationPanel, BorderLayout.SOUTH);
 		animationPanel.setBackground(Color.WHITE);
-		animationPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		add(animationPanel, BorderLayout.SOUTH);
+
 		infoLabel = new JLabel(new ImageIcon(WaitView.class.getResource("/resources/about.png")));
 		infoLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		infoLabel.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.PLAIN, 16));
-		animationPanel.add(infoLabel);
+		animationPanel.add(infoLabel, BorderLayout.CENTER);
 		infoLabel.setText("Starting...");
 		animationPanel.invalidate();
 
 		//replace rotating animation with skip button
-		btnSkip = new JButton("GO!");
-		btnSkip.setEnabled(false);
-		btnSkip.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainView.getView().showCrosswordview(); // must be available only after BoardSolution was created (board != null)
-			}
-		});
-		animationPanel.add(btnSkip);
+		btnGo = new JButton("GO!");
+		btnGo.setEnabled(false);
+		goListener = new GoListener();
+		btnGo.addActionListener(goListener);
+		animationPanel.add(btnGo, BorderLayout.EAST);
 		animationPanel.invalidate();
 
-		// start running algorithm in background
-		startAlgorithmCalculationThread(topics, difficulty);
+		startAlgorithmCalculation();
 
 		//trivia question 
 
@@ -117,26 +114,42 @@ public class WaitView extends JPanel {
 
 		final JPanel checkPanel = new JPanel();
 		checkPanel.setBackground(Color.WHITE);
-		JButton  btnCheck = new JButton("Check My Answer!", new ImageIcon(WaitView.class.getResource("/resources/check_btn.png")));
+
+		final JButton  btnCheck = new JButton("Check My Answer!", new ImageIcon(WaitView.class.getResource("/resources/check_btn.png")));
 		btnCheck.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				boolean isCorrect = isCorrectAnswer(answerPanel, answer);
 				if (isCorrect) {
-					responseLabel.setIcon(new ImageIcon(WaitView.class.getResource("/resources/check_medium.png")));
+					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/check_medium.png")));
+
 				}
-				else 
-					responseLabel.setIcon(new ImageIcon(WaitView.class.getResource("/resources/fail_medium.png")));
+				else  {
+					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/fail_medium.png")));
+				}
 			}
 		});
-		
 		checkPanel.add(btnCheck);
 
-		responseLabel = new JLabel();
-		checkPanel.add(responseLabel);
+		final JButton btnSolve = new JButton("Solve", new ImageIcon(WaitView.class.getResource("/resources/surrender.png")));
+		btnSolve.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				SolveAnswer();
+				btnCheck.setEnabled(false);
+				btnSolve.setEnabled(false);
+			}
+		});
+
+		checkPanel.add(btnSolve);
 
 		centerPanel.add(checkPanel);
+	}
+	private void startAlgorithmCalculation() {
+		// start running algorithm in background
+		startAlgorithmCalculationThread(topics, difficulty);
 	}
 	private void drawTriviaQuestion(JPanel centerPanel) {
 		questionLabel = new JLabel("New label");
@@ -162,7 +175,7 @@ public class WaitView extends JPanel {
 
 		for (int i= 0; i<answer.length(); i++) {
 			SquareTextField field = new SquareTextField();
-			RegularSquare square = new RegularSquare(field, 0, i);
+			InputSquare square = new InputSquare(field, 0, i);
 			if (i == firstLetterIndex || i == secondLetterIndex || i == thirdLetterIndex || i == fourthLetterIndex) {
 				field.setText(Character.toString(answer.charAt(i)));
 				field.setEditable(false);
@@ -181,8 +194,8 @@ public class WaitView extends JPanel {
 	}
 
 	public void setSkipBtnEnabled() {
-		btnSkip.setText("GO!");
-		btnSkip.setEnabled(true);
+		btnGo.setText("GO!");
+		btnGo.setEnabled(true);
 	}
 
 	public void setProgressMessage(String text) {
@@ -192,7 +205,7 @@ public class WaitView extends JPanel {
 	private boolean isCorrectAnswer(JPanel answerPanel, String answer) {
 		int index = 0;
 		for (Component comp : answerPanel.getComponents()) {
-			RegularSquare square = (RegularSquare) comp;
+			InputSquare square = (InputSquare) comp;
 			String letterString = square.getField().getText().toLowerCase();
 			if (letterString.length() < 1) {
 				return false;
@@ -204,6 +217,29 @@ public class WaitView extends JPanel {
 		return true;
 	}
 
+	private void SolveAnswer() {
+		for (int i = 0 ; i<answer.length(); i++) {
+			InputSquare square = (InputSquare) answerPanel.getComponent(i);
+			square.getField().setText(Character.toString(answer.charAt(i)));
+		}
+	}
 
+	public void setSkipBtnToTryAgain() {
+		btnGo.setText("Try Again");
+		btnGo.removeActionListener(goListener);
+		btnGo.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				startAlgorithmCalculation()	;			
+			}
+		});
+	}
+
+	private class GoListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			MainView.getView().showCrosswordview(); // must be available only after BoardSolution was created (board != null)
+		}
+	};
 }
+

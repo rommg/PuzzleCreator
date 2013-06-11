@@ -28,20 +28,26 @@ import utils.Logger;
 
 public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	// System.getProperty("file.separator")
-	protected static PuzzleSquare[][] board;
-	protected static List<PuzzleDefinition> definitions = new ArrayList<PuzzleDefinition>();
-	private static List<PuzzleDefinition> unSolved = new ArrayList<PuzzleDefinition>();
-	protected static List<Answer> answers = new ArrayList<Answer>();
-	protected static Set<Integer> usedEntities = new HashSet<Integer>();
+	protected PuzzleSquare[][] board;
+	protected List<PuzzleDefinition> definitions;
+	private List<PuzzleDefinition> unSolved;
+	protected List<Answer> answers;
+	protected Set<Integer> usedEntities;
+	private boolean success = false; 
 
 	private int[] topicsIds;
 	private int difficulty;
+	private int templateNum;
 	private WaitView view; // parent window which activated this thread
 
 	public AlgorithmWorker(WaitView view, int[] topics, int difficulty) {
 		this.topicsIds = topics;
 		this.difficulty = difficulty;
 		this.view = view;
+		this.answers = new ArrayList<Answer>();
+		this.unSolved = new ArrayList<PuzzleDefinition>();
+		this.definitions = new ArrayList<PuzzleDefinition>();
+		this.usedEntities = new HashSet<Integer>();
 	}
 
 	@Override
@@ -69,7 +75,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Logger.writeToLog("Number of answers = " + answers.size());
 
 		publish("Creating puzzle board...");
-		createBoardFromTemplateFile(size, 1);
+		this.templateNum = 1;
+		createBoardFromTemplateFile(size, templateNum);
 		Collections.sort(definitions);
 		printBoard();
 		printTopics();
@@ -79,14 +86,16 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		printBoardStatus();
 		publish("Sorting answers on board...");
 		if (!fillBoard()) {
+			success = false;
 			Logger.writeErrorToLog("impossible data");
 			publish("failed to create Puzzle");
-			result = new BoardSolution(null, null, false);
+			result = new BoardSolution(null, null, false, templateNum);
 		} else {
+			success = true;
 			Logger.writeToLog("success");
 			publish("Retrieving hints and definitions from DataBase...");
 			DBUtils.setHintsAndDefinitions(definitions);
-			result = new BoardSolution(board, definitions, true);
+			result = new BoardSolution(board, definitions, true, templateNum);
 			printResults();
 			publish("Finished!");
 		}
@@ -95,19 +104,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	@Override
 	protected void done() {		
-		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true));
+		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true, templateNum));
 		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
+		if (success)
 		view.setSkipBtnEnabled();
-		
-		this.cancel(true);
-		// view.setBoard(new BoardSolution(board, definitions, true));
-		//		} catch (InterruptedException e) {
-		//			Logger.writeErrorToLog("InterruptedException in algorithm worker:");
-		//			Logger.writeErrorToLog("" + e.getStackTrace());
-		//		} catch (ExecutionException e) {
-		//			Logger.writeErrorToLog("ExecutionException in algorithm worker:");
-		//			Logger.writeErrorToLog("" + e.getStackTrace());
-		//		}
+		else 
+			view.setSkipBtnToTryAgain();
 	}
 
 	@Override
@@ -116,7 +118,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	}
 
 
-	private static boolean fillBoard() {
+	private boolean fillBoard() {
 		Deque<BoardState> stack = new ArrayDeque<BoardState>();
 		boolean solved = false;
 		unSolved.addAll(definitions);
@@ -190,7 +192,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		return solved;
 	}
 
-	private static void optimizeBoard() {
+	private void optimizeBoard() {
 		int size = board[0].length;
 		for (int row = 0; row < size; row++) {
 			for (int col = 0; col < size; col++) {
@@ -210,7 +212,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	 * 
 	 * @param stack
 	 */
-	private static boolean pushBoardState(Deque<BoardState> stack, PuzzleDefinition lastDef, Answer currentAnswer) {
+	private boolean pushBoardState(Deque<BoardState> stack, PuzzleDefinition lastDef, Answer currentAnswer) {
 		int size = board[0].length;
 		BoardState bs = new BoardState(size);
 		List<PuzzleDefinition> clonedDefinitions = bs.getDefinitions();
@@ -264,7 +266,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		return true;
 	}
 
-	private static boolean popBoardState(Deque<BoardState> stack) {
+	private boolean popBoardState(Deque<BoardState> stack) {
 		if (stack.size() == 0) {
 			return false;
 		}
@@ -302,7 +304,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		return true;
 	}
 
-	private static void updateUnSolved() {
+	private void updateUnSolved() {
 		List<PuzzleDefinition> newUnSolved = new ArrayList<PuzzleDefinition>();
 		for (PuzzleDefinition def : unSolved) {
 			if (!def.isSolved()) {
@@ -316,7 +318,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Collections.sort(unSolved);
 	}
 
-	private static void insertAnswer(PuzzleDefinition def, Answer currentAnswer) {
+	private void insertAnswer(PuzzleDefinition def, Answer currentAnswer) {
 
 		int row = def.getBeginRow();
 		int column = def.getBeginColumn();
@@ -349,9 +351,9 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	 * 
 	 * @return
 	 */
-	private static boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow,
+	private boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow,
 			int textCol) {
-		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow, beginCol, length, direction);
+		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow, beginCol, length, direction, this);
 		definitions.add(def);
 
 		switch (direction) {
@@ -375,7 +377,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 
 
-	private static void printResults() {
+	private void printResults() {
 		printBoard();
 		for (PuzzleDefinition def : definitions) {
 			Logger.writeToLog("def of length " + def.getLength() + " answer is :" + def.getAnswer().getAnswerString());
@@ -383,7 +385,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	}
 
-	private static void printBoard() {
+	private void printBoard() {
 		Logger.writeToLog("Printing board:");
 		for (int row = 0; row < board[0].length; row++) {
 			String rowSt = "";
@@ -406,7 +408,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	}
 
-	private static void printBoardStatus() {
+	private void printBoardStatus() {
 		int counter = 0;
 		for (PuzzleDefinition def : definitions) {
 			Logger.writeToLog("def length: " + def.getLength() + " num of answers :" + def.getPossibleAnswers().size());
@@ -415,7 +417,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Logger.writeToLog("Total number of possible answers = " + counter);
 	}
 
-	private static void createMockAnswers() {
+	private void createMockAnswers() {
 		int entityId = 0;
 		Answer ans = new Answer("oboe", entityId++);
 		answers.add(ans);
@@ -524,7 +526,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	}
 
-	private static void outputBoard() {
+	private void outputBoard() {
 		File templateFile = new File(PuzzleCreator.appDir, "13x13_1.tmp");
 		try {
 			templateFile.createNewFile();
@@ -575,7 +577,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		
 	}
 
-	private static boolean createBoardFromTemplateFile(int size, int templateNum) {
+	private boolean createBoardFromTemplateFile(int size, int templateNum) { 
 		board = new PuzzleSquare[size][size];
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
 		File templateFile = new File(PuzzleCreator.appDir + System.getProperty("file.separator") + "templates",

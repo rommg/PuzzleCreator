@@ -1,5 +1,5 @@
-INSERT INTO TOPICS (id, name) VALUES (1, 'Cinema and TV');
-INSERT INTO TOPICS (id, name) VALUES (2, 'General Knowladge');
+INSERT INTO TOPICS (id, name) VALUES (1, 'Cinema & TV');
+INSERT INTO TOPICS (id, name) VALUES (2, 'General Knowledge');
 INSERT INTO TOPICS (id, name) VALUES (3, 'Geography');
 INSERT INTO TOPICS (id, name) VALUES (4, 'Israel');
 INSERT INTO TOPICS (id, name) VALUES (5, 'Music');

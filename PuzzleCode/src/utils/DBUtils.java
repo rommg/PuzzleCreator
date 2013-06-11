@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import massiveImport.YagoFileHandler;
 
 import connectionPool.DBConnection;
+import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.Answer;
 import puzzleAlgorithm.PuzzleDefinition;
 
@@ -284,7 +285,7 @@ public class DBUtils {
 
 		List<PuzzleDefinition> pDefinitions = new ArrayList<PuzzleDefinition>();
 		for (int i = 1; i < 32683; i++) {
-			PuzzleDefinition pd = new PuzzleDefinition(0, 0, 0, 0, 0, 'R');
+			PuzzleDefinition pd = new PuzzleDefinition(0, 0, 0, 0, 0, 'R', new AlgorithmWorker(null, null, 0));
 			pd.setAnswer(new Answer("", i));
 			pDefinitions.add(pd);
 		}

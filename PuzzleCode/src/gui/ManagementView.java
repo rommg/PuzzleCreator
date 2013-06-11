@@ -404,14 +404,14 @@ public class ManagementView extends JPanel {
 			this.hint = hint;
 
 			JTextField field = new JTextField(hint.getText());
-			field.setEditable(true);
-			field.addKeyListener(new KeyAdapter() {
-
-				@Override
-				public void keyTyped(KeyEvent arg0) {
-					saveBtn.setEnabled(true);					
-				}
-			});
+			field.setEditable(false);
+//			field.addKeyListener(new KeyAdapter() {
+//
+//				@Override
+//				public void keyTyped(KeyEvent arg0) {
+//					saveBtn.setEnabled(true);					
+//				}
+//			});
 
 			add(field, BorderLayout.CENTER);
 
@@ -462,7 +462,7 @@ public class ManagementView extends JPanel {
 
 			topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , true);
 			add(topicBox, BorderLayout.WEST);
-			
+
 			field = createAutoCompleteBox(allDefinitions.keySet(), "", false);
 			field.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent itemEvent) { 
@@ -496,7 +496,10 @@ public class ManagementView extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if ((topicBox.getModel().getCheckeds().size() < 1) && (isValidString(field.getSelectedItem().toString()))) {
+					if (topicBox.getModel().getCheckeds().size() < 1) 
+						JOptionPane.showMessageDialog(MainView.getView().getFrame(),"<html><center>You must choose at least one topic.</html>" );
+					if	(!field.getSelectedItem().toString().isEmpty() && 
+							(isValidString(field.getSelectedItem().toString()))) {
 						//add DB procedure
 					}
 					else  { // show error message

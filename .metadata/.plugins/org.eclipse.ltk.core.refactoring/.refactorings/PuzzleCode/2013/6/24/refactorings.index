@@ -27,3 +27,11 @@
 1370875705398	Delete element
 1370892454205	Rename type 'CheckComboBox'
 1370893450551	Delete element
+1370935591250	Delete element
+1370935736195	Rename type 'RegularSquare'
+1370938798811	Delete element
+1370939965736	Delete element
+1370940522147	Delete element
+1370946380387	Rename field 'btnSkip'
+1370946507394	Rename type 'TextInputSquare'
+1370947553542	Extract method 'startAlgorithmCalculation'

@@ -429,9 +429,6 @@ public class YagoFileHandler {
 		
 		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
 				"sql" + System.getProperty("file.separator") + "05 load_yago_data.sql");
-		
-		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
-				"sql" + System.getProperty("file.separator") + "05 load_yago_data.sql");
 	}
 	
 	public void populateDB() throws SQLException {

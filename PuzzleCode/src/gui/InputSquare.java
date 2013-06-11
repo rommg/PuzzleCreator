@@ -8,15 +8,15 @@ import java.awt.Color;
  * @author yonatan
  *
  */
-final class RegularSquare extends AbstractSquarePanel{
+final class InputSquare extends AbstractSquarePanel{
 	
-	SquareTextField field;
+	private SquareTextField field;
 
 	public SquareTextField getField() {
 		return field;
 	}
 
-	public RegularSquare(SquareTextField field, int row, int col) {
+	public InputSquare(SquareTextField field, int row, int col) {
 		super(row, col);
 		super.labelCount = 1;
 		setLayout(new BorderLayout());
