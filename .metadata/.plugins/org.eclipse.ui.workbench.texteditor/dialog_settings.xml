@@ -3,26 +3,26 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="262" key="DIALOG_Y_ORIGIN"/>
-		<item value="934" key="DIALOG_X_ORIGIN"/>
 		<item value="378" key="DIALOG_HEIGHT"/>
+		<item value="934" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="getTopicsForDefinition" key="selection"/>
+		<item value="getDefinitions" key="selection"/>
 		<list key="findhistory">
-			<item value="getTopicsForDefinition"/>
-			<item value="none"/>
-			<item value="select none"/>
-			<item value="select nonr"/>
-			<item value="getTopicByDefinitionIDs"/>
-			<item value="btnPause"/>
-			<item value="iscorr"/>
-			<item value="is"/>
+			<item value="getDefinitions"/>
+			<item value="bestScores"/>
+			<item value="createBoardFromTemplateFile"/>
+			<item value="templateNum"/>
+			<item value="temp"/>
+			<item value="drawBoard"/>
+			<item value="failed"/>
+			<item value="hint"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

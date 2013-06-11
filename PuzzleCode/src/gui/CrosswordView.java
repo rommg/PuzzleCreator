@@ -49,6 +49,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -63,7 +64,7 @@ import java.awt.BorderLayout;
 
 public class CrosswordView extends JPanel {
 
-//	private boolean wasShown = false;
+	//	private boolean wasShown = false;
 	private boolean isPaused = false;
 	private int size;
 
@@ -71,23 +72,22 @@ public class CrosswordView extends JPanel {
 	private JButton btnPause;
 	private JPanel boardPanel;
 	private Map<Integer, Map<Integer,List<PuzzleDefinition>>> boardDefs; // maps (i,j) - > square Definition
-	private String[][] bestScores;
 	private AbstractSquarePanel[][] boardPanelHolders;
 	private HintCounterLabel hintCounterLabel;
 
 	private JButton btnCheck;
 	private int[][] boardDefCount; 
-
+	private String[][] bestScores; // Each trow contains a String tuple (Name, Score)
 
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<SquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
 	private List<HintPopupMenu> hintPopupMenuList;
 
-//	//Sizes to difficulty
-//	Map<Integer,Integer> sizesToDifficulty;
-//	private final int EASY_SIZE = 8; 
-//	private final int MEDIUM_SIZE = 11;
-//	private final int HARD_SIZE = 13;
+	//	//Sizes to difficulty
+	//	Map<Integer,Integer> sizesToDifficulty;
+	//	private final int EASY_SIZE = 8; 
+	//	private final int MEDIUM_SIZE = 11;
+	//	private final int HARD_SIZE = 13;
 
 	//CrosswordView dimensions
 	private final int PANEL_WIDTH = 1300;
@@ -118,10 +118,10 @@ public class CrosswordView extends JPanel {
 
 	private void initialize() {
 
-//		sizesToDifficulty = new HashMap<Integer,Integer>();
-//		sizesToDifficulty.put(EASY_SIZE, 0);
-//		sizesToDifficulty.put(MEDIUM_SIZE, 1);
-//		sizesToDifficulty.put(HARD_SIZE, 2);
+		//		sizesToDifficulty = new HashMap<Integer,Integer>();
+		//		sizesToDifficulty.put(EASY_SIZE, 0);
+		//		sizesToDifficulty.put(MEDIUM_SIZE, 1);
+		//		sizesToDifficulty.put(HARD_SIZE, 2);
 
 		setLayout(new BorderLayout(0, 0));
 
@@ -142,8 +142,18 @@ public class CrosswordView extends JPanel {
 		JPanel BtnPanel = new JPanel();
 		add(BtnPanel, BorderLayout.SOUTH);
 
+		JButton btnArtificialWin = new JButton("Solve for me");
+		btnArtificialWin.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {	
+				writeCorrectLetters();
+			}
+		});
+		BtnPanel.add(btnArtificialWin);
 		btnCheck = new JButton("Check my Answers!", new ImageIcon(CrosswordView.class.getResource("/resources/check_medium.png")));
 		btnCheck.setFont(btnCheck.getFont().deriveFont(15f));
+		btnCheck.setEnabled(false);
 		btnCheck.addActionListener(new ActionListener() {
 
 			@Override
@@ -200,8 +210,8 @@ public class CrosswordView extends JPanel {
 		BtnPanel.add(btnPause);
 		BtnPanel.add(btnCheck);
 		BtnPanel.add(btnSurrender);
-		
-//		wasShown = true;
+
+		//		wasShown = true;
 	}
 
 	void setSizes() {
@@ -245,10 +255,10 @@ public class CrosswordView extends JPanel {
 						square = new PlainSquare(i,j);
 					}
 					else  {
-					SquareTextField txtLbl = new SquareTextField();
-					txtLbl.addKeyListener(new CrosswordKeyListener());
-					sqaureTextFieldList.add(txtLbl);
-					square =  new TextInputSquare(txtLbl, i, j); 
+						SquareTextField txtLbl = new SquareTextField();
+						txtLbl.addKeyListener(new CrosswordKeyListener());
+						sqaureTextFieldList.add(txtLbl);
+						square =  new InputSquare(txtLbl, i, j); 
 					}
 					boardPanelHolders[i][j] =square;
 					break;
@@ -327,15 +337,15 @@ public class CrosswordView extends JPanel {
 		addPopupMenusToDefinitions();
 
 		boardPanel.repaint();
-		
+
 		boardPanel.addComponentListener(new ComponentAdapter() {
-	        public void componentHidden ( ComponentEvent e )
-	        {
-	          //if (wasShown) {
-	        	  System.out.println("baaaaaaaaa");
-	      //    }
-	          boolean wasShown = true; // want to ignore the first time in this method
-	        }
+			public void componentHidden ( ComponentEvent e )
+			{
+				//if (wasShown) {
+				System.out.println("baaaaaaaaa");
+				//    }
+				boolean wasShown = true; // want to ignore the first time in this method
+			}
 		});
 	}
 
@@ -362,15 +372,15 @@ public class CrosswordView extends JPanel {
 			}
 		}
 	}
-//	
-//	private void intializePlainSquareList() {
-////		plainSquaresList = new HashMap<Integer, List<int[]>>();
-////		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
-////		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
-////		plainSquaresList.put(HARD_SIZE, new ArrayList<int[]>());
-////		plainSquaresList.get(MEDIUM_SIZE).add(new int[]{10,0});
-//	}
-	
+	//	
+	//	private void intializePlainSquareList() {
+	////		plainSquaresList = new HashMap<Integer, List<int[]>>();
+	////		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
+	////		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
+	////		plainSquaresList.put(HARD_SIZE, new ArrayList<int[]>());
+	////		plainSquaresList.get(MEDIUM_SIZE).add(new int[]{10,0});
+	//	}
+
 	/*
 	 * technical need to map (i,j) - > Definition
 	 */
@@ -396,7 +406,7 @@ public class CrosswordView extends JPanel {
 
 	private JDefinitionLabel createDefinitionLabel(int i,int j, int defNum) {
 
-//		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum), sizesToDifficulty.get(size)); 
+		//		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum), sizesToDifficulty.get(size)); 
 		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum)); 
 
 	}
@@ -404,7 +414,7 @@ public class CrosswordView extends JPanel {
 	private boolean isPlainSquare(PuzzleSquare[][] board, int row, int col) {
 		return (!board[row][col].isLetter() && boardDefCount[col][row] == 0);
 	}
-	
+
 	private void colorDefinitionArea(PuzzleDefinition def, Color color,Color caretColor) {
 
 		char direction = def.getDirection();
@@ -681,7 +691,7 @@ public class CrosswordView extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getSource() instanceof SquareTextField) {
-				TextInputSquare square = (TextInputSquare) ((Component) e.getSource()).getParent(); // parent of SquareTextField is a RegularSquare
+				InputSquare square = (InputSquare) ((Component) e.getSource()).getParent(); // parent of SquareTextField is a RegularSquare
 				int row = square.getRow();
 				int col = square.getCol();
 				int newRow, newCol;
@@ -703,11 +713,32 @@ public class CrosswordView extends JPanel {
 					newCol = (col == (size - 1)) ? 0 : col + 1;
 					newSquare = (AbstractSquarePanel) boardPanelHolders[row][newCol];
 					break;
-				default:
+				default: 
 					return;
 				}
-				newSquare.getComponent(0).requestFocus();
+
+				if(newSquare != null) // arrow key was pressed
+					newSquare.getComponent(0).requestFocus();
 			}
 		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (isDone())
+				btnCheck.setEnabled(true);
+			else 
+				btnCheck.setEnabled(false);
+
+		}
+
+
+		private boolean isDone() {
+			for (SquareTextField field : sqaureTextFieldList) {
+				if (field.getText().isEmpty())
+					return false;
+			}
+			return true;		
+		}
+
 	}
 }

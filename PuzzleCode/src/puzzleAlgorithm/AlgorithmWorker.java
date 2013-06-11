@@ -33,6 +33,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	private List<PuzzleDefinition> unSolved;
 	protected List<Answer> answers;
 	protected Set<Integer> usedEntities;
+	private boolean success = false; 
 
 	private int[] topicsIds;
 	private int difficulty;
@@ -85,10 +86,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		printBoardStatus();
 		publish("Sorting answers on board...");
 		if (!fillBoard()) {
+			success = false;
 			Logger.writeErrorToLog("impossible data");
 			publish("failed to create Puzzle");
 			result = new BoardSolution(null, null, false, templateNum);
 		} else {
+			success = true;
 			Logger.writeToLog("success");
 			publish("Retrieving hints and definitions from DataBase...");
 			DBUtils.setHintsAndDefinitions(definitions);
@@ -103,17 +106,10 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	protected void done() {		
 		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true, templateNum));
 		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
+		if (success)
 		view.setSkipBtnEnabled();
-		
-		this.cancel(true);
-		// view.setBoard(new BoardSolution(board, definitions, true));
-		//		} catch (InterruptedException e) {
-		//			Logger.writeErrorToLog("InterruptedException in algorithm worker:");
-		//			Logger.writeErrorToLog("" + e.getStackTrace());
-		//		} catch (ExecutionException e) {
-		//			Logger.writeErrorToLog("ExecutionException in algorithm worker:");
-		//			Logger.writeErrorToLog("" + e.getStackTrace());
-		//		}
+		else 
+			view.setSkipBtnToTryAgain();
 	}
 
 	@Override
