@@ -53,6 +53,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -508,13 +509,18 @@ public class CrosswordView extends JPanel {
 			isPaused = true;
 			Utils.enableComponents(boardPanel, false);
 			btnPause.setText("Resume");
-			for (JDefinitionLabel lbl : definitionLabelList) {
-				for (MouseListener listener : lbl.getMouseListeners()) {
-					lbl.removeMouseListener(listener);
-				}
-				for (MouseMotionListener listener : lbl.getMouseMotionListeners()) {
-					lbl.removeMouseMotionListener(listener);
-				}
+		
+//			for (JDefinitionLabel lbl : definitionLabelList) {
+//				for (MouseListener listener : lbl.getMouseListeners()) {
+//					lbl.removeMouseListener(listener);
+//				}
+//				for (MouseMotionListener listener : lbl.getMouseMotionListeners()) {
+//					lbl.removeMouseMotionListener(listener);
+//				}
+//			}
+			
+			for (HintPopupMenu menu : hintPopupMenuList) {
+				menu.setHintPopupMenuEnable(false);
 			}
 			boardPanel.setEnabled(false);	
 		}
@@ -524,7 +530,8 @@ public class CrosswordView extends JPanel {
 			boardPanel.setEnabled(true);
 			Utils.enableComponents(boardPanel, true);
 			btnPause.setText("Pause");
-			addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); // return the definition square listener to all definition squares
+			//addDefinitionSquareListenerToSquares(new JDefinitionLabelListener()); // return the definition square listener to all definition squares
+			
 			boardPanel.setEnabled(true);
 		}
 	}
@@ -682,7 +689,7 @@ public class CrosswordView extends JPanel {
 	}
 
 	/**
-	 * arrow traversal listener
+	 * Squares Key Listener
 	 * @author yonatan
 	 *
 	 */

@@ -35,3 +35,4 @@
 1370946380387	Rename field 'btnSkip'
 1370946507394	Rename type 'TextInputSquare'
 1370947553542	Extract method 'startAlgorithmCalculation'
+1370982002942	Convert local variable 'item' to field

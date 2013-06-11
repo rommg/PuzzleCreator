@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import puzzleAlgorithm.BoardSolution;
 
 import com.sun.java.swing.plaf.windows.resources.windows;
+import com.sun.org.apache.xml.internal.security.utils.HelperNodeList;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -71,6 +72,7 @@ public class MainView {
 	private JPanel welcomePanel = null;
 	private JPanel management = null;
 	private JPanel massive = null;
+	private JPanel about = null;
 
 	/**
 	 * Launch the application.
@@ -169,7 +171,14 @@ public class MainView {
 		// bottom buttons
 
 		createButton("Help", "help.png");
-		createButton("About", "about.png");
+		btn = createButton("About", "about.png");
+		btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				showAboutView();
+			}
+		});
 
 		addButtonsTPanel(menuPanelBtnsArray);
 
@@ -270,6 +279,10 @@ public class MainView {
 	
 	void massiveImportBtnClicked() {
 		showMassiveImportView();
+	}
+	
+	void aboutBtnClicked() {
+		showAboutView();
 	}
 
 	/**
@@ -375,4 +388,16 @@ public class MainView {
 		frame.setLocationRelativeTo(null);
 	}
 
+	void showAboutView() {
+		if (about== null) {
+			about = AboutView.start();
+			cardPanel.add(about, Window.About.toString());
+		}
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.About.toString());
+		setSizes();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+	}
 }
