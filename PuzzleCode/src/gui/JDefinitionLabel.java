@@ -44,7 +44,7 @@ public class JDefinitionLabel extends JLabel{
 	}
 	
 
-	public JDefinitionLabel(PuzzleDefinition definition, int difficulty) {
+	public JDefinitionLabel(PuzzleDefinition definition) {
 	
 		super("<html><center>" + definition.getDefinition() + 
 				"<br> " + definition.getAdditionalInformation() + "</html>");

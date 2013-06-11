@@ -162,7 +162,7 @@ public class WaitView extends JPanel {
 
 		for (int i= 0; i<answer.length(); i++) {
 			SquareTextField field = new SquareTextField();
-			RegularSquare square = new RegularSquare(field, 0, i);
+			TextInputSquare square = new TextInputSquare(field, 0, i);
 			if (i == firstLetterIndex || i == secondLetterIndex || i == thirdLetterIndex || i == fourthLetterIndex) {
 				field.setText(Character.toString(answer.charAt(i)));
 				field.setEditable(false);
@@ -192,7 +192,7 @@ public class WaitView extends JPanel {
 	private boolean isCorrectAnswer(JPanel answerPanel, String answer) {
 		int index = 0;
 		for (Component comp : answerPanel.getComponents()) {
-			RegularSquare square = (RegularSquare) comp;
+			TextInputSquare square = (TextInputSquare) comp;
 			String letterString = square.getField().getText().toLowerCase();
 			if (letterString.length() < 1) {
 				return false;

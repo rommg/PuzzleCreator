@@ -12,12 +12,17 @@ public class CrosswordModel {
 
 
 	static int calculateScore(long timeElapsed, Integer usedHints) {
-		double TimeScore = 1000 * Math.pow(0.9, 30000 - timeElapsed);
-		double ManipulatorScore = 1 * Math.pow(0.9, 0 - usedHints);
-
-		double score = TimeScore + ManipulatorScore;
-		return (int) Math.round(score);
-		//Score = sqrt(TimeScore * ManipulatorScore);
-
+		return (int) Math.round((1/Math.sqrt(timeElapsed) - 2/(usedHints^2))*1000);
 	}
+	
+//	static int test() {
+//		calculateScore(360000, 20);
+//		calculateScore(360000, 20);
+//		calculateScore(360000, 20);
+//		calculateScore(360000, 20);
+//
+//		calculateScore(360000, 20);
+//
+//		
+//	}
 }

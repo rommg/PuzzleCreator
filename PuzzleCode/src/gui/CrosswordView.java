@@ -27,6 +27,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.text.Position.Bias;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
@@ -44,6 +45,8 @@ import utils.Logger;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -60,6 +63,7 @@ import java.awt.BorderLayout;
 
 public class CrosswordView extends JPanel {
 
+	private boolean wasShown = false;
 	private boolean isPaused = false;
 	private int size;
 
@@ -78,13 +82,14 @@ public class CrosswordView extends JPanel {
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<SquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
 	private List<HintPopupMenu> hintPopupMenuList;
+	private Map<Integer, List<int[]>> plainSquaresList;
+
 
 	//Sizes to difficulty
 	Map<Integer,Integer> sizesToDifficulty;
 	private final int EASY_SIZE = 8; 
 	private final int MEDIUM_SIZE = 11;
 	private final int HARD_SIZE = 13;
-
 
 	//CrosswordView dimensions
 	private final int PANEL_WIDTH = 1300;
@@ -108,9 +113,9 @@ public class CrosswordView extends JPanel {
 	 */
 	private CrosswordView(BoardSolution solution) {
 		initialize();
+		intializePlainSquareList();
 		drawBoard(solution.getBoard(), solution.getDefinitions()); // draws board
 		getHighScores(); // query DB for 10 best scores
-		this.setVisible(true);
 
 	}
 
@@ -198,6 +203,8 @@ public class CrosswordView extends JPanel {
 		BtnPanel.add(btnPause);
 		BtnPanel.add(btnCheck);
 		BtnPanel.add(btnSurrender);
+		
+		wasShown = true;
 	}
 
 	void setSizes() {
@@ -236,10 +243,17 @@ public class CrosswordView extends JPanel {
 			for (int j=0; j<size; j++) {
 				switch (boardDefCount[i][j]) {
 				case 0 : { // regular square
+					AbstractSquarePanel square;
+					if (isPlainSquare(i, j, MEDIUM_SIZE)) { // special empty square, relevant in some templates
+						square = new PlainSquare(i,j);
+					}
+					else  {
 					SquareTextField txtLbl = new SquareTextField();
 					txtLbl.addKeyListener(new CrosswordKeyListener());
-					boardPanelHolders[i][j] = new RegularSquare(txtLbl, i, j);
 					sqaureTextFieldList.add(txtLbl);
+					square =  new TextInputSquare(txtLbl, i, j); 
+					}
+					boardPanelHolders[i][j] =square;
 					break;
 				}
 				case 1:  {
@@ -303,7 +317,10 @@ public class CrosswordView extends JPanel {
 		//add panels to boardPanel in right order
 		for (int i = 0; i<size; i++){
 			for (int j=0; j<size; j++) { 
-				boardPanel.add(boardPanelHolders[i][j]);
+				AbstractSquarePanel square = boardPanelHolders[i][j];
+				if (square == null)
+					square = new PlainSquare(i,j); // for templates that need filler squares
+				boardPanel.add(square);
 			}
 		}
 
@@ -312,7 +329,17 @@ public class CrosswordView extends JPanel {
 
 		addPopupMenusToDefinitions();
 
-		boardPanel.repaint();	
+		boardPanel.repaint();
+		
+		boardPanel.addComponentListener(new ComponentAdapter() {
+	        public void componentHidden ( ComponentEvent e )
+	        {
+	          //if (wasShown) {
+	        	  System.out.println("baaaaaaaaa");
+	      //    }
+	          wasShown = true; // want to ignore the first time in this method
+	        }
+		});
 	}
 
 	/*
@@ -337,6 +364,23 @@ public class CrosswordView extends JPanel {
 				boardDefCount[i][j] = 0;
 			}
 		}
+	}
+	
+	private void intializePlainSquareList() {
+		plainSquaresList = new HashMap<Integer, List<int[]>>();
+		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
+		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
+		plainSquaresList.put(HARD_SIZE, new ArrayList<int[]>());
+		plainSquaresList.get(MEDIUM_SIZE).add(new int[]{10,0});
+	}
+	
+	private boolean isPlainSquare(int row, int col, int template) {
+		for (int[] tuple : plainSquaresList.get(template)) {
+			if (tuple[0] == row && tuple[1] == col)
+				return true;
+		}
+		return false;
+
 	}
 
 	/*
@@ -364,7 +408,9 @@ public class CrosswordView extends JPanel {
 
 	private JDefinitionLabel createDefinitionLabel(int i,int j, int defNum) {
 
-		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum), sizesToDifficulty.get(size)); 
+//		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum), sizesToDifficulty.get(size)); 
+		return new JDefinitionLabel( boardDefs.get(i).get(j).get(defNum)); 
+
 	}
 
 	private void colorDefinitionArea(PuzzleDefinition def, Color color,Color caretColor) {
@@ -651,7 +697,7 @@ public class CrosswordView extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getSource() instanceof SquareTextField) {
-				RegularSquare square = (RegularSquare) ((Component) e.getSource()).getParent(); // parent of SquareTextField is a RegularSquare
+				TextInputSquare square = (TextInputSquare) ((Component) e.getSource()).getParent(); // parent of SquareTextField is a RegularSquare
 				int row = square.getRow();
 				int col = square.getCol();
 				int newRow, newCol;

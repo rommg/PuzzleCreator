@@ -35,24 +35,5 @@ abstract class AbstractSquarePanel extends JPanel {
 		super();
 		this.row = row;
 		this.col = col;
-		
-		// change traversal policy
-		//addTraversalKey("UP",KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS);
-		//addTraversalKey("DOWN",KeyboardFocusManager.DOWN_CYCLE_TRAVERSAL_KEYS);
-		addTraversalKey(KeyEvent.VK_LEFT, KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS);
-		addTraversalKey(KeyEvent.VK_RIGHT,KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
 	}
-	
-
-	
-	private void addTraversalKey(int keystroke, int strokeid) {
-		Set<AWTKeyStroke> set = this.getFocusTraversalKeys(strokeid);
-	    set = new HashSet<AWTKeyStroke>(set);
-	    KeyStroke up = KeyStroke.getKeyStroke(keystroke,0);
-	    this.setFocusTraversalKeys(strokeid, set);
-	    set.add(up);
-	}
-	
-//	protected abstract float getFontSize(JDefinitionLabel lbl);
-    
 }

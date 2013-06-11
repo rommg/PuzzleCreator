@@ -36,6 +36,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	private int[] topicsIds;
 	private int difficulty;
+	private int templateNum;
 	private WaitView view; // parent window which activated this thread
 
 	public AlgorithmWorker(WaitView view, int[] topics, int difficulty) {
@@ -69,7 +70,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Logger.writeToLog("Number of answers = " + answers.size());
 
 		publish("Creating puzzle board...");
-		createBoardFromTemplateFile(size, 1);
+		this.templateNum = 1;
+		createBoardFromTemplateFile(size, templateNum);
 		Collections.sort(definitions);
 		printBoard();
 		printTopics();
@@ -81,12 +83,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		if (!fillBoard()) {
 			Logger.writeErrorToLog("impossible data");
 			publish("failed to create Puzzle");
-			result = new BoardSolution(null, null, false);
+			result = new BoardSolution(null, null, false, templateNum);
 		} else {
 			Logger.writeToLog("success");
 			publish("Retrieving hints and definitions from DataBase...");
 			DBUtils.setHintsAndDefinitions(definitions);
-			result = new BoardSolution(board, definitions, true);
+			result = new BoardSolution(board, definitions, true, templateNum);
 			printResults();
 			publish("Finished!");
 		}
@@ -95,7 +97,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	@Override
 	protected void done() {		
-		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true));
+		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true, templateNum));
 		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
 		view.setSkipBtnEnabled();
 		
@@ -575,7 +577,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		
 	}
 
-	private static boolean createBoardFromTemplateFile(int size, int templateNum) {
+	private static boolean createBoardFromTemplateFile(int size, int templateNum) { 
 		board = new PuzzleSquare[size][size];
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
 		File templateFile = new File(PuzzleCreator.appDir + System.getProperty("file.separator") + "templates",
