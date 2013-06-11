@@ -63,7 +63,7 @@ import java.awt.BorderLayout;
 
 public class CrosswordView extends JPanel {
 
-	private boolean wasShown = false;
+//	private boolean wasShown = false;
 	private boolean isPaused = false;
 	private int size;
 
@@ -82,14 +82,12 @@ public class CrosswordView extends JPanel {
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<SquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
 	private List<HintPopupMenu> hintPopupMenuList;
-	private Map<Integer, List<int[]>> plainSquaresList;
 
-
-	//Sizes to difficulty
-	Map<Integer,Integer> sizesToDifficulty;
-	private final int EASY_SIZE = 8; 
-	private final int MEDIUM_SIZE = 11;
-	private final int HARD_SIZE = 13;
+//	//Sizes to difficulty
+//	Map<Integer,Integer> sizesToDifficulty;
+//	private final int EASY_SIZE = 8; 
+//	private final int MEDIUM_SIZE = 11;
+//	private final int HARD_SIZE = 13;
 
 	//CrosswordView dimensions
 	private final int PANEL_WIDTH = 1300;
@@ -113,7 +111,6 @@ public class CrosswordView extends JPanel {
 	 */
 	private CrosswordView(BoardSolution solution) {
 		initialize();
-		intializePlainSquareList();
 		drawBoard(solution.getBoard(), solution.getDefinitions()); // draws board
 		getHighScores(); // query DB for 10 best scores
 
@@ -121,10 +118,10 @@ public class CrosswordView extends JPanel {
 
 	private void initialize() {
 
-		sizesToDifficulty = new HashMap<Integer,Integer>();
-		sizesToDifficulty.put(EASY_SIZE, 0);
-		sizesToDifficulty.put(MEDIUM_SIZE, 1);
-		sizesToDifficulty.put(HARD_SIZE, 2);
+//		sizesToDifficulty = new HashMap<Integer,Integer>();
+//		sizesToDifficulty.put(EASY_SIZE, 0);
+//		sizesToDifficulty.put(MEDIUM_SIZE, 1);
+//		sizesToDifficulty.put(HARD_SIZE, 2);
 
 		setLayout(new BorderLayout(0, 0));
 
@@ -160,7 +157,7 @@ public class CrosswordView extends JPanel {
 						//DBUtils.saveNewScore(name, score);
 					}
 					else 	
-						JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> " + message + " You scored " + score + " points! <br> Play again and make a high score!</html>");
+						JOptionPane.showMessageDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Play again and make a high score!</html>");
 				}
 				else {
 					JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> We know you rock,<br> but something in your answers is WRONG.</html>");
@@ -204,7 +201,7 @@ public class CrosswordView extends JPanel {
 		BtnPanel.add(btnCheck);
 		BtnPanel.add(btnSurrender);
 		
-		wasShown = true;
+//		wasShown = true;
 	}
 
 	void setSizes() {
@@ -217,7 +214,7 @@ public class CrosswordView extends JPanel {
 	}
 
 	void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
-		this.definitions = definitions; // save a reference in crossview
+		this.definitions = definitions; // 
 
 		size = board.length;
 		boardPanelHolders = new AbstractSquarePanel[size][size];
@@ -244,7 +241,7 @@ public class CrosswordView extends JPanel {
 				switch (boardDefCount[i][j]) {
 				case 0 : { // regular square
 					AbstractSquarePanel square;
-					if (isPlainSquare(i, j, MEDIUM_SIZE)) { // special empty square, relevant in some templates
+					if (isPlainSquare(board,j,i)) { // special empty square, relevant in some templates ([col][row]
 						square = new PlainSquare(i,j);
 					}
 					else  {
@@ -337,7 +334,7 @@ public class CrosswordView extends JPanel {
 	          //if (wasShown) {
 	        	  System.out.println("baaaaaaaaa");
 	      //    }
-	          wasShown = true; // want to ignore the first time in this method
+	          boolean wasShown = true; // want to ignore the first time in this method
 	        }
 		});
 	}
@@ -365,24 +362,15 @@ public class CrosswordView extends JPanel {
 			}
 		}
 	}
+//	
+//	private void intializePlainSquareList() {
+////		plainSquaresList = new HashMap<Integer, List<int[]>>();
+////		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
+////		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
+////		plainSquaresList.put(HARD_SIZE, new ArrayList<int[]>());
+////		plainSquaresList.get(MEDIUM_SIZE).add(new int[]{10,0});
+//	}
 	
-	private void intializePlainSquareList() {
-		plainSquaresList = new HashMap<Integer, List<int[]>>();
-		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
-		plainSquaresList.put(MEDIUM_SIZE, new ArrayList<int[]>());
-		plainSquaresList.put(HARD_SIZE, new ArrayList<int[]>());
-		plainSquaresList.get(MEDIUM_SIZE).add(new int[]{10,0});
-	}
-	
-	private boolean isPlainSquare(int row, int col, int template) {
-		for (int[] tuple : plainSquaresList.get(template)) {
-			if (tuple[0] == row && tuple[1] == col)
-				return true;
-		}
-		return false;
-
-	}
-
 	/*
 	 * technical need to map (i,j) - > Definition
 	 */
@@ -413,6 +401,10 @@ public class CrosswordView extends JPanel {
 
 	}
 
+	private boolean isPlainSquare(PuzzleSquare[][] board, int row, int col) {
+		return (!board[row][col].isLetter() && boardDefCount[col][row] == 0);
+	}
+	
 	private void colorDefinitionArea(PuzzleDefinition def, Color color,Color caretColor) {
 
 		char direction = def.getDirection();
@@ -500,14 +492,6 @@ public class CrosswordView extends JPanel {
 		}
 	}
 
-	void notifyCorrectness(boolean isCorrect) { // show to user that he was correct or wrong
-		if (isCorrect) {
-			btnCheck.setBackground(Color.GREEN);
-		}
-		else {
-			btnCheck.setBackground(Color.RED);
-		}
-	}
 	void pause() {
 		if (!isPaused) { // release => pause
 			timer.pause();

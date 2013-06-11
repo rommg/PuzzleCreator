@@ -22,7 +22,6 @@ public class PuzzleSquare {
 		this.row = row;
 	}
 
-
 	public PuzzleSquare cloneSquare(){
 		PuzzleSquare cloned = new PuzzleSquare(isLetter, column, row);
 		if (this.letter != 0){

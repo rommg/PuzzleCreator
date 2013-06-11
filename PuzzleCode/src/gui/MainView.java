@@ -106,7 +106,8 @@ public class MainView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-
+		
+		CrosswordModel.test();
 		frame = new JFrame();
 		setSizes();
 		frame.setLocationRelativeTo(null);

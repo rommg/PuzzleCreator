@@ -12,17 +12,26 @@ public class CrosswordModel {
 
 
 	static int calculateScore(long timeElapsed, Integer usedHints) {
-		return (int) Math.round((1/Math.sqrt(timeElapsed) - 2/(usedHints^2))*1000);
+		System.out.println((int) Math.round((Math.sqrt(timeElapsed) - (usedHints))));
+		return 0;
 	}
 	
-//	static int test() {
-//		calculateScore(360000, 20);
-//		calculateScore(360000, 20);
-//		calculateScore(360000, 20);
-//		calculateScore(360000, 20);
-//
-//		calculateScore(360000, 20);
-//
-//		
-//	}
+	static int test() {
+		calculateScore(360000, 20);
+		calculateScore(360000, 25);
+		calculateScore(360000, 30);
+		calculateScore(360000, 40);
+
+		calculateScore(360000, 50);
+		calculateScore(500000, 50);
+		calculateScore(600000, 50);
+		calculateScore(600000, 30);
+		calculateScore(600000, 20);
+		calculateScore(0, 0);
+
+		
+		return 0;
+
+		
+	}
 }

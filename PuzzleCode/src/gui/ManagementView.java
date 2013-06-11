@@ -404,14 +404,14 @@ public class ManagementView extends JPanel {
 			this.hint = hint;
 
 			JTextField field = new JTextField(hint.getText());
-			field.setEditable(true);
-			field.addKeyListener(new KeyAdapter() {
-
-				@Override
-				public void keyTyped(KeyEvent arg0) {
-					saveBtn.setEnabled(true);					
-				}
-			});
+			field.setEditable(false);
+//			field.addKeyListener(new KeyAdapter() {
+//
+//				@Override
+//				public void keyTyped(KeyEvent arg0) {
+//					saveBtn.setEnabled(true);					
+//				}
+//			});
 
 			add(field, BorderLayout.CENTER);
 
