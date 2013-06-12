@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Ex10/raid0time.c&apos; to &apos;raid0server.c&apos;" description="Rename resource &apos;raid0time.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="raid0time.c" name="raid0server.c" stamp="1371023200603" updateReferences="true"/>
+</session>

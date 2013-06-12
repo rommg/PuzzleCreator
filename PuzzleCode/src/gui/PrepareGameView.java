@@ -1,20 +1,11 @@
 package gui;
+
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import javax.swing.JRadioButton;
@@ -25,7 +16,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 

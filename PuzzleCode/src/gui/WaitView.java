@@ -193,10 +193,15 @@ public class WaitView extends JPanel {
 		worker.execute();
 	}
 
-	public void setSkipBtnEnabled() {
-		btnGo.setText("GO!");
-		btnGo.setEnabled(true);
+	public void setGoBtn(boolean enable) {
+		JPanel parent = (JPanel) btnGo.getParent();
+		parent.remove(btnGo);
+		btnGo = new JButton("GO!");
+		btnGo.setEnabled(enable);
+		btnGo.addActionListener(new GoListener());
+		parent.add(btnGo, BorderLayout.EAST);
 	}
+	
 
 	public void setProgressMessage(String text) {
 		infoLabel.setText(text);
@@ -225,15 +230,18 @@ public class WaitView extends JPanel {
 	}
 
 	public void setSkipBtnToTryAgain() {
-		btnGo.setText("Try Again");
-		btnGo.removeActionListener(goListener);
+		JPanel parent = (JPanel) btnGo.getParent();
+		parent.remove(btnGo);
+		btnGo = new JButton("Try Again");
 		btnGo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				startAlgorithmCalculation()	;			
+				startAlgorithmCalculation()	;	
+				setGoBtn(false);
 			}
 		});
+		parent.add(btnGo, BorderLayout.EAST);
 	}
 
 	private class GoListener implements ActionListener {

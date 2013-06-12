@@ -37,7 +37,6 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	private int[] topicsIds;
 	private int difficulty;
-	private int templateNum;
 	private WaitView view; // parent window which activated this thread
 
 	public AlgorithmWorker(WaitView view, int[] topics, int difficulty) {
@@ -75,8 +74,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Logger.writeToLog("Number of answers = " + answers.size());
 
 		publish("Creating puzzle board...");
-		this.templateNum = 1;
-		createBoardFromTemplateFile(size, templateNum);
+		createBoardFromTemplateFile(size, 1);
 		Collections.sort(definitions);
 		printBoard();
 		printTopics();
@@ -89,13 +87,13 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 			success = false;
 			Logger.writeErrorToLog("impossible data");
 			publish("failed to create Puzzle");
-			result = new BoardSolution(null, null, false, templateNum);
+			result = new BoardSolution(null, null, false);
 		} else {
 			success = true;
 			Logger.writeToLog("success");
 			publish("Retrieving hints and definitions from DataBase...");
 			DBUtils.setHintsAndDefinitions(definitions);
-			result = new BoardSolution(board, definitions, true, templateNum);
+			result = new BoardSolution(board, definitions, true);
 			printResults();
 			publish("Finished!");
 		}
@@ -104,10 +102,10 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	@Override
 	protected void done() {		
-		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true, templateNum));
+		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true));
 		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
 		if (success)
-		view.setSkipBtnEnabled();
+			view.setGoBtn(true);
 		else 
 			view.setSkipBtnToTryAgain();
 	}
