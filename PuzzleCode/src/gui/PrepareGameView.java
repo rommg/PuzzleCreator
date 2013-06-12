@@ -30,7 +30,7 @@ import java.awt.Color;
 
 public class PrepareGameView extends JPanel {
 	private final ButtonGroup difficultyBtnsGrp = new ButtonGroup();
-	List<String> topicsList;
+	Map<String,Integer> topicsList;
 	private List<JCheckBox> topicsCheckBoxes;
 	private JPanel centerPanel;
 	private JButton goBtn;
@@ -107,7 +107,8 @@ public class PrepareGameView extends JPanel {
 		btnPanel.add(backBtn);
 		btnPanel.add(goBtn);
 
-		addTopicsCheckBoxes();
+		getTopics(); // query topics from DB
+		addTopicsCheckBoxes(); // add then as checkboxes
 	}
 
 	void goBtnClicked() {
@@ -131,23 +132,18 @@ public class PrepareGameView extends JPanel {
 	public int[] getUserSelectedTopics() {
 
 		List<Integer> selectedTopics = new ArrayList<Integer>();
-		String sqlQuery = "SELECT DISTINCT id,name " +
-				"FROM topics;" ;
-		List<Map<String, Object>> rs = DBConnection.executeQuery(sqlQuery);
-		Map<String, Integer> topics = new HashMap<String,Integer>();
-		for (Map<String,Object> topic :rs){
-			topics.put(topic.get("name").toString(), Integer.parseInt(topic.get("id").toString()));
-		}
-
+		
 		for (JCheckBox box : topicsCheckBoxes) {
 			if (box.isSelected()){
-				selectedTopics.add(topics.get(box.getText()));
+				selectedTopics.add(topicsList.get(box.getText()));
 			}
 		}
+		
+		// add General Knowledge update
+		selectedTopics.add(topicsList.get(GENERAL_KNOWLEDGE_TOPIC));
 
-
-		//queryDB for topic IDs
 		int[] topicsArray = new int[selectedTopics.size()];
+		
 		for (int i = 0; i < selectedTopics.size(); i++){
 			topicsArray[i] = selectedTopics.get(i);
 		}
@@ -178,7 +174,7 @@ public class PrepareGameView extends JPanel {
 
 	private void addTopicsCheckBoxes() {
 		topicsCheckBoxes = new LinkedList<JCheckBox>();
-		for (String topic :topicsList) {
+		for (String topic :topicsList.keySet()) {
 			if (topic.compareTo(GENERAL_KNOWLEDGE_TOPIC) != 0 ) { // do not add checkbox for general knowledge 
 				JCheckBox box = new JCheckBox();
 				box.setBackground(Color.WHITE);
@@ -191,7 +187,6 @@ public class PrepareGameView extends JPanel {
 	}
 
 	private void getTopics() {
-		topicsList =new ArrayList<String>();
-		topicsList.addAll(DBUtils.getAllTopicIDsAndNames().keySet());
+		topicsList  = DBUtils.getAllTopicIDsAndNames();
 	}
 }
