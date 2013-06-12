@@ -3,6 +3,8 @@ package gui;
 import java.awt.Component;
 import java.awt.Container;
 
+import javax.swing.JOptionPane;
+
 class Utils {
 
 	static void enableComponents(Container container, boolean enable) {
@@ -14,6 +16,11 @@ class Utils {
 			}
 		}
 	}
-	
-	
+
+	public static void showDBConnectionErrorMessage() {
+		if (MainView.getView().getFrame() != null) // GUI is open at this stage
+			JOptionPane.showMessageDialog(MainView.getView().getFrame(), "We're sorry, but A DB error occured. Please try again.");
+	}
+
+
 }

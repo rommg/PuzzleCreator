@@ -252,6 +252,8 @@ public class DBUtils {
 		for (Map<String,Object> row : lst) {
 			returnArray[index][0] = row.get("user_name").toString();
 			returnArray[index][1] = row.get("score").toString();
+			returnArray[index][2] = row.get("date").toString();
+
 			index++;
 		}
 		return returnArray;

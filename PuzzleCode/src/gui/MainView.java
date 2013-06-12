@@ -15,6 +15,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -23,12 +26,19 @@ import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 
+import main.PuzzleCreator;
+
 import puzzleAlgorithm.BoardSolution;
+import utils.Logger;
 
 import com.sun.java.swing.plaf.windows.resources.windows;
 import com.sun.org.apache.xml.internal.security.utils.HelperNodeList;
 
+import connectionPool.ConnectionPool;
+import connectionPool.DBConnection;
+
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -195,6 +205,22 @@ public class MainView {
 
 		//add formPanel - this panel will change
 		frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
+		
+		//close DB Connections when exiting
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent windowEvent) {
+		        	try {
+		        	PuzzleCreator.connectionPool.closeConnections();
+		        	}
+		        	catch (SQLException e) {
+		        		Logger.writeErrorToLog("SQLException while trying to close DB Connections");
+		        	}
+		        	finally {
+			            System.exit(0);
+		        	}
+		    }
+		});
 
 	}
 
@@ -400,4 +426,6 @@ public class MainView {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
+	
+	
 }
