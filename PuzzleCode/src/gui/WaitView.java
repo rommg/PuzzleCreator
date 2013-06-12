@@ -49,6 +49,7 @@ public class WaitView extends JPanel {
 	private JLabel questionLabel;
 	private JPanel answerPanel; // holds squares
 	private String answer;
+	private JButton btnSolve;
 
 	public void setBoard() {
 	}
@@ -123,7 +124,8 @@ public class WaitView extends JPanel {
 				boolean isCorrect = isCorrectAnswer(answerPanel, answer);
 				if (isCorrect) {
 					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/check_medium.png")));
-
+					btnSolve.setEnabled(false);
+					btnCheck.setEnabled(false);
 				}
 				else  {
 					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/fail_medium.png")));
@@ -132,7 +134,7 @@ public class WaitView extends JPanel {
 		});
 		checkPanel.add(btnCheck);
 
-		final JButton btnSolve = new JButton("Solve", new ImageIcon(WaitView.class.getResource("/resources/surrender.png")));
+		btnSolve = new JButton("Solve", new ImageIcon(WaitView.class.getResource("/resources/surrender.png")));
 		btnSolve.addActionListener(new ActionListener() {
 
 			@Override

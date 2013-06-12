@@ -361,10 +361,10 @@ public class MainView {
 	public void showCrosswordview() {
 		
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
-		((CrosswordView)crosswordView).setSizes();
 		cl.show(cardPanel,Window.Crossword.toString());
-		
-		frame.pack();
+		((CrosswordView)crosswordView).setFrameSizeByBoardSize();
+
+		//frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
 

@@ -36,4 +36,9 @@ abstract class AbstractSquarePanel extends JPanel {
 		this.row = row;
 		this.col = col;
 	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+	}
 }

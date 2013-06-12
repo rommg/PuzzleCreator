@@ -18,10 +18,6 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 		return definitionLbl;
 	}
 
-	public JDefinitionLabel getBottomDefinition() {
-		return bottomDefinition;
-	}
-
 	public int getDefinitionCount() {
 		return definitionCount;
 	}
@@ -42,15 +38,11 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 		setFocusable(false);
 		setBorder(new BevelBorder(BevelBorder.RAISED));
 	}
-
-//	@Override
-//	protected float getFontSize(JDefinitionLabel lbl) {
-//		switch (lbl.difficulty) {
-//		case 0 : return lbl.EASY_ONE;
-//		case 1: return lbl.MEDIUM_ONE;
-//		case 2: return lbl.HARD_ONE;
-//		}
-//		return -1;
-//	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		definitionLbl.setEnabled(enabled);
+		super.setEnabled(enabled);
+	}
 
 }

@@ -13,17 +13,25 @@ import javax.swing.border.BevelBorder;
  */
 class PlainSquare extends AbstractSquarePanel {
 
+	private JLabel emptyLabel;
+
 	public PlainSquare(int row, int col) {
 		super(row, col);
 		super.labelCount = 0;
 		setFocusable(false);
 		
 		setLayout(new BorderLayout());
-		JLabel emptyLabel = new JLabel();
+		emptyLabel = new JLabel();
 		emptyLabel.setBackground(Color.LIGHT_GRAY);
 		emptyLabel.setOpaque(true);
 		emptyLabel.setFocusable(false);
 		emptyLabel.setBorder(new BevelBorder(BevelBorder.RAISED));
 		add(emptyLabel, BorderLayout.CENTER);
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		emptyLabel.setEnabled(enabled);
+		super.setEnabled(enabled);
 	}
 }
