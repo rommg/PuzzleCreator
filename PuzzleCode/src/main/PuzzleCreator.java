@@ -1,14 +1,9 @@
 package main;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
 import gui.MainView;
 import connectionPool.*;
-import puzzleAlgorithm.*;
 import utils.*;
-import massiveImport.*;
 
 public class PuzzleCreator {
 

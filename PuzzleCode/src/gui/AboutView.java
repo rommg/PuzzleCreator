@@ -53,7 +53,7 @@ public class AboutView extends JPanel {
 		JLabel lblTitle = new JLabel("Crossword Mastermind");
 		topPanel.add(lblTitle);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setFont(new Font("Gill Sans MT Condensed", Font.PLAIN, 27));
+		lblTitle.setFont(new Font("Stencil", Font.PLAIN, 25));
 		
 		JLabel lblCourse = new JLabel("<html>Database Systems, Spring Semester 2013</html>");
 		topPanel.add(lblCourse);

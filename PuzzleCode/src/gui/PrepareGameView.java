@@ -25,6 +25,7 @@ import utils.DBUtils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 
 public class PrepareGameView extends JPanel {
@@ -54,34 +55,41 @@ public class PrepareGameView extends JPanel {
 		setLayout(new BorderLayout());
 
 		JPanel difficultyPanel = new JPanel();
+		difficultyPanel.setBackground(Color.WHITE);
 		add(difficultyPanel, BorderLayout.NORTH);
 		difficultyPanel.setBorder(new TitledBorder(null, "Difficulty", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		difficultyPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 
 		JRadioButton easyRadioBtn = new JRadioButton("Easy");
+		easyRadioBtn.setBackground(Color.WHITE);
 		difficultyPanel.add(easyRadioBtn);
 		difficultyBtnsGrp.add(easyRadioBtn);
 
 		JRadioButton mediumHardBtn = new JRadioButton("Medium");
+		mediumHardBtn.setBackground(Color.WHITE);
 		difficultyPanel.add(mediumHardBtn);
 		mediumHardBtn.setSelected(true);
 		difficultyBtnsGrp.add(mediumHardBtn);
 
 
 		JRadioButton hardRadioBtn = new JRadioButton("Hard");
+		hardRadioBtn.setBackground(Color.WHITE);
 		difficultyPanel.add(hardRadioBtn);
 		difficultyBtnsGrp.add(hardRadioBtn);
+		
 		centerPanel = new JPanel();
 		add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new GridLayout(2, 1, 0, 0));
 
 		topicsPanel = new JPanel();
+		topicsPanel.setBackground(Color.WHITE);
 		topicsPanel.setBorder(new TitledBorder(null, "Topics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		centerPanel.add(topicsPanel);
 		topicsPanel.setLayout(new GridLayout(4, 2, 0, 0));
 
 		JPanel btnPanel = new JPanel();
+		btnPanel.setBackground(Color.WHITE);
 		centerPanel.add(btnPanel);
 
 		goBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/forward.png")));
@@ -173,6 +181,7 @@ public class PrepareGameView extends JPanel {
 		for (String topic :topicsList) {
 			if (topic.compareTo(GENERAL_KNOWLEDGE_TOPIC) != 0 ) { // do not add checkbox for general knowledge 
 				JCheckBox box = new JCheckBox();
+				box.setBackground(Color.WHITE);
 				box.setSelected(true);
 				box.setText(topic);
 				topicsCheckBoxes.add(box);
