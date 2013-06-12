@@ -123,7 +123,7 @@ public class MainView {
 		frame = new JFrame();
 		setSizes();
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		// build mainPanel
 		menuPanel = new JPanel();
@@ -210,6 +210,10 @@ public class MainView {
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(WindowEvent windowEvent) {
+		    	int option = JOptionPane.showConfirmDialog(
+	               	    MainView.this.frame,  
+	                    "Are you sure you want to quit?", "Exit Crossword Mastermind", JOptionPane.YES_NO_OPTION);
+	            if( option == JOptionPane.YES_OPTION ) {  
 		        	try {
 		        	PuzzleCreator.connectionPool.closeConnections();
 		        	}
@@ -219,6 +223,7 @@ public class MainView {
 		        	finally {
 			            System.exit(0);
 		        	}
+	            }
 		    }
 		});
 
