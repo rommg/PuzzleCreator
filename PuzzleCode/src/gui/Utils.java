@@ -5,7 +5,7 @@ import java.awt.Container;
 
 import javax.swing.JOptionPane;
 
-class Utils {
+public class Utils {
 
 	static void enableComponents(Container container, boolean enable) {
 		Component[] components = container.getComponents();
