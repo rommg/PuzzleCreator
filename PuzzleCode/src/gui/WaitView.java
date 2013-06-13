@@ -125,7 +125,6 @@ public class WaitView extends JPanel {
 				if (isCorrect) {
 					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/check_medium.png")));
 					btnSolve.setEnabled(false);
-					btnCheck.setEnabled(false);	
 				}
 				else  {
 					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/fail_medium.png")));

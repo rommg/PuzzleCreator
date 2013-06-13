@@ -58,6 +58,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +146,7 @@ public class CrosswordView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
 				writeCorrectLetters();
+				btnCheck.setEnabled(true);
 			}
 		});
 		BtnPanel.add(btnArtificialWin);
@@ -162,7 +164,7 @@ public class CrosswordView extends JPanel {
 					getHighScores(); // query DB for 10 best scores
 					if (isHighScore(score)) {
 						String name = JOptionPane.showInputDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Enter your name for fame and glory.</html>");
-						//DBUtils.saveNewScore(name, score);
+						DBUtils.addBestScore(name, score);
 					}
 					else 	
 						JOptionPane.showMessageDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Play again and make a high score!</html>");
