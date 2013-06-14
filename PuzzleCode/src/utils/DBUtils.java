@@ -355,32 +355,6 @@ public class DBUtils {
 		return ret;
 	}
 
-	public static void deleteEntityDefinition(int entity_id, int definition_id){
-		String sqlQuery = "DELETE FROM entities_definition WHERE entity_id = " + entity_id + " AND definition_id = " + definition_id + ";";
-		DBConnection.executeQuery(sqlQuery);
-	}
 
-	public static void deleteHint(int hint_id){
-		String sqlQuery = "DELETE FROM hints WHERE id = " + hint_id + ";";
-		DBConnection.executeQuery(sqlQuery);
-	}
-
-
-	//	public static void addNewEntitiy(String entity, List<String> definitions, List<String> hints, List<Integer> topics){
-	//	
-	//	}
-
-
-	public static void addDefinitionToEntitiy(int entityId, String definition, List<Integer> topics){
-		//		int definitionId = addDefinition(definition);
-		//		addToDefinitionsTopics(definitionId, topics);
-		//		addToEntitiesDefinitions(definitionId, entityId);
-		//		
-		//TODO: saleet
-	}
-
-	public static void addHint(int entity_id, String hint){
-		//TODO: saleet
-	}
 
 }
