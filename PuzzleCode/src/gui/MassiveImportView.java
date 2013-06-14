@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
@@ -152,10 +153,18 @@ public class MassiveImportView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (downloadCheckBox.isSelected())
-					startImportBtnClicked(true);
-				else 
-					startImportBtnClicked(false);
+				//default icon, custom title
+				int n = JOptionPane.showConfirmDialog(
+						MainView.getView().getFrame(),
+						"Massive import will erase all old data. Would you like to proceed?",
+						"Erase warning",
+						JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					if (downloadCheckBox.isSelected())
+						startImportBtnClicked(true);
+					else 
+						startImportBtnClicked(false);
+				}
 			}
 		});
 
@@ -228,27 +237,38 @@ public class MassiveImportView extends JPanel {
 
 			y.createFilteredYagoFiles(); // create TSVs with relevant data only
 
-			Logger.writeToLog("Importing TSV files to DB...");
-			publish("Importing TSV files to DB...");
+			Logger.writeToLog("Deleteing old data...");
+			publish("Deleting old data...");
 
-			try {
-				y.importFilesToDB();
-			}
-			catch (SQLException e) {
-				publish("ERROR while loading filtered TSV File to DB!");
-				return null;
-			}
-			
-			Logger.writeToLog("Populating DB...");
-			publish("Populating DB...");
-			
-			try {
-				y.populateDB();
-			}
-			catch (SQLException e) {
-				publish("ERROR while populating DB!");
-				return null;
-			}
+			//			try {
+			//				y.cleanDataTables(); // clean tables with old data
+			//			}
+			//			catch (SQLException exception){
+			//				publish("ERROR while cleaning old tables.");
+			//				return null;
+			//			}
+			//			Logger.writeToLog("Importing TSV files to DB...");
+			//			publish("Importing TSV files to DB...");
+			//
+			//
+			//			try {
+			//				y.importFilesToDB();
+			//			}
+			//			catch (SQLException e) {
+			//				publish("ERROR while loading filtered TSV File to DB!");
+			//				return null;
+			//			}
+			//
+			//			Logger.writeToLog("Populating DB...");
+			//			publish("Populating DB...");
+			//
+			//			try {
+			//				y.populateDB();
+			//			}
+			//			catch (SQLException e) {
+			//				publish("ERROR while populating DB!");
+			//				return null;
+			//			}
 
 			Logger.writeToLog("Deleting created files...");
 			publish("Deleting created files...");

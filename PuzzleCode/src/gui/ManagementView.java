@@ -549,7 +549,8 @@ public class ManagementView extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if (!field.getText().isEmpty() && isValidString(field.getText())) {
+					String hintText = field.getText();
+					if (!hintText.isEmpty() && isValidString(hintText)) {
 						//call DB add procedure
 					}
 					else  { // show error message
