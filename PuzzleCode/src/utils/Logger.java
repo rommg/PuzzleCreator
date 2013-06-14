@@ -23,7 +23,7 @@ public class Logger {
 	 * 
 	 * @return
 	 */
-	public static int initialize(boolean deleteOld) {
+	public static boolean initialize(boolean deleteOld) {
 		logFile = new File(logFileDir, logFilename);
 		boolean bRes;
 		try {
@@ -42,9 +42,9 @@ public class Logger {
 				throw new IOException();
 		} catch (IOException ex) {
 			System.out.println("failed to create log file");
-			return 0;
+			return false;
 		}
-		return 1;
+		return true;
 	}
 
 	/**

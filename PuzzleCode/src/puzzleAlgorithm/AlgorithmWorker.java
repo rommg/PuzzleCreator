@@ -437,7 +437,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	private boolean createBoardFromTemplateFile(int size, int templateNum) {
 		board = new PuzzleSquare[size][size];
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
-		File templateFile = new File(PuzzleCreator.appDir + System.getProperty("file.separator") + "templates",
+		File templateFile = new File(PuzzleCreator.appDir + "templates",
 				fileName);
 		try {
 			FileReader in = new FileReader(templateFile);

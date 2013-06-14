@@ -1,16 +1,16 @@
-LOAD DATA LOCAL INFILE  'c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\sql\\filesToLoad\\yagoTypes.tsv'
+LOAD DATA LOCAL INFILE  '???yagoTypes.tsv'
 INTO TABLE YAGO_TYPE
 	fields terminated by '\t'
 	lines terminated by '\n'
 	(subject, predicate, object, answer, additional_information);
 
-LOAD DATA LOCAL INFILE  'c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\sql\\filesToLoad\\yagoFacts.tsv'
+LOAD DATA LOCAL INFILE  '???yagoFacts.tsv'
 INTO TABLE YAGO_FACT
 	fields terminated by '\t'
 	lines terminated by '\n'
 	(subject, predicate, object, is_subject);
 
-LOAD DATA LOCAL INFILE  'c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\sql\\filesToLoad\\yagoLiteralFacts.tsv'
+LOAD DATA LOCAL INFILE  '???yagoLiteralFacts.tsv'
 INTO TABLE YAGO_LITERAL_FACT
 	fields terminated by '\t'
 	lines terminated by '\n'

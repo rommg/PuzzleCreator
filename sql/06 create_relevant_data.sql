@@ -4,7 +4,7 @@ INSERT INTO ENTITIES (name)
 
 
 
--- inserat into answer table 
+-- insert into answer table 
 -- use a temporary table
 
 CREATE TABLE TEMP_ANSWERS (
@@ -14,7 +14,7 @@ additional_information varchar(25)
 );
 
 
-LOAD DATA LOCAL INFILE  'c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\sql\\filesToLoad\\yagoHumanAnswers.tsv'
+LOAD DATA LOCAL INFILE  '???yagoHumanAnswers.tsv'
 INTO TABLE TEMP_ANSWERS
 	fields terminated by '\t'
 	lines terminated by '\n'
@@ -33,13 +33,13 @@ INSERT INTO ANSWERS (answer, length, additional_information, entity_id)
 DROP TABLE TEMP_ANSWERS;
 -- 
 
--- inserat into ENTITY_DEFENITION
+-- insert into ENTITY_DEFENITION
 INSERT INTO ENTITIES_DEFINITIONS (entity_id, definition_id)
 	SELECT DISTINCT entities.id, def.id 
 	FROM yago_type yago, definitions def, entities 
 	WHERE yago.subject = entities.name AND yago.object = def.yago_type;
 
--- inserat into HINTS
+-- insert into HINTS
 INSERT INTO HINTS (predicate_id, yago_hint, entity_id, is_entity_subject)  
 	SELECT p.id AS predicate_id, y.object AS yago_hint, e.id AS entity_id, y.is_subject AS is_entity_subject
 	FROM predicates p, yago_fact y, entities e 
