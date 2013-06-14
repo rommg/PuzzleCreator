@@ -428,8 +428,7 @@ public class YagoFileHandler {
 
 	public void cleanDataTables() throws SQLException {
 
-		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
-				"sql" + System.getProperty("file.separator") + "00 create_schema_and_tables.sql");
+		DBConnection.executeSqlScript(SQL_DIR + "00 create_schema_and_tables.sql");
 	}
 	
 	public void importFilesToDB() throws SQLException {
