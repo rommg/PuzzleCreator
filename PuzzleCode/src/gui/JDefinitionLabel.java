@@ -19,16 +19,6 @@ public class JDefinitionLabel extends JLabel{
 	protected int difficulty;
 	private PuzzleDefinition definition;
 	private AbstractSquarePanel parentPanel;
-	
-	final float EASY_ONE = 18;
-	final float EASY_TWO = 14f;
-
-	final float MEDIUM_ONE = 13f;
-	final float MEDIUM_TWO = 7f;
-
-	final float HARD_ONE = 15;
-	final float HARD_TWO = 5f;
-
 
 	public void setParentPanel(AbstractSquarePanel parentPanel) {
 		this.parentPanel = parentPanel;
@@ -46,8 +36,7 @@ public class JDefinitionLabel extends JLabel{
 
 	public JDefinitionLabel(PuzzleDefinition definition) {
 	
-		super("<html><center>" + definition.getDefinition() + 
-				"<br> " + definition.getAdditionalInformation() + "</html>");
+		super("<html><center>" + definition.getDefinition() + " "+ definition.getAdditionalInformation() + "</html>");
 		super.setHorizontalAlignment(SwingConstants.CENTER);
 		super.setVerticalAlignment(SwingConstants.CENTER);
 		this.definition = definition;

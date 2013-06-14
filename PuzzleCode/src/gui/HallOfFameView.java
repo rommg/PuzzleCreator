@@ -51,7 +51,7 @@ public class HallOfFameView extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 
 		JLabel lblHallOfFame = new JLabel("Hall Of Fame");
-		lblHallOfFame.setFont(new Font("Stencil", Font.PLAIN, 20));
+		lblHallOfFame.setFont(new Font("Stencil", Font.PLAIN, 25));
 		topPanel.add(lblHallOfFame);
 
 		JPanel btnPanel = new JPanel();
@@ -63,11 +63,11 @@ public class HallOfFameView extends JPanel {
 
 		btnBack.addActionListener(new BackButtonListener());
 		btnPanel.add(btnBack);
-		
-				tablePanel = new JPanel();
-				add(tablePanel, BorderLayout.CENTER);
-				tablePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-				tablePanel.setLayout(new GridLayout(0, 3, 0, 0));
+
+		tablePanel = new JPanel();
+		add(tablePanel, BorderLayout.CENTER);
+		tablePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		tablePanel.setLayout(new GridLayout(0, 4, 0, 0));
 
 		populateTablePanel();
 	}
@@ -75,6 +75,27 @@ public class HallOfFameView extends JPanel {
 	private void populateTablePanel() {
 
 		Border border = LineBorder.createGrayLineBorder();
+
+		// column name labels
+		JLabel rankCol = new JLabel("RANK");
+		rankCol.setFont(new Font("Stencil", Font.PLAIN, 19));
+		rankCol.setHorizontalAlignment(SwingConstants.CENTER);
+		tablePanel.add(rankCol);
+
+		JLabel nameCol = new JLabel("NAME");
+		nameCol.setFont(new Font("Stencil", Font.PLAIN, 19));
+		nameCol.setHorizontalAlignment(SwingConstants.CENTER);
+		tablePanel.add(nameCol);
+		
+		JLabel scoreCol = new JLabel("SCORE");
+		scoreCol.setFont(new Font("Stencil", Font.PLAIN, 19));
+		scoreCol.setHorizontalAlignment(SwingConstants.CENTER);
+		tablePanel.add(scoreCol);
+		
+		JLabel dateCol = new JLabel("Date");
+		dateCol.setFont(new Font("Stencil", Font.PLAIN, 19));
+		dateCol.setHorizontalAlignment(SwingConstants.CENTER);
+		tablePanel.add(dateCol);
 
 		String[][] results = getBestScores();
 
@@ -94,17 +115,24 @@ public class HallOfFameView extends JPanel {
 			JLabel scoreLabel = new JLabel();
 			scoreLabel.setBorder(border);
 			
+			JLabel dateLabel = new JLabel();
+			dateLabel.setBorder(border);
+
 			if (i < results.length) { // still more scores
 				nameLabel.setText(results[i][0]);
 				nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				scoreLabel.setText(results[i][1]);
 				scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				dateLabel.setText(results[i][2]);
+				dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 			}
 
 			tablePanel.add(rank);
 			tablePanel.add(nameLabel);
 			tablePanel.add(scoreLabel);
+			tablePanel.add(dateLabel);
+
 
 		}
 	}

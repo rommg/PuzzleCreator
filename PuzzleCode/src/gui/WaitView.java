@@ -49,6 +49,7 @@ public class WaitView extends JPanel {
 	private JLabel questionLabel;
 	private JPanel answerPanel; // holds squares
 	private String answer;
+	private JButton btnSolve;
 
 	public void setBoard() {
 	}
@@ -123,7 +124,7 @@ public class WaitView extends JPanel {
 				boolean isCorrect = isCorrectAnswer(answerPanel, answer);
 				if (isCorrect) {
 					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/check_medium.png")));
-
+					btnSolve.setEnabled(false);
 				}
 				else  {
 					btnCheck.setIcon(new ImageIcon(WaitView.class.getResource("/resources/fail_medium.png")));
@@ -132,7 +133,7 @@ public class WaitView extends JPanel {
 		});
 		checkPanel.add(btnCheck);
 
-		final JButton btnSolve = new JButton("Solve", new ImageIcon(WaitView.class.getResource("/resources/surrender.png")));
+		btnSolve = new JButton("Solve", new ImageIcon(WaitView.class.getResource("/resources/surrender.png")));
 		btnSolve.addActionListener(new ActionListener() {
 
 			@Override
@@ -193,10 +194,15 @@ public class WaitView extends JPanel {
 		worker.execute();
 	}
 
-	public void setSkipBtnEnabled() {
-		btnGo.setText("GO!");
-		btnGo.setEnabled(true);
+	public void setGoBtn(boolean enable) {
+		JPanel parent = (JPanel) btnGo.getParent();
+		parent.remove(btnGo);
+		btnGo = new JButton("GO!");
+		btnGo.setEnabled(enable);
+		btnGo.addActionListener(new GoListener());
+		parent.add(btnGo, BorderLayout.EAST);
 	}
+	
 
 	public void setProgressMessage(String text) {
 		infoLabel.setText(text);
@@ -225,15 +231,18 @@ public class WaitView extends JPanel {
 	}
 
 	public void setSkipBtnToTryAgain() {
-		btnGo.setText("Try Again");
-		btnGo.removeActionListener(goListener);
+		JPanel parent = (JPanel) btnGo.getParent();
+		parent.remove(btnGo);
+		btnGo = new JButton("Try Again");
 		btnGo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				startAlgorithmCalculation()	;			
+				startAlgorithmCalculation()	;	
+				setGoBtn(false);
 			}
 		});
+		parent.add(btnGo, BorderLayout.EAST);
 	}
 
 	private class GoListener implements ActionListener {

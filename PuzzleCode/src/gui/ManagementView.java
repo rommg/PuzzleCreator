@@ -52,10 +52,11 @@ public class ManagementView extends JPanel {
 	private JTextField newTextField;
 	private JComboBox<String> existingTextField;
 	private Map<String,Integer> allTopics; // map of all topics
-	private Map<String,Integer> allEntities; // Map of entity PROPER NAME - which is unique.
+	private Map<String,Integer> allEntities; // Map : GET_PROPER_NAME(entity_name) (which is unique) -> PK. .
 	private String[] allTopicNamesArray;
 	private Map<String, Integer> definitions; // definitions for an entity as queries from DB
 	private Map<String,Integer> allDefinitions = null;
+	private int chosenEntityID;
 
 
 	private static final String USER_UPDATES_TOPIC = "User Updates";
@@ -116,12 +117,12 @@ public class ManagementView extends JPanel {
 				if (searchText.isEmpty())
 					return; // do nothing if no text entered
 
+				chosenEntityID = -1;
+				chosenEntityID  = allEntities.get(searchText);
 
-				Integer id = allEntities.get(searchText);
-
-				if (id != null) { // found
-					buildDefinitionPanel(id); 
-					buildHintsPanel(id);
+				if (chosenEntityID != -1) { // found
+					buildDefinitionPanel(chosenEntityID); 
+					buildHintsPanel(chosenEntityID);
 				}
 			}
 		});
@@ -341,16 +342,19 @@ public class ManagementView extends JPanel {
 		protected JTextField definitionBox;
 		protected JButton saveBtn;
 		protected JButton deleteBtn;
+		protected int definitionID;
 
 		protected JPanel btnPanel;
 
 		public DefinitionLine(int definitionID, String definition) {
 			setLayout(new BorderLayout());
 
+			this.definitionID = definitionID;
+
 			Map<String,Integer> topics = getTopicsForDefinition(definitionID);
 			topicBox = new TopicsCheckComboBox(allTopics.keySet(), topics.keySet(), true);
 			super.add(topicBox, BorderLayout.WEST);
-			definitionBox = new LimitedTextField(30);
+			definitionBox = new LimitedTextField(70);
 			definitionBox.setText(definition);
 			definitionBox.setEditable(false);
 
@@ -373,10 +377,12 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (definitionCounter - 1 >= 1){
-						//						if (!topicBox.getSelectedItem().toString().isEmpty() &&
-						//								!definitionBox.getSelectedItem().toString().isEmpty()) {
-						//							//delete row from DB
-						//						}
+						if (!DefinitionLine.this.definitionBox.getText().toString().isEmpty()) {
+							DBUtils.deleteEntityDefinition(chosenEntityID, DefinitionLine.this.definitionID);
+							JPanel parent = (JPanel) DefinitionLine.this.getParent();
+							parent.remove(DefinitionLine.this);
+							parent.revalidate();
+						}
 					}
 					else { // popup error message
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
@@ -397,21 +403,22 @@ public class ManagementView extends JPanel {
 		protected JButton deleteBtn;
 		protected JPanel btnPanel;
 		private HintTuple hint;
+		private JTextField field;
 
 
 		public HintResultLine(HintTuple hint) {
 			setLayout(new BorderLayout());
 			this.hint = hint;
 
-			JTextField field = new JTextField(hint.getText());
+			field = new JTextField(hint.getText());
 			field.setEditable(false);
-//			field.addKeyListener(new KeyAdapter() {
-//
-//				@Override
-//				public void keyTyped(KeyEvent arg0) {
-//					saveBtn.setEnabled(true);					
-//				}
-//			});
+			//			field.addKeyListener(new KeyAdapter() {
+			//
+			//				@Override
+			//				public void keyTyped(KeyEvent arg0) {
+			//					saveBtn.setEnabled(true);					
+			//				}
+			//			});
 
 			add(field, BorderLayout.CENTER);
 
@@ -431,9 +438,12 @@ public class ManagementView extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					//do delete
-					btnPanel.getParent().remove(HintResultLine.this);
-					btnPanel.getParent().revalidate();
+					if (!field.getText().isEmpty()) {
+						DBUtils.deleteHint(HintResultLine.this.hint.id);
+						JPanel parent = (JPanel) HintResultLine.this.getParent();
+						parent.remove(HintResultLine.this);
+						parent.revalidate();
+					}
 				}
 			});
 

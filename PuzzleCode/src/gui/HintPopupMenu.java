@@ -3,6 +3,7 @@ package gui;
 import gui.CrosswordView.HintCounterLabel;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -26,8 +27,10 @@ import javax.swing.JPopupMenu;
  */
 final class HintPopupMenu extends JPopupMenu {
 	private String[] hintArray;
-	JDefinitionLabel label;
-	HintCounterLabel hintCounterLabel;
+	private JDefinitionLabel label;
+	private HintCounterLabel hintCounterLabel;
+	int maxLength;
+
 
 	/**
 	 * 
@@ -48,21 +51,29 @@ final class HintPopupMenu extends JPopupMenu {
 				hintArray[i++] = hintText;
 			}
 		}
+		
+		maxLength = getMaxLength();
 
 		this.label = label;
 		this.hintCounterLabel = hintCounterLabel;
 		buildPopupSubMenus();
 	}
-	//
-	//	public int getUsedHintsCounter() {
-	//		return usedHintsCounter;
-	//	}
+
+	/**
+	 * used by a view to make hint menu enabled/disabled
+	 * @param enabled
+	 */
+	void setHintPopupMenuEnable(boolean enable) {
+		//Utils.enableComponents(this, enable);
+		setEnabled(enable);
+		setVisible(enable);
+	}
 
 	private void buildPopupSubMenus() {
 
-		JMenuItem item = new JMenuItem(label.getText());
-		item.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/tip.png")));
-		add(item);
+		JMenuItem menu = new JMenuItem(label.getText());
+		menu.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/tip.png")));
+		add(menu);
 
 		for (int i=0; i<hintArray.length; i++) {
 			addSeparator();
@@ -70,6 +81,15 @@ final class HintPopupMenu extends JPopupMenu {
 		}
 	}
 
+	private int getMaxLength() {
+		int max = -1;
+		int length;
+		for (int i=0; i<hintArray.length; i++) {
+			if (( length = hintArray[i].length()) > max)
+				max = length;
+		}
+		return max;
+	}
 
 	private class HintItem extends JPanel {
 		private final String hintText;
@@ -92,7 +112,7 @@ final class HintPopupMenu extends JPopupMenu {
 
 		private String createEchoString(int length) {
 			StringBuilder str = new StringBuilder();
-			for (int i = 0; i<length; i++ ) {
+			for (int i = 0; i<maxLength; i++ ) {
 				str.append('*');
 			}
 			return str.toString();

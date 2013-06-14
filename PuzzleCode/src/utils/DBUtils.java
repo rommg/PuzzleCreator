@@ -2,6 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -225,7 +226,7 @@ public class DBUtils {
 		String sql = "SELECT topics.id, topics.name " +
 				"FROM topics, definitions_topics " +
 				"WHERE (topics.id = definitions_topics.topic_id) AND (definitions_topics.definition_id = " + definitionID + ");";
-		
+
 		List<Map<String,Object>> lst = DBConnection.executeQuery(sql);
 		Map<String,Integer> rows = new HashMap<String, Integer>();
 
@@ -240,24 +241,31 @@ public class DBUtils {
 	}
 
 	public static String[][] getTenBestScores() {
-		String sql = "SELECT best_scores.user_name, best_scores.score " +
+		String sql = "SELECT best_scores.user_name, best_scores.score, best_scores.date " +
 				"FROM best_scores " +
 				"ORDER BY best_scores.score DESC " +
 				"LIMIT 10;";
 
-		List<Map<String,Object>> lst = DBConnection.executeQuery(sql);
-		String[][] returnArray  = new String[lst.size()][2]; // each of the 10 cells is a tuple [name,score]
+		List<Map<String,Object>> map = DBConnection.executeQuery(sql);
+		String[][] returnArray  = new String[map.size()][3]; // each of the 10 cells is a tuple [name,score,date]
 
 		int index = 0;
-		for (Map<String,Object> row : lst) {
+		for (Map<String,Object> row : map) {
 			returnArray[index][0] = row.get("user_name").toString();
 			returnArray[index][1] = row.get("score").toString();
+			returnArray[index][2] = row.get("date").toString();
+
 			index++;
 		}
 		return returnArray;
 
 	}
 
+	public static boolean addBestScore(String name, int score) {
+		String sql = "INSERT into best_scores (user_name, score,date) VALUES ('" +
+				name + "'," + score + "," + "CURRENT_TIME());";
+		return (DBConnection.executeUpdate(sql) < 1);
+	}
 	private static String createINString(List<?> lst) {
 		StringBuilder strBlder = new StringBuilder();
 		strBlder.append('(');
@@ -322,9 +330,9 @@ public class DBUtils {
 
 	public static String[] getTriviaQuestion(){
 		String sqlQuery = "SELECT a.answer, a.additional_information, d.definition " +
-				   "FROM entities e, answers a, definitions d, entities_definitions ed " +
-				   "WHERE a.entity_id = e.id AND a.length < 10 AND e.id = ed.entity_id AND ed.definition_id = d.id " +
-				   "ORDER BY RAND() LIMIT 1;";
+				"FROM entities e, answers a, definitions d, entities_definitions ed " +
+				"WHERE a.entity_id = e.id AND a.length < 10 AND e.id = ed.entity_id AND ed.definition_id = d.id " +
+				"ORDER BY RAND() LIMIT 1;";
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sqlQuery);
 		while (rs.size() == 0){
 			rs = DBConnection.executeQuery(sqlQuery);
@@ -348,16 +356,16 @@ public class DBUtils {
 	}
 
 
-//	public static void addNewEntitiy(String entity, List<String> definitions, List<String> hints, List<Integer> topics){
-//	
-//	}
-	
-	
+	//	public static void addNewEntitiy(String entity, List<String> definitions, List<String> hints, List<Integer> topics){
+	//	
+	//	}
+
+
 	public static void addDefinitionToEntitiy(int entityId, String definition, List<Integer> topics){
-//		int definitionId = addDefinition(definition);
-//		addToDefinitionsTopics(definitionId, topics);
-//		addToEntitiesDefinitions(definitionId, entityId);
-//		
+		//		int definitionId = addDefinition(definition);
+		//		addToDefinitionsTopics(definitionId, topics);
+		//		addToEntitiesDefinitions(definitionId, entityId);
+		//		
 		//TODO: saleet
 	}
 

@@ -35,3 +35,23 @@
 1370946380387	Rename field 'btnSkip'
 1370946507394	Rename type 'TextInputSquare'
 1370947553542	Extract method 'startAlgorithmCalculation'
+1370982002942	Convert local variable 'item' to field
+1371029047400	Rename method 'setSkipBtnEnabled'
+1371033995224	Delete element
+1371034162262	Delete element
+1371034165452	Delete element
+1371034169485	Delete element
+1371034241385	Delete element
+1371034245984	Delete element
+1371034249951	Delete element
+1371034252586	Delete element
+1371034343683	Delete element
+1371042117399	Rename field 'TopDefinitionLbl'
+1371045002029	Convert local variable 'emptyLabel' to field
+1371045421478	Delete element
+1371045790890	Delete element
+1371046966538	Extract method 'setBoardEnabled'
+1371050655375	Rename method 'setFrameSizeAccordingToSize'
+1371056381867	Convert local variable 'btnSolve' to field
+1371058126115	Rename field 'chosenEntity'
+1371059865974	Convert local variable 'field' to field

@@ -14,13 +14,13 @@ import javax.swing.border.BevelBorder;
  */
 final public class TwoDefinitionSquare extends AbstractSquarePanel {
 
-	private JDefinitionLabel TopDefinitionLbl;
+	private JDefinitionLabel topDefinitionLbl;
 	private JDefinitionLabel bottomDefinitionLbl;
 
 	private int definitionCount = 0;
 
 	public JDefinitionLabel getTopDefinitionLbl() {
-		return TopDefinitionLbl;
+		return topDefinitionLbl;
 	}
 
 	public JDefinitionLabel getBottomDefinition() {
@@ -32,7 +32,7 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 	}
 
 	void addTop(JDefinitionLabel lbl) {
-		this.TopDefinitionLbl = lbl;
+		this.topDefinitionLbl = lbl;
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
 		lbl.setBackground(Color.GRAY);
@@ -70,6 +70,13 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 		setFocusable(false);
 		setBorder(new BevelBorder(BevelBorder.RAISED));
 
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		topDefinitionLbl.setEnabled(enabled);
+		bottomDefinitionLbl.setEnabled(enabled);
+		super.setEnabled(enabled);
 	}
 
 }

@@ -3,13 +3,13 @@ package puzzleAlgorithm;
 import gui.CrosswordView;
 import gui.MainView;
 import gui.WaitView;
+import gui.Utils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,11 +33,10 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	private List<PuzzleDefinition> unSolved;
 	protected List<Answer> answers;
 	protected Set<Integer> usedEntities;
-	private boolean success = false; 
+	private boolean success = false;
 
 	private int[] topicsIds;
 	private int difficulty;
-	private int templateNum;
 	private WaitView view; // parent window which activated this thread
 
 	public AlgorithmWorker(WaitView view, int[] topics, int difficulty) {
@@ -51,7 +50,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	}
 
 	@Override
-	protected BoardSolution doInBackground() throws Exception {
+	protected BoardSolution doInBackground() {
 		BoardSolution result = null;
 		int size = 13;
 		switch (difficulty) {
@@ -70,13 +69,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 		publish("Retrieving possible answers from DataBase...");
 		// TODO remove use of mock function after tests
-		//		createMockAnswers();
+		// createMockAnswers();
 		answers = DBUtils.getPossibleAnswers(this.topicsIds, 11);
 		Logger.writeToLog("Number of answers = " + answers.size());
 
 		publish("Creating puzzle board...");
-		this.templateNum = 1;
-		createBoardFromTemplateFile(size, templateNum);
+		createBoardFromTemplateFile(size, 1);
 		Collections.sort(definitions);
 		printBoard();
 		printTopics();
@@ -89,13 +87,13 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 			success = false;
 			Logger.writeErrorToLog("impossible data");
 			publish("failed to create Puzzle");
-			result = new BoardSolution(null, null, false, templateNum);
+			result = new BoardSolution(null, null, false, null);
 		} else {
 			success = true;
 			Logger.writeToLog("success");
 			publish("Retrieving hints and definitions from DataBase...");
 			DBUtils.setHintsAndDefinitions(definitions);
-			result = new BoardSolution(board, definitions, true, templateNum);
+			result = new BoardSolution(board, definitions, true, null);
 			printResults();
 			publish("Finished!");
 		}
@@ -103,20 +101,34 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	}
 
 	@Override
-	protected void done() {		
-		CrosswordView crosswordView = (CrosswordView) CrosswordView.start(new BoardSolution(board, definitions, true, templateNum));
-		MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
-		if (success)
-		view.setSkipBtnEnabled();
-		else 
-			view.setSkipBtnToTryAgain();
+	protected void done() {
+		try {
+			BoardSolution result = get();
+			if (result.getResultException() != null) {
+				Exception ex = result.getResultException();
+				if (ex instanceof SQLException) {
+					Utils.showDBConnectionErrorMessage();
+				}
+				if (ex instanceof IOException){
+					//TODO show IO error message in GUI - can't read template file 
+				}
+			} else {
+				CrosswordView crosswordView = (CrosswordView) CrosswordView.start(result);
+				MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
+				if (success)
+					view.setGoBtn(true);
+				else
+					view.setSkipBtnToTryAgain();
+			}
+		} catch (Exception ex) {
+			Logger.writeErrorToLog("algorithm was interrupted before board was finished");
+		}
 	}
 
 	@Override
-	public void process(List<String> messages){
-		view.setProgressMessage(messages.get(messages.size()-1));
+	public void process(List<String> messages) {
+		view.setProgressMessage(messages.get(messages.size() - 1));
 	}
-
 
 	private boolean fillBoard() {
 		Deque<BoardState> stack = new ArrayDeque<BoardState>();
@@ -342,7 +354,6 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	}
 
-
 	/**
 	 * Create a new definition with the function params Insert definition to
 	 * board definitions collection For each relevant square - add the
@@ -351,8 +362,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	 * 
 	 * @return
 	 */
-	private boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow,
-			int textCol) {
+	private boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow, int textCol) {
 		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow, beginCol, length, direction, this);
 		definitions.add(def);
 
@@ -374,8 +384,6 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 		return true;
 	}
-
-
 
 	private void printResults() {
 		printBoard();
@@ -417,167 +425,16 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Logger.writeToLog("Total number of possible answers = " + counter);
 	}
 
-	private void createMockAnswers() {
-		int entityId = 0;
-		Answer ans = new Answer("oboe", entityId++);
-		answers.add(ans);
-		ans = new Answer("callow", entityId++);
-		answers.add(ans);
-		ans = new Answer("eject", entityId++);
-		answers.add(ans);
-		ans = new Answer("arid", entityId++);
-		answers.add(ans);
-		ans = new Answer("noise", entityId++);
-		answers.add(ans);
-		ans = new Answer("tic", entityId++);
-		answers.add(ans);
-		ans = new Answer("one", entityId++);
-		answers.add(ans);
-		ans = new Answer("anew", entityId++);
-		answers.add(ans);
-		ans = new Answer("trance", entityId++);
-		answers.add(ans);
-		ans = new Answer("odd", entityId++);
-		answers.add(ans);
-		ans = new Answer("ensue", entityId++);
-		answers.add(ans);
-		ans = new Answer("gum", entityId++);
-		answers.add(ans);
-		ans = new Answer("idle", entityId++);
-		answers.add(ans);
-		ans = new Answer("den", entityId++);
-		answers.add(ans);
-		ans = new Answer("age", entityId++);
-		answers.add(ans);
-		ans = new Answer("epic", entityId++);
-		answers.add(ans);
-		ans = new Answer("profess", entityId++);
-		answers.add(ans);
-		ans = new Answer("liar", entityId++);
-		answers.add(ans);
-		ans = new Answer("tropic", entityId++);
-		answers.add(ans);
-		ans = new Answer("cud", entityId++);
-		answers.add(ans);
-		ans = new Answer("ebb", entityId++);
-		answers.add(ans);
-		ans = new Answer("unit", entityId++);
-		answers.add(ans);
-		ans = new Answer("fade", entityId++);
-		answers.add(ans);
-		ans = new Answer("leap", entityId++);
-		answers.add(ans);
-		ans = new Answer("new", entityId++);
-		answers.add(ans);
-		ans = new Answer("din", entityId++);
-		answers.add(ans);
-		ans = new Answer("fee", entityId++);
-		answers.add(ans);
-		ans = new Answer("teem", entityId++);
-		answers.add(ans);
-		ans = new Answer("watt", entityId++);
-		answers.add(ans);
-		ans = new Answer("abroad", entityId++);
-		answers.add(ans);
-		ans = new Answer("arable", entityId++);
-		answers.add(ans);
-		ans = new Answer("indigo", entityId++);
-		answers.add(ans);
-		ans = new Answer("bee", entityId++);
-		answers.add(ans);
-		ans = new Answer("geese", entityId++);
-		answers.add(ans);
-		ans = new Answer("deft", entityId++);
-		answers.add(ans);
-		ans = new Answer("jewel", entityId++);
-		answers.add(ans);
-		ans = new Answer("erupt", entityId++);
-		answers.add(ans);
-		ans = new Answer("ace", entityId++);
-		answers.add(ans);
-		ans = new Answer("nelson", entityId++);
-		answers.add(ans);
-		ans = new Answer("act", entityId++);
-		answers.add(ans);
-		ans = new Answer("spine", entityId++);
-		answers.add(ans);
-		ans = new Answer("altitude", entityId++);
-		answers.add(ans);
-		ans = new Answer("item", entityId++);
-		answers.add(ans);
-		ans = new Answer("creep", entityId++);
-		answers.add(ans);
-		ans = new Answer("boa", entityId++);
-		answers.add(ans);
-		ans = new Answer("nil", entityId++);
-		answers.add(ans);
-		ans = new Answer("wrong", entityId++);
-		answers.add(ans);
-		ans = new Answer("cicada", entityId++);
-		answers.add(ans);
-		ans = new Answer("incur", entityId++);
-		answers.add(ans);
-		ans = new Answer("audit", entityId++);
-		answers.add(ans);
-		ans = new Answer("redeem", entityId++);
-		answers.add(ans);
-		ans = new Answer("ardent", entityId++);
-		answers.add(ans);
-
-	}
-
-	private void outputBoard() {
-		File templateFile = new File(PuzzleCreator.appDir, "13x13_1.tmp");
-		try {
-			templateFile.createNewFile();
-			FileWriter out = new FileWriter(templateFile, true);
-			BufferedWriter bout = new BufferedWriter(out);
-			String boardData = "boardsize:" + board.length;
-			bout.write(boardData);
-			bout.newLine();
-			boardData = "";
-			// write squares
-
-			for (int row = 0; row < board.length; row++) {
-				for (int column = 0; column < board.length; column++) {
-					boardData = "Puzzle square: column:" + column + " row:" + row + " emptySquare:"
-							+ board[column][row].isLetter();
-					bout.write(boardData);
-					bout.newLine();
-				}
-			}
-
-			bout.newLine();
-			boardData = "Definitions:";
-			bout.write(boardData);
-			bout.newLine();
-
-			for (PuzzleDefinition def : definitions) {
-				boardData = "Definition: row:" + def.getBeginRow() + " column:" + def.getBeginColumn() + " length:"
-						+ def.getLength() + " direction:" + def.getDirection() + " textRow:" + def.getTextRow()
-						+ " textCol:" + def.getTextCol();
-				bout.write(boardData);
-				bout.newLine();
-			}
-
-			bout.close();
-			out.close();
-
-		} catch (IOException ex) {
-			Logger.writeErrorToLog("failed to create");
-		}
-	}
-
 	private void printTopics() {
 		String topicsString = "Topics Ids: ";
-		for (int i = 0; i < topicsIds.length; i++){
+		for (int i = 0; i < topicsIds.length; i++) {
 			topicsString += topicsIds[i] + " ,";
 		}
 		Logger.writeToLog(topicsString);
-		
+
 	}
 
-	private boolean createBoardFromTemplateFile(int size, int templateNum) { 
+	private boolean createBoardFromTemplateFile(int size, int templateNum) {
 		board = new PuzzleSquare[size][size];
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
 		File templateFile = new File(PuzzleCreator.appDir + System.getProperty("file.separator") + "templates",

@@ -10,24 +10,39 @@ import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 
+import main.PuzzleCreator;
+
 import puzzleAlgorithm.BoardSolution;
+import utils.Logger;
 
 import com.sun.java.swing.plaf.windows.resources.windows;
+import com.sun.org.apache.xml.internal.security.utils.HelperNodeList;
+
+import connectionPool.ConnectionPool;
+import connectionPool.DBConnection;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,6 +86,7 @@ public class MainView {
 	private JPanel welcomePanel = null;
 	private JPanel management = null;
 	private JPanel massive = null;
+	private JPanel about = null;
 
 	/**
 	 * Launch the application.
@@ -111,7 +127,9 @@ public class MainView {
 		frame = new JFrame();
 		setSizes();
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.setIconImage(new ImageIcon(MainView.class.getResource("/resources/crossword_tiny.gif")).getImage());
+		frame.setTitle("Crossword Mastermind");
 
 		// build mainPanel
 		menuPanel = new JPanel();
@@ -169,7 +187,14 @@ public class MainView {
 		// bottom buttons
 
 		createButton("Help", "help.png");
-		createButton("About", "about.png");
+		btn = createButton("About", "about.png");
+		btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				showAboutView();
+			}
+		});
 
 		addButtonsTPanel(menuPanelBtnsArray);
 
@@ -182,10 +207,43 @@ public class MainView {
 		welcomePanel.setBackground(Color.WHITE);
 		JLabel logo = new JLabel(new ImageIcon(MainView.class.getResource("/resources/crossword.jpg")));
 		welcomePanel.add(logo, BorderLayout.CENTER);
+		
+		JPanel titlePanel = new JPanel(new GridLayout(2,1));
+		titlePanel.setBackground(Color.WHITE);
+		JPanel empty = new JPanel();
+		empty.setBackground(Color.WHITE);
+		titlePanel.add(empty);
+		
+		JLabel title = new JLabel("Crossword Mastermind");
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setFont(new Font("Stencil", Font.PLAIN, 30));
+		titlePanel.add(title);
+		welcomePanel.add(titlePanel, BorderLayout.NORTH);
 		showWelcomeView();
 
 		//add formPanel - this panel will change
 		frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
+		
+		//close DB Connections when exiting
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent windowEvent) {
+		    	int option = JOptionPane.showConfirmDialog(
+	               	    MainView.this.frame,  
+	                    "Are you sure you want to quit?", "Exit Crossword Mastermind", JOptionPane.YES_NO_OPTION);
+	            if( option == JOptionPane.YES_OPTION ) {  
+		        	try {
+		        	PuzzleCreator.connectionPool.closeConnections();
+		        	}
+		        	catch (SQLException e) {
+		        		Logger.writeErrorToLog("SQLException while trying to close DB Connections");
+		        	}
+		        	finally {
+			            System.exit(0);
+		        	}
+	            }
+		    }
+		});
 
 	}
 
@@ -271,6 +329,10 @@ public class MainView {
 	void massiveImportBtnClicked() {
 		showMassiveImportView();
 	}
+	
+	void aboutBtnClicked() {
+		showAboutView();
+	}
 
 	/**
 	 * switch to PrepareView card
@@ -299,10 +361,10 @@ public class MainView {
 	public void showCrosswordview() {
 		
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
-		((CrosswordView)crosswordView).setSizes();
 		cl.show(cardPanel,Window.Crossword.toString());
-		
-		frame.pack();
+		((CrosswordView)crosswordView).setFrameSizeByBoardSize();
+
+		//frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
 
@@ -375,4 +437,18 @@ public class MainView {
 		frame.setLocationRelativeTo(null);
 	}
 
+	void showAboutView() {
+		if (about== null) {
+			about = AboutView.start();
+			cardPanel.add(about, Window.About.toString());
+		}
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.About.toString());
+		setSizes();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+	}
+	
+	
 }
