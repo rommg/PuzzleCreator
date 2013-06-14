@@ -240,13 +240,13 @@ public class MassiveImportView extends JPanel {
 			Logger.writeToLog("Deleteing old data...");
 			publish("Deleting old data...");
 
-			//			try {
-			//				y.cleanDataTables(); // clean tables with old data
-			//			}
-			//			catch (SQLException exception){
-			//				publish("ERROR while cleaning old tables.");
-			//				return null;
-			//			}
+			try {
+				y.cleanDataTables(); // clean tables with old data
+			}
+			catch (SQLException exception){
+				publish("ERROR while cleaning old tables.");
+				return null;
+			}
 			//			Logger.writeToLog("Importing TSV files to DB...");
 			//			publish("Importing TSV files to DB...");
 			//

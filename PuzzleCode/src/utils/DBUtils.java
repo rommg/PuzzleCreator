@@ -5,6 +5,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
+=======
+import java.util.Map.Entry;
+import java.util.Set;
+
+import massiveImport.YagoFileHandler;
+>>>>>>> b3ee53d76b047cec8ff5fc624e5ca651251b64d9
 
 import connectionPool.DBConnection;
 import puzzleAlgorithm.AlgorithmWorker;
@@ -83,10 +90,20 @@ public class DBUtils {
 					hints.put(entityId, definitions.get(entityId));
 				}
 			}
+			removeHintsIfMoreThen10(hints, entityId);
 			puzzleDefinition.setHints(hints.get(entityId));
 		}
 		return true;
 	}
+
+	private static void removeHintsIfMoreThen10(Map<Integer, List<String>> hints, Integer entityId) {
+		int numOfHints = hints.get(entityId).size();
+		while(numOfHints > 10){
+			int rand = (int)(Math.random() * hints.get(entityId).size());
+			hints.get(entityId).remove(rand);
+		}
+	}
+
 
 	private static Map<Integer, List<String>> getHints(String entityIds) {
 		String sqlHintsQuery = "select entity_id, yago_hint, is_entity_subject, subject_str, object_str " +
@@ -340,32 +357,6 @@ public class DBUtils {
 		return ret;
 	}
 
-	public static void deleteEntityDefinition(int entity_id, int definition_id){
-		String sqlQuery = "DELETE FROM entities_definition WHERE entity_id = " + entity_id + " AND definition_id = " + definition_id + ";";
-		DBConnection.executeQuery(sqlQuery);
-	}
 
-	public static void deleteHint(int hint_id){
-		String sqlQuery = "DELETE FROM hints WHERE id = " + hint_id + ";";
-		DBConnection.executeQuery(sqlQuery);
-	}
-
-
-	//	public static void addNewEntitiy(String entity, List<String> definitions, List<String> hints, List<Integer> topics){
-	//	
-	//	}
-
-
-	public static void addDefinitionToEntitiy(int entityId, String definition, List<Integer> topics){
-		//		int definitionId = addDefinition(definition);
-		//		addToDefinitionsTopics(definitionId, topics);
-		//		addToEntitiesDefinitions(definitionId, entityId);
-		//		
-		//TODO: saleet
-	}
-
-	public static void addHint(int entity_id, String hint){
-		//TODO: saleet
-	}
 
 }
