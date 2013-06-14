@@ -339,7 +339,6 @@ public class DBUtils {
 		}
 		String[] ret = new String[2];
 		ret[0] = (String)rs.get(0).get("answer");
-		//		ret[1] = (String)rs.get(0).get("definition") + " (" + (String)rs.get(0).get("additional_information") + ") ";
 		ret[1] = (String)rs.get(0).get("definition") + " " + (String)rs.get(0).get("additional_information");
 
 		return ret;
