@@ -41,6 +41,7 @@ public class PuzzleCreator {
 				username, password);
 		if (!connectionPool.createPool()) {
 			Logger.writeErrorToLog("Failed to create the Connections Pool");
+			// TODO: need to present a message for the user since the app won't be able to connect the DB
 			return;
 		}
 		Logger.writeToLog("Connections Pool was created");
