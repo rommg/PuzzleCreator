@@ -113,6 +113,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 					result = new BoardSolution(board, definitions, true, null);
 					printResults();
 					publish("Finished!");
+					return result;
 				}
 			}
 			result = new BoardSolution(null, null, false, new Exception("not enough answers. Please choose another topic"));
