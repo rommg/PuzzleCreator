@@ -48,24 +48,23 @@ public class PuzzleCreator {
 				username, password);
 		if (!connectionPool.createPool()) {
 			Logger.writeErrorToLog("Failed to create the Connections Pool");
-			// TODO: need to present a message for the user since the app won't
-			// be able to connect the DB
+			// TODO: need to present a message for the user since the app won't be able to connect the DB
 			return;
 		}
 		Logger.writeToLog("Connections Pool was created");
-
-		// // TODO: To Delete
-		// // DBUtils.test();
-		// //
-		//
-		// //HintsHandler.test();
-		// DBUtils.getTriviaQuestion();
-		//
-		// // int[] topics = {1,2};
-		// // AlgorithmWorker aw = new AlgorithmWorker(null, topics, 0);
-		//
-		HintsHandler.test();
-		// DBUtils.getTriviaQuestion();
+		
+//		// TODO: To Delete
+////		DBUtils.test();
+//		//
+//
+//		//HintsHandler.test();
+//		DBUtils.getTriviaQuestion();
+//
+////		int[] topics = {1,2};
+////		AlgorithmWorker aw = new AlgorithmWorker(null, topics, 0);
+//		
+		//HintsHandler.test();
+//		DBUtils.getTriviaQuestion();
 
 		MainView.start();
 

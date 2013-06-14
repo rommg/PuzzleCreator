@@ -74,8 +74,8 @@ final class HintPopupMenu extends JPopupMenu {
 		JMenuItem menu = new JMenuItem(label.getText());
 		menu.setIcon(new ImageIcon(HintPopupMenu.class.getResource("/resources/tip.png")));
 		add(menu);
-
-		for (int i=0; i<hintArray.length; i++) {
+		
+		for (int i=0; i<hintArray.length && i<10; i++) {
 			addSeparator();
 			add(new HintItem(hintArray[i]));
 		}

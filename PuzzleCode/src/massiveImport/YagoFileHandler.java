@@ -36,6 +36,7 @@ public class YagoFileHandler {
 	private static final String TSV_FILE_DEST_DIR = TEMP_DIR + "tsv_files" +  System.getProperty("file.separator");
 	private static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
 	private static final String HAS_GENDER = "<hasGender>";
+	private static final String MARRIED_TO = "<isMarriedTo>";
 	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr."));
 
 	// static yago files names
@@ -56,7 +57,7 @@ public class YagoFileHandler {
 			this.tsvDirectory = TSV_FILE_DEST_DIR;
 		else
 			this.tsvDirectory = direcotry.getAbsolutePath() + System.getProperty("file.separator");
-		
+
 		getTypes(); // gets types from DB
 		relevantEntities = new HashSet<String>(); // will contain names of interesting entities
 	}
@@ -304,7 +305,8 @@ public class YagoFileHandler {
 				else {
 					decomposedYagoID[3] = decomposedYagoID[3].replaceAll(">", ""); // remove '>' in last cell
 					boolean subjectHit = relevantEntities.contains(lineColumns[1]);
-					boolean objectHit = relevantEntities.contains(lineColumns[3]);
+					boolean objectHit = relevantEntities.contains(lineColumns[3]) 
+							&& (lineColumns[2].compareTo(MARRIED_TO) != 0); // object is not a hit if MARRIED_TO predicate, to prevent multiple MARRIED_TO hints
 					if ((subjectHit || objectHit) 
 							&& (lineColumns[1].length() <= 50) && (lineColumns[3].length() <=50)
 							&& (predicateTypes.contains(lineColumns[2]))) { // fact has relevant typeID for either subject or object and relevant fact
@@ -313,6 +315,7 @@ public class YagoFileHandler {
 								+ lineColumns[2] + "\t" 
 								+ lineColumns[3] + decomposedYagoID[3] + "\t";
 
+						
 						if (subjectHit) {
 							String subjectLine = newLine + "1"; 
 							bw.write(subjectLine); // write one line for subject matched
@@ -422,16 +425,27 @@ public class YagoFileHandler {
 
 		return 1;
 	}
+
+	public void cleanDataTables() throws SQLException {
+
+		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
+				"sql" + System.getProperty("file.separator") + "00 create_schema_and_tables.sql");
+	}
 	
 	public void importFilesToDB() throws SQLException {
-		
+
 		DBConnection.executeSqlScript(SQL_DIR + "05 load_yago_data.sql");
 	}
-	
+
 	public void populateDB() throws SQLException {
 
-		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql");
+		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql"); 
 	}
+	
+	public void reduceHints() throws SQLException {
+		HintsHandler.setMaximumTemHintsForEachEntity();
+	}
+
 
 	public void deleteAllYagoFiles() {
 		deleteYagoFile(YAGO_TYPES);

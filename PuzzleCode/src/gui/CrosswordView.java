@@ -79,7 +79,6 @@ public class CrosswordView extends JPanel {
 
 	private JButton btnCheck;
 	private int[][] boardDefCount; 
-	private String[][] bestScores; // Each trow contains a String tuple (Name, Score)
 
 	private List<JDefinitionLabel> definitionLabelList; //keeping all definition labels 
 	private List<SquareTextField> sqaureTextFieldList; //keeping all non-definition text labels
@@ -157,12 +156,12 @@ public class CrosswordView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int score = CrosswordModel.calculateScore(timer.calcElapsedMilli(), Integer.parseInt(hintCounterLabel.getText()));
+				int score = CrosswordModel.calculateScore(getDifficultyFromSize(), timer.calcElapsedMilli(), Integer.parseInt(hintCounterLabel.getText()));
 				if (isCorrect()) {
 					btnCheck.setBackground(Color.GREEN);
 					String message = "Congratulations!";
-					getHighScores(); // query DB for 10 best scores
-					if (isHighScore(score)) {
+					String[][] highScores = getHighScores(); // query DB for 10 best scores
+					if (isHighScore(highScores, score)) {
 						String name = JOptionPane.showInputDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Enter your name for fame and glory.</html>");
 						DBUtils.addBestScore(name, score);
 					}
@@ -218,19 +217,19 @@ public class CrosswordView extends JPanel {
 		
 		int width = 0;
 		int height = 0;
-		
-		switch (size) {
-		case 8:  {
+		int difficulty = getDifficultyFromSize();
+		switch (difficulty) {
+		case 0:  {
 			width = EASY_PANEL_WIDTH;
 			height = EASY_PANEL_HEIGHT;
 			break;
 		}
-		case 11: {
+		case 1: {
 			width = MED_PANEL_WIDTH;
 			height = MED_PANEL_HEIGHT;
 			break;
 		}
-		case 13: {
+		case 2: {
 			width = HARD_PANEL_WIDTH;
 			height = HARD_PANEL_HEIGHT;
 		}
@@ -243,9 +242,25 @@ public class CrosswordView extends JPanel {
 		MainView.getView().getFrame().setPreferredSize(new Dimension(width, height));
 		
 	}
+	
+	private int getDifficultyFromSize() {
+		switch (size) {
+		case 8:  {
+			return 0;
+		}
+		case 11: {
+			return 1;
+		}
+		case 13: {
+			return 2;
+		}
+		default:
+			return -1;
+	}
+	}
 
-	private void getHighScores() {
-		bestScores = DBUtils.getTenBestScores();	
+	private String[][] getHighScores() {
+		return DBUtils.getTenBestScores();	
 	}
 
 	void drawBoard(PuzzleSquare[][] board, List<PuzzleDefinition> definitions) {
@@ -674,7 +689,7 @@ public class CrosswordView extends JPanel {
 		return;
 	}
 
-	private boolean isHighScore(int score) {
+	private boolean isHighScore(String[][] bestScores, int score) {
 		if (bestScores.length < 10)
 			return true;
 		for (int i = 0; i<bestScores.length; i++) {

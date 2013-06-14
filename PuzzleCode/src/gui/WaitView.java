@@ -102,7 +102,6 @@ public class WaitView extends JPanel {
 		animationPanel.add(btnGo, BorderLayout.EAST);
 		animationPanel.invalidate();
 
-		startAlgorithmCalculation();
 
 		//trivia question 
 
@@ -147,6 +146,9 @@ public class WaitView extends JPanel {
 		checkPanel.add(btnSolve);
 
 		centerPanel.add(checkPanel);
+		
+		startAlgorithmCalculation();
+
 	}
 	private void startAlgorithmCalculation() {
 		// start running algorithm in background
