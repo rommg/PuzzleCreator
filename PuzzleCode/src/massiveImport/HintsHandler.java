@@ -10,25 +10,18 @@ import java.util.TreeSet;
 import connectionPool.DBConnection;
 
 public class HintsHandler {
-	
+
 	private static Set<Integer> hintIdToDelete = new TreeSet<Integer>();
 
 	private static final int MAXIMUM_NUMBER_OF_HINTS_PER_ENTITY = 10;
 
 	public static void setMaximumTemHintsForEachEntity(){
-		Set<Integer> entitiesIds = getAllEntitiesIds();
+		Map<Integer, Long> entitiesIdsWithMoreThen10Hints = getAllEntitiesIdsWithMoreThen10Hints();
+		Set<Integer> entitiesIds = entitiesIdsWithMoreThen10Hints.keySet();
 		for (Integer entityId : entitiesIds) {
-			if(getNumOfHints(entityId) > 10){
-				addHintsToRemoveList(entityId, getNumOfHints(entityId)-MAXIMUM_NUMBER_OF_HINTS_PER_ENTITY);
-			}
+			addHintsToRemoveList(entityId, entitiesIdsWithMoreThen10Hints.get(entityId)-MAXIMUM_NUMBER_OF_HINTS_PER_ENTITY);
 		}
-		
-//		DBConnection.excuteDeleteHintsByIds(hintIdToDelete);
-		
-//		String idsToDelete = hintIdToDelete.toString().replace('[', '(').replace(']', ')');
-//		String sql = "DELETE FROM hints WHERE id IN " + idsToDelete + ";";
-//		DBConnection.executeQuery(sql);
-//		DBConnection.executeQuery("commit;");
+		DBConnection.excuteDeleteHintsByIds(hintIdToDelete);
 	}
 
 	private static void addHintsToRemoveList(Integer entityId, long numOfhintsToDelete) {
@@ -85,23 +78,23 @@ public class HintsHandler {
 		return numOfHints;
 	}
 
-	private static Set<Integer> getAllEntitiesIds() {
-		String sql = "SELECT id FROM entities;" ;
+	private static Map<Integer, Long> getAllEntitiesIdsWithMoreThen10Hints() {
+		String sql = "select entity_id, count(*) as num_of_hints from hints group by entity_id having num_of_hints > 10;" ;
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sql);
-		Set<Integer> ret = new TreeSet<Integer>();
+		Map<Integer, Long> ret = new HashMap<Integer, Long>();
 		for (Map<String,Object> row : rs) {
-			ret.add((Integer)row.get("id"));
+			ret.put((Integer)row.get("entity_id"), (Long)row.get("num_of_hints"));
 		}
 		return ret;
 	}
 
 	public static void test(){
 		setMaximumTemHintsForEachEntity();
-		Set<Integer> entities = getAllEntitiesIds();
-		for (Integer entityId : entities) {
-			if (getNumOfHints(entityId) > 10){
-				System.out.println("entity id: " + entityId + " has more than 10 hints (" + getNumOfHints(entityId) +")");
-			}
+		
+		Map<Integer, Long> entities = getAllEntitiesIdsWithMoreThen10Hints();
+		Set<Integer> keys = entities.keySet();
+		if (keys.size() != 0){
+			System.out.println("ERROR: exists entities with more then 10 hints, entities id: " + keys.toString());
 		}
 	}
 }
