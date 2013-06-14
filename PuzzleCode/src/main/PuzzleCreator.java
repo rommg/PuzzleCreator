@@ -3,6 +3,7 @@ package main;
 import java.sql.SQLException;
 //TODO: remove
 import massiveImport.HintsHandler;
+import massiveImport.YagoFileHandler;
 import gui.MainView;
 import connectionPool.*;
 import utils.*;

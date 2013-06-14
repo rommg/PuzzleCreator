@@ -123,7 +123,6 @@ public class MainView {
 	 */
 	private void initialize() {
 		
-		CrosswordModel.test();
 		frame = new JFrame();
 		setSizes();
 		frame.setLocationRelativeTo(null);

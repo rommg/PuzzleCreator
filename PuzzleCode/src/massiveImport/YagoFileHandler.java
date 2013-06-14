@@ -434,15 +434,15 @@ public class YagoFileHandler {
 
 		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
 				"sql" + System.getProperty("file.separator") + "05 load_yago_data.sql");
-		
 	}
 
 	public void populateDB() throws SQLException {
 
 		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
 				"sql" + System.getProperty("file.separator") + "06 create_relevant_data.sql"); 
-
-		//reduce number of hints 
+	}
+	
+	public void reduceHints() throws SQLException {
 		HintsHandler.setMaximumTemHintsForEachEntity();
 	}
 
