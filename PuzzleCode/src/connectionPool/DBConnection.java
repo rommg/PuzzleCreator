@@ -40,12 +40,14 @@ public class DBConnection {
 	 * @return List of Map<String, Object>> where String is the attribute and Object is the data,
 	 * the list is null if there's an SQL Exception.
 	 */
-	public static List<Map<String,Object>> executeQuery(String sqlQuery) {
+	public static List<Map<String,Object>> executeQuery(String sqlQuery) throws RuntimeException {
 		Connection conn = null;
 		try {
 			conn = getConnection();
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection failed to get connection from pool " + e.getMessage());
+			gui.Utils.showDBConnectionErrorMessage();
+			throw new RuntimeException();
 		}
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -74,7 +76,7 @@ public class DBConnection {
 	 * @return an integer - the numbers of rows that were updated (DML) or 0 (DDL),
 	 * -1 on failure. 
 	 */
-	public static int executeUpdate(String sqlUpdate) {
+	public static int executeUpdate(String sqlUpdate) throws RuntimeException{
 		Connection conn = null;
 		Statement stmt = null;
 		int result = -1;
@@ -83,6 +85,8 @@ public class DBConnection {
 			conn = getConnection();
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection failed to get connection from pool " + e.getMessage());
+			gui.Utils.showDBConnectionErrorMessage();
+			throw new RuntimeException();
 		}
 	
 		try {
@@ -114,6 +118,12 @@ public class DBConnection {
 		
 		try {
 			conn = getConnection();
+		} catch (SQLException e) {
+			Logger.writeErrorToLog("DBConnection failed to get connection from pool " + e.getMessage());
+			gui.Utils.showDBConnectionErrorMessage();
+		}
+		
+		try {
 			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
 			
