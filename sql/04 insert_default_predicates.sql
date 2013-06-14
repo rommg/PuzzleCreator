@@ -2,6 +2,8 @@ INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<diedOn
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wasBornOnDate>', 'That person was born on ?', null);
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wasCreatedOnDate>', 'Was created on ?', null);
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasNumberOfPeople>', 'Populated by ? people', null);
+INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasMotto>', 'Its motto is ?', null);
+INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasPages>', 'Has ? pages', null);
 
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<actedIn>', 'Participated in ?', 'Production in which ? participated');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<created>', 'Created ?', 'Was created by ?');
@@ -9,12 +11,16 @@ INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<direct
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasCapital>', 'Its capital is ?', 'Captial of ?');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasChild>', 'Parent of ?', 'Child of ?');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasCurrency>', 'Its currency is ?', 'The currency of ?');
+INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<happenedIn>', 'It happened in ?', '? happened there');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasOfficialLanguage>', 'Its official language is ?', 'The official language of ?');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<holdsPoliticalPosition>', '?', 'The political position ? holds');
+INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasWebsite>', 'Its website is ?', null);
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isInterestedIn>', 'Person who is interested in ?', '? is interested in it');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isMarriedTo>', 'Married to ?', 'Married to ?');
+INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isLocatedIn>', 'Located in ?', '? is located there');
 -- INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<livesIn>', 'Person who lives in ?', '? lives there');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<playsFor>', 'Plays for ?', '? plays for it');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wasBornIn>', 'Was born in ?', '? was born there');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasWonPrize>', 'Has won the ?', '? has won it');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wroteMusicFor>', 'Wrote music for ?', 'The music of ? was written by that person');
+INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<worksAt>', 'Works at ?', '? works there');

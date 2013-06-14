@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import utils.Logger;
 import main.*;
@@ -106,7 +107,7 @@ public class DBConnection {
 	 * @return 1 on success, 0 if commit failed but rollback succeed and
 	 * -1 if both commit and rollback failed.
 	 */
-	public static int excuteDeleteHintsByIds(List<Integer> hintIdToDelete) {
+	public static int excuteDeleteHintsByIds(Set<Integer> hintIdToDelete) {
 		Connection conn = null;
 		Statement stmt = null;
 		int result = -1;
