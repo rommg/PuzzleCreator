@@ -5,13 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD
-=======
 import java.util.Map.Entry;
 import java.util.Set;
 
 import massiveImport.YagoFileHandler;
->>>>>>> b3ee53d76b047cec8ff5fc624e5ca651251b64d9
 
 import connectionPool.DBConnection;
 import puzzleAlgorithm.AlgorithmWorker;

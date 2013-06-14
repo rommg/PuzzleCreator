@@ -97,6 +97,7 @@ public class ManagementView extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				String entityText = newTextField.getText(); 
 				if (!entityText.isEmpty()) {
+					definitionCounter = 0;
 					buildEmptyDefinitionPanel();
 					buildEmptyHintPanel();
 				}
@@ -117,6 +118,7 @@ public class ManagementView extends JPanel {
 				if (searchText.isEmpty())
 					return; // do nothing if no text entered
 
+				definitionCounter = 0;
 				chosenEntityID = -1;
 				chosenEntityID  = allEntities.get(searchText);
 
@@ -312,6 +314,8 @@ public class ManagementView extends JPanel {
 
 		hintsPanel.revalidate();
 		tabbedPane.addTab("Hints", null, hintsPanel,null);
+		tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, false);
+
 		tabbedPane.revalidate();
 
 		return;
@@ -362,15 +366,15 @@ public class ManagementView extends JPanel {
 
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new GridLayout(1,2));
-			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
-			saveBtn.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					topicBox.setEnabled(true);
-					definitionBox.setEnabled(true);
-				}
-			});
+			//			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
+			//			saveBtn.addActionListener(new ActionListener() {
+			//
+			//				@Override
+			//				public void actionPerformed(ActionEvent arg0) {
+			//					topicBox.setEnabled(true);
+			//					definitionBox.setEnabled(true);
+			//				}
+			//			});
 			deleteBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
@@ -378,7 +382,8 @@ public class ManagementView extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					if (definitionCounter - 1 >= 1){
 						if (!DefinitionLine.this.definitionBox.getText().toString().isEmpty()) {
-							DBUtils.deleteEntityDefinition(chosenEntityID, DefinitionLine.this.definitionID);
+							//DBUtils.deleteEntityDefinition(chosenEntityID, DefinitionLine.this.definitionID);
+							definitionCounter--;
 							JPanel parent = (JPanel) DefinitionLine.this.getParent();
 							parent.remove(DefinitionLine.this);
 							parent.revalidate();
@@ -439,7 +444,7 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (!field.getText().isEmpty()) {
-						DBUtils.deleteHint(HintResultLine.this.hint.id);
+						//DBUtils.deleteHint(HintResultLine.this.hint.id);
 						JPanel parent = (JPanel) HintResultLine.this.getParent();
 						parent.remove(HintResultLine.this);
 						parent.revalidate();
@@ -508,15 +513,22 @@ public class ManagementView extends JPanel {
 				public void actionPerformed(ActionEvent arg0) {
 					if (topicBox.getModel().getCheckeds().size() < 1) 
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),"<html><center>You must choose at least one topic.</html>" );
-					if	(!field.getSelectedItem().toString().isEmpty() && 
-							(isValidString(field.getSelectedItem().toString()))) {
-						//add DB procedure
-					}
-					else  { // show error message
-						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
-								"<html><center>Invalid Text.</html>");
-					}
+					if (field.getSelectedItem() != null ) {
+						if	( !field.getSelectedItem().toString().isEmpty() && 
+								(isValidString(field.getSelectedItem().toString()))) {
+							definitionCounter++;
+							//add DB procedure
+							definitionPanel.remove(NewDefinitionLine.this);
+							//definitionPanel.add(new DefinitionLine(definitionID, definition));
+							tabbedPane.setEnabledAt(1, true);
+							definitionPanel.revalidate();
+						}
+						else  { // show error message
+							JOptionPane.showMessageDialog(MainView.getView().getFrame(),
+									"<html><center>Invalid Text.</html>");
+						}
 
+					}
 				}
 			});
 			add(saveBtn, BorderLayout.EAST);

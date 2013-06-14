@@ -20,6 +20,8 @@ public class Utils {
 	public static void showDBConnectionErrorMessage() {
 		if (MainView.getView().getFrame() != null) // GUI is open at this stage
 			JOptionPane.showMessageDialog(MainView.getView().getFrame(), "We're sorry, but A DB error occured. Please try again.");
+		// return user to main screens
+		MainView.getView().showWelcomeView();
 	}
 
 
