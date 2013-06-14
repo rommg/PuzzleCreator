@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import massiveImport.YagoFileHandler;
 
@@ -87,10 +88,20 @@ public class DBUtils {
 					hints.put(entityId, definitions.get(entityId));
 				}
 			}
+			removeHintsIfMoreThen10(hints, entityId);
 			puzzleDefinition.setHints(hints.get(entityId));
 		}
 		return true;
 	}
+
+	private static void removeHintsIfMoreThen10(Map<Integer, List<String>> hints, Integer entityId) {
+		int numOfHints = hints.get(entityId).size();
+		while(numOfHints > 10){
+			int rand = (int)(Math.random() * hints.get(entityId).size());
+			hints.get(entityId).remove(rand);
+		}
+	}
+
 
 	private static Map<Integer, List<String>> getHints(String entityIds) {
 		String sqlHintsQuery = "select entity_id, yago_hint, is_entity_subject, subject_str, object_str " +
