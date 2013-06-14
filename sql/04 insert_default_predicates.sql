@@ -22,5 +22,5 @@ INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isLoca
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<playsFor>', 'Plays for ?', '? plays for it');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wasBornIn>', 'Was born in ?', '? was born there');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasWonPrize>', 'Has won the ?', '? has won it');
-INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wroteMusicFor>', 'Wrote music for ?', 'The music of ? was written by that person');
+INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<wroteMusicFor>', 'Wrote music for ?', '? wrote its music');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<worksAt>', 'Works at ?', '? works there');
