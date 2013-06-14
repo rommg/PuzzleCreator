@@ -34,6 +34,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	protected List<Answer> answers;
 	protected Set<Integer> usedEntities;
 	private boolean success = false;
+	long start;
+	int template;
 
 	private int[] topicsIds;
 	private int difficulty;
@@ -47,55 +49,77 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		this.unSolved = new ArrayList<PuzzleDefinition>();
 		this.definitions = new ArrayList<PuzzleDefinition>();
 		this.usedEntities = new HashSet<Integer>();
+		this.template = 1;
+		this.start = 0;
+
 	}
 
 	@Override
 	protected BoardSolution doInBackground() {
 		BoardSolution result = null;
-		int size = 13;
-		switch (difficulty) {
-		case 0:
-			size = 8;
-			break;
-		case 1:
-			size = 11;
-			break;
-		case 2:
-			size = 13;
-			break;
-		default:
-			break;
-		}
+		try {
+			int size = 13;
+			switch (difficulty) {
+			case 0:
+				size = 8;
+				break;
+			case 1:
+				size = 11;
+				break;
+			case 2:
+				size = 13;
+				break;
+			default:
+				break;
+			}
 
-		publish("Retrieving possible answers from DataBase...");
-		// TODO remove use of mock function after tests
-		// createMockAnswers();
-		answers = DBUtils.getPossibleAnswers(this.topicsIds, 11);
-		Logger.writeToLog("Number of answers = " + answers.size());
+			publish("Retrieving possible answers from DataBase...");
+			// TODO remove use of mock function after tests
+			// createMockAnswers();
+			answers = DBUtils.getPossibleAnswers(this.topicsIds, 11);
+			Logger.writeToLog("Number of answers = " + answers.size());
 
-		publish("Creating puzzle board...");
-		createBoardFromTemplateFile(size, 1);
-		Collections.sort(definitions);
-		printBoard();
-		printTopics();
-		printBoardStatus();
-		Logger.writeToLog("Optimizing board");
-		optimizeBoard();
-		printBoardStatus();
-		publish("Sorting answers on board...");
-		if (!fillBoard()) {
-			success = false;
-			Logger.writeErrorToLog("impossible data");
-			publish("failed to create Puzzle");
-			result = new BoardSolution(null, null, false, null);
-		} else {
-			success = true;
-			Logger.writeToLog("success");
-			publish("Retrieving hints and definitions from DataBase...");
-			DBUtils.setHintsAndDefinitions(definitions);
-			result = new BoardSolution(board, definitions, true, null);
-			printResults();
-			publish("Finished!");
+			publish("Creating puzzle board...");
+			createBoardFromTemplateFile(size, template);
+			Collections.sort(definitions);
+			printBoard();
+			printTopics();
+			printBoardStatus();
+			Logger.writeToLog("Optimizing board");
+			optimizeBoard();
+			printBoardStatus();
+			publish("Sorting answers on board...");
+			start = System.currentTimeMillis();
+			while (System.currentTimeMillis() - start < 60000) {
+				success = fillBoard(System.currentTimeMillis());
+				if (!success && (template == 1)) {
+					template = 2;
+					Logger.writeErrorToLog("impossible data for template 1");
+					
+					createBoardFromTemplateFile(size, template);
+					Collections.sort(definitions);
+					Logger.writeToLog("Optimizing board");
+					optimizeBoard();
+					
+				} else if (!success && (template == 2)) {
+					Logger.writeErrorToLog("impossible data for template 2");
+					publish("failed to create Puzzle");
+					break;
+					
+				} else {
+					Logger.writeToLog("success");
+					publish("Retrieving hints and definitions from DataBase...");
+					DBUtils.setHintsAndDefinitions(definitions);
+					result = new BoardSolution(board, definitions, true, null);
+					printResults();
+					publish("Finished!");
+				}
+			}
+			result = new BoardSolution(null, null, false, new Exception("not enough answers. Please choose another topic"));
+		} catch (Exception ex) {
+			result = new BoardSolution(board, definitions, true, ex);
+			Logger.writeErrorToLog("exception thrown in algorithm " + ex.getMessage());
+			Logger.writeErrorToLog("" + ex.getStackTrace());
 		}
 		return result;
 	}
@@ -109,19 +133,25 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 				if (ex instanceof SQLException) {
 					Utils.showDBConnectionErrorMessage();
 				}
-				if (ex instanceof IOException){
-					//TODO show IO error message in GUI - can't read template file 
+				if (ex instanceof IOException) {
+					// TODO show IO error message in GUI - can't read template
+					// file
 				}
 			} else {
 				CrosswordView crosswordView = (CrosswordView) CrosswordView.start(result);
-				MainView.getView().setCrosswordView(crosswordView); // adds JPanel to MainView card
+				MainView.getView().setCrosswordView(crosswordView); // adds
+																	// JPanel to
+																	// MainView
+																	// card
 				if (success)
 					view.setGoBtn(true);
 				else
 					view.setSkipBtnToTryAgain();
 			}
 		} catch (Exception ex) {
+			// TODO show message in GUI ? algorithm failed
 			Logger.writeErrorToLog("algorithm was interrupted before board was finished");
+
 		}
 	}
 
@@ -130,14 +160,16 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		view.setProgressMessage(messages.get(messages.size() - 1));
 	}
 
-	private boolean fillBoard() {
+	private boolean fillBoard(long runStart) {
 		Deque<BoardState> stack = new ArrayDeque<BoardState>();
 		boolean solved = false;
 		unSolved.addAll(definitions);
 		Collections.sort(unSolved);
 
 		outerLoop: while (!solved) {
-
+			if (System.currentTimeMillis() - runStart > 30000) {
+				return false;
+			}
 			PuzzleDefinition def = unSolved.get(0);
 			List<Answer> possibleAnswers = def.getPossibleAnswers();
 			innerLoop: while (!def.isSolved()) {
@@ -418,9 +450,13 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	private void printBoardStatus() {
 		int counter = 0;
+		Set<Integer> lengths = new HashSet<Integer>();
 		for (PuzzleDefinition def : definitions) {
-			Logger.writeToLog("def length: " + def.getLength() + " num of answers :" + def.getPossibleAnswers().size());
-			counter += def.getPossibleAnswers().size();
+			if (!lengths.contains(def.getLength())) {
+				Logger.writeToLog("def length: " + def.getLength() + " num of answers :" + def.getPossibleAnswers().size());
+				counter += def.getPossibleAnswers().size();
+				lengths.add(def.getLength());
+			}
 		}
 		Logger.writeToLog("Total number of possible answers = " + counter);
 	}
@@ -434,112 +470,116 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 
 	}
 
-	private boolean createBoardFromTemplateFile(int size, int templateNum) {
+	/**
+	 * This method creates new puzzle squares and new puzzle definitions for the
+	 * board, according to the template number
+	 * 
+	 * @param size
+	 * @param templateNum
+	 * @return
+	 */
+	private boolean createBoardFromTemplateFile(int size, int templateNum) throws IOException {
 		board = new PuzzleSquare[size][size];
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
-		File templateFile = new File(PuzzleCreator.appDir + "templates",
-				fileName);
-		try {
-			FileReader in = new FileReader(templateFile);
-			BufferedReader bin = new BufferedReader(in);
-			bin.readLine();
-			String line = bin.readLine();
-			int row;
-			int column;
-			boolean emptySquare;
-			int columnIndex;
-			int rowIndex;
-			int emptySquareIndex;
-			String columnValue;
-			String rowValue;
-			while (line.startsWith("Puzzle")) {
-				columnIndex = line.indexOf("column:");
-				rowIndex = line.indexOf("row:");
-				emptySquareIndex = line.indexOf("emptySquare:");
-				if (rowIndex - columnIndex == 10) {
-					columnValue = line.substring(columnIndex + 7, columnIndex + 9);
-				} else {
-					columnValue = "" + line.charAt(columnIndex + 7);
-				}
+		File templateFile = new File(PuzzleCreator.appDir + "templates", fileName);
 
-				if (emptySquareIndex - rowIndex == 7) {
-					rowValue = line.substring(rowIndex + 4, rowIndex + 6);
-				} else {
-					rowValue = "" + line.charAt(rowIndex + 4);
-				}
-
-				emptySquare = line.endsWith("true");
-
-				column = Integer.parseInt(columnValue);
-				row = Integer.parseInt(rowValue);
-				board[column][row] = new PuzzleSquare(emptySquare, column, row);
-				line = bin.readLine();
+		FileReader in = new FileReader(templateFile);
+		BufferedReader bin = new BufferedReader(in);
+		bin.readLine();
+		String line = bin.readLine();
+		int row;
+		int column;
+		boolean emptySquare;
+		int columnIndex;
+		int rowIndex;
+		int emptySquareIndex;
+		String columnValue;
+		String rowValue;
+		while (line.startsWith("Puzzle")) {
+			columnIndex = line.indexOf("column:");
+			rowIndex = line.indexOf("row:");
+			emptySquareIndex = line.indexOf("emptySquare:");
+			if (rowIndex - columnIndex == 10) {
+				columnValue = line.substring(columnIndex + 7, columnIndex + 9);
+			} else {
+				columnValue = "" + line.charAt(columnIndex + 7);
 			}
 
+			if (emptySquareIndex - rowIndex == 7) {
+				rowValue = line.substring(rowIndex + 4, rowIndex + 6);
+			} else {
+				rowValue = "" + line.charAt(rowIndex + 4);
+			}
+
+			emptySquare = line.endsWith("true");
+
+			column = Integer.parseInt(columnValue);
+			row = Integer.parseInt(rowValue);
+			board[column][row] = new PuzzleSquare(emptySquare, column, row);
 			line = bin.readLine();
-			int lengthIndex;
-			String lengthValue;
-			int length;
-			int directionIndex;
-			char direction;
-			int textRowIndex;
-			String textRowValue;
-			int textRow;
-			int textColIndex;
-			String textColValue;
-			int textCol;
+		}
 
-			while (line != null) {
-				rowIndex = line.indexOf("row:");
-				columnIndex = line.indexOf("column:");
-				lengthIndex = line.indexOf("length:");
-				directionIndex = line.indexOf("direction:");
-				textRowIndex = line.indexOf("textRow:");
-				textColIndex = line.indexOf("textCol:");
+		line = bin.readLine();
+		int lengthIndex;
+		String lengthValue;
+		int length;
+		int directionIndex;
+		char direction;
+		int textRowIndex;
+		String textRowValue;
+		int textRow;
+		int textColIndex;
+		String textColValue;
+		int textCol;
 
-				if (columnIndex - rowIndex == 7) {
-					rowValue = line.substring(rowIndex + 4, rowIndex + 6);
-				} else {
-					rowValue = "" + line.charAt(rowIndex + 4);
-				}
+		while (line != null) {
+			rowIndex = line.indexOf("row:");
+			columnIndex = line.indexOf("column:");
+			lengthIndex = line.indexOf("length:");
+			directionIndex = line.indexOf("direction:");
+			textRowIndex = line.indexOf("textRow:");
+			textColIndex = line.indexOf("textCol:");
 
-				if (lengthIndex - columnIndex == 10) {
-					columnValue = line.substring(columnIndex + 7, columnIndex + 9);
-				} else {
-					columnValue = "" + line.charAt(columnIndex + 7);
-				}
-
-				if (directionIndex - lengthIndex == 10) {
-					lengthValue = line.substring(lengthIndex + 7, lengthIndex + 9);
-				} else {
-					lengthValue = "" + line.charAt(lengthIndex + 7);
-				}
-
-				direction = line.charAt(directionIndex + 10);
-
-				if (textColIndex - textRowIndex == 11) {
-					textRowValue = line.substring(textRowIndex + 8, textRowIndex + 10);
-				} else {
-					textRowValue = "" + line.charAt(textRowIndex + 8);
-				}
-
-				textColValue = line.substring(textColIndex + 8);
-				row = Integer.parseInt(rowValue);
-				column = Integer.parseInt(columnValue);
-				length = Integer.parseInt(lengthValue);
-				textRow = Integer.parseInt(textRowValue);
-				textCol = Integer.parseInt(textColValue);
-
-				insertDefinition(row, column, length, direction, textRow, textCol);
-				line = bin.readLine();
+			if (columnIndex - rowIndex == 7) {
+				rowValue = line.substring(rowIndex + 4, rowIndex + 6);
+			} else {
+				rowValue = "" + line.charAt(rowIndex + 4);
 			}
 
-			bin.close();
-			in.close();
-		} catch (IOException ex) {
-			Logger.writeErrorToLog("failed to read template file : " + fileName);
-			return false;
+			if (lengthIndex - columnIndex == 10) {
+				columnValue = line.substring(columnIndex + 7, columnIndex + 9);
+			} else {
+				columnValue = "" + line.charAt(columnIndex + 7);
+			}
+
+			if (directionIndex - lengthIndex == 10) {
+				lengthValue = line.substring(lengthIndex + 7, lengthIndex + 9);
+			} else {
+				lengthValue = "" + line.charAt(lengthIndex + 7);
+			}
+
+			direction = line.charAt(directionIndex + 10);
+
+			if (textColIndex - textRowIndex == 11) {
+				textRowValue = line.substring(textRowIndex + 8, textRowIndex + 10);
+			} else {
+				textRowValue = "" + line.charAt(textRowIndex + 8);
+			}
+
+			textColValue = line.substring(textColIndex + 8);
+			row = Integer.parseInt(rowValue);
+			column = Integer.parseInt(columnValue);
+			length = Integer.parseInt(lengthValue);
+			textRow = Integer.parseInt(textRowValue);
+			textCol = Integer.parseInt(textColValue);
+
+			insertDefinition(row, column, length, direction, textRow, textCol);
+			line = bin.readLine();
 		}
+
+		bin.close();
+		in.close();
+
 		return true;
 	}
 

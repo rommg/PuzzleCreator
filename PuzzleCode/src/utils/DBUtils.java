@@ -87,7 +87,7 @@ public class DBUtils {
 					hints.put(entityId, definitions.get(entityId));
 				}
 			}
-			removeHintsIfMoreThen10(hints, entityId);
+			//removeHintsIfMoreThen10(hints, entityId);
 			puzzleDefinition.setHints(hints.get(entityId));
 		}
 		return true;
