@@ -41,7 +41,7 @@ public class DBConnection {
 	 * @return List of Map<String, Object>> where String is the attribute and
 	 *         Object is the data, the list is null if there's an SQL Exception.
 	 */
-	public static List<Map<String, Object>> executeQuery(String sqlQuery) throws RuntimeException {
+	public static List<Map<String, Object>> executeQuery(String sqlQuery) {
 		Connection conn = null;
 		try {
 			conn = getConnection();

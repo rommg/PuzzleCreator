@@ -76,7 +76,7 @@ public class DBUtils {
 			try {
 				puzzleDefinition.setDefinition(definitions.get(entityId).get(rand));
 			} catch (Exception ex){
-				System.out.println("bla bla");
+				//TODO is this needed?
 			}
 			definitions.get(entityId).remove(rand);
 			if (definitions.get(entityId).size() != 0){
