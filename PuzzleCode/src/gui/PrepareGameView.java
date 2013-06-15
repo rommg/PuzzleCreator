@@ -18,6 +18,10 @@ import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
+import org.junit.runners.AllTests;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
+
 
 import utils.DBUtils;
 
@@ -34,9 +38,11 @@ public class PrepareGameView extends JPanel {
 	private JButton goBtn;
 	private JButton backBtn;
 	private JPanel topicsPanel;
-	private int[] selectedTopicsId;
+//	private List<integer> selectedTopicsId;
 
 	private static final String GENERAL_KNOWLEDGE_TOPIC = "General Knowledge";
+	private static final String USER_UPDATE_TOPIC = "User Updates";
+
 
 	private PrepareGameView() {
 		initialize();
@@ -114,15 +120,18 @@ public class PrepareGameView extends JPanel {
 	}
 
 	void goBtnClicked() {
-		int[] selectedTopicIDs = getUserSelectedTopics();
+		List<Integer> selectedTopicIDs= getUserSelectedTopics();
 		int difficulty = getUserSelectedDifficulty();
 
-		if (selectedTopicIDs.length < 3) { // must choose at least two topics
+		int remainingTopics = 2 - selectedTopicIDs.size();
+		remainingTopics++; // dont count general knowledge
+		remainingTopics = (!selectedTopicIDs.contains(topicsList.get(USER_UPDATE_TOPIC))) ?  remainingTopics : remainingTopics + 1;
+		if (remainingTopics > 0) { // must choose at least two topics
 			JOptionPane.showMessageDialog(MainView.getView().getFrame(),
-					"At least two Topics must be selected.");
-		}
+					remainingTopics + " more topic(s), excluding user updates topic must be selected.");
+		} 
 		else {
-			MainView.getView().showWaitView(selectedTopicIDs,difficulty);
+			MainView.getView().showWaitView(getSelectedTopicsIdsAsArray(selectedTopicIDs),difficulty);
 		}
 	}
 
@@ -131,7 +140,7 @@ public class PrepareGameView extends JPanel {
 	 * 
 	 * @return user selected topics
 	 */
-	public int[] getUserSelectedTopics() {
+	public List<Integer> getUserSelectedTopics() {
 
 		List<Integer> selectedTopics = new ArrayList<Integer>();
 		
@@ -144,19 +153,16 @@ public class PrepareGameView extends JPanel {
 		// add General Knowledge update
 		selectedTopics.add(topicsList.get(GENERAL_KNOWLEDGE_TOPIC));
 
-
-		int[] topicsArray = new int[selectedTopics.size()];
-		
-		for (int i = 0; i < selectedTopics.size(); i++){
-			topicsArray[i] = selectedTopics.get(i);
+		return selectedTopics;	
 		}
 
-		this.selectedTopicsId = topicsArray;
-		return topicsArray;
-	}
-
-	public int[] getSelectedTopicsIds() {
-		return this.selectedTopicsId;
+	private int[] getSelectedTopicsIdsAsArray(List<Integer> list) {
+		int [] res = new int[list.size()];
+		int index = 0;
+		for (Integer id : list) {
+			res[index++] = id;
+		}
+		return res;
 	}
 
 	public int getUserSelectedDifficulty() {

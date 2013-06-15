@@ -58,10 +58,9 @@ public class PuzzleCreator {
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
 				username, password);
 
-		int tries = 1;
 		if (!connectionPool.createPool()) {
 			gui.Utils.showDBConnectionErrorMessage();
-			Logger.writeErrorToLog("Failed to create the Connections Pool on try #" +tries +".");
+			Logger.writeErrorToLog("Failed to create the Connections Pool.");
 			closeAllDBConnections();
 			System.exit(0);
 
