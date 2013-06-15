@@ -23,7 +23,7 @@ INTO TABLE TEMP_ANSWERS
 INSERT INTO ANSWERS (answer, length, additional_information, entity_id)
 	SELECT DISTINCT yago.answer, LENGTH(yago.answer), yago.additional_information, entities.id
 	FROM yago_type AS yago, entities 
-	WHERE yago.subject = entities.name; -- AND LENGTH(yago.answer) < 16;
+	WHERE yago.subject = entities.name; 
 
 INSERT INTO ANSWERS (answer, length, additional_information, entity_id)
 	SELECT temp.answer, LENGTH(temp.answer), temp.additional_information, entities.id
