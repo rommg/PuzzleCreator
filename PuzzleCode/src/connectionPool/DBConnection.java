@@ -61,7 +61,6 @@ public class DBConnection {
 			returnList = mapResultSet(rs);
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection executeQuery: " + e.getMessage());
-			safelyClose(rs, stmt, conn, null);
 			throw new SQLException("SQL error", e);
 		} finally {
 			safelyClose(rs, stmt, conn, null);
@@ -90,7 +89,6 @@ public class DBConnection {
 			result = stmt.executeUpdate(sqlUpdate);
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection executeUpdate: " + e.getMessage());
-			safelyClose(null, stmt, conn, null);
 			throw new SQLException("SQL error", e);
 		} finally {
 			safelyClose(null, stmt, conn, null);
@@ -111,7 +109,6 @@ public class DBConnection {
 			Logger.writeToLog("deleteEntityDefinition deleted entity " +entityId+ " and definition "+definitionId);
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteEntityDefinition failed deletion from entities_definition. " + e.getMessage());
-			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -132,7 +129,6 @@ public class DBConnection {
 			Logger.writeToLog("deleteHint deleted hint " + hint_id);
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteHint failed deletion from hints. " + e.getMessage());
-			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -175,7 +171,6 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteEntity failed deletion. " + e.getMessage());
-			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -219,13 +214,9 @@ public class DBConnection {
 				conn.rollback();
 				Logger.writeToLog("excuteDeleteHintsByIds Rollback Successfully");
 				result = 0;
-				safelySetAutoCommit(conn);
-				safelyClose(null, stmt, conn, null);
 				throw new SQLException("excuteDeleteHintsByIds failed deletion, and rolled back",e);
 			} catch (SQLException e2) {
 				Logger.writeErrorToLog("excuteDeleteHintsByIds failed when rollbacking - " + e2.getMessage());
-				safelySetAutoCommit(conn);
-				safelyClose(null, stmt, conn, null);
 				throw new SQLException("roll back failed", e2);
 			}
 		} finally {
@@ -257,7 +248,6 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addDefinition failed insertion to definitions. " + e.getMessage());
-			safelyClose(rs, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -296,8 +286,6 @@ public class DBConnection {
 
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("setTopicsToDefinition failed insertion to definitions_topics. " + e.getMessage());
-			safelySetAutoCommit(conn);
-			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -322,7 +310,6 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("setNewDefinition failed insertion to entities_definitions. " + e.getMessage());
-			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -349,7 +336,6 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addEntity failed insertion to entities. " + e.getMessage());
-			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -385,7 +371,6 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addPredicate failed insertion to predicates. " + e.getMessage());
-			safelyClose(rs, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -421,7 +406,6 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
-			safelyClose(rs, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
