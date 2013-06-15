@@ -215,8 +215,24 @@ public class DBUtils {
 		return retMap;
 	}
 
-	public static Map<Integer, List<String>> getHintsByEntityID(int entityID) {
-		return getHints(createINString(Collections.singletonList(entityID)));
+	public static Map<Integer, String> getHintsByEntityID(int entityID) {
+		String sqlHintsQuery = "select h.id as hint_id, yago_hint, is_entity_subject, subject_str, object_str "
+				+ "from hints h, predicates p "
+				+ "where h.predicate_id = p.id and "
+				+ "entity_id = "
+				+ entityID + ";";
+		List<Map<String, Object>> hintsRs = DBConnection.executeQuery(sqlHintsQuery);
+		Map<Integer, String> hints = new HashMap<Integer, String>();
+
+		for (Map<String, Object> row : hintsRs) {
+			int hintId = Integer.parseInt(row.get("hint_id").toString());
+			String yagoHint = getProperName(row.get("yago_hint").toString());
+			boolean isEntitySubject = Boolean.parseBoolean(row.get("is_entity_subject").toString());
+			String hintStr = (isEntitySubject ? row.get("subject_str").toString() : row.get("object_str").toString());
+			hintStr = hintStr.replace("?", yagoHint);
+			hints.put(hintId, hintStr);
+		}
+		return hints;
 	}
 
 	/**
