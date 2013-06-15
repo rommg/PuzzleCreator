@@ -53,11 +53,12 @@ public class PuzzleCreator {
 			return;
 		}
 
+
 		MainView.start();
 
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
 				username, password);
-
+		Logger.writeToLog("Connections Pool was created");
 		int tries = 1;
 		if (!connectionPool.createPool()) {
 			gui.Utils.showDBConnectionErrorMessage();
@@ -66,8 +67,8 @@ public class PuzzleCreator {
 			System.exit(0);
 
 		}
-
 		Logger.writeToLog("Connections Pool was created");
+<<<<<<< HEAD
 
 		//		 TODO: To Delete
 		//		DBUtils.test();
@@ -80,29 +81,16 @@ public class PuzzleCreator {
 		//		
 		//		HintsHandler.test();
 		//		DBUtils.getTriviaQuestion();
-<<<<<<< HEAD
-		//				YagoFileHandler yf = new YagoFileHandler(null);
-		//				try {
-		//					Logger.writeToLog("begin 05");
-		//					yf.importFilesToDB();
-		//					Logger.writeToLog("finished 05, begin 06");
-		//					yf.populateDB();
-		//					Logger.writeToLog("finished 06");
-		//				} catch (Exception ex){
-		//			
-		//				}
-=======
-				YagoFileHandler yf = new YagoFileHandler(null);
-				try {
-					Logger.writeToLog("begin 05");
-					yf.importFilesToDB();
-					Logger.writeToLog("finished 05, begin 06");
-					yf.populateDB();
-					Logger.writeToLog("finished 06");
-				} catch (Exception ex){
-			
-				}
->>>>>>> e3dfa7626403375518b4fcdb85435b084b943ac7
+		YagoFileHandler yf = new YagoFileHandler(null);
+		try {
+			Logger.writeToLog("begin 05");
+			yf.importFilesToDB();
+			Logger.writeToLog("finished 05, begin 06");
+			yf.populateDB();
+			Logger.writeToLog("finished 06");
+		} catch (Exception ex){
+
+		}
 
 		// MassiveImporter.runMassiveImporter();
 		// AlgorithmRunner.runAlgorithm();
@@ -111,6 +99,9 @@ public class PuzzleCreator {
 		// TODO: move the call to closeAllDBConnections to the MainView thread.
 		// closeAllDBConnections();
 
+=======
+		
+>>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 	}
 
 	public static void closeAllDBConnections() {

@@ -444,7 +444,7 @@ public class ManagementView extends JPanel {
 			initialize();
 		}
 
-		private void initialize() {
+		private void initialize()  {
 
 			setLayout(new BorderLayout());
 

@@ -1,5 +1,6 @@
 package utils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import connectionPool.DBConnection;
 
 public class DBUtils {
 
-	public static List<Answer> getPossibleAnswers(int[] topics, int maxLength) {
+	public static List<Answer> getPossibleAnswers(int[] topics, int maxLength) throws SQLException {
 		StringBuffer topicsCondition = new StringBuffer("(");
 		boolean first = true;
 		for (int topic : topics) {
@@ -53,7 +54,7 @@ public class DBUtils {
 	}
 
 	public static boolean setHintsAndDefinitions(
-			List<PuzzleDefinition> pDefinitions) {
+			List<PuzzleDefinition> pDefinitions)  throws SQLException {
 		StringBuffer entitiesIds = new StringBuffer("(");
 		for (PuzzleDefinition puzzleDefinition : pDefinitions) {
 			entitiesIds.append(puzzleDefinition.getEntityId());
@@ -101,7 +102,7 @@ public class DBUtils {
 		}
 	}
 
-	private static Map<Integer, List<String>> getHints(String entityIds) {
+	private static Map<Integer, List<String>> getHints(String entityIds) throws SQLException {
 		String sqlHintsQuery = "select entity_id, yago_hint, is_entity_subject, subject_str, object_str "
 				+ "from hints h, predicates p "
 				+ "where h.predicate_id = p.id and "
@@ -133,7 +134,7 @@ public class DBUtils {
 		return hints;
 	}
 
-	private static Map<Integer, List<String>> getDefinitions(String entityIds) {
+	private static Map<Integer, List<String>> getDefinitions(String entityIds) throws SQLException {
 		String sqlDefinitionsQuery = "select entities.id as entity_id, definitions.definition as definition "
 				+ "from entities, entities_definitions, definitions "
 				+ "where entities.id = entities_definitions.entity_id and "
@@ -171,7 +172,7 @@ public class DBUtils {
 	/**
 	 * GUI SQLs
 	 */
-	public static Map<String, Integer> getAllTopicIDsAndNames() {
+	public static Map<String, Integer> getAllTopicIDsAndNames() throws SQLException  {
 		String sql = "select topics.id,topics.name " + "from topics";
 
 		Map<String, Integer> retMap = new HashMap<String, Integer>();
@@ -183,7 +184,7 @@ public class DBUtils {
 		return retMap;
 	}
 
-	public static Map<String, Integer> getDefinitionsByEntityID(int entityID) {
+	public static Map<String, Integer> getDefinitionsByEntityID(int entityID) throws SQLException {
 		String sql = "SELECT definitions.id, definitions.definition "
 				+ "FROM definitions, entities_definitions, entities "
 				+ "WHERE entities.id = entities_definitions.entity_id AND "
@@ -201,7 +202,7 @@ public class DBUtils {
 		return retMap;
 	}
 
-	public static Map<String, Integer> getAllEntities() {
+	public static Map<String, Integer> getAllEntities() throws SQLException {
 		String sql = "SELECT entities.id, entities.name " + "FROM entities;";
 
 		Map<String, Integer> retMap = new HashMap<String, Integer>();
@@ -215,7 +216,7 @@ public class DBUtils {
 		return retMap;
 	}
 
-	public static Map<Integer, String> getHintsByEntityID(int entityID) {
+	public static Map<Integer, String> getHintsByEntityID(int entityID) throws SQLException{
 		String sqlHintsQuery = "select h.id as hint_id, yago_hint, is_entity_subject, subject_str, object_str "
 				+ "from hints h, predicates p "
 				+ "where h.predicate_id = p.id and "
@@ -240,7 +241,7 @@ public class DBUtils {
 	 * 
 	 * @return
 	 */
-	public static Map<String, Integer> getAllDefinitions() {
+	public static Map<String, Integer> getAllDefinitions() throws SQLException {
 		String sql = "SELECT definitions.id,definitions.definition "
 				+ "FROM definitions";
 		Map<String, Integer> map = new HashMap<String, Integer>();
@@ -259,7 +260,7 @@ public class DBUtils {
 	 * @param definitionIDs
 	 * @return
 	 */
-	public static Map<String, Integer> getTopicsByDefinitionID(int definitionID) {
+	public static Map<String, Integer> getTopicsByDefinitionID(int definitionID) throws SQLException {
 		String sql = "SELECT topics.id, topics.name "
 				+ "FROM topics, definitions_topics "
 				+ "WHERE (topics.id = definitions_topics.topic_id) AND (definitions_topics.definition_id = "
@@ -278,7 +279,7 @@ public class DBUtils {
 		return rows;
 	}
 
-	public static String[][] getTenBestScores() {
+	public static String[][] getTenBestScores() throws SQLException {
 		String sql = "SELECT best_scores.user_name, best_scores.score, best_scores.date "
 				+ "FROM best_scores "
 				+ "ORDER BY best_scores.score DESC "
@@ -301,7 +302,7 @@ public class DBUtils {
 
 	}
 
-	public static boolean addBestScore(String name, int score) {
+	public static boolean addBestScore(String name, int score) throws SQLException {
 		String sql = "INSERT into best_scores (user_name, score,date) VALUES ('"
 				+ name + "'," + score + "," + "CURRENT_TIME());";
 		return (DBConnection.executeUpdate(sql) < 1);
@@ -322,7 +323,7 @@ public class DBUtils {
 	}
 
 	// TODO: remove!!!!
-	public static void test() {
+	public static void test() throws SQLException  {
 		int[] topics = { 1 };
 		List<Answer> answers = DBUtils.getPossibleAnswers(topics, 10);
 		System.out.println("Found " + answers.size() + " possible answers");
@@ -373,7 +374,7 @@ public class DBUtils {
 
 	// TODO: end to remove
 
-	public static String[] getTriviaQuestion() {
+	public static String[] getTriviaQuestion() throws SQLException {
 		String sqlQuery = "SELECT a.answer, a.additional_information, d.definition "
 				+ "FROM entities e, answers a, definitions d, entities_definitions ed "
 				+ "WHERE a.entity_id = e.id AND a.length < 10 AND a.length > 3 AND e.id = ed.entity_id AND ed.definition_id = d.id "

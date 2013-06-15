@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.mysql.jdbc.SQLError;
+
 import utils.Logger;
 import main.*;
 import massiveImport.YagoFileHandler;
@@ -61,6 +64,7 @@ public class DBConnection {
 			returnList = mapResultSet(rs);
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection executeQuery: " + e.getMessage());
+			safelyClose(rs, stmt, conn, null);
 			throw new SQLException("SQL error", e);
 		} finally {
 			safelyClose(rs, stmt, conn, null);
@@ -89,6 +93,7 @@ public class DBConnection {
 			result = stmt.executeUpdate(sqlUpdate);
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection executeUpdate: " + e.getMessage());
+			safelyClose(null, stmt, conn, null);
 			throw new SQLException("SQL error", e);
 		} finally {
 			safelyClose(null, stmt, conn, null);
@@ -109,6 +114,7 @@ public class DBConnection {
 			Logger.writeToLog("deleteEntityDefinition deleted entity " +entityId+ " and definition "+definitionId);
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteEntityDefinition failed deletion from entities_definition. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -129,6 +135,7 @@ public class DBConnection {
 			Logger.writeToLog("deleteHint deleted hint " + hint_id);
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteHint failed deletion from hints. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -171,6 +178,7 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteEntity failed deletion. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -214,9 +222,13 @@ public class DBConnection {
 				conn.rollback();
 				Logger.writeToLog("excuteDeleteHintsByIds Rollback Successfully");
 				result = 0;
+				safelySetAutoCommit(conn);
+				safelyClose(null, stmt, conn, null);
 				throw new SQLException("excuteDeleteHintsByIds failed deletion, and rolled back",e);
 			} catch (SQLException e2) {
 				Logger.writeErrorToLog("excuteDeleteHintsByIds failed when rollbacking - " + e2.getMessage());
+				safelySetAutoCommit(conn);
+				safelyClose(null, stmt, conn, null);
 				throw new SQLException("roll back failed", e2);
 			}
 		} finally {
@@ -248,6 +260,7 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addDefinition failed insertion to definitions. " + e.getMessage());
+			safelyClose(rs, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -286,6 +299,8 @@ public class DBConnection {
 
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("setTopicsToDefinition failed insertion to definitions_topics. " + e.getMessage());
+			safelySetAutoCommit(conn);
+			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -310,6 +325,7 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("setNewDefinition failed insertion to entities_definitions. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -336,6 +352,7 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addEntity failed insertion to entities. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -371,6 +388,7 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addPredicate failed insertion to predicates. " + e.getMessage());
+			safelyClose(rs, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -379,8 +397,13 @@ public class DBConnection {
 		return id;
 	}
 
-	private static int getMaxPredicateId() throws SQLException{
+<<<<<<< HEAD
+	private static int getMaxPredicateId() {
 		String sqlQuery = "SELECT max(id) as max_id FROM predicate;";
+=======
+	private static int getMaxPredicateId() throws SQLException{
+		String sqlQuery = "SELECT max(id) as max_id FROM predicates;";
+>>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
 			//TODO: ERROR
@@ -406,6 +429,7 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
+			safelyClose(rs, null, conn, pstmt);
 			throw new SQLException("SQL error", e);
 		}
 		finally {
@@ -621,7 +645,7 @@ public class DBConnection {
 		return 1;
 	}
 
-	public static void insreatIntoYagoType(String yagoTypes_tsv) throws SQLException, IOException{
+	public static void insreatIntoYagoType(String yagoTypes_tsv){
 		String line = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = null;
@@ -667,7 +691,13 @@ public class DBConnection {
 			safelyClose(null, pStmt, conn, null);
 		}
 	}
+<<<<<<< HEAD
 	
+	
+//
+=======
+
+>>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 //	public static int insreatIntoYagoFact(File yagoFacts_tsv){
 //
 //	}
@@ -677,6 +707,11 @@ public class DBConnection {
 //	}
 //
 //	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
+<<<<<<< HEAD
+
+	}
+=======
 //
 //	}
+>>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 }

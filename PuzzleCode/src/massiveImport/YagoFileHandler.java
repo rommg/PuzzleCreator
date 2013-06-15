@@ -52,7 +52,7 @@ public class YagoFileHandler {
 	private Set<String> litertalTypes = null;
 	private Set<String> relevantEntities= null;
 
-	public YagoFileHandler(File direcotry) {
+	public YagoFileHandler(File direcotry) throws SQLException{
 		if (direcotry == null)
 			this.tsvDirectory = TSV_FILE_DEST_DIR;
 		else
@@ -62,35 +62,35 @@ public class YagoFileHandler {
 		relevantEntities = new HashSet<String>(); // will contain names of interesting entities
 	}
 
-	private void getEntityTypes()  { // can be changed in the future
+	private void getEntityTypes()  throws SQLException{ // can be changed in the future
 		entityTypes = new HashSet<String>(); 
 		fillCollectionEntitiesFromDB("definitions", "type", entityTypes);
 	}
 
-	private void getPredicateTypes() { // can be changed in the future
+	private void getPredicateTypes() throws SQLException{ // can be changed in the future
 		predicateTypes = new HashSet<String>(); 
 		fillCollectionEntitiesFromDB("predicates", "predicate", predicateTypes);
 	}
 
-	private void getLiteralTypes() { // can be changed in the future
+	private void getLiteralTypes() throws SQLException{ // can be changed in the future
 		litertalTypes = new HashSet<String>(); 
 		fillCollectionEntitiesFromDB("predicates", "predicate", litertalTypes);
 
 	}
-
+	
 	public static boolean containsFiles(File directory) {
-
+		 
 		if (!directory.isDirectory())
 			return false;
 		File types = new File(directory + System.getProperty("file.separator") + YAGO_TYPES + TSV);
 		File facts = new File(directory + System.getProperty("file.separator") + YAGO_FACTS + TSV);
 		File literalFacts = new File(directory + System.getProperty("file.separator") + YAGO_LITERAL_FACTS + TSV);
-
+		
 		return (literalFacts.exists() && facts.exists() && types.exists());
 
 	}
 
-	private void fillCollectionEntitiesFromDB(String tableName, String entityType, Set<String> collection) {
+	private void fillCollectionEntitiesFromDB(String tableName, String entityType, Set<String> collection) throws SQLException{
 		String columnName = "yago_" + entityType;
 		List<Map<String,Object>> rs = null;
 		String query = "SELECT " + tableName + "." + columnName +  " FROM " + tableName + ";";
@@ -99,7 +99,7 @@ public class YagoFileHandler {
 			collection.add((String)row.get(columnName));
 	}
 
-	private void getTypes() {
+	private void getTypes() throws SQLException{
 		getEntityTypes();
 		getPredicateTypes();
 		getLiteralTypes();
@@ -315,7 +315,7 @@ public class YagoFileHandler {
 								+ lineColumns[2] + "\t" 
 								+ lineColumns[3] + decomposedYagoID[3] + "\t";
 
-
+						
 						if (subjectHit) {
 							String subjectLine = newLine + "1"; 
 							bw.write(subjectLine); // write one line for subject matched
@@ -429,21 +429,21 @@ public class YagoFileHandler {
 		return 1;
 	}
 
-	public void cleanDataTables() throws SQLException {
+	public void cleanDataTables() throws SQLException, IOException {
 
 		DBConnection.executeSqlScript(SQL_DIR + "00 create_schema_and_tables.sql");
 	}
-
-	public void importFilesToDB() throws SQLException {
+	
+	public void importFilesToDB() throws SQLException, IOException {
 
 		DBConnection.executeSqlScript(SQL_DIR + "05 load_yago_data.sql");
 	}
 
-	public void populateDB() throws SQLException {
+	public void populateDB() throws SQLException, IOException {
 
 		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql"); 
 	}
-
+	
 	public void reduceHints() throws SQLException {
 		HintsHandler.setMaximumTemHintsForEachEntity();
 	}

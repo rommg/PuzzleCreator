@@ -65,38 +65,8 @@ public class PuzzleCreator {
 			System.exit(0);
 
 		}
-
 		Logger.writeToLog("Connections Pool was created");
-
-		//		 TODO: To Delete
-		//		DBUtils.test();
-		//		
-		//		HintsHandler.test();
-		//		DBUtils.getTriviaQuestion();
-		//
-		//		int[] topics = {1,2};
-		//		AlgorithmWorker aw = new AlgorithmWorker(null, topics, 0);
-		//		
-		//		HintsHandler.test();
-		//		DBUtils.getTriviaQuestion();
-				YagoFileHandler yf = new YagoFileHandler(null);
-				try {
-					Logger.writeToLog("begin 05");
-					yf.importFilesToDB();
-					Logger.writeToLog("finished 05, begin 06");
-					yf.populateDB();
-					Logger.writeToLog("finished 06");
-				} catch (Exception ex){
-			
-				}
-
-		// MassiveImporter.runMassiveImporter();
-		// AlgorithmRunner.runAlgorithm();
-		// GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
-
-		// TODO: move the call to closeAllDBConnections to the MainView thread.
-		// closeAllDBConnections();
-
+		
 	}
 
 	public static void closeAllDBConnections() {
