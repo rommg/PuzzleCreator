@@ -304,7 +304,7 @@ public class DBUtils {
 
 	public static boolean addBestScore(String name, int score) throws SQLException {
 		String sql = "INSERT into best_scores (user_name, score,date) VALUES ('"
-				+ name + "'," + score + "," + "CURRENT_TIME());";
+				+ name + "'," + score + "," + "date(now()));";
 		return (DBConnection.executeUpdate(sql) < 1);
 	}
 

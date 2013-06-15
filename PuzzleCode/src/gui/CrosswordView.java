@@ -112,9 +112,9 @@ public class CrosswordView extends JPanel {
 	 */
 	private CrosswordView(BoardSolution solution) {
 		size = solution.getBoard().length;
-		
+
 		initialize();
-		
+
 		drawBoard(solution.getBoard(), solution.getDefinitions()); // draws board
 	}
 
@@ -150,7 +150,7 @@ public class CrosswordView extends JPanel {
 			}
 		});
 		BtnPanel.add(btnArtificialWin);
-		
+
 		btnCheck = new JButton("Check my Answers!", new ImageIcon(getClass().getResource("../resources/check_medium.png")));
 		btnCheck.setFont(btnCheck.getFont().deriveFont(15f));
 		btnCheck.setEnabled(false);
@@ -172,7 +172,8 @@ public class CrosswordView extends JPanel {
 					if (highScores != null && isHighScore(highScores, score)) {
 						String name = JOptionPane.showInputDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Enter your name for fame and glory.</html>");
 						try {
-							DBUtils.addBestScore(name, score);
+							if (name!=null && !name.isEmpty())
+								DBUtils.addBestScore(name, score);
 						} catch (SQLException e) {
 							Utils.showErrorMessage("Oops! There was a DB error, we cannot save you high score." );
 						}
@@ -223,11 +224,11 @@ public class CrosswordView extends JPanel {
 		BtnPanel.add(btnPause);
 		BtnPanel.add(btnCheck);
 		BtnPanel.add(btnSurrender);	
-		
+
 	}
 
 	void setFrameSizeByBoardSize() {
-		
+
 		int width = 0;
 		int height = 0;
 		int difficulty = getDifficultyFromSize();
@@ -250,12 +251,12 @@ public class CrosswordView extends JPanel {
 			Logger.writeErrorToLog("invalid board size, cannot resize window accordingly");
 		}
 		}
-		
+
 		MainView.getView().getFrame().setMinimumSize(new Dimension(width,height));
 		MainView.getView().getFrame().setPreferredSize(new Dimension(width, height));
-		
+
 	}
-	
+
 	private int getDifficultyFromSize() {
 		switch (size) {
 		case 8:  {
@@ -269,7 +270,7 @@ public class CrosswordView extends JPanel {
 		}
 		default:
 			return -1;
-	}
+		}
 	}
 
 	private String[][] getHighScores() throws SQLException {
@@ -280,7 +281,7 @@ public class CrosswordView extends JPanel {
 		this.definitions = definitions; // 
 
 		size = board.length;
-		
+
 		boardPanelHolders = new AbstractSquarePanel[size][size];
 		boardDefCount = new int[size][size];
 		boardDefs =  new HashMap<Integer, Map<Integer, List<PuzzleDefinition>>>(); // Map required because cannot make such an array

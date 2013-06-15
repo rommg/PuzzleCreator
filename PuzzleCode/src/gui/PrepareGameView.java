@@ -129,7 +129,7 @@ public class PrepareGameView extends JPanel {
 		remainingTopics = (!selectedTopicIDs.contains(topicsList.get(USER_UPDATE_TOPIC))) ?  remainingTopics : remainingTopics + 1;
 		if (remainingTopics > 0) { // must choose at least two topics
 			JOptionPane.showMessageDialog(MainView.getView().getFrame(),
-					remainingTopics + " more topic(s), excluding user updates topic must be selected.");
+					remainingTopics + " more topic(s), excluding 'User Updates' topic, must be selected.");
 		} 
 		else {
 			MainView.getView().showWaitView(getSelectedTopicsIdsAsArray(selectedTopicIDs),difficulty);
