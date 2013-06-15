@@ -57,7 +57,10 @@ public class ManagementView extends JPanel {
 	private String[] allTopicNamesArray;
 	private Map<String, Integer> definitions; // definitions for an entity as queries from DB
 	private Map<String,Integer> allDefinitions = null;
-	private int chosenEntityID;
+	
+	//global variables containing the chosen entity details
+	private int chosenEntityID = -1; // // for existing entities
+	private String chosenEntityString = ""; // for added entities
 
 
 	private static final String USER_UPDATES_TOPIC = "User Updates";
@@ -91,7 +94,7 @@ public class ManagementView extends JPanel {
 		topBtnPanel.setLayout(new GridLayout(2, 1, 0, 5));
 
 		final JButton btnAddNewFact = new JButton("");
-		btnAddNewFact.setIcon(new ImageIcon(getClass().getResource("/resources/add_tiny.png")));
+		btnAddNewFact.setIcon(new ImageIcon(getClass().getResource("../resources/add_tiny.png")));
 		btnAddNewFact.addActionListener(new ActionListener() {
 
 			@Override
@@ -99,6 +102,7 @@ public class ManagementView extends JPanel {
 				String entityText = newTextField.getText(); 
 				if (!entityText.isEmpty()) {
 					definitionCounter = 0;
+					chosenEntityString = entityText;
 					buildEmptyDefinitionPanel();
 					buildEmptyHintPanel();
 				}
@@ -108,7 +112,7 @@ public class ManagementView extends JPanel {
 
 		final JButton btnSearchFact = new JButton("");
 		btnSearchFact.setEnabled(false);
-		btnSearchFact.setIcon(new ImageIcon(getClass().getResource("/resources/search_tiny.png")));
+		btnSearchFact.setIcon(new ImageIcon(getClass().getResource("../resources/search_tiny.png")));
 		btnSearchFact.addActionListener(new ActionListener() {
 
 			@Override
@@ -120,7 +124,6 @@ public class ManagementView extends JPanel {
 					return; // do nothing if no text entered
 
 				definitionCounter = 0;
-				chosenEntityID = -1;
 				chosenEntityID  = allEntities.get(searchText);
 
 				if (chosenEntityID != -1) { // found
@@ -206,7 +209,7 @@ public class ManagementView extends JPanel {
 		btnPanel.setAlignmentX(FlowLayout.CENTER);
 		JButton btnBack = new JButton();
 		btnBack.setFont(btnBack.getFont().deriveFont(15f));
-		btnBack.setIcon(new ImageIcon(getClass().getResource("/resources/back.png")));
+		btnBack.setIcon(new ImageIcon(getClass().getResource("../resources/back.png")));
 
 		btnBack.addActionListener(new BackButtonListener());
 		btnPanel.add(btnBack);
@@ -337,57 +340,56 @@ public class ManagementView extends JPanel {
 
 
 	/**
-	 * one line in definitions tab: topic(s),definition,edit/delete buttons
+	 * one line in definitions tab: topic(s),definition,delete 
 	 * @author yonatan
 	 *
 	 */
 	private class DefinitionLine extends JPanel {
-		protected CheckComboBox topicBox;
-		//protected JComboBox<String> definitionBox;
-		protected JTextField definitionBox;
-		protected JButton saveBtn;
-		protected JButton deleteBtn;
-		protected int definitionID;
+		private CheckComboBox topicBox;
+		private JTextField definitionBox;
+		private  JButton deleteBtn;
+		
+		private int definitionID;
+		private String definitionText;
+		private int entityID;
+
 
 		protected JPanel btnPanel;
 
 		public DefinitionLine(int definitionID, String definition) {
-			setLayout(new BorderLayout());
-
+			this.definitionText = definition;
 			this.definitionID = definitionID;
+			initialize();
+		}
+		
+		private void initialize() {
+			setLayout(new BorderLayout());
 
 			Map<String,Integer> topics = getTopicsForDefinition(definitionID);
 			topicBox = new TopicsCheckComboBox(allTopics.keySet(), topics.keySet(), true);
 			super.add(topicBox, BorderLayout.WEST);
 			definitionBox = new LimitedTextField(70);
-			definitionBox.setText(definition);
+			definitionBox.setText(definitionText);
 			definitionBox.setEditable(false);
 
 			super.add(definitionBox, BorderLayout.CENTER);
 
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new GridLayout(1,2));
-			//			saveBtn = new JButton(new ImageIcon(ManagementView"".getResource("/resources/save_small.png")));
-			//			saveBtn.addActionListener(new ActionListener() {
-			//
-			//				@Override
-			//				public void actionPerformed(ActionEvent arg0) {
-			//					topicBox.setEnabled(true);
-			//					definitionBox.setEnabled(true);
-			//				}
-			//			});
-			deleteBtn = new JButton(new ImageIcon(getClass().getResource("/resources/delete_small.png")));		
+
+			deleteBtn = new JButton(new ImageIcon(getClass().getResource("../resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (definitionCounter - 1 >= 1){
 						if (!DefinitionLine.this.definitionBox.getText().toString().isEmpty()) {
-							//DBUtils.deleteEntityDefinition(chosenEntityID, DefinitionLine.this.definitionID);
+							KnowledgeManagement.deleteEntityDefinition(DefinitionLine.this.entityID, DefinitionLine.this.definitionID);
 							definitionCounter--;
-							JPanel parent = (JPanel) DefinitionLine.this.getParent();
-							parent.remove(DefinitionLine.this);
-							parent.revalidate();
+							buildDefinitionPanel(DefinitionLine.this.entityID);
+//							JPanel parent = (JPanel) DefinitionLine.this.getParent();
+//							parent.remove(DefinitionLine.this);
+//							parent.revalidate();
 						}
 					}
 					else { // popup error message
@@ -418,28 +420,11 @@ public class ManagementView extends JPanel {
 
 			field = new JTextField(hint.getText());
 			field.setEditable(false);
-			//			field.addKeyListener(new KeyAdapter() {
-			//
-			//				@Override
-			//				public void keyTyped(KeyEvent arg0) {
-			//					saveBtn.setEnabled(true);					
-			//				}
-			//			});
-
 			add(field, BorderLayout.CENTER);
 
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new BorderLayout());
-			//			btnPanel.setLayout(new GridLayout(1,2));
-			//			saveBtn = new JButton(new ImageIcon(ManagementView"".getResource("/resources/save_small.png")));
-			//			saveBtn.addActionListener(new ActionListener() {
-			//
-			//				@Override
-			//				public void actionPerformed(ActionEvent arg0) {
-			//
-			//				}
-			//			});
-			deleteBtn = new JButton(new ImageIcon(getClass().getResource("/resources/delete_small.png")));		
+			deleteBtn = new JButton(new ImageIcon(getClass().getResource("../resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
 				@Override
@@ -459,14 +444,19 @@ public class ManagementView extends JPanel {
 		}
 	}
 
-	private List<Integer> getUserSelectedTopics(Object[] selected) {
+	private List<Integer> getUserSelectedTopics(CheckComboBox box) {
 		List<Integer>  lst = new ArrayList<Integer>();
-		for (Object object : selected) {
-			lst.add((Integer)object);
+		for (Object object : box.getModel().getCheckeds()) {
+			lst.add(allTopics.get(object.toString()));
 		}
 		return lst;
 	}
 
+	/**
+	 *  one line in definitions tab: topic(s),new definition, add
+	 * @author yonatan
+	 *
+	 */
 	private class NewDefinitionLine extends JPanel {
 
 		JComboBox<String> field;
@@ -474,13 +464,9 @@ public class ManagementView extends JPanel {
 		int entityID = -1;
 		String entityText = null;
 
-		NewDefinitionLine() { // for exisiting entity
-			this(null);
+		NewDefinitionLine() { // for existing entity
 			entityID = chosenEntityID;
-		}
-
-		NewDefinitionLine(String entityText) { // for new entity
-			this.entityText = entityText;
+			entityText = new String(chosenEntityString);
 		}
 
 		private void initialize() {
@@ -488,6 +474,8 @@ public class ManagementView extends JPanel {
 			setLayout(new BorderLayout());
 
 			field = createAutoCompleteBox(allDefinitions.keySet(), "", false);
+			
+			// changes topics combobox according to definition chosen 
 			field.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent itemEvent) { 
 					NewDefinitionLine.this.remove(topicBox);
@@ -513,35 +501,44 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			add(field, BorderLayout.CENTER);
+			add(field, BorderLayout.EAST);
 
 			topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , true);
-			add(topicBox, BorderLayout.WEST);
+			add(topicBox, BorderLayout.CENTER);
 
-			JButton saveBtn = new JButton(new ImageIcon(getClass().getResource("/resources/add_small.png")));
+			JButton saveBtn = new JButton(new ImageIcon(getClass().getResource("../resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if (topicBox.getModel().getCheckeds().size() < 1) 
+					if (topicBox.getModel().getCheckeds().size() < 1 )  {
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),"<html><center>You must enter definition and then choose at least one topic.</html>" );
+						return;
+					}
 					if (field.getSelectedItem() != null ) {
-						if	( !field.getSelectedItem().toString().isEmpty() && 
-								(isValidString(field.getSelectedItem().toString()))) {
+						String definitionText = field.getSelectedItem().toString();
+						if	( !definitionText.isEmpty() && 
+								(isValidString(definitionText))) {
 							definitionCounter++;
-							//add DB procedure
-							//KnowledgeManagement.addDefinitionToEntitiy(entity, definition, topics)
-							//							definitionPanel.remove(NewDefinitionLine.this);
-							//							//definitionPanel.add(new DefinitionLine(definitionID, definition));
-							//							definitionPanel.add(new NewDefinitionLine());
-							//							tabbedPane.setEnabledAt(tabbedPane.getTabCount() -1, true);
-							buildDefinitionPanel(chosenEntityID);
-							definitionPanel.revalidate();
-							tabbedPane.revalidate();
+							
+							if (entityID == -1) { // entity not yet created && this is the first definition of it
+								int[] ret = KnowledgeManagement.addDefinitionToEntitiy(entityText, definitionText,getUserSelectedTopics(topicBox));
+								if (ret == null) {
+									JOptionPane.showMessageDialog(MainView.getView().getFrame(), "Error Saving To DB");
+									return;
+								}
+								entityID =ret[0];
+							}
+							else { // entity is already in DB
+								KnowledgeManagement.addDefinitionToEntitiy(entityID, definitionText, getUserSelectedTopics(topicBox));
+							}
+							buildDefinitionPanel(entityID);
+//							definitionPanel.revalidate();
+//							tabbedPane.revalidate();
 						}
 						else  { // show error message
 							JOptionPane.showMessageDialog(MainView.getView().getFrame(),
-									"<html><center>Invalid Text.</html>");
+									"<html><center>Invalid or Empty Text.</html>");
 						}
 
 					}
@@ -573,7 +570,7 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			saveBtn = new JButton(new ImageIcon(getClass().getResource("/resources/add_small.png")));
+			saveBtn = new JButton(new ImageIcon(getClass().getResource("../resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
 				@Override

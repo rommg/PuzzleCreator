@@ -72,7 +72,7 @@ final class HintPopupMenu extends JPopupMenu {
 	private void buildPopupSubMenus() {
 
 		JMenuItem menu = new JMenuItem(label.getText());
-		menu.setIcon(new ImageIcon(getClass().getResource("/resources/tip.png")));
+		menu.setIcon(new ImageIcon(getClass().getResource("../resources/tip.png")));
 		add(menu);
 		
 		for (int i=0; i<hintArray.length && i<10; i++) {
@@ -102,7 +102,7 @@ final class HintPopupMenu extends JPopupMenu {
 			this.setLayout(new BorderLayout());
 			lbl = new JLabel("<html><p><left>&nbsp;&nbsp;&nbsp;&nbsp;" + createEchoString(hintText.length()) + "</p></html>");
 			add(lbl, BorderLayout.CENTER);
-			JButton imageBtn = new JButton(new ImageIcon(getClass().getResource("/resources/locked.png")));
+			JButton imageBtn = new JButton(new ImageIcon(getClass().getResource("../resources/locked.png")));
 
 			// set button behavior
 			imageBtn.addActionListener(new LockButtonListener(this.lbl));
@@ -128,7 +128,7 @@ final class HintPopupMenu extends JPopupMenu {
 			public void actionPerformed(ActionEvent e) {
 				if (isLocked) {
 					JButton btn = (JButton) e.getSource();
-					btn.setIcon(new ImageIcon(getClass().getResource("/resources/unlocked.png")));
+					btn.setIcon(new ImageIcon(getClass().getResource("../resources/unlocked.png")));
 					btn.setEnabled(false);
 					HintPopupMenu.this.hintCounterLabel.updateCounter();
 					this.lbl.setText("<html><p><left>&nbsp;&nbsp;&nbsp;&nbsp;" + HintItem.this.hintText);

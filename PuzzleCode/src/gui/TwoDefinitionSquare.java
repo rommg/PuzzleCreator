@@ -54,7 +54,7 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 		super(row, col);
 		super.labelCount = 2;
 		
-		setLayout(new GridLayout(2, 1)); // a 2X1 grid for top and bottom defs
+		setLayout(new GridLayout(2, 1)); // a 2X1 grid for top and bottom definitions
 		setFocusable(false);
 		setBorder(new BevelBorder(BevelBorder.RAISED));
 

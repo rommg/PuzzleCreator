@@ -26,6 +26,8 @@ public class PuzzleCreator {
 	public static String username = "root";
 	// public static String password = ""; // enter your password
 	public static String schemaName = "DbMysql02";
+	//public static String schemaName = "riddle";
+
 
 	/**
 	 * @param args
@@ -56,13 +58,13 @@ public class PuzzleCreator {
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
 				username, password);
 
-		int tries = 0;
+		int tries = 1;
 		while (!connectionPool.createPool()) {
-			if (tries++ == 3) { // upon third failed attempt to restart, quit.
+			if (tries++ == 4) { // upon third failed attempt to restart, quit.
 				closeAllDBConnections();
 				System.exit(0);
 			}
-			Logger.writeErrorToLog("Failed to create the Connections Pool");
+			Logger.writeErrorToLog("Failed to create the Connections Pool on try #" +tries +".");
 			gui.Utils.showDBConnectionErrorMessage();
 			MainView.start();
 				
