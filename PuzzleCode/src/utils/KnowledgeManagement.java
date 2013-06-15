@@ -56,7 +56,7 @@ public class KnowledgeManagement {
 	 * assumption: hint is not null 
 	 */
 	public static int addHint(int entityId, String hint){
-		int predicateId = DBConnection.addPredicate(hint); //INSER INTO predicates (yago_predicate, subject_str) VALUES ("<user_hint>"+hintNumber, hint); get the id
+		int predicateId = DBConnection.addPredicate(hint); //INSER INTO predicates (yago_predicate, subject_str) VALUES ("<user_hint>"+hintNumber, hint); get the id		
 		int hintId = DBConnection.addHint(entityId, predicateId); //INSER INTO hints (predicate_id, entity_id, is_entity_subject) VALUES (predicateId, entityId, true); get the id
 		return hintId;
 	}

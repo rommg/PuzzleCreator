@@ -244,8 +244,9 @@ public class DBConnection {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		int maxDefinitionId = getMaxDefinitionId();
 		int id = -1;
-		String USER_DEF = "<userDefinition>";
+		String USER_DEF = "<userDefinition>" + maxDefinitionId;
 
 		if (conn == null) {
 			gui.Utils.showDBConnectionErrorMessage();
@@ -273,6 +274,15 @@ public class DBConnection {
 		return id;
 	}
 
+
+	private static int getMaxDefinitionId() {
+		String sqlQuery = "SELECT max(id) as max_id FROM definitions;";
+		List<Map<String,Object>> rs = executeQuery(sqlQuery);
+		if (rs.size() == 0){
+			//TODO: ERROR
+		}
+		return (Integer)(rs.get(0).get("max_id"));
+	}
 
 	public static void setTopicsToDefinition(int definitionId,	List<Integer> topics) {
 		Connection conn = getConnection();
