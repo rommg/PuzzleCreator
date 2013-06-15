@@ -26,7 +26,8 @@ CREATE TABLE DEFINITIONS(
 id int NOT NULL AUTO_INCREMENT,
 yago_type varchar(250) NOT NULL,
 definition varchar(500) NOT NULL,
-PRIMARY KEY(id)
+PRIMARY KEY(id),
+CONSTRAINT uc_Definition UNIQUE (definition)
 );
 
 CREATE TABLE DEFINITIONS_TOPICS(
@@ -44,7 +45,8 @@ id int NOT NULL AUTO_INCREMENT,
 yago_predicate varchar(50) NOT NULL,
 subject_str varchar(250),
 object_str varchar(250),
-PRIMARY KEY(id)
+PRIMARY KEY(id),
+CONSTRAINT uc_YagoPredicate UNIQUE (yago_predicate)
 );
 
 
