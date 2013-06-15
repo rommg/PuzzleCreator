@@ -10,9 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.mysql.jdbc.SQLError;
-
 import utils.Logger;
 import main.*;
 import massiveImport.YagoFileHandler;
@@ -640,7 +637,7 @@ public class DBConnection {
 		return 1;
 	}
 
-	public static void insreatIntoYagoType(String yagoTypes_tsv){
+	public static void insreatIntoYagoType(String yagoTypes_tsv) throws SQLException, IOException{
 		String line = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = null;
@@ -687,8 +684,6 @@ public class DBConnection {
 		}
 	}
 	
-	
-//
 //	public static int insreatIntoYagoFact(File yagoFacts_tsv){
 //
 //	}
