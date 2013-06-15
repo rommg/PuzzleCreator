@@ -3,6 +3,7 @@ package connectionPool;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,20 +11,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.mysql.jdbc.SQLError;
+
 import utils.Logger;
 import main.*;
 import massiveImport.YagoFileHandler;
 
 public class DBConnection {
 
-	private static Connection getConnection() {
+	private static Connection getConnection() throws SQLException{
 		Connection conn = null;
 
 		try {
 			conn = PuzzleCreator.connectionPool.getConnection();
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection failed to get connection from pool " + e.getMessage());
-			gui.Utils.showDBConnectionErrorMessage();
+			throw e;
 		}
 		return conn;
 	}
@@ -49,11 +52,8 @@ public class DBConnection {
 	 * @return List of Map<String, Object>> where String is the attribute and
 	 *         Object is the data, the list is null if there's an SQL Exception.
 	 */
-	public static List<Map<String, Object>> executeQuery(String sqlQuery) {
+	public static List<Map<String, Object>> executeQuery(String sqlQuery) throws SQLException {
 		Connection conn = getConnection();
-		if (conn == null) {
-			throw new RuntimeException();
-		}
 
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -64,6 +64,8 @@ public class DBConnection {
 			returnList = mapResultSet(rs);
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection executeQuery: " + e.getMessage());
+			safelyClose(rs, stmt, conn, null);
+			throw new SQLException("SQL error", e);
 		} finally {
 			safelyClose(rs, stmt, conn, null);
 		}
@@ -82,19 +84,17 @@ public class DBConnection {
 	 * @return an integer - the numbers of rows that were updated (DML) or 0
 	 *         (DDL), -1 on failure.
 	 */
-	public static int executeUpdate(String sqlUpdate) throws RuntimeException {
+	public static int executeUpdate(String sqlUpdate) throws SQLException {
 		Connection conn = getConnection();
 		Statement stmt = null;
 		int result = -1;
-
-		if (conn == null) {
-			throw new RuntimeException();
-		}
 		try {
 			stmt = conn.createStatement();
 			result = stmt.executeUpdate(sqlUpdate);
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("DBConnection executeUpdate: " + e.getMessage());
+			safelyClose(null, stmt, conn, null);
+			throw new SQLException("SQL error", e);
 		} finally {
 			safelyClose(null, stmt, conn, null);
 		}
@@ -102,14 +102,9 @@ public class DBConnection {
 		return result;
 	}
 
-	public static void deleteEntityDefinition(int entityId, int definitionId) {
+	public static void deleteEntityDefinition(int entityId, int definitionId) throws SQLException{
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return;
-		}
-
 		String sqlQuery = "DELETE FROM entities_definitions WHERE entity_id = ? AND definition_id = ?;";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery);
@@ -119,6 +114,8 @@ public class DBConnection {
 			Logger.writeToLog("deleteEntityDefinition deleted entity " +entityId+ " and definition "+definitionId);
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteEntityDefinition failed deletion from entities_definition. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(null, null, conn, pstmt);
@@ -126,13 +123,9 @@ public class DBConnection {
 	}
 
 
-	public static void deleteHint(int hint_id){
+	public static void deleteHint(int hint_id) throws SQLException{
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return;
-		}
 
 		String sqlQuery = "DELETE FROM hints WHERE id = ?;";
 		try {
@@ -142,6 +135,8 @@ public class DBConnection {
 			Logger.writeToLog("deleteHint deleted hint " + hint_id);
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteHint failed deletion from hints. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(null, null, conn, pstmt);
@@ -149,13 +144,9 @@ public class DBConnection {
 	}
 
 
-	public static void deleteEntity(int entityId){
+	public static void deleteEntity(int entityId) throws SQLException{
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return;
-		}
 
 		String sqlQuery1 = "DELETE FROM entities_definitions WHERE entity_id = ?;";
 		String sqlQuery2 = "DELETE FROM answers WHERE entity_id = ?;";
@@ -187,6 +178,8 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteEntity failed deletion. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(null, null, conn, pstmt);
@@ -205,7 +198,7 @@ public class DBConnection {
 	 * @return 1 on success, 0 if commit failed but rollback succeed and -1 if
 	 *         both commit and rollback failed.
 	 */
-	public static int excuteDeleteHintsByIds(Set<Integer> hintIdToDelete) {
+	public static int excuteDeleteHintsByIds(Set<Integer> hintIdToDelete) throws SQLException {
 		Connection conn = getConnection();
 		Statement stmt = null;
 		int result = -1;
@@ -229,8 +222,14 @@ public class DBConnection {
 				conn.rollback();
 				Logger.writeToLog("excuteDeleteHintsByIds Rollback Successfully");
 				result = 0;
+				safelySetAutoCommit(conn);
+				safelyClose(null, stmt, conn, null);
+				throw new SQLException("excuteDeleteHintsByIds failed deletion, and rolled back",e);
 			} catch (SQLException e2) {
 				Logger.writeErrorToLog("excuteDeleteHintsByIds failed when rollbacking - " + e2.getMessage());
+				safelySetAutoCommit(conn);
+				safelyClose(null, stmt, conn, null);
+				throw new SQLException("roll back failed", e2);
 			}
 		} finally {
 			safelySetAutoCommit(conn);
@@ -240,18 +239,13 @@ public class DBConnection {
 	}
 
 
-	public static int addDefinition(String definition) {
+	public static int addDefinition(String definition) throws SQLException {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int maxDefinitionId = getMaxDefinitionId();
 		int id = -1;
 		String USER_DEF = "<userDefinition>" + maxDefinitionId;
-
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return id;
-		}
 
 		String sqlQuery = "INSERT INTO definitions (yago_type, definition) VALUES (? , ?);";
 		try {
@@ -266,6 +260,8 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addDefinition failed insertion to definitions. " + e.getMessage());
+			safelyClose(rs, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(rs, null, conn, pstmt);
@@ -275,7 +271,7 @@ public class DBConnection {
 	}
 
 
-	private static int getMaxDefinitionId() {
+	private static int getMaxDefinitionId() throws SQLException{
 		String sqlQuery = "SELECT max(id) as max_id FROM definitions;";
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
@@ -284,14 +280,9 @@ public class DBConnection {
 		return (Integer)(rs.get(0).get("max_id"));
 	}
 
-	public static void setTopicsToDefinition(int definitionId,	List<Integer> topics) {
+	public static void setTopicsToDefinition(int definitionId,	List<Integer> topics) throws SQLException {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return;
-		}
-
 		String sqlQuery = "INSERT INTO definitions_topics (definition_id, topic_id) VALUES (?, ?);";
 		try {
 			conn.setAutoCommit(false);
@@ -308,6 +299,9 @@ public class DBConnection {
 
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("setTopicsToDefinition failed insertion to definitions_topics. " + e.getMessage());
+			safelySetAutoCommit(conn);
+			safelyClose(null, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelySetAutoCommit(conn);
@@ -316,13 +310,9 @@ public class DBConnection {
 	}
 
 
-	public static void setNewDefinition(int entityId, int definitionId) {
+	public static void setNewDefinition(int entityId, int definitionId) throws SQLException {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return;
-		}
 
 		String sqlQuery = "INSERT INTO entities_definitions (entity_id, definition_id) VALUES (?, ?);";
 		try {
@@ -335,6 +325,8 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("setNewDefinition failed insertion to entities_definitions. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(null, null, conn, pstmt);
@@ -342,16 +334,12 @@ public class DBConnection {
 	}
 
 
-	public static int addEntity(String entity) {
+	public static int addEntity(String entity) throws SQLException{
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int id = -1;
 
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return id;
-		}
 		String sqlQuery = "INSERT INTO entities (name) VALUES (?);";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery, new String[] { "ID" });
@@ -364,6 +352,8 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addEntity failed insertion to entities. " + e.getMessage());
+			safelyClose(null, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(rs, null, conn, pstmt);
@@ -373,7 +363,7 @@ public class DBConnection {
 	}
 
 
-	public static int addPredicate(String hint) {
+	public static int addPredicate(String hint) throws SQLException {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -398,6 +388,8 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addPredicate failed insertion to predicates. " + e.getMessage());
+			safelyClose(rs, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(rs, null, conn, pstmt);
@@ -405,7 +397,7 @@ public class DBConnection {
 		return id;
 	}
 
-	private static int getMaxPredicateId() {
+	private static int getMaxPredicateId() throws SQLException{
 		String sqlQuery = "SELECT max(id) as max_id FROM predicate;";
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
@@ -414,16 +406,11 @@ public class DBConnection {
 		return (Integer)(rs.get(0).get("max_id"));
 	}
 
-	public static int addHint(int entityId, int predicateId) {
+	public static int addHint(int entityId, int predicateId) throws SQLException{
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int id = -1;
-
-		if (conn == null) {
-			gui.Utils.showDBConnectionErrorMessage();
-			return id;
-		}
 		String sqlQuery = "INSERT INTO hints (predicate_id, entity_id, is_entity_subject) VALUES (?, ?, true);";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery, new String[] { "ID" });
@@ -437,40 +424,15 @@ public class DBConnection {
 
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
+			safelyClose(rs, null, conn, pstmt);
+			throw new SQLException("SQL error", e);
 		}
 		finally {
 			safelyClose(rs, null, conn, pstmt);
 		}	
 		return id;
 	}
-// TODO: remove
-//	public static int getDefintionId(String definition){
-//		Connection conn = getConnection();
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		int id = -1;
-//
-//		if (conn == null) {
-//			gui.Utils.showDBConnectionErrorMessage();
-//			return id;
-//		}
-//		String sqlQuery = "SELECT id FROM definitions WHERE defenition like ?;";
-//		try {
-//			pstmt = conn.prepareStatement(sqlQuery);
-//			pstmt.setString(1, "\""+ definition + "\"");
-//			pstmt.executeQuery();
-//			rs = pstmt.getGeneratedKeys();
-//			rs.next();
-//			id =  rs.getInt(1);
-//
-//		} catch (SQLException e){
-//			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
-//		}
-//		finally {
-//			safelyClose(rs, null, conn, pstmt);
-//		}	
-//		return id;
-//	}
+
 
 	private static List<Map<String, Object>> mapResultSet(ResultSet rs) throws SQLException {
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
@@ -499,7 +461,7 @@ public class DBConnection {
 	 * @throws SQLException
 	 *             - if roll-backing didn't succeed
 	 */
-	public static void executeSqlScript(String sqlScriptPath) throws SQLException {
+	public static void executeSqlScript(String sqlScriptPath) throws SQLException, IOException {
 		String str = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = getConnection();
@@ -550,14 +512,20 @@ public class DBConnection {
 				// try rolling back
 				conn.rollback();
 				Logger.writeToLog("Rollback Successfully");
+				safelySetAutoCommit(conn);
+				safelyClose(null, stmt, conn, null);
+				throw new SQLException("failed to execute script - sql error", sqlE);
 			} catch (SQLException sqlE2) {
 				Logger.writeErrorToLog("failed when rollbacking - " + sqlE2.getMessage());
-				throw new SQLException();
-				// TODO: alert the calling method that committing the script had
-				// failed
+				safelySetAutoCommit(conn);
+				safelyClose(null, stmt, conn, null);
+				throw new SQLException("failed roll back in executeSQLScripit", sqlE2);
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
+			safelySetAutoCommit(conn);
+			safelyClose(null, stmt, conn, null);
 			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());
+			throw new IOException("IOException when opening script file", e);
 		} finally {
 			safelySetAutoCommit(conn);
 			safelyClose(null, stmt, conn, null);
@@ -571,7 +539,7 @@ public class DBConnection {
 	 * @param resources
 	 *            , any of which may be null.
 	 */
-	private static void safelyClose(ResultSet rs, Statement stmt, Connection conn, PreparedStatement pstmt) {
+	private static void safelyClose(ResultSet rs, Statement stmt, Connection conn, PreparedStatement pstmt)  {
 
 		if (rs != null) {
 			try {
@@ -597,18 +565,19 @@ public class DBConnection {
 		if (conn != null) {
 			freeConnection(conn);
 		}
-
+		
 	}
 
 	/**
 	 * Attempts to set the connection back to auto-commit, writing errors to
 	 * log.
 	 */
-	private static void safelySetAutoCommit(Connection conn) {
+	private static void safelySetAutoCommit(Connection conn) throws SQLException{
 		try {
 			conn.setAutoCommit(true);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			Logger.writeErrorToLog("failed to set auto commit" + e.getMessage());
+			throw new SQLException("failed to set auto commit", e);
 		}
 	}
 

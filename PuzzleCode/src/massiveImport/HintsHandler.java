@@ -1,5 +1,6 @@
 package massiveImport;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ public class HintsHandler {
 
 	private static final int MAXIMUM_NUMBER_OF_HINTS_PER_ENTITY = 10;
 
-	public static void setMaximumTemHintsForEachEntity(){
+	public static void setMaximumTemHintsForEachEntity() throws SQLException{
 		Map<Integer, Long> entitiesIdsWithMoreThen10Hints = getAllEntitiesIdsWithMoreThen10Hints();
 		Set<Integer> entitiesIds = entitiesIdsWithMoreThen10Hints.keySet();
 		for (Integer entityId : entitiesIds) {
@@ -24,7 +25,7 @@ public class HintsHandler {
 		DBConnection.excuteDeleteHintsByIds(hintIdToDelete);
 	}
 
-	private static void addHintsToRemoveList(Integer entityId, long numOfhintsToDelete) {
+	private static void addHintsToRemoveList(Integer entityId, long numOfhintsToDelete) throws SQLException{
 		String sql = "SELECT id, predicate_id FROM hints WHERE entity_id = " + entityId + ";";
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sql);
 		Map<Integer, List<Integer>> hints = new HashMap<Integer, List<Integer>>();
@@ -69,7 +70,7 @@ public class HintsHandler {
 		return true;
 	}
 
-	private static Map<Integer, Long> getAllEntitiesIdsWithMoreThen10Hints() {
+	private static Map<Integer, Long> getAllEntitiesIdsWithMoreThen10Hints() throws SQLException{
 		String sql = "select entity_id, count(*) as num_of_hints from hints group by entity_id having num_of_hints > 10;" ;
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sql);
 		Map<Integer, Long> ret = new HashMap<Integer, Long>();
@@ -79,7 +80,7 @@ public class HintsHandler {
 		return ret;
 	}
 
-	public static void test(){
+	public static void test() throws SQLException{
 		setMaximumTemHintsForEachEntity();
 		
 		Map<Integer, Long> entities = getAllEntitiesIdsWithMoreThen10Hints();

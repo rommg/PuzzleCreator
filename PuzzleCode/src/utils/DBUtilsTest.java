@@ -35,7 +35,7 @@ public class DBUtilsTest {
 	
 
 	@Test
-	public void testGetPossibleAnswers() {
+	public void testGetPossibleAnswers() throws SQLException {
 		int[] topics = {1};
 		assertNotNull(DBUtils.getPossibleAnswers(topics, 10));
 	}

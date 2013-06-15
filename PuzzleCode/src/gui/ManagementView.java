@@ -469,7 +469,7 @@ public class ManagementView extends JPanel {
 			entityText = new String(chosenEntityString);
 		}
 
-		private void initialize() {
+		private void initialize()  {
 
 			setLayout(new BorderLayout());
 
