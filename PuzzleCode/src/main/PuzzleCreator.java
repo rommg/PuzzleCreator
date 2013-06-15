@@ -38,21 +38,22 @@ public class PuzzleCreator {
 			System.out.println("Not enough arguments");
 			return;
 		}
-		if (args.length == 3){
-			if (args[2].compareTo("true")==0){
+		if (args.length == 3) {
+			if (args[2].compareTo("true") == 0) {
 				dbServerPort = "3305";
 				username = "DbMysql02";
 			}
 		}
 		appDir = args[0] + System.getProperty("file.separator");
 		String password = args[1];
-		sqlDir = args[0] + System.getProperty("file.separator") + "sql" + System.getProperty("file.separator");
-		loadFilesDir = sqlDir + "filesToLoad" + System.getProperty("file.separator");
+		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
+				+ System.getProperty("file.separator");
+		loadFilesDir = sqlDir + "filesToLoad"
+				+ System.getProperty("file.separator");
 
 		if (!Logger.initialize(true)) {
 			return;
 		}
-
 		MainView.start();
 
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
@@ -74,7 +75,8 @@ public class PuzzleCreator {
 			connectionPool.closeConnections();
 			Logger.writeToLog("Closed all connections");
 		} catch (SQLException e) {
-			Logger.writeErrorToLog("ConnectionPool failed to close connections" + e.getMessage());
+			Logger.writeErrorToLog("ConnectionPool failed to close connections"
+					+ e.getMessage());
 		}
 	}
 

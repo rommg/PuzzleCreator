@@ -26,8 +26,8 @@ public class PuzzleCreator {
 	public static String username = "root";
 	// public static String password = ""; // enter your password
 	public static String schemaName = "DbMysql02";
-	//public static String schemaName = "riddle";
 
+	// public static String schemaName = "riddle";
 
 	/**
 	 * @param args
@@ -38,70 +38,51 @@ public class PuzzleCreator {
 			System.out.println("Not enough arguments");
 			return;
 		}
-		if (args.length == 3){
-			if (args[2].compareTo("true")==0){
+		if (args.length == 3) {
+			if (args[2].compareTo("true") == 0) {
 				dbServerPort = "3305";
 				username = "DbMysql02";
 			}
 		}
 		appDir = args[0] + System.getProperty("file.separator");
 		String password = args[1];
-		sqlDir = args[0] + System.getProperty("file.separator") + "sql" + System.getProperty("file.separator");
-		loadFilesDir = sqlDir + "filesToLoad" + System.getProperty("file.separator");
+		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
+				+ System.getProperty("file.separator");
+		loadFilesDir = sqlDir + "filesToLoad"
+				+ System.getProperty("file.separator");
 
 		if (!Logger.initialize(true)) {
 			return;
 		}
-
-
 		MainView.start();
 
-		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
-				username, password);
-		Logger.writeToLog("Connections Pool was created");
-		int tries = 1;
+		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress
+				+ ":" + dbServerPort + "/" + schemaName, username, password);
+		int tries = 0;
+		while (!connectionPool.createPool()) {
+			if (tries++ == 3) { // upon third failed attempt to restart, quit.
+				closeAllDBConnections();
+				System.exit(0);
+			}
+			Logger.writeErrorToLog("Failed to create the Connections Pool");
+		}
+
 		if (!connectionPool.createPool()) {
 			gui.Utils.showDBConnectionErrorMessage();
-			Logger.writeErrorToLog("Failed to create the Connections Pool on try #" +tries +".");
+<<<<<<< HEAD
+			Logger.writeErrorToLog("Failed to create the Connections Pool.");
+=======
+			MainView.start();
+
+			Logger.writeErrorToLog("Failed to create the Connections Pool on try #"
+					+ tries + ".");
+>>>>>>> 1a2d97478c56e6a9cdc8603c4ca8e3c34d6414f9
 			closeAllDBConnections();
 			System.exit(0);
 
 		}
+
 		Logger.writeToLog("Connections Pool was created");
-<<<<<<< HEAD
-
-		//		 TODO: To Delete
-		//		DBUtils.test();
-		//		
-		//		HintsHandler.test();
-		//		DBUtils.getTriviaQuestion();
-		//
-		//		int[] topics = {1,2};
-		//		AlgorithmWorker aw = new AlgorithmWorker(null, topics, 0);
-		//		
-		//		HintsHandler.test();
-		//		DBUtils.getTriviaQuestion();
-		YagoFileHandler yf = new YagoFileHandler(null);
-		try {
-			Logger.writeToLog("begin 05");
-			yf.importFilesToDB();
-			Logger.writeToLog("finished 05, begin 06");
-			yf.populateDB();
-			Logger.writeToLog("finished 06");
-		} catch (Exception ex){
-
-		}
-
-		// MassiveImporter.runMassiveImporter();
-		// AlgorithmRunner.runAlgorithm();
-		// GuiAlgorithmConnector guiAlConnect = new GuiAlgorithmConnector();
-
-		// TODO: move the call to closeAllDBConnections to the MainView thread.
-		// closeAllDBConnections();
-
-=======
-		
->>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 	}
 
 	public static void closeAllDBConnections() {
@@ -109,7 +90,8 @@ public class PuzzleCreator {
 			connectionPool.closeConnections();
 			Logger.writeToLog("Closed all connections");
 		} catch (SQLException e) {
-			Logger.writeErrorToLog("ConnectionPool failed to close connections" + e.getMessage());
+			Logger.writeErrorToLog("ConnectionPool failed to close connections"
+					+ e.getMessage());
 		}
 	}
 

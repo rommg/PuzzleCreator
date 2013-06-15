@@ -134,6 +134,7 @@ public class ManagementView extends JPanel {
 					finally {
 						//disable hints tab
 						tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, false);
+						tabbedPane.setSelectedIndex(0);
 					}
 				}
 			}
