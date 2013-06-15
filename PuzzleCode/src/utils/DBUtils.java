@@ -216,7 +216,7 @@ public class DBUtils {
 		return retMap;
 	}
 
-	public static Map<Integer, String> getHintsByEntityID(int entityID) {
+	public static Map<Integer, String> getHintsByEntityID(int entityID) throws SQLException{
 		String sqlHintsQuery = "select h.id as hint_id, yago_hint, is_entity_subject, subject_str, object_str "
 				+ "from hints h, predicates p "
 				+ "where h.predicate_id = p.id and "

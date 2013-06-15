@@ -689,15 +689,15 @@ public class DBConnection {
 		return 0;
 	}
 
-	public static int insreatIntoYagoFact(File yagoFacts_tsv){
-
-	}
-
-	public static int insreatIntoYagoLiteralFacts(File yagoLiteralFacts_tsv){
-
-	}
-
-	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
-
-	}
+//	public static int insreatIntoYagoFact(File yagoFacts_tsv){
+//
+//	}
+//
+//	public static int insreatIntoYagoLiteralFacts(File yagoLiteralFacts_tsv){
+//
+//	}
+//
+//	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
+//
+//	}
 }
