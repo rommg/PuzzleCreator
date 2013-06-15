@@ -215,6 +215,27 @@ public class DBUtils {
 		return retMap;
 	}
 
+<<<<<<< HEAD
+//	public static Map<Integer,String> getHintsByEntityID(int entityID) {
+//		String sqlHintsQuery = "SELECT h.id, h.yago_hint "
+//				+ "FROM hints h "
+//				+ "WHERE h.entity_id = "
+//				+ entityID + ";";
+//
+//		List<Map<String, Object>> hintsRs = DBConnection
+//				.executeQuery(sqlHintsQuery);
+//
+//		Map<Integer, String> hints = new HashMap<Integer,String>();
+//
+//		for (Map<String, Object> row : hintsRs) {
+//			int hintID = Integer.parseInt(row.get("id").toString());
+//			String yagoHint = getProperName(row.get("yago_hint").toString());
+//			hints.put(hintID,yagoHint);
+//		}
+//
+//		return hints;
+//	}
+=======
 	public static Map<Integer, String> getHintsByEntityID(int entityID) {
 		String sqlHintsQuery = "select h.id as hint_id, yago_hint, is_entity_subject, subject_str, object_str "
 				+ "from hints h, predicates p "
@@ -225,7 +246,7 @@ public class DBUtils {
 		Map<Integer, String> hints = new HashMap<Integer, String>();
 
 		for (Map<String, Object> row : hintsRs) {
-			int hintId = Integer.parseInt(row.get("id").toString());
+			int hintId = Integer.parseInt(row.get("hint_id").toString());
 			String yagoHint = getProperName(row.get("yago_hint").toString());
 			boolean isEntitySubject = Boolean.parseBoolean(row.get("is_entity_subject").toString());
 			String hintStr = (isEntitySubject ? row.get("subject_str").toString() : row.get("object_str").toString());
@@ -234,6 +255,7 @@ public class DBUtils {
 		}
 		return hints;
 	}
+>>>>>>> e3dfa7626403375518b4fcdb85435b084b943ac7
 
 	/**
 	 * map of definition name to definition ID

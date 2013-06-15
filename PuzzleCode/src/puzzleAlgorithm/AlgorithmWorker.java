@@ -4,7 +4,6 @@ import gui.CrosswordView;
 import gui.MainView;
 import gui.WaitView;
 import gui.Utils;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,12 +17,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.SwingWorker;
-
 import main.PuzzleCreator;
-
 import utils.DBUtils;
 import utils.Logger;
 
+/**
+ * This worker executes the board creation algorithm. The return value is the finished board. <br>
+ * To know if an exception was thrown during the creation, use the result.getResultException() method. 
+ * If the board was successfully created, the method will return null, else it will return an exception
+ *
+ */
 public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	// System.getProperty("file.separator")
 	protected PuzzleSquare[][] board;
@@ -123,6 +126,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		return result;
 	}
 
+	/**
+	 * This method is called when the algorithm is finished
+	 * The result is retrieved by calling get()
+	 * If an exception was thrown during board creation, it is passed as a member of result.
+	 * 
+	 */
 	@Override
 	protected void done() {
 		try {

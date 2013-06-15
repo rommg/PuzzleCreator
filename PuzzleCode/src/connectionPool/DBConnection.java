@@ -443,34 +443,36 @@ public class DBConnection {
 		}	
 		return id;
 	}
-// TODO: remove
-//	public static int getDefintionId(String definition){
-//		Connection conn = getConnection();
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		int id = -1;
-//
-//		if (conn == null) {
-//			gui.Utils.showDBConnectionErrorMessage();
-//			return id;
-//		}
-//		String sqlQuery = "SELECT id FROM definitions WHERE defenition like ?;";
-//		try {
-//			pstmt = conn.prepareStatement(sqlQuery);
-//			pstmt.setString(1, "\""+ definition + "\"");
-//			pstmt.executeQuery();
-//			rs = pstmt.getGeneratedKeys();
-//			rs.next();
-//			id =  rs.getInt(1);
-//
-//		} catch (SQLException e){
-//			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
-//		}
-//		finally {
-//			safelyClose(rs, null, conn, pstmt);
-//		}	
-//		return id;
-//	}
+
+
+	// TODO: remove
+	//	public static int getDefintionId(String definition){
+	//		Connection conn = getConnection();
+	//		PreparedStatement pstmt = null;
+	//		ResultSet rs = null;
+	//		int id = -1;
+	//
+	//		if (conn == null) {
+	//			gui.Utils.showDBConnectionErrorMessage();
+	//			return id;
+	//		}
+	//		String sqlQuery = "SELECT id FROM definitions WHERE defenition like ?;";
+	//		try {
+	//			pstmt = conn.prepareStatement(sqlQuery);
+	//			pstmt.setString(1, "\""+ definition + "\"");
+	//			pstmt.executeQuery();
+	//			rs = pstmt.getGeneratedKeys();
+	//			rs.next();
+	//			id =  rs.getInt(1);
+	//
+	//		} catch (SQLException e){
+	//			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
+	//		}
+	//		finally {
+	//			safelyClose(rs, null, conn, pstmt);
+	//		}	
+	//		return id;
+	//	}
 
 	private static List<Map<String, Object>> mapResultSet(ResultSet rs) throws SQLException {
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
@@ -672,5 +674,66 @@ public class DBConnection {
 			return 0;
 		}
 		return 1;
+	}
+
+	public static int insreatIntoYagoType(String yagoTypes_tsv){
+		String line = new String();
+		StringBuffer strBuffer = new StringBuffer();
+		Connection conn = null;
+		try{
+			conn = getConnection();
+			conn.setAutoCommit(false);
+			String sql = "INSERT INTO yago_type (subject, predicate, object, answer, additional_information) VALUES (?,?,?,?,?);";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+
+			FileReader fr = new FileReader(new File(yagoTypes_tsv));
+			BufferedReader bufferedReader = new BufferedReader(fr);
+
+			while ((line = bufferedReader.readLine()) != null) {
+				String[] values = line.split("\t");
+				pStmt.setString(1, values[0]);
+				pStmt.setString(2, values[1]);
+				pStmt.setString(3, values[2]);
+				pStmt.setString(4, values[3]);
+				pStmt.setString(5, values[4]);
+				pStmt.addBatch();
+			}
+			bufferedReader.close();
+			fr.close();
+			pStmt.executeBatch();
+			conn.commit();
+		} catch (SQLException sqlE) {
+			Logger.writeErrorToLog("Transaction is not complete: " + sqlE.getMessage());
+			try {
+				// try rolling back
+				conn.rollback();
+				Logger.writeToLog("Rollback Successfully");
+			} catch (SQLException sqlE2) {
+				Logger.writeErrorToLog("failed when rollbacking - " + sqlE2.getMessage());
+				throw new SQLException();
+				// TODO: alert the calling method that committing the script had
+				// failed
+			}
+		} catch (Exception e) {
+			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());
+		} finally {
+			safelySetAutoCommit(conn);
+			safelyClose(null, stmt, conn, null);
+		}
+
+
+		return 0;
+	}
+
+	public static int insreatIntoYagoFact(File yagoFacts_tsv){
+
+	}
+
+	public static int insreatIntoYagoLiteralFacts(File yagoLiteralFacts_tsv){
+
+	}
+
+	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
+
 	}
 }

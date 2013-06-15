@@ -252,6 +252,7 @@ public class MassiveImportView extends JPanel {
 
 			try {
 				y.importFilesToDB();
+				//TODO: change 
 			}
 			catch (SQLException e) {
 				publish("ERROR while loading filtered TSV File to DB!");

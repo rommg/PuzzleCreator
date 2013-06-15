@@ -118,9 +118,12 @@ public class ManagementView extends JPanel {
 				String entityText = newTextField.getText(); 
 				if (!entityText.isEmpty()) {
 					definitionCounter = 0;
+					chosenEntityID = -1;
 					chosenEntityString = entityText;
 					buildDefinitionPanel(-1);
 					buildHintsPanel(-1);
+					//disable hints tab
+					tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, false);
 				}
 			}
 		});
@@ -505,8 +508,16 @@ public class ManagementView extends JPanel {
 								JOptionPane.showMessageDialog(MainView.getView().getFrame(), "Error Saving To DB");
 								return;
 							}
+							else {
+								// update the entityID;
+								NewDefinitionLine.this.entityID = ret[0]; 
+								ManagementView.this.chosenEntityID = ret[0];
+								chosenEntityString = entityText;
+							}
 
 							buildDefinitionPanel(entityID);
+							tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, true);
+
 						}
 						else  { // not valid / empty text - show error message
 							JOptionPane.showMessageDialog(MainView.getView().getFrame(),
@@ -556,6 +567,8 @@ public class ManagementView extends JPanel {
 				public void actionPerformed(ActionEvent arg0) {
 					String hintText = field.getText();
 					if (!hintText.isEmpty() && isValidString(hintText)) {
+						//get updated entityID, in case we created a new entity and we just got its ID
+						NewHintLine.this.entityID = ManagementView.this.chosenEntityID;
 						//call DB add procedure
 						KnowledgeManagement.addHint(NewHintLine.this.entityID, hintText);
 						ManagementView.this.buildHintsPanel(entityID); //rebuild panel
