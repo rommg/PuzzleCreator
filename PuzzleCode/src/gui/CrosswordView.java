@@ -150,7 +150,7 @@ public class CrosswordView extends JPanel {
 		});
 		BtnPanel.add(btnArtificialWin);
 		
-		btnCheck = new JButton("Check my Answers!", new ImageIcon(getClass().getResource("/resources/check_medium.png")));
+		btnCheck = new JButton("Check my Answers!", new ImageIcon(getClass().getResource("../resources/check_medium.png")));
 		btnCheck.setFont(btnCheck.getFont().deriveFont(15f));
 		btnCheck.setEnabled(false);
 		btnCheck.addActionListener(new ActionListener() {
@@ -179,7 +179,7 @@ public class CrosswordView extends JPanel {
 			}
 		});
 
-		btnPause = new JButton("Pause", new ImageIcon(getClass().getResource("/resources/pause_btn.png")));
+		btnPause = new JButton("Pause", new ImageIcon(getClass().getResource("../resources/pause_btn.png")));
 		btnPause.addActionListener(new ActionListener() {
 
 			@Override
@@ -190,7 +190,7 @@ public class CrosswordView extends JPanel {
 
 		btnPause.setFont(btnCheck.getFont().deriveFont(15f));
 
-		btnSurrender = new JButton("Surrender", new ImageIcon(getClass().getResource("/resources/surrender.png")));
+		btnSurrender = new JButton("Surrender", new ImageIcon(getClass().getResource("../resources/surrender.png")));
 		btnSurrender.addActionListener(new ActionListener() {
 
 			@Override
@@ -199,7 +199,7 @@ public class CrosswordView extends JPanel {
 			}
 		});
 
-		JButton btnBack = new JButton(new ImageIcon(getClass().getResource("/resources/back_small.png")));
+		JButton btnBack = new JButton(new ImageIcon(getClass().getResource("../resources/back_small.png")));
 		btnBack.addActionListener(new ActionListener() {
 
 			@Override
@@ -580,7 +580,7 @@ public class CrosswordView extends JPanel {
 		HintCounterLabel() {
 			super();
 			this.setText("00");
-			super.setIcon(new ImageIcon(getClass().getResource("/resources/tip_big.png")));
+			super.setIcon(new ImageIcon(getClass().getResource("../resources/tip_big.png")));
 		}
 	}
 

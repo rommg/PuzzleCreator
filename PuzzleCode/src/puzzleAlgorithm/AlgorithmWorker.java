@@ -2,6 +2,7 @@ package puzzleAlgorithm;
 
 import gui.CrosswordView;
 import gui.MainView;
+import gui.PrepareGameView;
 import gui.WaitView;
 import gui.Utils;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import main.PuzzleCreator;
@@ -135,8 +137,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 					Utils.showDBConnectionErrorMessage();
 				}
 				if (ex instanceof IOException) {
-					// TODO show IO error message in GUI - can't read template
-					// file
+					Utils.showMessageAndRestart("Could not find board templates. Verify their locations and restart.");
 				}
 			} else {
 				CrosswordView crosswordView = (CrosswordView) CrosswordView.start(result);
@@ -146,11 +147,13 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 																	// card
 				if (success)
 					view.setGoBtn(true);
-				else
-					view.setSkipBtnToTryAgain();
+				else {
+					// not enough answers, refer to prepaere game view
+					Utils.showMessage("Not enough information. Choose more topics and try again.");
+					MainView.getView().showPrepareView();
+				}
 			}
 		} catch (Exception ex) {
-			// TODO show message in GUI ? algorithm failed
 			Logger.writeErrorToLog("algorithm was interrupted before board was finished");
 
 		}

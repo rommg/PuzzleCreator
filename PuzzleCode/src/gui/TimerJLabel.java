@@ -26,7 +26,7 @@ class TimerJLabel extends JLabel{
 	TimerJLabel() {
 
 		this.setHorizontalAlignment(CENTER);
-		this.setIcon(new ImageIcon(getClass().getResource("/resources/k-timer-icon.png")));
+		this.setIcon(new ImageIcon(getClass().getResource("../resources/k-timer-icon.png")));
 		this.setFont(new Font(getFont().getName(), Font.PLAIN, 20));
 
 		t = new Timer(500, new clockListener());

@@ -42,7 +42,7 @@ public class AboutView extends JPanel {
 				MainView.getView().showWelcomeView();
 			}
 		});
-		btnBack.setIcon(new ImageIcon(getClass().getResource("/resources/back.png")));
+		btnBack.setIcon(new ImageIcon(getClass().getResource("../resources/back.png")));
 		btnPanel.add(btnBack);
 		
 		JPanel topPanel = new JPanel();
@@ -73,7 +73,7 @@ public class AboutView extends JPanel {
 		JLabel lblImg = new JLabel("");
 		mainPanel.add(lblImg);
 		lblImg.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImg.setIcon(new ImageIcon(getClass().getResource("/resources/crossword_small.jpg")));
+		lblImg.setIcon(new ImageIcon(getClass().getResource("../resources/crossword_small.jpg")));
 
 	}
 
