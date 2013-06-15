@@ -14,7 +14,7 @@ additional_information varchar(25)
 );
 
 
-LOAD DATA LOCAL INFILE  'c:\\Users\\kleins\\tau\\db\\git\\PuzzleCreator\\sql\\filesToLoad\\yagoHumanAnswers.tsv'
+LOAD DATA LOCAL INFILE  '???yagoHumanAnswers.tsv'
 INTO TABLE TEMP_ANSWERS
 	fields terminated by '\t'
 	lines terminated by '\n'
