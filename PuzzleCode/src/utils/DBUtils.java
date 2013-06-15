@@ -215,9 +215,25 @@ public class DBUtils {
 		return retMap;
 	}
 
-	public static Map<Integer, List<String>> getHintsByEntityID(int entityID) {
-		return getHints(createINString(Collections.singletonList(entityID)));
-	}
+//	public static Map<Integer,String> getHintsByEntityID(int entityID) {
+//		String sqlHintsQuery = "SELECT h.id, h.yago_hint "
+//				+ "FROM hints h "
+//				+ "WHERE h.entity_id = "
+//				+ entityID + ";";
+//
+//		List<Map<String, Object>> hintsRs = DBConnection
+//				.executeQuery(sqlHintsQuery);
+//
+//		Map<Integer, String> hints = new HashMap<Integer,String>();
+//
+//		for (Map<String, Object> row : hintsRs) {
+//			int hintID = Integer.parseInt(row.get("id").toString());
+//			String yagoHint = getProperName(row.get("yago_hint").toString());
+//			hints.put(hintID,yagoHint);
+//		}
+//
+//		return hints;
+//	}
 
 	/**
 	 * map of definition name to definition ID

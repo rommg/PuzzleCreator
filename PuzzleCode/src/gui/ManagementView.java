@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
@@ -96,7 +97,7 @@ public class ManagementView extends JPanel {
 
 		//get all entities for search from DB
 		allEntities = DBUtils.getAllEntities();
-		
+
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
@@ -198,7 +199,7 @@ public class ManagementView extends JPanel {
 				}
 			}
 		});
-		
+
 		buttonGroup.add(existingCheckBox);
 		radioBtnPanel.add(existingCheckBox);
 
@@ -241,33 +242,19 @@ public class ManagementView extends JPanel {
 
 	private Map<String,Integer> getDefinitionsForEntity(int entityID) {
 		return DBUtils.getDefinitionsByEntityID(entityID);
-		
-	}
 
-	//	private void buildEmptyDefinitionPanel() {
-	//
-	//		tabbedPane.remove(definitionPanel);
-	//
-	//		definitionPanel = new JPanel();
-	//		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
-	//
-	//		for (int i = 0; i<MAX_NUM_DEFS; i++) {
-	//			definitionPanel.add(new NewDefinitionLine());
-	//		}
-	//		definitionPanel.revalidate();
-	//		tabbedPane.add("Definitions", definitionPanel);
-	//	}
+	}
 
 	private void buildDefinitionPanel(int entityID) {
 
 		int row_num = 0;
-		
+
 		definitionPanel.removeAll();
 		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
-		
+
 		if (entityID != -1) { // panel for an existing entity
-			 Map<String, Integer> definitions = getDefinitionsForEntity(entityID);
-			
+			Map<String, Integer> definitions = getDefinitionsForEntity(entityID);
+
 			row_num = definitions.size();
 			definitionCounter = row_num;
 
@@ -275,11 +262,10 @@ public class ManagementView extends JPanel {
 				DefinitionLine line = new DefinitionLine(chosenEntityID, definitions.get(definition), definition);
 				definitionPanel.add(line);
 			}
-			
 		}
 
 		definitionPanel.add(new NewDefinitionLine());
-	
+
 		// add padding lines, if needed
 		for (int i = 0; i<MAX_NUM_DEFS - ADD_ROWS_NUM - row_num; i++) {
 			definitionPanel.add(new JPanel());
@@ -292,18 +278,19 @@ public class ManagementView extends JPanel {
 	}
 
 	private void buildHintsPanel(int entityID) {
+		
+		int row_num = 0;
 
 		hintsPanel.removeAll();
 		hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
-		int row_num = 0;
 		if (entityID != -1) { // existing entity 
-			Map<Integer,List<String>> hintResults = DBUtils.getHintsByEntityID(entityID);
+			Map<Integer,String> hintResults = DBUtils.getHintsByEntityID(entityID);
 
 			List<HintTuple> hintTupleLst = new ArrayList<HintTuple>();
 
-			for (int id : hintResults.keySet()) {
-				hintTupleLst.add(new HintTuple(id, hintResults.get(id).get(0)));
+			for (Entry<Integer,String> entry : hintResults.entrySet()) {
+				hintTupleLst.add(new HintTuple(entry.getKey(),entry.getValue()));
 			}
 
 			row_num = hintResults.size();
@@ -322,7 +309,6 @@ public class ManagementView extends JPanel {
 		}
 
 		hintsPanel.revalidate();
-		tabbedPane.addTab("Hints", null, hintsPanel,null);
 		tabbedPane.revalidate();
 
 		return;
@@ -504,25 +490,25 @@ public class ManagementView extends JPanel {
 					if (field.getSelectedItem() != null ) {
 						String definitionText = field.getSelectedItem().toString();
 						if	( !definitionText.isEmpty() && 
-								(isValidString(definitionText))) {
+								(isValidString(definitionText))) { // text is entered and valid
 							definitionCounter++;
+							Integer retID = allDefinitions.get(definitionText);
+							int definitionID = (retID == null) ? -1 : retID; 
+							int[] ret = KnowledgeManagement.addDefinitionToEntitiy(
+									NewDefinitionLine.this.entityID,
+									NewDefinitionLine.this.entityText, 
+									definitionID,
+									definitionText, 
+									topicBox.getUserSelectedTopics()
+									);
+							if (ret == null) {
+								JOptionPane.showMessageDialog(MainView.getView().getFrame(), "Error Saving To DB");
+								return;
+							}
 
-							if (entityID == -1) { // entity not yet created && this is the first definition of it
-								int[] ret = KnowledgeManagement.addDefinitionToEntitiy(entityText, definitionText,topicBox.getUserSelectedTopics());
-								if (ret == null) {
-									JOptionPane.showMessageDialog(MainView.getView().getFrame(), "Error Saving To DB");
-									return;
-								}
-								entityID =ret[0];
-							}
-							else { // entity is already in DB
-								KnowledgeManagement.addDefinitionToEntitiy(entityID, definitionText, topicBox.getUserSelectedTopics());
-							}
 							buildDefinitionPanel(entityID);
-							//							definitionPanel.revalidate();
-							//							tabbedPane.revalidate();
 						}
-						else  { // show error message
+						else  { // not valid / empty text - show error message
 							JOptionPane.showMessageDialog(MainView.getView().getFrame(),
 									"<html><center>Invalid or Empty Text.</html>");
 						}
@@ -572,7 +558,7 @@ public class ManagementView extends JPanel {
 					if (!hintText.isEmpty() && isValidString(hintText)) {
 						//call DB add procedure
 						KnowledgeManagement.addHint(NewHintLine.this.entityID, hintText);
-						buildHintsPanel(NewHintLine.this.entityID); //rebuild panel
+						ManagementView.this.buildHintsPanel(entityID); //rebuild panel
 						tabbedPane.setSelectedIndex(tabbedPane.getComponentCount()-1);
 					}
 					else  { // show error message

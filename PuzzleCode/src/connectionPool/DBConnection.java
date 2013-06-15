@@ -406,7 +406,7 @@ public class DBConnection {
 	}
 
 	private static int getMaxPredicateId() {
-		String sqlQuery = "SELECT max(id) as max_id FROM predicate;";
+		String sqlQuery = "SELECT max(id) as max_id FROM predicates;";
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
 			//TODO: ERROR

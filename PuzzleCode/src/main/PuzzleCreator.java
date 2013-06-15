@@ -25,8 +25,8 @@ public class PuzzleCreator {
 	public static String dbServerPort = "3306";
 	public static String username = "root";
 	// public static String password = ""; // enter your password
-	//public static String schemaName = "DbMysql02";
-	public static String schemaName = "riddle";
+	public static String schemaName = "DbMysql02";
+	//public static String schemaName = "riddle";
 
 
 	/**
@@ -59,15 +59,12 @@ public class PuzzleCreator {
 				username, password);
 
 		int tries = 1;
-		while (!connectionPool.createPool()) {
-			if (tries++ == 4) { // upon third failed attempt to restart, quit.
-				closeAllDBConnections();
-				System.exit(0);
-			}
-			Logger.writeErrorToLog("Failed to create the Connections Pool on try #" +tries +".");
+		if (!connectionPool.createPool()) {
 			gui.Utils.showDBConnectionErrorMessage();
-			MainView.start();
-				
+			Logger.writeErrorToLog("Failed to create the Connections Pool on try #" +tries +".");
+			closeAllDBConnections();
+			System.exit(0);
+
 		}
 
 		Logger.writeToLog("Connections Pool was created");
@@ -83,16 +80,16 @@ public class PuzzleCreator {
 		//		
 		//		HintsHandler.test();
 		//		DBUtils.getTriviaQuestion();
-//				YagoFileHandler yf = new YagoFileHandler(null);
-//				try {
-//					Logger.writeToLog("begin 05");
-//					yf.importFilesToDB();
-//					Logger.writeToLog("finished 05, begin 06");
-//					yf.populateDB();
-//					Logger.writeToLog("finished 06");
-//				} catch (Exception ex){
-//			
-//				}
+		//				YagoFileHandler yf = new YagoFileHandler(null);
+		//				try {
+		//					Logger.writeToLog("begin 05");
+		//					yf.importFilesToDB();
+		//					Logger.writeToLog("finished 05, begin 06");
+		//					yf.populateDB();
+		//					Logger.writeToLog("finished 06");
+		//				} catch (Exception ex){
+		//			
+		//				}
 
 		// MassiveImporter.runMassiveImporter();
 		// AlgorithmRunner.runAlgorithm();
