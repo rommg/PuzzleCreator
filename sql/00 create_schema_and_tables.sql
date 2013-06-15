@@ -25,7 +25,7 @@ CONSTRAINT uc_CategoryName UNIQUE (name)
 CREATE TABLE DEFINITIONS(
 id int NOT NULL AUTO_INCREMENT,
 yago_type varchar(250) NOT NULL,
-definition varchar(250) NOT NULL,
+definition varchar(500) NOT NULL,
 PRIMARY KEY(id),
 CONSTRAINT uc_YagoTypeDefinition UNIQUE (yago_type)
 );
