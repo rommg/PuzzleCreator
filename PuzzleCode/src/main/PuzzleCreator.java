@@ -25,7 +25,7 @@ public class PuzzleCreator {
 	public static String dbServerPort = "3306";
 	public static String username = "root";
 	// public static String password = ""; // enter your password
-	public static String schemaName = "riddle";
+	public static String schemaName = "DbMysql02";
 
 	/**
 	 * @param args
@@ -39,9 +39,7 @@ public class PuzzleCreator {
 		if (args.length == 3){
 			if (args[2].compareTo("true")==0){
 				dbServerPort = "3305";
-				schemaName = "DbMysql02";
 				username = "DbMysql02";
-
 			}
 		}
 		appDir = args[0] + System.getProperty("file.separator");
@@ -83,16 +81,16 @@ public class PuzzleCreator {
 		//		
 		//		HintsHandler.test();
 		//		DBUtils.getTriviaQuestion();
-		//		YagoFileHandler yf = new YagoFileHandler(null);
-		//		try {
-		//			Logger.writeToLog("begin 05");
-		//			yf.importFilesToDB();
-		//			Logger.writeToLog("finished 05, begin 06");
-		//			yf.populateDB();
-		//			Logger.writeToLog("finished 06");
-		//		} catch (Exception ex){
-			
-		//		}
+//				YagoFileHandler yf = new YagoFileHandler(null);
+//				try {
+//					Logger.writeToLog("begin 05");
+//					yf.importFilesToDB();
+//					Logger.writeToLog("finished 05, begin 06");
+//					yf.populateDB();
+//					Logger.writeToLog("finished 06");
+//				} catch (Exception ex){
+//			
+//				}
 
 		// MassiveImporter.runMassiveImporter();
 		// AlgorithmRunner.runAlgorithm();
