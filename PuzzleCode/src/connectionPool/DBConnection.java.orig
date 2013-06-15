@@ -397,8 +397,13 @@ public class DBConnection {
 		return id;
 	}
 
-	private static int getMaxPredicateId() throws SQLException{
+<<<<<<< HEAD
+	private static int getMaxPredicateId() {
 		String sqlQuery = "SELECT max(id) as max_id FROM predicate;";
+=======
+	private static int getMaxPredicateId() throws SQLException{
+		String sqlQuery = "SELECT max(id) as max_id FROM predicates;";
+>>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
 			//TODO: ERROR
@@ -686,9 +691,13 @@ public class DBConnection {
 			safelyClose(null, pStmt, conn, null);
 		}
 	}
+<<<<<<< HEAD
 	
 	
 //
+=======
+
+>>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 //	public static int insreatIntoYagoFact(File yagoFacts_tsv){
 //
 //	}
@@ -698,6 +707,11 @@ public class DBConnection {
 //	}
 //
 //	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
+<<<<<<< HEAD
+
+	}
+=======
 //
 //	}
+>>>>>>> 38f8f2ca7858a4d77c66329d47a99ccb94949655
 }
