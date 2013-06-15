@@ -367,7 +367,8 @@ public class DBConnection {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String USER_HINT = "<user_hint>";
+		int maxPredicateId = getMaxPredicateId();
+		String USER_HINT = "<user_hint>" + maxPredicateId;
 		int id = -1;
 
 		if (conn == null) {
@@ -392,6 +393,15 @@ public class DBConnection {
 			safelyClose(rs, null, conn, pstmt);
 		}	
 		return id;
+	}
+
+	private static int getMaxPredicateId() {
+		String sqlQuery = "SELECT max(id) as max_id FROM predicate;";
+		List<Map<String,Object>> rs = executeQuery(sqlQuery);
+		if (rs.size() == 0){
+			//TODO: ERROR
+		}
+		return (Integer)(rs.get(0).get("max_id"));
 	}
 
 	public static int addHint(int entityId, int predicateId) {
