@@ -122,7 +122,7 @@ public class MainView {
 		setSizes();
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.setIconImage(new ImageIcon(MainView.class.getResource("/resources/crossword_tiny.gif")).getImage());
+		frame.setIconImage(new ImageIcon(getClass().getResource("/resources/crossword_tiny.gif")).getImage());
 		frame.setTitle("Crossword Mastermind");
 
 		// build mainPanel
@@ -199,7 +199,7 @@ public class MainView {
 		welcomePanel = new JPanel();
 		welcomePanel.setLayout(new BorderLayout());
 		welcomePanel.setBackground(Color.WHITE);
-		JLabel logo = new JLabel(new ImageIcon(MainView.class.getResource("/resources/crossword.jpg")));
+		JLabel logo = new JLabel(new ImageIcon(getClass().getResource("/resources/crossword.jpg")));
 		welcomePanel.add(logo, BorderLayout.CENTER);
 		
 		JPanel titlePanel = new JPanel(new GridLayout(2,1));
@@ -253,7 +253,7 @@ public class MainView {
 		JLabel label = new JLabel(text);
 		btnLabels.put(btn, label);
 		label.setHorizontalAlignment(JLabel.CENTER);
-		JLabel image = new JLabel(new ImageIcon(MainView.class.getResource("/resources/" + resourceName)));
+		JLabel image = new JLabel(new ImageIcon(getClass().getResource("/resources/" + resourceName)));
 		btn.add(label, BorderLayout.CENTER);
 		btn.add(image, BorderLayout.WEST);
 		menuPanelBtns.put(text, btn);
@@ -413,7 +413,9 @@ public class MainView {
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.Management.toString());
-		setSizes();
+		frame.setMinimumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
+		frame.setPreferredSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
+		frame.setMaximumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
