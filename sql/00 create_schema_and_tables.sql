@@ -15,39 +15,38 @@ DROP TABLE IF EXISTS YAGO_TYPE;
 -- DROP TABLE IF EXISTS DEFINITIONS;
 -- DROP TABLE IF EXISTS TOPICS;
 
-CREATE TABLE TOPICS(
-id int NOT NULL AUTO_INCREMENT, 
-name varchar(50) NOT NULL,
-PRIMARY KEY(id),
-CONSTRAINT uc_CategoryName UNIQUE (name)
-); 
+-- CREATE TABLE TOPICS(
+-- id int NOT NULL AUTO_INCREMENT, 
+-- name varchar(50) NOT NULL,
+-- PRIMARY KEY(id),
+-- CONSTRAINT uc_CategoryName UNIQUE (name)
+-- ); 
 
-CREATE TABLE DEFINITIONS(
-id int NOT NULL AUTO_INCREMENT,
-yago_type varchar(250) NOT NULL,
-definition varchar(500) NOT NULL,
-PRIMARY KEY(id),
-CONSTRAINT uc_YagoTypeDefinition UNIQUE (yago_type)
-);
+-- CREATE TABLE DEFINITIONS(
+-- id int NOT NULL AUTO_INCREMENT,
+-- yago_type varchar(250) NOT NULL,
+-- definition varchar(500) NOT NULL,
+-- PRIMARY KEY(id),
+-- CONSTRAINT uc_YagoTypeDefinition UNIQUE (yago_type)
+-- );
 
-CREATE TABLE DEFINITIONS_TOPICS(
-definition_id int NOT NULL, 
-topic_id int NOT NULL,
-PRIMARY KEY(definition_id, topic_id),
-CONSTRAINT fk_TopicId FOREIGN KEY(topic_id) REFERENCES TOPICS(id),
-CONSTRAINT fk_DefinitionId FOREIGN KEY(definition_id) REFERENCES DEFINITIONS(id)
-); 
+-- CREATE TABLE DEFINITIONS_TOPICS(
+-- definition_id int NOT NULL, 
+-- topic_id int NOT NULL,
+-- PRIMARY KEY(definition_id, topic_id),
+-- CONSTRAINT fk_TopicId FOREIGN KEY(topic_id) REFERENCES TOPICS(id),
+-- CONSTRAINT fk_DefinitionId FOREIGN KEY(definition_id) REFERENCES DEFINITIONS(id)
+-- ); 
 
 
-CREATE TABLE PREDICATES (
-id int NOT NULL AUTO_INCREMENT, 
--- predicate
-yago_predicate varchar(50) NOT NULL,
-subject_str varchar(250),
-object_str varchar(250),
-PRIMARY KEY(id),
-CONSTRAINT uc_YagoPredicate UNIQUE (yago_predicate)
-);
+-- CREATE TABLE PREDICATES (
+-- id int NOT NULL AUTO_INCREMENT, 
+-- yago_predicate varchar(50) NOT NULL,
+-- subject_str varchar(250),
+-- object_str varchar(250),
+-- PRIMARY KEY(id),
+-- CONSTRAINT uc_YagoPredicate UNIQUE (yago_predicate)
+-- );
 
 
 CREATE TABLE YAGO_TYPE (
@@ -114,10 +113,10 @@ CONSTRAINT fk_PredicateHintId FOREIGN KEY(predicate_id) REFERENCES PREDICATES(id
 CONSTRAINT fk_EntityHintId FOREIGN KEY(entity_id) REFERENCES ENTITIES(id)
 );
 
-CREATE TABLE IF NOT EXISTS BEST_SCORES (
-user_name varchar(100) NOT NULL, 
-score int NOT NULL, 
-date datetime NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS BEST_SCORES (
+-- user_name varchar(100) NOT NULL, 
+-- score int NOT NULL, 
+-- date datetime NOT NULL
+-- );
 
 -- ------------------------------------------------------------------------------------------------
