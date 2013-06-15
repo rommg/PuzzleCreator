@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="gui.CrosswordView.CrosswordKeyListener"/>
-<fullyQualifiedTypeName name="gui.RegularSquare"/>
 <fullyQualifiedTypeName name="gui.CheckComboBox.ObjCheckBox"/>
 <fullyQualifiedTypeName name="java.awt.event.ItemListener"/>
 <fullyQualifiedTypeName name="javax.swing.JList"/>
@@ -60,4 +58,6 @@
 <fullyQualifiedTypeName name="javax.swing.SwingConstants"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="gui.MainView"/>
+<fullyQualifiedTypeName name="utils.DBUtils"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
 </qualifiedTypeNameHistroy>

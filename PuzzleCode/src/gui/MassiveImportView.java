@@ -270,13 +270,13 @@ public class MassiveImportView extends JPanel {
 			//				return null;
 			//			}
 
-			try {
-				y.reduceHints();
-			}
-			catch (SQLException e) {
-				publish("ERROR while reducing hints.");
-				return null;
-			}
+//			try {
+//				y.reduceHints();
+//			}
+//			catch (SQLException e) {
+//				publish("ERROR while reducing hints.");
+//				return null;
+//			}
 
 			Logger.writeToLog("Deleting created files...");
 			publish("Deleting created files...");

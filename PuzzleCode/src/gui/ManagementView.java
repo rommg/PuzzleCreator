@@ -314,8 +314,6 @@ public class ManagementView extends JPanel {
 
 		hintsPanel.revalidate();
 		tabbedPane.addTab("Hints", null, hintsPanel,null);
-		tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, false);
-
 		tabbedPane.revalidate();
 
 		return;
@@ -332,6 +330,8 @@ public class ManagementView extends JPanel {
 		}
 		hintsPanel.revalidate();
 		tabbedPane.add("Hints", hintsPanel);
+		tabbedPane.setEnabledAt(1, false);
+		tabbedPane.revalidate();
 	}
 
 
@@ -522,6 +522,7 @@ public class ManagementView extends JPanel {
 							//definitionPanel.add(new DefinitionLine(definitionID, definition));
 							tabbedPane.setEnabledAt(1, true);
 							definitionPanel.revalidate();
+							tabbedPane.revalidate();
 						}
 						else  { // show error message
 							JOptionPane.showMessageDialog(MainView.getView().getFrame(),
