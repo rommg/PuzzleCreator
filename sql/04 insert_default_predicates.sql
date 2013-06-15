@@ -14,7 +14,7 @@ INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasCur
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<happenedIn>', 'It happened in ?', '? happened there');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasOfficialLanguage>', 'Its official language is ?', 'The official language of ?');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<holdsPoliticalPosition>', '?', 'The political position ? holds');
-INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasWebsite>', 'Its website is ?', null);
+-- INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<hasWebsite>', 'Its website is ?', null);
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isInterestedIn>', 'Person who is interested in ?', '? is interested in it');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isMarriedTo>', 'Married to ?', 'Married to ?');
 INSERT INTO PREDICATES (yago_predicate, subject_str, object_str) VALUE ('<isLocatedIn>', 'Located in ?', '? is located there');
