@@ -12,14 +12,12 @@ import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
-import connectionPool.DBConnection;
 
 import utils.DBUtils;
 
