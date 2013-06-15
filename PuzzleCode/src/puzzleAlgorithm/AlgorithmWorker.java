@@ -87,13 +87,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 			publish("Sorting answers on board...");
 			start = System.currentTimeMillis();
 			while (System.currentTimeMillis() - start < 60000) {
-				if (template == 1) {
-					success = fillBoard(start - 30000);
-				} else {
-					System.out.println(System.currentTimeMillis());
-					success = fillBoard(System.currentTimeMillis());
-				}
-//				success = fillBoard(System.currentTimeMillis());
+				success = fillBoard(System.currentTimeMillis());
 				if (!success && (template == 1)) {
 					template = 2;
 					Logger.writeErrorToLog("impossible data for template 1");
