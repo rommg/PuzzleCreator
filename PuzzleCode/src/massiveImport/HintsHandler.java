@@ -69,15 +69,6 @@ public class HintsHandler {
 		return true;
 	}
 
-	private static long getNumOfHints(Integer entityId) {
-		String sql = "SELECT (SELECT count(*) FROM entities_definitions WHERE entity_id = " + entityId + ") + " +
-				"(SELECT count(*) FROM hints WHERE entity_id = " + entityId + ") AS num_of_hints " +
-				"FROM dual;";
-		List<Map<String,Object>> rs = DBConnection.executeQuery(sql);
-		long numOfHints = (Long)rs.get(0).get("num_of_hints") - 1;
-		return numOfHints;
-	}
-
 	private static Map<Integer, Long> getAllEntitiesIdsWithMoreThen10Hints() {
 		String sql = "select entity_id, count(*) as num_of_hints from hints group by entity_id having num_of_hints > 10;" ;
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sql);

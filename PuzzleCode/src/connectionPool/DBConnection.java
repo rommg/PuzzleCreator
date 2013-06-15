@@ -240,12 +240,12 @@ public class DBConnection {
 	}
 	
 
-	public static int addDefinition(String definition) {
+	public static int addDefinition(int defenitionNumber, String definition) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int id = -1;
-		String USER_DEF = "userDefinition";
+		String USER_DEF = "<userDefinition>";
 		
 		if (conn == null) {
 			gui.Utils.showDBConnectionErrorMessage();
@@ -255,7 +255,7 @@ public class DBConnection {
 		String sqlQuery = "INSERT INTO definitions (yago_type, definition) VALUES (? , ?);";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery, new String[] { "ID" });
-			pstmt.setString(1, USER_DEF);
+			pstmt.setString(1, USER_DEF + defenitionNumber);
 			pstmt.setString(2, definition);
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();

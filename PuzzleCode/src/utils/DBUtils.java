@@ -14,6 +14,7 @@ import connectionPool.DBConnection;
 import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.Answer;
 import puzzleAlgorithm.PuzzleDefinition;
+import connectionPool.DBConnection;
 
 public class DBUtils {
 
@@ -87,7 +88,9 @@ public class DBUtils {
 					hints.put(entityId, definitions.get(entityId));
 				}
 			}
-			//removeHintsIfMoreThen10(hints, entityId);
+			if(hints.keySet().contains(entityId)){
+				removeHintsIfMoreThen10(hints, entityId);
+			}
 			puzzleDefinition.setHints(hints.get(entityId));
 		}
 		return true;
@@ -96,7 +99,8 @@ public class DBUtils {
 	private static void removeHintsIfMoreThen10(Map<Integer, List<String>> hints, Integer entityId) {
 		int numOfHints = hints.get(entityId).size();
 		while(numOfHints > 10){
-			int rand = (int)(Math.random() * hints.get(entityId).size());
+			numOfHints = hints.get(entityId).size();
+			int rand = (int)(Math.random() * numOfHints);
 			hints.get(entityId).remove(rand);
 		}
 	}
