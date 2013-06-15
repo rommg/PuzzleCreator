@@ -18,7 +18,7 @@ public class DBConnection {
 
 	private static Connection getConnection() {
 		Connection conn = null;
-		
+
 		try {
 			conn = PuzzleCreator.connectionPool.getConnection();
 		} catch (SQLException e) {
@@ -54,7 +54,7 @@ public class DBConnection {
 		if (conn == null) {
 			throw new RuntimeException();
 		}
-		
+
 		Statement stmt = null;
 		ResultSet rs = null;
 		List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
@@ -109,7 +109,7 @@ public class DBConnection {
 			gui.Utils.showDBConnectionErrorMessage();
 			return;
 		}
-		
+
 		String sqlQuery = "DELETE FROM entities_definitions WHERE entity_id = ? AND definition_id = ?;";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery);
@@ -124,7 +124,7 @@ public class DBConnection {
 			safelyClose(null, null, conn, pstmt);
 		}		
 	}
-	
+
 
 	public static void deleteHint(int hint_id){
 		Connection conn = getConnection();
@@ -133,7 +133,7 @@ public class DBConnection {
 			gui.Utils.showDBConnectionErrorMessage();
 			return;
 		}
-		
+
 		String sqlQuery = "DELETE FROM hints WHERE id = ?;";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery);
@@ -147,8 +147,8 @@ public class DBConnection {
 			safelyClose(null, null, conn, pstmt);
 		}	
 	}
-	
-	
+
+
 	public static void deleteEntity(int entityId){
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
@@ -156,7 +156,7 @@ public class DBConnection {
 			gui.Utils.showDBConnectionErrorMessage();
 			return;
 		}
-		
+
 		String sqlQuery1 = "DELETE FROM entities_definitions WHERE entity_id = ?;";
 		String sqlQuery2 = "DELETE FROM answers WHERE entity_id = ?;";
 		String sqlQuery3 = "DELETE FROM hints WHERE entity_id = ?;";
@@ -167,24 +167,24 @@ public class DBConnection {
 			pstmt.executeUpdate();
 			safelyClose(null, null, null, pstmt);
 			Logger.writeToLog("deleteEntity deleted entity " +entityId+ " from entities_definitions" );
-			
+
 			pstmt = conn.prepareStatement(sqlQuery2);
 			pstmt.setInt(1, entityId);
 			pstmt.executeUpdate();
 			safelyClose(null, null, null, pstmt);
 			Logger.writeToLog("deleteEntity deleted entity " +entityId+ " from answers" );
-			
+
 			pstmt = conn.prepareStatement(sqlQuery3);
 			pstmt.setInt(1, entityId);
 			pstmt.executeUpdate();
 			safelyClose(null, null, null, pstmt);
 			Logger.writeToLog("deleteEntity deleted entity " +entityId+ " from hints" );
-			
+
 			pstmt = conn.prepareStatement(sqlQuery4);
 			pstmt.setInt(1, entityId);
 			pstmt.executeUpdate();
 			Logger.writeToLog("deleteEntity deleted entity " +entityId+ " from entities" );
-			
+
 		} catch (SQLException e){
 			Logger.writeErrorToLog("deleteEntity failed deletion. " + e.getMessage());
 		}
@@ -192,8 +192,8 @@ public class DBConnection {
 			safelyClose(null, null, conn, pstmt);
 		}	
 	}
-	
-	
+
+
 	/**
 	 * Delete from "hints" table all the rows with ID that included in the
 	 * "hintIdToDelete" list. The method executes all DELETE updates as a single
@@ -238,42 +238,42 @@ public class DBConnection {
 		}
 		return result;
 	}
-	
 
-	public static int addDefinition(int defenitionNumber, String definition) {
+
+	public static int addDefinition(String definition) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int id = -1;
 		String USER_DEF = "<userDefinition>";
-		
+
 		if (conn == null) {
 			gui.Utils.showDBConnectionErrorMessage();
 			return id;
 		}
-		
+
 		String sqlQuery = "INSERT INTO definitions (yago_type, definition) VALUES (? , ?);";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery, new String[] { "ID" });
-			pstmt.setString(1, USER_DEF + defenitionNumber);
+			pstmt.setString(1, USER_DEF);
 			pstmt.setString(2, definition);
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			rs.next();
 			id = rs.getInt(1);
 			Logger.writeToLog("addDefinition inserted into definitions: " + definition + " ID is " + id);
-			
+
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addDefinition failed insertion to definitions. " + e.getMessage());
 		}
 		finally {
 			safelyClose(rs, null, conn, pstmt);
 		}	
-		
+
 		return id;
 	}
-	
-	
+
+
 	public static void setTopicsToDefinition(int definitionId,	List<Integer> topics) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
@@ -281,7 +281,7 @@ public class DBConnection {
 			gui.Utils.showDBConnectionErrorMessage();
 			return;
 		}
-		
+
 		String sqlQuery = "INSERT INTO definitions_topics (definition_id, topic_id) VALUES (?, ?);";
 		try {
 			conn.setAutoCommit(false);
@@ -291,11 +291,11 @@ public class DBConnection {
 				pstmt.setInt(2, topicId);
 				pstmt.addBatch();
 			}
-			
+
 			pstmt.executeBatch();
 			conn.commit();
 			Logger.writeToLog("setTopicsToDefinition inserted topics_id to definition_topics where definition_id = "+definitionId);
-			
+
 		} catch (SQLException e) {
 			Logger.writeErrorToLog("setTopicsToDefinition failed insertion to definitions_topics. " + e.getMessage());
 		}
@@ -304,8 +304,8 @@ public class DBConnection {
 			safelyClose(null, null, conn, pstmt);
 		}		
 	}
-	
-	
+
+
 	public static void setNewDefinition(int entityId, int definitionId) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
@@ -313,7 +313,7 @@ public class DBConnection {
 			gui.Utils.showDBConnectionErrorMessage();
 			return;
 		}
-		
+
 		String sqlQuery = "INSERT INTO entities_definitions (entity_id, definition_id) VALUES (?, ?);";
 		try {
 			pstmt = conn.prepareStatement(sqlQuery);
@@ -321,8 +321,8 @@ public class DBConnection {
 			pstmt.setInt(2, definitionId);
 			pstmt.executeUpdate();
 			Logger.writeToLog("setNewDefinition inserted into entities_definitions: entityId " 
-								+entityId+ " definitionId "+definitionId);
-			
+					+entityId+ " definitionId "+definitionId);
+
 		} catch (SQLException e){
 			Logger.writeErrorToLog("setNewDefinition failed insertion to entities_definitions. " + e.getMessage());
 		}
@@ -330,14 +330,14 @@ public class DBConnection {
 			safelyClose(null, null, conn, pstmt);
 		}		
 	}
-	
-	
+
+
 	public static int addEntity(String entity) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int id = -1;
-		
+
 		if (conn == null) {
 			gui.Utils.showDBConnectionErrorMessage();
 			return id;
@@ -351,25 +351,25 @@ public class DBConnection {
 			rs.next();
 			id = rs.getInt(1);
 			Logger.writeToLog("addEntity inserted into entities: " + entity + " ID is " + id);
-			
+
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addEntity failed insertion to entities. " + e.getMessage());
 		}
 		finally {
 			safelyClose(rs, null, conn, pstmt);
 		}	
-		
+
 		return id;
 	}
-	
-	
-	public static int addPredicate(int hintNumber, String hint) {
+
+
+	public static int addPredicate(String hint) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String USER_HINT = "<user_hint>"+hintNumber;
+		String USER_HINT = "<user_hint>";
 		int id = -1;
-		
+
 		if (conn == null) {
 			gui.Utils.showDBConnectionErrorMessage();
 			return id;
@@ -384,7 +384,7 @@ public class DBConnection {
 			rs.next();
 			id = rs.getInt(1);
 			Logger.writeToLog("addPredicate inserted into predicates: " + hint + " ID is " + id);
-			
+
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addPredicate failed insertion to predicates. " + e.getMessage());
 		}
@@ -399,7 +399,7 @@ public class DBConnection {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int id = -1;
-		
+
 		if (conn == null) {
 			gui.Utils.showDBConnectionErrorMessage();
 			return id;
@@ -414,7 +414,7 @@ public class DBConnection {
 			rs.next();
 			id = rs.getInt(1);
 			Logger.writeToLog("addHint inserted into hints: entitiy_id = " + entityId + " . auto-ID is " + id);
-			
+
 		} catch (SQLException e){
 			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
 		}
@@ -423,6 +423,34 @@ public class DBConnection {
 		}	
 		return id;
 	}
+// TODO: remove
+//	public static int getDefintionId(String definition){
+//		Connection conn = getConnection();
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		int id = -1;
+//
+//		if (conn == null) {
+//			gui.Utils.showDBConnectionErrorMessage();
+//			return id;
+//		}
+//		String sqlQuery = "SELECT id FROM definitions WHERE defenition like ?;";
+//		try {
+//			pstmt = conn.prepareStatement(sqlQuery);
+//			pstmt.setString(1, "\""+ definition + "\"");
+//			pstmt.executeQuery();
+//			rs = pstmt.getGeneratedKeys();
+//			rs.next();
+//			id =  rs.getInt(1);
+//
+//		} catch (SQLException e){
+//			Logger.writeErrorToLog("addHint failed insertion to hints. " + e.getMessage());
+//		}
+//		finally {
+//			safelyClose(rs, null, conn, pstmt);
+//		}	
+//		return id;
+//	}
 
 	private static List<Map<String, Object>> mapResultSet(ResultSet rs) throws SQLException {
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
@@ -578,8 +606,8 @@ public class DBConnection {
 	private static String buildImportSql(String importedFile, String tableTo) {
 		String fixedPath = YagoFileHandler.getFilteredTsvFileDestDir().replace("\\", "\\\\");
 		return "LOAD DATA LOCAL INFILE '" + fixedPath + importedFile + ".TSV' " + "INTO TABLE " + tableTo + " "
-				+ "fields terminated by '\\t' " + "lines terminated by '\\n' "
-				+ "(yago_id,subject,predicate,object,value);";
+		+ "fields terminated by '\\t' " + "lines terminated by '\\n' "
+		+ "(yago_id,subject,predicate,object,value);";
 	}
 
 	@SuppressWarnings("unused")
