@@ -668,6 +668,15 @@ public class DBConnection {
 		}
 	}
 	
+	public static void test(){
+		try{
+		insreatIntoYagoType("c://Users//kleins//tau//db//git//PuzzleCreator//temp_yago_files//filtered_tsv_files//yagoTypes.tsv");
+		}
+		catch(Exception e){
+			System.out.println("Error");
+		}
+	}
+	
 //	public static int insreatIntoYagoFact(File yagoFacts_tsv){
 //
 //	}
