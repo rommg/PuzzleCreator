@@ -53,6 +53,7 @@ public class PuzzleCreator {
 			return;
 		}
 
+
 		MainView.start();
 
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
@@ -80,16 +81,16 @@ public class PuzzleCreator {
 		//		
 		//		HintsHandler.test();
 		//		DBUtils.getTriviaQuestion();
-				YagoFileHandler yf = new YagoFileHandler(null);
-				try {
-					Logger.writeToLog("begin 05");
-					yf.importFilesToDB();
-					Logger.writeToLog("finished 05, begin 06");
-					yf.populateDB();
-					Logger.writeToLog("finished 06");
-				} catch (Exception ex){
-			
-				}
+		YagoFileHandler yf = new YagoFileHandler(null);
+		try {
+			Logger.writeToLog("begin 05");
+			yf.importFilesToDB();
+			Logger.writeToLog("finished 05, begin 06");
+			yf.populateDB();
+			Logger.writeToLog("finished 06");
+		} catch (Exception ex){
+
+		}
 
 		// MassiveImporter.runMassiveImporter();
 		// AlgorithmRunner.runAlgorithm();

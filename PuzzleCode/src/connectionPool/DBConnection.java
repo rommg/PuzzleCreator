@@ -3,6 +3,7 @@ package connectionPool;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -406,7 +407,7 @@ public class DBConnection {
 	}
 
 	private static int getMaxPredicateId() {
-		String sqlQuery = "SELECT max(id) as max_id FROM predicates;";
+		String sqlQuery = "SELECT max(id) as max_id FROM predicate;";
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
 			//TODO: ERROR
@@ -676,15 +677,16 @@ public class DBConnection {
 		return 1;
 	}
 
-	public static int insreatIntoYagoType(String yagoTypes_tsv){
+	public static void insreatIntoYagoType(String yagoTypes_tsv){
 		String line = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = null;
+		PreparedStatement pStmt = null;
 		try{
 			conn = getConnection();
 			conn.setAutoCommit(false);
 			String sql = "INSERT INTO yago_type (subject, predicate, object, answer, additional_information) VALUES (?,?,?,?,?);";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt = conn.prepareStatement(sql);
 
 			FileReader fr = new FileReader(new File(yagoTypes_tsv));
 			BufferedReader bufferedReader = new BufferedReader(fr);
@@ -708,32 +710,31 @@ public class DBConnection {
 				// try rolling back
 				conn.rollback();
 				Logger.writeToLog("Rollback Successfully");
+				throw new SQLException("Failed and rollback ",sqlE);
 			} catch (SQLException sqlE2) {
 				Logger.writeErrorToLog("failed when rollbacking - " + sqlE2.getMessage());
-				throw new SQLException();
-				// TODO: alert the calling method that committing the script had
-				// failed
+				throw new SQLException("rollback failed",sqlE2);
 			}
-		} catch (Exception e) {
-			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());
+		} catch (IOException ioE) {
+			Logger.writeErrorToLog("Failed to read file: " + yagoTypes_tsv + ioE.getMessage());
+			throw new IOException("Failed to read file yagoTypes_tsv" + yagoTypes_tsv, ioE);
 		} finally {
 			safelySetAutoCommit(conn);
-			safelyClose(null, stmt, conn, null);
+			safelyClose(null, pStmt, conn, null);
 		}
-
-
-		return 0;
 	}
-
-	public static int insreatIntoYagoFact(File yagoFacts_tsv){
-
-	}
-
-	public static int insreatIntoYagoLiteralFacts(File yagoLiteralFacts_tsv){
-
-	}
-
-	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
+	
+	
+//
+//	public static int insreatIntoYagoFact(File yagoFacts_tsv){
+//
+//	}
+//
+//	public static int insreatIntoYagoLiteralFacts(File yagoLiteralFacts_tsv){
+//
+//	}
+//
+//	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
 
 	}
 }
