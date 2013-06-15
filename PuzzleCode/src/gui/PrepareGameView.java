@@ -51,7 +51,7 @@ public class PrepareGameView extends JPanel {
 
 	private void initialize() {
 
-		getTopics();
+		
 		setLayout(new BorderLayout());
 
 		JPanel difficultyPanel = new JPanel();
@@ -108,6 +108,10 @@ public class PrepareGameView extends JPanel {
 		btnPanel.add(goBtn);
 
 		getTopics(); // query topics from DB
+		if (topicsList.size() == 0) {
+			Utils.showDBConnectionErrorMessage();
+			return;
+		}
 		addTopicsCheckBoxes(); // add then as checkboxes
 	}
 
@@ -141,6 +145,7 @@ public class PrepareGameView extends JPanel {
 		
 		// add General Knowledge update
 		selectedTopics.add(topicsList.get(GENERAL_KNOWLEDGE_TOPIC));
+
 
 		int[] topicsArray = new int[selectedTopics.size()];
 		
@@ -188,5 +193,6 @@ public class PrepareGameView extends JPanel {
 
 	private void getTopics() {
 		topicsList  = DBUtils.getAllTopicIDsAndNames();
+		
 	}
 }

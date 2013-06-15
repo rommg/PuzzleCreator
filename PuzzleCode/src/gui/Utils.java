@@ -5,6 +5,8 @@ import java.awt.Container;
 
 import javax.swing.JOptionPane;
 
+import main.PuzzleCreator;
+
 public class Utils {
 
 	static void enableComponents(Container container, boolean enable) {
@@ -18,11 +20,11 @@ public class Utils {
 	}
 
 	public static void showDBConnectionErrorMessage() {
-		if (MainView.getView().getFrame() != null) // GUI is open at this stage
-			JOptionPane.showMessageDialog(MainView.getView().getFrame(), "We're sorry, but A DB error occured. Please try again.");
-		// return user to main screens
-		MainView.getView().showWelcomeView();
+		while (MainView.getView() == null) {}; // Wait for GUI to open
+		JOptionPane.showMessageDialog(MainView.getView().getFrame(), "We're sorry, but A DB error occured. Application will restart.");
+		
+		//restart application
+		MainView.getView().Dispose();
+		MainView.start();
 	}
-
-
 }

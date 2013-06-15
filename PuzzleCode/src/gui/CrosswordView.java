@@ -139,7 +139,7 @@ public class CrosswordView extends JPanel {
 		JPanel BtnPanel = new JPanel();
 		add(BtnPanel, BorderLayout.SOUTH);
 
-		JButton btnArtificialWin = new JButton("Solve for me");
+		JButton btnArtificialWin = new JButton("CHEAT Solve");
 		btnArtificialWin.addActionListener(new ActionListener() {
 
 			@Override
@@ -149,6 +149,7 @@ public class CrosswordView extends JPanel {
 			}
 		});
 		BtnPanel.add(btnArtificialWin);
+		
 		btnCheck = new JButton("Check my Answers!", new ImageIcon(CrosswordView.class.getResource("/resources/check_medium.png")));
 		btnCheck.setFont(btnCheck.getFont().deriveFont(15f));
 		btnCheck.setEnabled(false);
@@ -167,6 +168,9 @@ public class CrosswordView extends JPanel {
 					}
 					else 	
 						JOptionPane.showMessageDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Play again and make a high score!</html>");
+					btnCheck.setEnabled(false);
+					pause();
+					btnSurrender.setEnabled(false);
 				}
 				else {
 					JOptionPane.showMessageDialog(CrosswordView.this, "<html><center> We know you rock,<br> but something in your answers is WRONG.</html>");
@@ -207,10 +211,8 @@ public class CrosswordView extends JPanel {
 		BtnPanel.add(btnBack);
 		BtnPanel.add(btnPause);
 		BtnPanel.add(btnCheck);
-		BtnPanel.add(btnSurrender);
+		BtnPanel.add(btnSurrender);	
 		
-
-		//		wasShown = true;
 	}
 
 	void setFrameSizeByBoardSize() {

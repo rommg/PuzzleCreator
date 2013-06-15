@@ -172,7 +172,7 @@ public class WaitView extends JPanel {
 		Random rand = new Random();
 		// ideally want different letters revealed, but one is OK too.
 		int firstLetterIndex  = rand.nextInt(answer.length());
-		int secondLetterIndex = rand.nextInt(answer.length());
+		int secondLetterIndex = (answer.length() < 2) ? -1 : rand.nextInt(answer.length());
 		int thirdLetterIndex =  (answer.length() < 5) ? -1 : rand.nextInt(answer.length());
 		int fourthLetterIndex = (answer.length() < 7) ? -1 : rand.nextInt(answer.length());
 
