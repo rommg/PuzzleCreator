@@ -5,12 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import massiveImport.YagoFileHandler;
-
-import connectionPool.DBConnection;
 import puzzleAlgorithm.AlgorithmWorker;
 import puzzleAlgorithm.Answer;
 import puzzleAlgorithm.PuzzleDefinition;
@@ -345,7 +340,7 @@ public class DBUtils {
 	public static String[] getTriviaQuestion(){
 		String sqlQuery = "SELECT a.answer, a.additional_information, d.definition " +
 				"FROM entities e, answers a, definitions d, entities_definitions ed " +
-				"WHERE a.entity_id = e.id AND a.length < 10 AND e.id = ed.entity_id AND ed.definition_id = d.id " +
+				"WHERE a.entity_id = e.id AND a.length < 10 AND a.length > 3 AND e.id = ed.entity_id AND ed.definition_id = d.id " +
 				"ORDER BY RAND() LIMIT 1;";
 		List<Map<String,Object>> rs = DBConnection.executeQuery(sqlQuery);
 		while (rs.size() == 0){
