@@ -117,7 +117,7 @@ public class PrepareGameView extends JPanel {
 		int[] selectedTopicIDs = getUserSelectedTopics();
 		int difficulty = getUserSelectedDifficulty();
 
-		if (selectedTopicIDs.length < 2) { // must choose at least two topics
+		if (selectedTopicIDs.length < 3) { // must choose at least two topics
 			JOptionPane.showMessageDialog(MainView.getView().getFrame(),
 					"At least two Topics must be selected.");
 		}
