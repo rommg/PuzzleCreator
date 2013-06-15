@@ -203,7 +203,7 @@ public class DBConnection {
 					String lineEnd = str.substring(pathIndex + 3);
 					str = lineStart + PuzzleCreator.loadFilesDir + lineEnd;
 					int slashIndex = str.indexOf(System.getProperty("file.separator"));
-					while (slashIndex >= 0) {
+					while (slashIndex >= 0 && (System.getProperty("file.separator").compareTo("/") !=0)) {
 						lineStart = str.substring(0, slashIndex);
 						lineEnd = str.substring(slashIndex+1);
 						str = lineStart + "/" +  lineEnd;

@@ -32,9 +32,17 @@ public class PuzzleCreator {
 	 */
 	public static void main(String[] args) {
 		
-		if (args.length != 2) {
-			System.out.println("Wrong number of arguments");
+		if (args.length < 2) {
+			System.out.println("Not enough arguments");
 			return;
+		}
+		if (args.length == 3){
+			if (args[2].compareTo("true")==0){
+				dbServerPort = "3305";
+				schemaName = "DbMysql02";
+				username = "DbMysql02";
+				
+			}
 		}
 		appDir = args[0] + System.getProperty("file.separator");
 		String password = args[1];
@@ -64,7 +72,16 @@ public class PuzzleCreator {
 //		
 //		HintsHandler.test();
 //		DBUtils.getTriviaQuestion();
-
+		YagoFileHandler yf = new YagoFileHandler(null);
+		try {
+			Logger.writeToLog("begin 05");
+			yf.importFilesToDB();
+			Logger.writeToLog("finished 05, begin 06");
+			yf.populateDB();
+			Logger.writeToLog("finished 06");
+		} catch (Exception ex){
+			
+		}
 		MainView.start();
 
 		// MassiveImporter.runMassiveImporter();
