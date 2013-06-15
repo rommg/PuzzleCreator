@@ -23,8 +23,10 @@ public class KnowledgeManagement {
 	 * 			   topic is not null, definition is not null and entityId is valid (exist in DB)
 	 * return definition id
 	 */
-	public static int addDefinitionToEntitiy(int entityId, String definition, List<Integer> topics){
-		int definitionId = DBConnection.addDefinition(definition); //INSERT INTO definitions (yago_type, definition) VALUES ("userDefinition", definition); get the id
+	public static int addDefinitionToEntitiy(int entityId, int definitionId, String definition, List<Integer> topics){
+		if (definitionId == -1){
+			definitionId = DBConnection.addDefinition(definition); //INSERT INTO definitions (yago_type, definition) VALUES ("userDefinition", definition); get the id
+		}
 		DBConnection.setTopicsToDefinition(definitionId, topics); //for(Int topicId: topics){INSERT INTO definitions_topics (definition_id, topics_id) VALUSE (definitionId, topicId);}
 		DBConnection.setNewDefinition(entityId, definitionId); // INSER INTO entities_definitions (entity_id, definition_id) VALUES (entityId, definitionId);
 		return definitionId;
@@ -38,10 +40,10 @@ public class KnowledgeManagement {
 	 * int[0] is the entityId 
 	 * int[1] is the definition id
 	 */
-	public static int[] addDefinitionToEntitiy(String entity, String definition, List<Integer> topics){
+	public static int[] addDefinitionToEntitiy(String entity, int definitionId, String definition, List<Integer> topics){
 		int entityId = DBConnection.addEntity(entity); //INSERT INTO entities (name) VALUES (entity); get the id
-		int definitionId = addDefinitionToEntitiy(entityId, definition, topics);
-		int[] ret = {entityId, definitionId};
+		int defId = addDefinitionToEntitiy(entityId, definitionId ,definition, topics);
+		int[] ret = {entityId, defId};
 		return ret;
 	}
 
