@@ -332,7 +332,11 @@ public class MainView {
 	public void showPrepareView() {
 
 		//create PrepareView Windows afresh
-		prepareGame = PrepareGameView.start();
+		try {
+			prepareGame = PrepareGameView.start();
+		} catch (SQLException e) {
+			Utils.showErrorMessage("Could not load topics properly.");
+		}
 		cardPanel.add(prepareGame, Window.PrepareGame.toString());
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
@@ -365,7 +369,14 @@ public class MainView {
 	 */
 	void showWaitView(int[] topics, int difficulty) {
 
-		JPanel waitView = WaitView.start(topics, difficulty);
+		JPanel waitView = null;
+		try {
+			waitView = WaitView.start(topics, difficulty);
+		} catch (SQLException e) {
+			Utils.showErrorMessage("Could not load trivia question properly.");
+			showWelcomeView();
+			return;
+		}
 		cardPanel.add(waitView, Window.Wait.toString());
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
@@ -405,7 +416,13 @@ public class MainView {
 
 	void showManagemntView() {
 		if (management == null) {
-			management = ManagementView.start();
+			try {
+				management = ManagementView.start();
+			} catch (SQLException e) {
+				Utils.showErrorMessage("Could not load Knowledge Management window properly.");
+				showWelcomeView();
+				return;
+			}
 			cardPanel.add(management, Window.Management.toString());
 		}
 

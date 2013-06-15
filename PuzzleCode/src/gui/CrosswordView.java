@@ -57,6 +57,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.GridLayout;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -161,10 +162,20 @@ public class CrosswordView extends JPanel {
 				if (isCorrect()) {
 					btnCheck.setBackground(Color.GREEN);
 					String message = "Congratulations!";
-					String[][] highScores = getHighScores(); // query DB for 10 best scores
-					if (isHighScore(highScores, score)) {
+					String[][] highScores = null;
+					try {
+						highScores = getHighScores(); // query DB for 10 best scores
+					} catch (SQLException e1) {
+						Utils.showErrorMessage("Oops! There was a DB error, we cannot save you high score.");
+					}
+
+					if (highScores != null && isHighScore(highScores, score)) {
 						String name = JOptionPane.showInputDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Enter your name for fame and glory.</html>");
-						DBUtils.addBestScore(name, score);
+						try {
+							DBUtils.addBestScore(name, score);
+						} catch (SQLException e) {
+							Utils.showErrorMessage("Oops! There was a DB error, we cannot save you high score." );
+						}
 					}
 					else 	
 						JOptionPane.showMessageDialog(CrosswordView.this, "<html><center>" + message + " You scored " + score + " points! <br> Play again and make a high score!</html>");
@@ -261,7 +272,7 @@ public class CrosswordView extends JPanel {
 	}
 	}
 
-	private String[][] getHighScores() {
+	private String[][] getHighScores() throws SQLException {
 		return DBUtils.getTenBestScores();	
 	}
 

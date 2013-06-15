@@ -24,6 +24,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.text.TabExpander;
 import org.japura.gui.CheckComboBox;
 import org.japura.gui.model.ListCheckModel;
+
+import com.mysql.jdbc.Util;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
@@ -72,19 +75,20 @@ public class ManagementView extends JPanel {
 	private JTabbedPane tabbedPane;
 
 
-	static JPanel start() {
+	static JPanel start() throws SQLException {
 		return new ManagementView();
 	}
 	/**
 	 * Create the panel.
+	 * @throws SQLException 
 	 */
-	private ManagementView() {
+	private ManagementView() throws SQLException {
 
 		initialize(); 
 	}
 
 
-	private void initialize() {
+	private void initialize() throws SQLException {
 
 		allDefinitions = DBUtils.getAllDefinitions(); // get all definition strings in definitions table
 		allTopics = DBUtils.getAllTopicIDsAndNames(); // get all pairs of topic: topic ID, topic name
@@ -120,10 +124,17 @@ public class ManagementView extends JPanel {
 					definitionCounter = 0;
 					chosenEntityID = -1;
 					chosenEntityString = entityText;
-					buildDefinitionPanel(-1);
-					buildHintsPanel(-1);
-					//disable hints tab
-					tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, false);
+					try {
+						buildDefinitionPanel(-1);
+						buildHintsPanel(-1);
+					} catch (SQLException e) {
+						Utils.showErrorMessage("Could not tabs for knowledge fact");
+						return;
+					}
+					finally {
+						//disable hints tab
+						tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, false);
+					}
 				}
 			}
 		});
@@ -146,8 +157,12 @@ public class ManagementView extends JPanel {
 				chosenEntityID  = allEntities.get(searchText);
 
 				if (chosenEntityID != -1) { // found
-					buildDefinitionPanel(chosenEntityID); 
+					try {
+						buildDefinitionPanel(chosenEntityID);
 					buildHintsPanel(chosenEntityID);
+					} catch (SQLException e1) {
+						Utils.showErrorMessage("Could not tabs for knowledge fact");
+					} 
 				}
 			}
 		});
@@ -239,16 +254,16 @@ public class ManagementView extends JPanel {
 		add(btnPanel, BorderLayout.SOUTH);
 	}
 
-	private Map<String,Integer> getTopicsForDefinition(int entityID) {
+	private Map<String,Integer> getTopicsForDefinition(int entityID) throws SQLException {
 		return DBUtils.getTopicsByDefinitionID(entityID);
 	}
 
-	private Map<String,Integer> getDefinitionsForEntity(int entityID) {
+	private Map<String,Integer> getDefinitionsForEntity(int entityID) throws SQLException {
 		return DBUtils.getDefinitionsByEntityID(entityID);
 
 	}
 
-	private void buildDefinitionPanel(int entityID) {
+	private void buildDefinitionPanel(int entityID) throws SQLException {
 
 		int row_num = 0;
 
@@ -280,8 +295,8 @@ public class ManagementView extends JPanel {
 		return;
 	}
 
-	private void buildHintsPanel(int entityID) {
-		
+	private void buildHintsPanel(int entityID) throws SQLException {
+
 		int row_num = 0;
 
 		hintsPanel.removeAll();
@@ -314,7 +329,6 @@ public class ManagementView extends JPanel {
 		hintsPanel.revalidate();
 		tabbedPane.revalidate();
 
-		return;
 	}
 
 	/**
@@ -334,14 +348,14 @@ public class ManagementView extends JPanel {
 
 		protected JPanel btnPanel;
 
-		public DefinitionLine(int entityID, int definitionID, String definition) {
+		public DefinitionLine(int entityID, int definitionID, String definition) throws SQLException {
 			this.definitionText = definition;
 			this.definitionID = definitionID;
 			this.entityID = entityID; 
 			initialize();
 		}
 
-		private void initialize() {
+		private void initialize() throws SQLException {
 			setLayout(new BorderLayout());
 
 			Map<String,Integer> topics = getTopicsForDefinition(definitionID);
@@ -363,13 +377,23 @@ public class ManagementView extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					if (definitionCounter - 1 >= 1){
 						if (!DefinitionLine.this.definitionBox.getText().toString().isEmpty()) {
-							KnowledgeManagement.deleteEntityDefinition(DefinitionLine.this.entityID, DefinitionLine.this.definitionID);
+							try {
+								KnowledgeManagement.deleteEntityDefinition(DefinitionLine.this.entityID, DefinitionLine.this.definitionID);
+							} catch (SQLException e1) {
+								Utils.showErrorMessage("Could not delete definition");
+								return;
+							}
 							definitionCounter--;
 							JPanel parent = (JPanel) DefinitionLine.this.getParent();
 							parent.remove(DefinitionLine.this);
 							parent.revalidate();
 						}
-						buildDefinitionPanel(entityID);
+						try {
+							buildDefinitionPanel(entityID);
+						} catch (SQLException e1) {
+							Utils.showErrorMessage("Could not tabs for knowledge fact");
+							return;
+						}
 					}
 					else { // popup error message
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
@@ -409,7 +433,12 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (!field.getText().isEmpty()) {
-						KnowledgeManagement.deleteHint(HintResultLine.this.hint.getId());
+						try {
+							KnowledgeManagement.deleteHint(HintResultLine.this.hint.getId());
+						} catch (SQLException e1) {
+							Utils.showErrorMessage("Could not delete hint");
+							return;
+						}
 
 						JPanel parent = (JPanel) HintResultLine.this.getParent();
 						parent.remove(HintResultLine.this);
@@ -458,7 +487,13 @@ public class ManagementView extends JPanel {
 					String text =  selectedString(is);
 					if (allDefinitions.containsKey(text)) { // existing definition in definitions table
 						// show the topics linked to this definition, cannot be changed
-						Map<String,Integer> chosenDefinitionTopics = getTopicsForDefinition(allDefinitions.get(text)); 
+						Map<String, Integer> chosenDefinitionTopics;
+						try {
+							chosenDefinitionTopics = getTopicsForDefinition(allDefinitions.get(text));
+						} catch (SQLException e) {
+							Utils.showErrorMessage("Could not load topics for knowledge fact");
+							return;
+						} 
 						topicBox = new TopicsCheckComboBox(allTopics.keySet(), chosenDefinitionTopics.keySet(), true);
 					}
 					else {
@@ -497,15 +532,20 @@ public class ManagementView extends JPanel {
 							definitionCounter++;
 							Integer retID = allDefinitions.get(definitionText);
 							int definitionID = (retID == null) ? -1 : retID; 
-							int[] ret = KnowledgeManagement.addDefinitionToEntitiy(
-									NewDefinitionLine.this.entityID,
-									NewDefinitionLine.this.entityText, 
-									definitionID,
-									definitionText, 
-									topicBox.getUserSelectedTopics()
-									);
+							int[] ret;
+							try {
+								ret = KnowledgeManagement.addDefinitionToEntitiy(
+										NewDefinitionLine.this.entityID,
+										NewDefinitionLine.this.entityText, 
+										definitionID,
+										definitionText, 
+										topicBox.getUserSelectedTopics()
+										);
+							} catch (SQLException e) {
+								Utils.showErrorMessage("failed to add definition.");
+								return;
+							}
 							if (ret == null) {
-								JOptionPane.showMessageDialog(MainView.getView().getFrame(), "Error Saving To DB");
 								return;
 							}
 							else {
@@ -515,7 +555,12 @@ public class ManagementView extends JPanel {
 								chosenEntityString = entityText;
 							}
 
-							buildDefinitionPanel(entityID);
+							try {
+								buildDefinitionPanel(entityID);
+							} catch (SQLException e) {
+								Utils.showErrorMessage("Could not load definition tab for knowledge fact");
+								return;
+							}
 							tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, true);
 
 						}
@@ -570,8 +615,16 @@ public class ManagementView extends JPanel {
 						//get updated entityID, in case we created a new entity and we just got its ID
 						NewHintLine.this.entityID = ManagementView.this.chosenEntityID;
 						//call DB add procedure
-						KnowledgeManagement.addHint(NewHintLine.this.entityID, hintText);
-						ManagementView.this.buildHintsPanel(entityID); //rebuild panel
+						try {
+							KnowledgeManagement.addHint(NewHintLine.this.entityID, hintText);
+							buildHintsPanel(entityID);
+
+						} catch (SQLException e1) {
+							Utils.showErrorMessage("failed to add hint.");
+							return;
+						}
+						
+						//rebuild panel
 						tabbedPane.setSelectedIndex(tabbedPane.getComponentCount()-1);
 					}
 					else  { // show error message

@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import java.awt.BorderLayout;
 import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -44,16 +45,16 @@ public class PrepareGameView extends JPanel {
 	private static final String USER_UPDATE_TOPIC = "User Updates";
 
 
-	private PrepareGameView() {
+	private PrepareGameView() throws SQLException {
 		initialize();
 		this.setVisible(true);
 	}
 
-	static JPanel start() {
+	static JPanel start() throws SQLException {
 		return new PrepareGameView();
 	}
 
-	private void initialize() {
+	private void initialize() throws SQLException {
 
 		
 		setLayout(new BorderLayout());
@@ -195,7 +196,7 @@ public class PrepareGameView extends JPanel {
 		}
 	}
 
-	private void getTopics() {
+	private void getTopics() throws SQLException {
 		topicsList  = DBUtils.getAllTopicIDsAndNames();
 		
 	}

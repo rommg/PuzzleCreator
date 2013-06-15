@@ -28,6 +28,7 @@ import utils.DBUtils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Random;
 
@@ -57,20 +58,22 @@ public class WaitView extends JPanel {
 	 * 
 	 * @param view - to get the topics and difficulty selected by user
 	 * @return
+	 * @throws SQLException 
 	 */
-	static WaitView start(int[] topics, int difficulty) {
+	static WaitView start(int[] topics, int difficulty) throws SQLException {
 		return new WaitView(topics,difficulty);
 	}
 	/**
 	 * Create the panel.
+	 * @throws SQLException 
 	 */
-	public WaitView(int[] topics, int difficulty) {
+	public WaitView(int[] topics, int difficulty) throws SQLException {
 		this.topics = topics;
 		this.difficulty = difficulty;
 		initialize();
 	}
 
-	private void initialize() {
+	private void initialize() throws SQLException {
 
 		setLayout(new BorderLayout(0, 0));
 
@@ -154,7 +157,7 @@ public class WaitView extends JPanel {
 		// start running algorithm in background
 		startAlgorithmCalculationThread(topics, difficulty);
 	}
-	private void drawTriviaQuestion(JPanel centerPanel) {
+	private void drawTriviaQuestion(JPanel centerPanel) throws SQLException {
 		questionLabel = new JLabel("New label");
 		questionLabel.setFont(questionLabel.getFont().deriveFont(15f));
 		questionLabel.setHorizontalAlignment(SwingConstants.CENTER);

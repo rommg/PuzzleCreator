@@ -5,6 +5,8 @@ import java.awt.Container;
 
 import javax.swing.JOptionPane;
 
+import utils.Logger;
+
 import main.PuzzleCreator;
 
 public class Utils {
@@ -39,5 +41,11 @@ public class Utils {
 	
 	public static void showMessage(String message) {
 		JOptionPane.showMessageDialog(MainView.getView().getFrame(), message);
+	}
+	
+	public static void showErrorMessage(String message) {
+	 JOptionPane.showMessageDialog(MainView.getView().getFrame(),message 
+             ,"DB ERROR", JOptionPane.ERROR_MESSAGE);
+	 Logger.writeErrorToLog(message);
 	}
 }

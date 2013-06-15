@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class HallOfFameView extends JPanel {
 		initialize();
 	}
 
-	private void initialize() {
+	private boolean initialize() {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel topPanel = new JPanel();
@@ -69,10 +70,14 @@ public class HallOfFameView extends JPanel {
 		tablePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		tablePanel.setLayout(new GridLayout(0, 4, 0, 0));
 
-		populateTablePanel();
+		if (!populateTablePanel()) {
+			Utils.showErrorMessage("Oops! There was a DB error. Scores will not be shown." );
+			return false;
+		}
+		return true;
 	}
 
-	private void populateTablePanel() {
+	private boolean populateTablePanel() {
 
 		Border border = LineBorder.createGrayLineBorder();
 
@@ -86,21 +91,23 @@ public class HallOfFameView extends JPanel {
 		nameCol.setFont(new Font("Stencil", Font.PLAIN, 19));
 		nameCol.setHorizontalAlignment(SwingConstants.CENTER);
 		tablePanel.add(nameCol);
-		
+
 		JLabel scoreCol = new JLabel("SCORE");
 		scoreCol.setFont(new Font("Stencil", Font.PLAIN, 19));
 		scoreCol.setHorizontalAlignment(SwingConstants.CENTER);
 		tablePanel.add(scoreCol);
-		
+
 		JLabel dateCol = new JLabel("Date");
 		dateCol.setFont(new Font("Stencil", Font.PLAIN, 19));
 		dateCol.setHorizontalAlignment(SwingConstants.CENTER);
 		tablePanel.add(dateCol);
 
-		String[][] results = getBestScores();
-
-		if (results == null) {
-			return;
+		String[][] results = null;
+		try { 
+			results = getBestScores();
+		}
+		catch (SQLException exception) {
+			return false;
 		}
 
 		for (int i = 0; i<10; i++ ) {
@@ -114,7 +121,7 @@ public class HallOfFameView extends JPanel {
 
 			JLabel scoreLabel = new JLabel();
 			scoreLabel.setBorder(border);
-			
+
 			JLabel dateLabel = new JLabel();
 			dateLabel.setBorder(border);
 
@@ -135,14 +142,16 @@ public class HallOfFameView extends JPanel {
 
 
 		}
+		return true;
 	}
 
 
 	/**
 	 * query DB for best names and scores, descending by score
 	 * @return
+	 * @throws SQLException 
 	 */
-	private String[][] getBestScores() {
+	private String[][] getBestScores() throws SQLException {
 		return DBUtils.getTenBestScores();
 	}
 
