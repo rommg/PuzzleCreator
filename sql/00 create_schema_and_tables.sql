@@ -1,6 +1,6 @@
--- [schema-name] is DbMysql02
-CREATE SCHEMA IF NOT EXISTS DbMysql02;
-USE DbMysql02;
+-- [schema-name] is RIDDLE
+CREATE SCHEMA IF NOT EXISTS RIDDLE;
+USE RIDDLE;
 
 -- DROP TABLE IF EXISTS BEST_SCORES;
 DROP TABLE IF EXISTS HINTS;
@@ -15,39 +15,37 @@ DROP TABLE IF EXISTS YAGO_TYPE;
 -- DROP TABLE IF EXISTS DEFINITIONS;
 -- DROP TABLE IF EXISTS TOPICS;
 
--- CREATE TABLE TOPICS(
--- id int NOT NULL AUTO_INCREMENT, 
--- name varchar(50) NOT NULL,
--- PRIMARY KEY(id),
--- CONSTRAINT uc_CategoryName UNIQUE (name)
--- ); 
+CREATE TABLE TOPICS(
+id int NOT NULL AUTO_INCREMENT, 
+name varchar(50) NOT NULL,
+PRIMARY KEY(id),
+CONSTRAINT uc_CategoryName UNIQUE (name)
+); 
 
--- CREATE TABLE DEFINITIONS(
--- id int NOT NULL AUTO_INCREMENT,
--- yago_type varchar(250) NOT NULL,
--- definition varchar(500) NOT NULL,
--- CONSTRAINT uc_YagoType UNIQUE (yago_type),
--- PRIMARY KEY(id)
--- );
+CREATE TABLE DEFINITIONS(
+id int NOT NULL AUTO_INCREMENT,
+yago_type varchar(250) NOT NULL,
+definition varchar(500) NOT NULL,
+PRIMARY KEY(id)
+);
 
--- CREATE TABLE DEFINITIONS_TOPICS(
--- definition_id int NOT NULL, 
--- topic_id int NOT NULL,
--- PRIMARY KEY(definition_id, topic_id),
--- CONSTRAINT fk_TopicId FOREIGN KEY(topic_id) REFERENCES TOPICS(id),
--- CONSTRAINT fk_DefinitionId FOREIGN KEY(definition_id) REFERENCES DEFINITIONS(id)
--- ); 
+CREATE TABLE DEFINITIONS_TOPICS(
+definition_id int NOT NULL, 
+topic_id int NOT NULL,
+PRIMARY KEY(definition_id, topic_id),
+CONSTRAINT fk_TopicId FOREIGN KEY(topic_id) REFERENCES TOPICS(id),
+CONSTRAINT fk_DefinitionId FOREIGN KEY(definition_id) REFERENCES DEFINITIONS(id)
+); 
 
 
--- CREATE TABLE PREDICATES (
--- id int NOT NULL AUTO_INCREMENT, 
+CREATE TABLE PREDICATES (
+id int NOT NULL AUTO_INCREMENT, 
 -- predicate
--- yago_predicate varchar(50) NOT NULL,
--- subject_str varchar(250),
--- object_str varchar(250),
--- PRIMARY KEY(id),
--- CONSTRAINT uc_YagoPredicate UNIQUE (yago_predicate)
--- );
+yago_predicate varchar(50) NOT NULL,
+subject_str varchar(250),
+object_str varchar(250),
+PRIMARY KEY(id)
+);
 
 
 CREATE TABLE YAGO_TYPE (
@@ -98,6 +96,7 @@ entity_id int,
 additional_information varchar(25),
 PRIMARY KEY(id), 
 CONSTRAINT fk_EntityForWordId FOREIGN KEY(entity_id) REFERENCES ENTITIES(id)
+-- CONSTRAINT uc_Answers UNIQUE (answer)
 );
 
 CREATE TABLE HINTS (
@@ -113,10 +112,10 @@ CONSTRAINT fk_PredicateHintId FOREIGN KEY(predicate_id) REFERENCES PREDICATES(id
 CONSTRAINT fk_EntityHintId FOREIGN KEY(entity_id) REFERENCES ENTITIES(id)
 );
 
--- CREATE TABLE IF NOT EXISTS BEST_SCORES (
--- user_name varchar(100) NOT NULL, 
--- score int NOT NULL, 
--- date datetime NOT NULL
--- );
+CREATE TABLE IF NOT EXISTS BEST_SCORES (
+user_name varchar(100) NOT NULL, 
+score int NOT NULL, 
+date datetime NOT NULL
+);
 
 -- ------------------------------------------------------------------------------------------------

@@ -26,7 +26,6 @@ CREATE TABLE DEFINITIONS(
 id int NOT NULL AUTO_INCREMENT,
 yago_type varchar(250) NOT NULL,
 definition varchar(500) NOT NULL,
-CONSTRAINT uc_YagoType UNIQUE (yago_type),
 PRIMARY KEY(id)
 );
 
@@ -45,8 +44,7 @@ id int NOT NULL AUTO_INCREMENT,
 yago_predicate varchar(50) NOT NULL,
 subject_str varchar(250),
 object_str varchar(250),
-PRIMARY KEY(id),
-CONSTRAINT uc_YagoPredicate UNIQUE (yago_predicate)
+PRIMARY KEY(id)
 );
 
 
