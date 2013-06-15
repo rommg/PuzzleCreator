@@ -15,15 +15,3 @@ INTO TABLE YAGO_LITERAL_FACT
 	fields terminated by '\t'
 	lines terminated by '\n'
 	(subject, predicate, object);
-
--- select distinct object 
--- from riddle.yago_type 
--- where  NOT EXISTS (select yago_type from riddle.definitions where yago_type=object);
-
--- select distinct predicate 
--- from riddle.yago_fact 
--- where NOT EXISTS (select yago_predicate from riddle.predicates where yago_predicate=predicate);
-
--- select distinct predicate 
--- from riddle.yago_literal_fact 
--- where NOT EXISTS (select yago_predicate from riddle.predicates where yago_predicate=predicate);
