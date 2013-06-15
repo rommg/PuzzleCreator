@@ -55,3 +55,4 @@
 1371056381867	Convert local variable 'btnSolve' to field
 1371058126115	Rename field 'chosenEntity'
 1371059865974	Convert local variable 'field' to field
+1371286790876	Convert local variable 'definition_count' to field

@@ -39,6 +39,7 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import utils.DBUtils;
+import utils.KnowledgeManagement;
 import utils.Logger;
 
 import javax.swing.JTabbedPane;
@@ -61,7 +62,7 @@ public class ManagementView extends JPanel {
 
 	private static final String USER_UPDATES_TOPIC = "User Updates";
 	private static final int ADD_ROWS_NUM = 1;
-	private static final int MAX_NUM_DEFS = 10;
+	private static final int MAX_NUM_DEFS = 20;
 
 	private JPanel definitionPanel;
 	private JPanel hintsPanel;
@@ -90,7 +91,7 @@ public class ManagementView extends JPanel {
 		topBtnPanel.setLayout(new GridLayout(2, 1, 0, 5));
 
 		final JButton btnAddNewFact = new JButton("");
-		btnAddNewFact.setIcon(new ImageIcon(ManagementView.class.getResource("/resources/add_tiny.png")));
+		btnAddNewFact.setIcon(new ImageIcon(getClass().getResource("/resources/add_tiny.png")));
 		btnAddNewFact.addActionListener(new ActionListener() {
 
 			@Override
@@ -107,7 +108,7 @@ public class ManagementView extends JPanel {
 
 		final JButton btnSearchFact = new JButton("");
 		btnSearchFact.setEnabled(false);
-		btnSearchFact.setIcon(new ImageIcon(ManagementView.class.getResource("/resources/search_tiny.png")));
+		btnSearchFact.setIcon(new ImageIcon(getClass().getResource("/resources/search_tiny.png")));
 		btnSearchFact.addActionListener(new ActionListener() {
 
 			@Override
@@ -205,7 +206,7 @@ public class ManagementView extends JPanel {
 		btnPanel.setAlignmentX(FlowLayout.CENTER);
 		JButton btnBack = new JButton();
 		btnBack.setFont(btnBack.getFont().deriveFont(15f));
-		btnBack.setIcon(new ImageIcon(HallOfFameView.class.getResource("/resources/back.png")));
+		btnBack.setIcon(new ImageIcon(getClass().getResource("/resources/back.png")));
 
 		btnBack.addActionListener(new BackButtonListener());
 		btnPanel.add(btnBack);
@@ -366,7 +367,7 @@ public class ManagementView extends JPanel {
 
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new GridLayout(1,2));
-			//			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
+			//			saveBtn = new JButton(new ImageIcon(ManagementView"".getResource("/resources/save_small.png")));
 			//			saveBtn.addActionListener(new ActionListener() {
 			//
 			//				@Override
@@ -375,7 +376,7 @@ public class ManagementView extends JPanel {
 			//					definitionBox.setEnabled(true);
 			//				}
 			//			});
-			deleteBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/delete_small.png")));		
+			deleteBtn = new JButton(new ImageIcon(getClass().getResource("/resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
 				@Override
@@ -430,7 +431,7 @@ public class ManagementView extends JPanel {
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new BorderLayout());
 			//			btnPanel.setLayout(new GridLayout(1,2));
-			//			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/save_small.png")));
+			//			saveBtn = new JButton(new ImageIcon(ManagementView"".getResource("/resources/save_small.png")));
 			//			saveBtn.addActionListener(new ActionListener() {
 			//
 			//				@Override
@@ -438,7 +439,7 @@ public class ManagementView extends JPanel {
 			//
 			//				}
 			//			});
-			deleteBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/delete_small.png")));		
+			deleteBtn = new JButton(new ImageIcon(getClass().getResource("/resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
 				@Override
@@ -470,13 +471,21 @@ public class ManagementView extends JPanel {
 
 		JComboBox<String> field;
 		CheckComboBox topicBox;
+		int entityID = -1;
+		String entityText = null;
 
-		NewDefinitionLine() {
+		NewDefinitionLine() { // for exisiting entity
+			this(null);
+			entityID = chosenEntityID;
+		}
+
+		NewDefinitionLine(String entityText) { // for new entity
+			this.entityText = entityText;
+		}
+
+		private void initialize() {
 
 			setLayout(new BorderLayout());
-
-			topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , true);
-			add(topicBox, BorderLayout.WEST);
 
 			field = createAutoCompleteBox(allDefinitions.keySet(), "", false);
 			field.addItemListener(new ItemListener() {
@@ -506,21 +515,27 @@ public class ManagementView extends JPanel {
 
 			add(field, BorderLayout.CENTER);
 
-			JButton saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/add_small.png")));
+			topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , true);
+			add(topicBox, BorderLayout.WEST);
+
+			JButton saveBtn = new JButton(new ImageIcon(getClass().getResource("/resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if (topicBox.getModel().getCheckeds().size() < 1) 
-						JOptionPane.showMessageDialog(MainView.getView().getFrame(),"<html><center>You must choose at least one topic.</html>" );
+						JOptionPane.showMessageDialog(MainView.getView().getFrame(),"<html><center>You must enter definition and then choose at least one topic.</html>" );
 					if (field.getSelectedItem() != null ) {
 						if	( !field.getSelectedItem().toString().isEmpty() && 
 								(isValidString(field.getSelectedItem().toString()))) {
 							definitionCounter++;
 							//add DB procedure
-							definitionPanel.remove(NewDefinitionLine.this);
-							//definitionPanel.add(new DefinitionLine(definitionID, definition));
-							tabbedPane.setEnabledAt(1, true);
+							//KnowledgeManagement.addDefinitionToEntitiy(entity, definition, topics)
+							//							definitionPanel.remove(NewDefinitionLine.this);
+							//							//definitionPanel.add(new DefinitionLine(definitionID, definition));
+							//							definitionPanel.add(new NewDefinitionLine());
+							//							tabbedPane.setEnabledAt(tabbedPane.getTabCount() -1, true);
+							buildDefinitionPanel(chosenEntityID);
 							definitionPanel.revalidate();
 							tabbedPane.revalidate();
 						}
@@ -534,6 +549,7 @@ public class ManagementView extends JPanel {
 			});
 			add(saveBtn, BorderLayout.EAST);
 		}
+
 
 	}
 
@@ -557,7 +573,7 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			saveBtn = new JButton(new ImageIcon(ManagementView.class.getResource("/resources/add_small.png")));
+			saveBtn = new JButton(new ImageIcon(getClass().getResource("/resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
 				@Override

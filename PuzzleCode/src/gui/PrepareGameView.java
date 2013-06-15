@@ -92,13 +92,13 @@ public class PrepareGameView extends JPanel {
 		btnPanel.setBackground(Color.WHITE);
 		centerPanel.add(btnPanel);
 
-		goBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/forward.png")));
+		goBtn = new JButton(new ImageIcon(getClass().getResource("/resources/forward.png")));
 		goBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				goBtnClicked();
 			}
 		});
-		backBtn = new JButton(new ImageIcon(PrepareGameView.class.getResource("/resources/back.png")));
+		backBtn = new JButton(new ImageIcon(getClass().getResource("/resources/back.png")));
 		backBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainView.getView().showWelcomeView();
