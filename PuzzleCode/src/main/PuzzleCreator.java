@@ -25,8 +25,8 @@ public class PuzzleCreator {
 	public static String dbServerPort = "3306";
 	public static String username = "root";
 	// public static String password = ""; // enter your password
-	public static String schemaName = "DbMysql02";
-	//public static String schemaName = "riddle";
+	//public static String schemaName = "DbMysql02";
+	public static String schemaName = "riddle";
 
 
 	/**

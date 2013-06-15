@@ -55,9 +55,8 @@ public class ManagementView extends JPanel {
 	private Map<String,Integer> allTopics; // map of all topics
 	private Map<String,Integer> allEntities; // Map : GET_PROPER_NAME(entity_name) (which is unique) -> PK. .
 	private String[] allTopicNamesArray;
-	private Map<String, Integer> definitions; // definitions for an entity as queries from DB
 	private Map<String,Integer> allDefinitions = null;
-	
+
 	//global variables containing the chosen entity details
 	private int chosenEntityID = -1; // // for existing entities
 	private String chosenEntityString = ""; // for added entities
@@ -67,8 +66,8 @@ public class ManagementView extends JPanel {
 	private static final int ADD_ROWS_NUM = 1;
 	private static final int MAX_NUM_DEFS = 20;
 
-	private JPanel definitionPanel;
-	private JPanel hintsPanel;
+	private JPanel definitionPanel = null;
+	private JPanel hintsPanel = null;
 	private JTabbedPane tabbedPane;
 
 
@@ -80,8 +79,24 @@ public class ManagementView extends JPanel {
 	 */
 	private ManagementView() {
 
-		initialize(); // get all DB knowledge
+		initialize(); 
+	}
 
+
+	private void initialize() {
+
+		allDefinitions = DBUtils.getAllDefinitions(); // get all definition strings in definitions table
+		allTopics = DBUtils.getAllTopicIDsAndNames(); // get all pairs of topic: topic ID, topic name
+		Object[] array = allTopics.keySet().toArray(); // topic array for JList combobox
+		allTopicNamesArray = new String[array.length];
+
+		for (int i = 0 ; i< array.length; i++) {
+			allTopicNamesArray[i] = array[i].toString();
+		}
+
+		//get all entities for search from DB
+		allEntities = DBUtils.getAllEntities();
+		
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
@@ -103,8 +118,8 @@ public class ManagementView extends JPanel {
 				if (!entityText.isEmpty()) {
 					definitionCounter = 0;
 					chosenEntityString = entityText;
-					buildEmptyDefinitionPanel();
-					buildEmptyHintPanel();
+					buildDefinitionPanel(-1);
+					buildHintsPanel(-1);
 				}
 			}
 		});
@@ -146,7 +161,7 @@ public class ManagementView extends JPanel {
 				btnAddNewFact.setEnabled(flag);
 				newTextField.setEnabled(flag);
 				if (!flag) {
-					tabbedPane.removeAll();
+					definitionPanel.removeAll();
 				}
 			}
 			public void itemStateChanged(ItemEvent e) {
@@ -170,7 +185,7 @@ public class ManagementView extends JPanel {
 				btnSearchFact.setEnabled(flag);
 				existingTextField.setEnabled(flag);
 				if (!flag) {
-					tabbedPane.removeAll();
+					definitionPanel.removeAll();
 				}
 			}
 
@@ -183,6 +198,7 @@ public class ManagementView extends JPanel {
 				}
 			}
 		});
+		
 		buttonGroup.add(existingCheckBox);
 		radioBtnPanel.add(existingCheckBox);
 
@@ -203,7 +219,10 @@ public class ManagementView extends JPanel {
 		add(tabbedPane, BorderLayout.CENTER);
 
 		definitionPanel = new JPanel();
+		tabbedPane.addTab("Definitions", null, definitionPanel,null);
+
 		hintsPanel = new JPanel();
+		tabbedPane.addTab("Hints", null, hintsPanel,null);
 
 		JPanel btnPanel = new JPanel();
 		btnPanel.setAlignmentX(FlowLayout.CENTER);
@@ -216,100 +235,86 @@ public class ManagementView extends JPanel {
 		add(btnPanel, BorderLayout.SOUTH);
 	}
 
-
-	private void initialize() {
-
-		allDefinitions = DBUtils.getAllDefinitions(); // get all definition strings in definitions table
-		allTopics = DBUtils.getAllTopicIDsAndNames(); // get all pairs of topic: topic ID, topic name
-		Object[] array = allTopics.keySet().toArray(); // topic array for JList combobox
-		allTopicNamesArray = new String[array.length];
-
-		for (int i = 0 ; i< array.length; i++) {
-			allTopicNamesArray[i] = array[i].toString();
-		}
-
-		//get all entities for search from DB
-		allEntities = DBUtils.getAllEntities();
-	}
-
 	private Map<String,Integer> getTopicsForDefinition(int entityID) {
 		return DBUtils.getTopicsByDefinitionID(entityID);
 	}
 
-	private void getDefinitionsForEntity(int entityID) {
-		definitions = DBUtils.getDefinitionsByEntityID(entityID);
-		definitionCounter = definitions.size();
+	private Map<String,Integer> getDefinitionsForEntity(int entityID) {
+		return DBUtils.getDefinitionsByEntityID(entityID);
+		
 	}
 
-	private void buildEmptyDefinitionPanel() {
-
-		tabbedPane.remove(definitionPanel);
-
-		definitionPanel = new JPanel();
-		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
-
-		for (int i = 0; i<MAX_NUM_DEFS; i++) {
-			definitionPanel.add(new NewDefinitionLine());
-		}
-		definitionPanel.revalidate();
-		tabbedPane.add("Definitions", definitionPanel);
-	}
+	//	private void buildEmptyDefinitionPanel() {
+	//
+	//		tabbedPane.remove(definitionPanel);
+	//
+	//		definitionPanel = new JPanel();
+	//		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+	//
+	//		for (int i = 0; i<MAX_NUM_DEFS; i++) {
+	//			definitionPanel.add(new NewDefinitionLine());
+	//		}
+	//		definitionPanel.revalidate();
+	//		tabbedPane.add("Definitions", definitionPanel);
+	//	}
 
 	private void buildDefinitionPanel(int entityID) {
 
-		getDefinitionsForEntity(entityID);
-
-		int row_num = definitions.size();
-
-		tabbedPane.remove(definitionPanel);
-		// refreshes panel
-		definitionPanel = new JPanel();
+		int row_num = 0;
+		
+		definitionPanel.removeAll();
 		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+		
+		if (entityID != -1) { // panel for an existing entity
+			 Map<String, Integer> definitions = getDefinitionsForEntity(entityID);
+			
+			row_num = definitions.size();
+			definitionCounter = row_num;
 
-		for (String definition : definitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
-			DefinitionLine line = new DefinitionLine(definitions.get(definition), definition);
-			definitionPanel.add(line);
-		}
-		for (int i = 0; i<ADD_ROWS_NUM; i++) { // add new definition lines
-			definitionPanel.add(new NewDefinitionLine());
+			for (String definition : definitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
+				DefinitionLine line = new DefinitionLine(chosenEntityID, definitions.get(definition), definition);
+				definitionPanel.add(line);
+			}
+			
 		}
 
+		definitionPanel.add(new NewDefinitionLine());
+	
 		// add padding lines, if needed
 		for (int i = 0; i<MAX_NUM_DEFS - ADD_ROWS_NUM - row_num; i++) {
 			definitionPanel.add(new JPanel());
 		}
 
 		definitionPanel.revalidate();
-		tabbedPane.addTab("Definitions", null, definitionPanel,null);
 		tabbedPane.revalidate();
 
 		return;
 	}
 
 	private void buildHintsPanel(int entityID) {
-		Map<Integer,List<String>> hintResults = DBUtils.getHintsByEntityID(entityID);
-		List<HintTuple> hintTupleLst = new ArrayList<HintTuple>();
 
-		for (int id : hintResults.keySet()) {
-			hintTupleLst.add(new HintTuple(id, hintResults.get(id).get(0)));
-		}
-
-
-		int row_num = hintResults.size();
-
-		tabbedPane.remove(hintsPanel);
-
-		// refreshes panel
-		hintsPanel = new JPanel();
+		hintsPanel.removeAll();
 		hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 
-		for (HintTuple hint : hintTupleLst) { 
-			HintResultLine line = new HintResultLine(hint);
-			hintsPanel.add(line);
+		int row_num = 0;
+		if (entityID != -1) { // existing entity 
+			Map<Integer,List<String>> hintResults = DBUtils.getHintsByEntityID(entityID);
+
+			List<HintTuple> hintTupleLst = new ArrayList<HintTuple>();
+
+			for (int id : hintResults.keySet()) {
+				hintTupleLst.add(new HintTuple(id, hintResults.get(id).get(0)));
+			}
+
+			row_num = hintResults.size();
+
+			for (HintTuple hint : hintTupleLst) { 
+				HintResultLine line = new HintResultLine(hint);
+				hintsPanel.add(line);
+			}
 		}
-		for (int i = 0; i<ADD_ROWS_NUM; i++) { // add new definition lines
-			hintsPanel.add(new NewHintLine());
-		}
+
+		hintsPanel.add(new NewHintLine());
 
 		// add padding lines, if needed
 		for (int i = 0; i<MAX_NUM_DEFS - ADD_ROWS_NUM - row_num; i++) {
@@ -323,22 +328,6 @@ public class ManagementView extends JPanel {
 		return;
 	}
 
-	private void buildEmptyHintPanel() {
-		tabbedPane.remove(hintsPanel);
-
-		hintsPanel = new JPanel();
-		hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
-
-		for (int i = 0; i<MAX_NUM_DEFS; i++) {
-			hintsPanel.add(new NewHintLine());
-		}
-		hintsPanel.revalidate();
-		tabbedPane.add("Hints", hintsPanel);
-		tabbedPane.setEnabledAt(1, false);
-		tabbedPane.revalidate();
-	}
-
-
 	/**
 	 * one line in definitions tab: topic(s),definition,delete 
 	 * @author yonatan
@@ -348,7 +337,7 @@ public class ManagementView extends JPanel {
 		private CheckComboBox topicBox;
 		private JTextField definitionBox;
 		private  JButton deleteBtn;
-		
+
 		private int definitionID;
 		private String definitionText;
 		private int entityID;
@@ -356,12 +345,13 @@ public class ManagementView extends JPanel {
 
 		protected JPanel btnPanel;
 
-		public DefinitionLine(int definitionID, String definition) {
+		public DefinitionLine(int entityID, int definitionID, String definition) {
 			this.definitionText = definition;
 			this.definitionID = definitionID;
+			this.entityID = entityID; 
 			initialize();
 		}
-		
+
 		private void initialize() {
 			setLayout(new BorderLayout());
 
@@ -386,11 +376,11 @@ public class ManagementView extends JPanel {
 						if (!DefinitionLine.this.definitionBox.getText().toString().isEmpty()) {
 							KnowledgeManagement.deleteEntityDefinition(DefinitionLine.this.entityID, DefinitionLine.this.definitionID);
 							definitionCounter--;
-							buildDefinitionPanel(DefinitionLine.this.entityID);
-//							JPanel parent = (JPanel) DefinitionLine.this.getParent();
-//							parent.remove(DefinitionLine.this);
-//							parent.revalidate();
+							JPanel parent = (JPanel) DefinitionLine.this.getParent();
+							parent.remove(DefinitionLine.this);
+							parent.revalidate();
 						}
+						buildDefinitionPanel(entityID);
 					}
 					else { // popup error message
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
@@ -430,7 +420,8 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (!field.getText().isEmpty()) {
-						//DBUtils.deleteHint(HintResultLine.this.hint.id);
+						KnowledgeManagement.deleteHint(HintResultLine.this.hint.getId());
+
 						JPanel parent = (JPanel) HintResultLine.this.getParent();
 						parent.remove(HintResultLine.this);
 						parent.revalidate();
@@ -444,13 +435,7 @@ public class ManagementView extends JPanel {
 		}
 	}
 
-	private List<Integer> getUserSelectedTopics(CheckComboBox box) {
-		List<Integer>  lst = new ArrayList<Integer>();
-		for (Object object : box.getModel().getCheckeds()) {
-			lst.add(allTopics.get(object.toString()));
-		}
-		return lst;
-	}
+
 
 	/**
 	 *  one line in definitions tab: topic(s),new definition, add
@@ -460,13 +445,14 @@ public class ManagementView extends JPanel {
 	private class NewDefinitionLine extends JPanel {
 
 		JComboBox<String> field;
-		CheckComboBox topicBox;
+		TopicsCheckComboBox topicBox;
 		int entityID = -1;
 		String entityText = null;
 
 		NewDefinitionLine() { // for existing entity
 			entityID = chosenEntityID;
 			entityText = new String(chosenEntityString);
+			initialize();
 		}
 
 		private void initialize() {
@@ -474,8 +460,8 @@ public class ManagementView extends JPanel {
 			setLayout(new BorderLayout());
 
 			field = createAutoCompleteBox(allDefinitions.keySet(), "", false);
-			
-			// changes topics combobox according to definition chosen 
+
+			// changes topics combobox according to definition entered 
 			field.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent itemEvent) { 
 					NewDefinitionLine.this.remove(topicBox);
@@ -501,10 +487,10 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			add(field, BorderLayout.EAST);
+			add(field, BorderLayout.CENTER);
 
 			topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , true);
-			add(topicBox, BorderLayout.CENTER);
+			add(topicBox, BorderLayout.WEST);
 
 			JButton saveBtn = new JButton(new ImageIcon(getClass().getResource("../resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
@@ -520,9 +506,9 @@ public class ManagementView extends JPanel {
 						if	( !definitionText.isEmpty() && 
 								(isValidString(definitionText))) {
 							definitionCounter++;
-							
+
 							if (entityID == -1) { // entity not yet created && this is the first definition of it
-								int[] ret = KnowledgeManagement.addDefinitionToEntitiy(entityText, definitionText,getUserSelectedTopics(topicBox));
+								int[] ret = KnowledgeManagement.addDefinitionToEntitiy(entityText, definitionText,topicBox.getUserSelectedTopics());
 								if (ret == null) {
 									JOptionPane.showMessageDialog(MainView.getView().getFrame(), "Error Saving To DB");
 									return;
@@ -530,11 +516,11 @@ public class ManagementView extends JPanel {
 								entityID =ret[0];
 							}
 							else { // entity is already in DB
-								KnowledgeManagement.addDefinitionToEntitiy(entityID, definitionText, getUserSelectedTopics(topicBox));
+								KnowledgeManagement.addDefinitionToEntitiy(entityID, definitionText, topicBox.getUserSelectedTopics());
 							}
 							buildDefinitionPanel(entityID);
-//							definitionPanel.revalidate();
-//							tabbedPane.revalidate();
+							//							definitionPanel.revalidate();
+							//							tabbedPane.revalidate();
 						}
 						else  { // show error message
 							JOptionPane.showMessageDialog(MainView.getView().getFrame(),
@@ -544,6 +530,7 @@ public class ManagementView extends JPanel {
 					}
 				}
 			});
+
 			add(saveBtn, BorderLayout.EAST);
 		}
 
@@ -555,9 +542,15 @@ public class ManagementView extends JPanel {
 
 		private JButton saveBtn;
 		private JTextField field;
+		private int entityID;
 
 
 		NewHintLine() {
+			this.entityID = chosenEntityID;
+			initialize();
+		}
+
+		private void initialize() {
 			setLayout(new BorderLayout());
 
 			field = new JTextField();
@@ -578,6 +571,9 @@ public class ManagementView extends JPanel {
 					String hintText = field.getText();
 					if (!hintText.isEmpty() && isValidString(hintText)) {
 						//call DB add procedure
+						KnowledgeManagement.addHint(NewHintLine.this.entityID, hintText);
+						buildHintsPanel(NewHintLine.this.entityID); //rebuild panel
+						tabbedPane.setSelectedIndex(tabbedPane.getComponentCount()-1);
 					}
 					else  { // show error message
 						JOptionPane.showMessageDialog(MainView.getView().getFrame(),
@@ -641,17 +637,16 @@ public class ManagementView extends JPanel {
 
 
 	private boolean isValidString(String string) {
-		return string.matches("[a-zA-Z0-9 \\(\\)]+");
+		return string.matches("^[A-Za-z0-9 \\(\\)]+(-[A-Za-z0-9 \\(\\)]+)*$");
 	}
 
 	class TopicsCheckComboBox extends CheckComboBox {
 		private boolean lock;
-		private Set<String> allTopics;
+		//private Set<String> allTopics;
 		private Set<String> topics;
 
 		public TopicsCheckComboBox(Set<String> allTopics, Set<String> topics, boolean lock) {
 			this.lock = lock;
-			this.allTopics = allTopics;
 			this.topics = topics;
 
 			super.setTextFor(CheckComboBox.NONE, "* no items selected *"); 
@@ -664,7 +659,7 @@ public class ManagementView extends JPanel {
 
 		private void addTopicCheckBoxes() {
 			ListCheckModel model = this.getModel(); 
-			for (String topic : allTopics) { 
+			for (String topic : allTopics.keySet()) { 
 				model.addElement(topic);
 				if (topics.contains(topic)) {
 					model.addCheck(topic);
@@ -677,6 +672,14 @@ public class ManagementView extends JPanel {
 				model.lockAll();
 
 
+		}
+
+		private List<Integer> getUserSelectedTopics() {
+			List<Integer>  lst = new ArrayList<Integer>();
+			for (Object object : getModel().getCheckeds()) {
+				lst.add(allTopics.get(object.toString()));
+			}
+			return lst;
 		}
 	}
 

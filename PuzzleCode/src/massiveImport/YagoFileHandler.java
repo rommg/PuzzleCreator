@@ -77,15 +77,15 @@ public class YagoFileHandler {
 		fillCollectionEntitiesFromDB("predicates", "predicate", litertalTypes);
 
 	}
-	
+
 	public static boolean containsFiles(File directory) {
-		 
+
 		if (!directory.isDirectory())
 			return false;
 		File types = new File(directory + System.getProperty("file.separator") + YAGO_TYPES + TSV);
 		File facts = new File(directory + System.getProperty("file.separator") + YAGO_FACTS + TSV);
 		File literalFacts = new File(directory + System.getProperty("file.separator") + YAGO_LITERAL_FACTS + TSV);
-		
+
 		return (literalFacts.exists() && facts.exists() && types.exists());
 
 	}
@@ -206,7 +206,7 @@ public class YagoFileHandler {
 	}
 
 	private boolean containsNonEnglishChars(String input) {
-		return !input.matches("[a-z0-9 ]+");
+		return !input.matches("[a-zA-Z0-9 -!,;:.']+");
 
 	}
 	private int parseYagoTypes() throws IOException {
@@ -315,7 +315,7 @@ public class YagoFileHandler {
 								+ lineColumns[2] + "\t" 
 								+ lineColumns[3] + decomposedYagoID[3] + "\t";
 
-						
+
 						if (subjectHit) {
 							String subjectLine = newLine + "1"; 
 							bw.write(subjectLine); // write one line for subject matched
@@ -393,16 +393,19 @@ public class YagoFileHandler {
 					Logger.writeErrorToLog("Invalid yagoID in line #" + row);
 				}
 				else {
-					if (lineColumns[1].length() <=50 && relevantEntities.contains(lineColumns[1]) && litertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
-						String properLiteral = lineColumns[3].substring(1, lineColumns[3].lastIndexOf('"'));
-						int index = properLiteral.indexOf('#');
-						if (index != -1)
-							properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
-
-						String newline = lineColumns[1] + decomposedYagoID[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
-						bw.write(newline);
-						bw.newLine();
-						count++;
+					String properLiteral = lineColumns[3].substring(1, lineColumns[3].lastIndexOf('"'));
+					int index = properLiteral.indexOf('#');
+					if (index > 0) {
+						properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
+						if (lineColumns[1].length() <=50 && 
+								relevantEntities.contains(lineColumns[1]) &&  // checking by entity name because there are many rows with no yagoID
+								litertalTypes.contains(lineColumns[2]))  {
+								//(!containsNonEnglishChars(properLiteral))) { 
+									String newline = lineColumns[1] + decomposedYagoID[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
+									bw.write(newline);
+									bw.newLine();
+									count++;
+								}
 					}
 				}
 				row++;
@@ -430,7 +433,7 @@ public class YagoFileHandler {
 
 		DBConnection.executeSqlScript(SQL_DIR + "00 create_schema_and_tables.sql");
 	}
-	
+
 	public void importFilesToDB() throws SQLException {
 
 		DBConnection.executeSqlScript(SQL_DIR + "05 load_yago_data.sql");
@@ -440,7 +443,7 @@ public class YagoFileHandler {
 
 		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql"); 
 	}
-	
+
 	public void reduceHints() throws SQLException {
 		HintsHandler.setMaximumTemHintsForEachEntity();
 	}
