@@ -25,12 +25,4 @@ final class InputSquare extends AbstractSquarePanel{
 		field.setBackground(super.getBackground());
 		add(field, BorderLayout.CENTER);
 	}
-
-//	@Override
-//	protected float getFontSize(JDefinitionLabel lbl) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-
-
 }

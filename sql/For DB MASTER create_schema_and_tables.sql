@@ -106,7 +106,7 @@ id int NOT NULL AUTO_INCREMENT,
 -- predicate
 predicate_id int NOT NULL,
 -- subject or object
-yago_hint varchar(250) NOT NULL,
+yago_hint varchar(250) DEFAULT '<User_Hint>',
 entity_id int NOT NULL, 
 is_entity_subject boolean NOT NULL, 
 PRIMARY KEY(id),

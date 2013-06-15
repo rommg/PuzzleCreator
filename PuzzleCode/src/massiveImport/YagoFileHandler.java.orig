@@ -52,7 +52,7 @@ public class YagoFileHandler {
 	private Set<String> litertalTypes = null;
 	private Set<String> relevantEntities= null;
 
-	public YagoFileHandler(File direcotry) {
+	public YagoFileHandler(File direcotry) throws SQLException{
 		if (direcotry == null)
 			this.tsvDirectory = TSV_FILE_DEST_DIR;
 		else
@@ -62,17 +62,17 @@ public class YagoFileHandler {
 		relevantEntities = new HashSet<String>(); // will contain names of interesting entities
 	}
 
-	private void getEntityTypes()  { // can be changed in the future
+	private void getEntityTypes()  throws SQLException{ // can be changed in the future
 		entityTypes = new HashSet<String>(); 
 		fillCollectionEntitiesFromDB("definitions", "type", entityTypes);
 	}
 
-	private void getPredicateTypes() { // can be changed in the future
+	private void getPredicateTypes() throws SQLException{ // can be changed in the future
 		predicateTypes = new HashSet<String>(); 
 		fillCollectionEntitiesFromDB("predicates", "predicate", predicateTypes);
 	}
 
-	private void getLiteralTypes() { // can be changed in the future
+	private void getLiteralTypes() throws SQLException{ // can be changed in the future
 		litertalTypes = new HashSet<String>(); 
 		fillCollectionEntitiesFromDB("predicates", "predicate", litertalTypes);
 
@@ -90,7 +90,7 @@ public class YagoFileHandler {
 
 	}
 
-	private void fillCollectionEntitiesFromDB(String tableName, String entityType, Set<String> collection) {
+	private void fillCollectionEntitiesFromDB(String tableName, String entityType, Set<String> collection) throws SQLException{
 		String columnName = "yago_" + entityType;
 		List<Map<String,Object>> rs = null;
 		String query = "SELECT " + tableName + "." + columnName +  " FROM " + tableName + ";";
@@ -99,7 +99,7 @@ public class YagoFileHandler {
 			collection.add((String)row.get(columnName));
 	}
 
-	private void getTypes() {
+	private void getTypes() throws SQLException{
 		getEntityTypes();
 		getPredicateTypes();
 		getLiteralTypes();
@@ -206,7 +206,7 @@ public class YagoFileHandler {
 	}
 
 	private boolean containsNonEnglishChars(String input) {
-		return !input.matches("[a-z0-9 ]+");
+		return !input.matches("[a-zA-Z0-9 -!,;:.']+");
 
 	}
 	private int parseYagoTypes() throws IOException {
@@ -315,7 +315,7 @@ public class YagoFileHandler {
 								+ lineColumns[2] + "\t" 
 								+ lineColumns[3] + decomposedYagoID[3] + "\t";
 
-						
+
 						if (subjectHit) {
 							String subjectLine = newLine + "1"; 
 							bw.write(subjectLine); // write one line for subject matched
@@ -393,16 +393,19 @@ public class YagoFileHandler {
 					Logger.writeErrorToLog("Invalid yagoID in line #" + row);
 				}
 				else {
-					if (lineColumns[1].length() <=50 && relevantEntities.contains(lineColumns[1]) && litertalTypes.contains(lineColumns[2])) { // checking by entity name because there are many rows with no yagoID
-						String properLiteral = lineColumns[3].substring(1, lineColumns[3].lastIndexOf('"'));
-						int index = properLiteral.indexOf('#');
-						if (index != -1)
-							properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
-
-						String newline = lineColumns[1] + decomposedYagoID[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
-						bw.write(newline);
-						bw.newLine();
-						count++;
+					String properLiteral = lineColumns[3].substring(1, lineColumns[3].lastIndexOf('"'));
+					int index = properLiteral.indexOf('#');
+					if (index > 0) {
+						properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
+						if (lineColumns[1].length() <=50 && 
+								relevantEntities.contains(lineColumns[1]) &&  // checking by entity name because there are many rows with no yagoID
+								litertalTypes.contains(lineColumns[2]))  {
+								//(!containsNonEnglishChars(properLiteral))) { 
+									String newline = lineColumns[1] + decomposedYagoID[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
+									bw.write(newline);
+									bw.newLine();
+									count++;
+								}
 					}
 				}
 				row++;
@@ -426,34 +429,28 @@ public class YagoFileHandler {
 		return 1;
 	}
 
-	public void cleanDataTables() throws SQLException {
+	public void cleanDataTables() throws SQLException, IOException {
 
-		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
-				"sql" + System.getProperty("file.separator") + "00 create_schema_and_tables.sql");
+		DBConnection.executeSqlScript(SQL_DIR + "00 create_schema_and_tables.sql");
 	}
-	public void importFilesToDB() throws SQLException {
 <<<<<<< HEAD
-		
-		DBConnection.executeSqlScript(SQL_DIR + "05 load_yago_data.sql");
-=======
-
-		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
-				"sql" + System.getProperty("file.separator") + "05 load_yago_data.sql");
->>>>>>> eca67591c201f2e7f6db045ad86b329f854e94d2
-	}
-
-	public void populateDB() throws SQLException {
-
-<<<<<<< HEAD
-		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql");
-=======
-		DBConnection.executeSqlScript(APP_HOME_DIR + System.getProperty("file.separator") +
-				"sql" + System.getProperty("file.separator") + "06 create_relevant_data.sql"); 
-	}
 	
+	public void importFilesToDB() throws SQLException, IOException {
+=======
+
+	public void importFilesToDB() throws SQLException {
+>>>>>>> 330ceed562ad32aa722ef23c51570a3af62167be
+
+		DBConnection.executeSqlScript(SQL_DIR + "05 load_yago_data.sql");
+	}
+
+	public void populateDB() throws SQLException, IOException {
+
+		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql"); 
+	}
+
 	public void reduceHints() throws SQLException {
 		HintsHandler.setMaximumTemHintsForEachEntity();
->>>>>>> eca67591c201f2e7f6db045ad86b329f854e94d2
 	}
 
 

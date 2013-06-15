@@ -27,8 +27,8 @@ public class Utils {
 	
 	public static void showDBConnectionErrorMessage() {
 		while (MainView.getView() == null) {}; // Wait for GUI to open
-		showMessageAndRestart("We're sorry, but A DB error occured. Application will restart.");
-	}
+		showMessageAndRestart("Oops! It looks like there is a problem with the database. Application will shutdown.");
+	}	
 	
 	public static void showMessageAndRestart(String message) {
 		showMessage(message);

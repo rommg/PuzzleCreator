@@ -59,15 +59,12 @@ public class PuzzleCreator {
 				username, password);
 		Logger.writeToLog("Connections Pool was created");
 		int tries = 1;
-		while (!connectionPool.createPool()) {
-			if (tries++ == 4) { // upon third failed attempt to restart, quit.
-				closeAllDBConnections();
-				System.exit(0);
-			}
-			Logger.writeErrorToLog("Failed to create the Connections Pool on try #" +tries +".");
+		if (!connectionPool.createPool()) {
 			gui.Utils.showDBConnectionErrorMessage();
-			MainView.start();
-				
+			Logger.writeErrorToLog("Failed to create the Connections Pool on try #" +tries +".");
+			closeAllDBConnections();
+			System.exit(0);
+
 		}
 		Logger.writeToLog("Connections Pool was created");
 		
