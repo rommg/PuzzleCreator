@@ -2,7 +2,6 @@ package puzzleAlgorithm;
 
 import gui.CrosswordView;
 import gui.MainView;
-import gui.PrepareGameView;
 import gui.WaitView;
 import gui.Utils;
 
@@ -18,9 +17,6 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import main.PuzzleCreator;
@@ -95,17 +91,17 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 				if (!success && (template == 1)) {
 					template = 2;
 					Logger.writeErrorToLog("impossible data for template 1");
-					
+
 					createBoardFromTemplateFile(size, template);
 					Collections.sort(definitions);
 					Logger.writeToLog("Optimizing board");
 					optimizeBoard();
-					
+
 				} else if (!success && (template == 2)) {
 					Logger.writeErrorToLog("impossible data for template 2");
 					publish("failed to create Puzzle");
 					break;
-					
+
 				} else {
 					Logger.writeToLog("success");
 					publish("Retrieving hints and definitions from DataBase...");
@@ -116,10 +112,12 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 					return result;
 				}
 			}
-			result = new BoardSolution(null, null, false, new Exception("not enough answers. Please choose another topic"));
+			result = new BoardSolution(null, null, false, new Exception(
+					"not enough answers. Please choose another topic"));
 		} catch (Exception ex) {
 			result = new BoardSolution(board, definitions, true, ex);
-			Logger.writeErrorToLog("exception thrown in algorithm " + ex.getMessage());
+			Logger.writeErrorToLog("exception thrown in algorithm "
+					+ ex.getMessage());
 			Logger.writeErrorToLog("" + ex.getStackTrace());
 		}
 		return result;
@@ -138,7 +136,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 					Utils.showMessageAndRestart("Could not find board templates. Verify their locations and restart.");
 				}
 			} else {
-				CrosswordView crosswordView = (CrosswordView) CrosswordView.start(result);
+				CrosswordView crosswordView = (CrosswordView) CrosswordView
+						.start(result);
 				MainView.getView().setCrosswordView(crosswordView); // adds
 																	// JPanel to
 																	// MainView
@@ -182,7 +181,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 					optimizeBoard();
 					continue outerLoop;
 				}
-				int index = (int) Math.floor(Math.random() * possibleAnswers.size());
+				int index = (int) Math.floor(Math.random()
+						* possibleAnswers.size());
 				Answer currentAnswer = possibleAnswers.get(index);
 
 				/*
@@ -199,7 +199,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 				int column = def.getBeginColumn();
 				char direction = def.getDirection();
 				for (int letterIndex = 0; letterIndex < currentAnswer.length; letterIndex++) {
-					if (!board[column][row].checkLetter(currentAnswer.getAnswerString().charAt(letterIndex), false)) {
+					if (!board[column][row].checkLetter(currentAnswer
+							.getAnswerString().charAt(letterIndex), false)) {
 						possibleAnswers.remove(currentAnswer);
 						continue innerLoop;
 					}
@@ -258,7 +259,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	 * 
 	 * @param stack
 	 */
-	private boolean pushBoardState(Deque<BoardState> stack, PuzzleDefinition lastDef, Answer currentAnswer) {
+	private boolean pushBoardState(Deque<BoardState> stack,
+			PuzzleDefinition lastDef, Answer currentAnswer) {
 		int size = board[0].length;
 		BoardState bs = new BoardState(size);
 		List<PuzzleDefinition> clonedDefinitions = bs.getDefinitions();
@@ -303,7 +305,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 				}
 				break;
 			default:
-				Logger.writeErrorToLog("unknow direction '" + def.getDirection() + "'");
+				Logger.writeErrorToLog("unknow direction '"
+						+ def.getDirection() + "'");
 				return false;
 			}
 		}
@@ -370,7 +373,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		int column = def.getBeginColumn();
 		for (int letterIndex = 0; letterIndex < currentAnswer.length; letterIndex++) {
 			char direction = def.getDirection();
-			board[column][row].checkLetter(currentAnswer.getAnswerString().charAt(letterIndex), true);
+			board[column][row].checkLetter(currentAnswer.getAnswerString()
+					.charAt(letterIndex), true);
 			switch (direction) {
 			case 'r':
 				column++;
@@ -396,8 +400,10 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	 * 
 	 * @return
 	 */
-	private boolean insertDefinition(int beginRow, int beginCol, int length, char direction, int textRow, int textCol) {
-		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow, beginCol, length, direction, this);
+	private boolean insertDefinition(int beginRow, int beginCol, int length,
+			char direction, int textRow, int textCol) {
+		PuzzleDefinition def = new PuzzleDefinition(textRow, textCol, beginRow,
+				beginCol, length, direction, this);
 		definitions.add(def);
 
 		switch (direction) {
@@ -422,7 +428,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	private void printResults() {
 		printBoard();
 		for (PuzzleDefinition def : definitions) {
-			Logger.writeToLog("def of length " + def.getLength() + " answer is :" + def.getAnswer().getAnswerString());
+			Logger.writeToLog("def of length " + def.getLength()
+					+ " answer is :" + def.getAnswer().getAnswerString());
 		}
 
 	}
@@ -455,7 +462,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		Set<Integer> lengths = new HashSet<Integer>();
 		for (PuzzleDefinition def : definitions) {
 			if (!lengths.contains(def.getLength())) {
-				Logger.writeToLog("def length: " + def.getLength() + " num of answers :" + def.getPossibleAnswers().size());
+				Logger.writeToLog("def length: " + def.getLength()
+						+ " num of answers :" + def.getPossibleAnswers().size());
 				counter += def.getPossibleAnswers().size();
 				lengths.add(def.getLength());
 			}
@@ -480,10 +488,15 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 	 * @param templateNum
 	 * @return
 	 */
-	private boolean createBoardFromTemplateFile(int size, int templateNum) throws IOException {
+	private boolean createBoardFromTemplateFile(int size, int templateNum)
+			throws IOException {
 		board = new PuzzleSquare[size][size];
+		this.unSolved.clear();
+		this.definitions.clear();
+		this.usedEntities.clear();
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
-		File templateFile = new File(PuzzleCreator.appDir + "templates", fileName);
+		File templateFile = new File(PuzzleCreator.appDir + "templates",
+				fileName);
 
 		FileReader in = new FileReader(templateFile);
 		BufferedReader bin = new BufferedReader(in);
@@ -563,7 +576,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 			direction = line.charAt(directionIndex + 10);
 
 			if (textColIndex - textRowIndex == 11) {
-				textRowValue = line.substring(textRowIndex + 8, textRowIndex + 10);
+				textRowValue = line.substring(textRowIndex + 8,
+						textRowIndex + 10);
 			} else {
 				textRowValue = "" + line.charAt(textRowIndex + 8);
 			}
