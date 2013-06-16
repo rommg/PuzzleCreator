@@ -399,7 +399,8 @@ public class YagoFileHandler {
 						properLiteral = properLiteral.substring(0, index - 1); // -1 to get rid of '-' char before '#' 
 						if (lineColumns[1].length() <=50 && 
 								relevantEntities.contains(lineColumns[1]) &&  // checking by entity name because there are many rows with no yagoID
-								litertalTypes.contains(lineColumns[2]))  {
+								litertalTypes.contains(lineColumns[2]) &&
+								!properLiteral.isEmpty()){
 								//(!containsNonEnglishChars(properLiteral))) { 
 									String newline = lineColumns[1] + decomposedYagoID[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
 									bw.write(newline);
