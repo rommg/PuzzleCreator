@@ -1,11 +1,14 @@
 package db;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import core.Logger;
-
-import db.utils.*;
 
 /**
  * ConnectionPool creates a pool of connections of the specified size to the

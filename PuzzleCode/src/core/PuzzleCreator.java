@@ -2,12 +2,8 @@ package core;
 
 import java.sql.SQLException;
 
-import parsing.YagoFileHandler;
-
-//TODO: remove
-import db.*;
-import db.utils.*;
 import ui.MainView;
+import db.ConnectionPool;
 
 public class PuzzleCreator {
 

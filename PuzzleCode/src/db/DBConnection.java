@@ -626,7 +626,6 @@ public class DBConnection {
 
 	public static void insreatIntoYagoType(String yagoTypes_tsv) throws SQLException, IOException{
 		String line = new String();
-		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = null;
 		PreparedStatement pStmt = null;
 		try{
