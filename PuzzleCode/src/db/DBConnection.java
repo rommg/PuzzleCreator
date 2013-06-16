@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import core.PuzzleCreator;
 
 
 public class DBConnection {
+
+	private static final String EMPTY_STRING = "";
 
 	private static Connection getConnection() throws SQLException{
 		Connection conn = null;
@@ -383,7 +386,7 @@ public class DBConnection {
 	}
 
 	private static int getMaxPredicateId() throws SQLException{
-		String sqlQuery = "SELECT max(id) as max_id FROM predicate;";
+		String sqlQuery = "SELECT max(id) as max_id FROM predicates;";
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
 			//TODO: ERROR
@@ -483,7 +486,7 @@ public class DBConnection {
 			String[] instruction = strBuffer.toString().split(";");
 
 			for (int i = 0; i < instruction.length; i++) {
-				if (!instruction[i].trim().equals("")) {
+				if (!instruction[i].trim().equals(EMPTY_STRING)) {
 					stmt.executeUpdate(instruction[i]);
 					Logger.writeToLog(instruction[i] + ";");
 				}
@@ -496,15 +499,15 @@ public class DBConnection {
 				// try rolling back
 				conn.rollback();
 				Logger.writeToLog("Rollback Successfully");
-				
+
 				throw new SQLException("failed to execute script - sql error", sqlE);
 			} catch (SQLException sqlE2) {
 				Logger.writeErrorToLog("failed when rollbacking - " + sqlE2.getMessage());
-				
+
 				throw new SQLException("failed roll back in executeSQLScripit", sqlE2);
 			}
 		} catch (IOException e) {
-			
+
 			Logger.writeErrorToLog("DBConnection executeSqlScript: " + e.getMessage());
 			throw new IOException("IOException when opening script file", e);
 		} finally {
@@ -546,7 +549,7 @@ public class DBConnection {
 		if (conn != null) {
 			freeConnection(conn);
 		}
-		
+
 	}
 
 	/**
@@ -624,14 +627,15 @@ public class DBConnection {
 		return 1;
 	}
 
-	public static void insreatIntoYagoType(String yagoTypes_tsv) throws SQLException, IOException{
+	public static void insreatIntoYagoTables(String yagoTypes_tsv, String sql, int numOfArguments) throws SQLException, IOException{
 		String line = new String();
 		Connection conn = null;
 		PreparedStatement pStmt = null;
+		//		int numOfArguments = 5;
 		try{
 			conn = getConnection();
 			conn.setAutoCommit(false);
-			String sql = "INSERT INTO yago_type (subject, predicate, object, answer, additional_information) VALUES (?,?,?,?,?);";
+			//			String sql = "INSERT INTO yago_type (subject, predicate, object, answer, additional_information) VALUES (?,?,?,?,?);";
 			pStmt = conn.prepareStatement(sql);
 
 			FileReader fr = new FileReader(new File(yagoTypes_tsv));
@@ -639,11 +643,14 @@ public class DBConnection {
 
 			while ((line = bufferedReader.readLine()) != null) {
 				String[] values = line.split("\t");
-				pStmt.setString(1, values[0]);
-				pStmt.setString(2, values[1]);
-				pStmt.setString(3, values[2]);
-				pStmt.setString(4, values[3]);
-				pStmt.setString(5, values[4]);
+				for (int i = 0; i < values.length; i++) {
+					pStmt.setString(i+1, values[i]);	
+				}
+				if (values.length < numOfArguments ){
+					for (int i = values.length; i < numOfArguments; i++) {
+						pStmt.setString(i+1, EMPTY_STRING);		
+					}
+				}
 				pStmt.addBatch();
 			}
 			bufferedReader.close();
@@ -669,25 +676,71 @@ public class DBConnection {
 			safelyClose(null, pStmt, conn, null);
 		}
 	}
+
+
+	public static void insreatIntoYagoType(String yagoTypes_tsv) throws SQLException, IOException{
+		int numOfArguments = 5;
+		String sql = "INSERT INTO yago_type (subject, predicate, object, answer, additional_information) VALUES (?,?,?,?,?);";
+		insreatIntoYagoTables(yagoTypes_tsv, sql, numOfArguments);
+	}
+
+	public static void insreatIntoYagoFact(String yagoFacts_tsv) throws SQLException, IOException{
+		int numOfArguments = 4;
+		String sql = "INSERT INTO yago_fact (subject, predicate, object, is_subject) VALUES (?,?,?,?);";
+		insreatIntoYagoTables(yagoFacts_tsv, sql, numOfArguments);
+	}
+
+
+	public static void insreatIntoYagoLiteralFacts(String yagoLiteralFacts_tsv) throws SQLException, IOException{
+		int numOfArguments = 3;
+		String sql = "INSERT INTO yago_literal_fact (subject, predicate, object) VALUES (?,?,?);";
+		insreatIntoYagoTables(yagoLiteralFacts_tsv, sql, numOfArguments);
+	}
+
+
+	public static void insreatIntoYagoHumanAnswers(String yagoHumanAnswers_tsv) throws SQLException, IOException{
+		int numOfArguments = 3;
+		String sql = "INSERT INTO temp_answers (entity, answer, additional_information) VALUES (?,?,?);";
+		insreatIntoYagoTables(yagoHumanAnswers_tsv, sql, numOfArguments);
+	}
+
 	
 	public static void test(){
+		java.util.Date end = null;
+		java.util.Date start = null;
 		try{
-		insreatIntoYagoType("c://Users//kleins//tau//db//git//PuzzleCreator//temp_yago_files//filtered_tsv_files//yagoTypes.tsv");
+			start = Calendar.getInstance().getTime();
+			System.out.println("Starts at:" + start);
+			
+			insreatIntoYagoType("c://Users//kleins//tau//db//git//PuzzleCreator//temp_yago_files//filtered_tsv_files//yagoTypes.tsv");
+			end = Calendar.getInstance().getTime();
+			System.out.println("end yagoTypes" );
+			System.out.println("total time:" + (end.getTime()-start.getTime())/60000);
+			
+			insreatIntoYagoFact("c://Users//kleins//tau//db//git//PuzzleCreator//temp_yago_files//filtered_tsv_files//yagoFacts.tsv");
+			end = Calendar.getInstance().getTime();
+			System.out.println("end yagoFacts" );
+			System.out.println("total time:" + (end.getTime()-start.getTime())/60000);
+			
+			insreatIntoYagoLiteralFacts("c://Users//kleins//tau//db//git//PuzzleCreator//temp_yago_files//filtered_tsv_files//yagoLiteralFacts.tsv");
+			end = Calendar.getInstance().getTime();
+			System.out.println("end yagoLiteralFacts" );
+			System.out.println("total time:" + (end.getTime()-start.getTime())/60000);
+			
+			insreatIntoYagoHumanAnswers("c://Users//kleins//tau//db//git//PuzzleCreator//temp_yago_files//filtered_tsv_files//yagoHumanAnswers.tsv");
+			end = Calendar.getInstance().getTime();
+			System.out.println("End at: " + end);
+			System.out.println("total time:" + (end.getTime()-start.getTime())/60000);
+			
 		}
 		catch(Exception e){
-			System.out.println("Error");
+			end = Calendar.getInstance().getTime();
+			System.out.println("Error at:" + end);
+			System.out.println("total time:" + (end.getTime()-start.getTime())/60000);
+			e.printStackTrace();
+			
 		}
 	}
-	
-//	public static int insreatIntoYagoFact(File yagoFacts_tsv){
-//
-//	}
-//
-//	public static int insreatIntoYagoLiteralFacts(File yagoLiteralFacts_tsv){
-//
-//	}
-//
-//	public static int insreatIntoYagoHumanAnswers(File yagoHumanAnswers_tsv){
-//
-//	}
+
+
 }

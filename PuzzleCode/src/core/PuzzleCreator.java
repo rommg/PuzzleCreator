@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import ui.MainView;
 import db.ConnectionPool;
+import db.DBConnection;
 
 public class PuzzleCreator {
 
@@ -45,12 +46,14 @@ public class PuzzleCreator {
 		String password = args[1];
 		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
 				+ System.getProperty("file.separator");
-		loadFilesDir = sqlDir + "filesToLoad"
+		loadFilesDir = appDir + "/temp_yago_files/filtered_tsv_files"
 				+ System.getProperty("file.separator");
 
 		if (!Logger.initialize(true)) {
 			return;
 		}
+
+
 		MainView.start();
 
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
@@ -64,7 +67,12 @@ public class PuzzleCreator {
 
 		}
 		Logger.writeToLog("Connections Pool was created");
-		
+
+		//TODO: remove
+//		DBConnection.test();
+		//end remove
+
+
 	}
 
 	public static void closeAllDBConnections() {

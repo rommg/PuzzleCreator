@@ -495,7 +495,7 @@ public class YagoFileHandler {
 	}
 
 	public void getFilesFromURL() {
-
+		//TODO: download with multi thread??? can we?
 		getTSVFileFromURL(YAGO_TYPES);
 		getTSVFileFromURL(YAGO_FACTS);
 		getTSVFileFromURL(YAGO_LITERAL_FACTS);

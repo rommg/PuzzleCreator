@@ -1,12 +1,10 @@
 package ui;
 
-import java.awt.EventQueue;
-
-
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,27 +13,23 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-
-import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.border.TitledBorder;
-import javax.swing.JButton;
-
-import core.Logger;
-import core.PuzzleCreator;
-
-
-import sun.java2d.Disposer;
-
-import java.awt.Color;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+
+import core.Logger;
+import core.PuzzleCreator;
 
 /**
  * The one and only frame in the application.
@@ -124,7 +118,7 @@ public class MainView {
 		setSizes();
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.setIconImage(new ImageIcon(getClass().getResource("../resources/crossword_tiny.gif")).getImage());
+		frame.setIconImage(new ImageIcon(getClass().getResource("/resources/crossword_tiny.gif")).getImage());
 		frame.setTitle("Crossword Mastermind");
 
 		// build mainPanel

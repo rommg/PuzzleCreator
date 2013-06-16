@@ -231,7 +231,7 @@ public class MassiveImportView extends JPanel {
 
 			if (download) {
 				Logger.writeToLog("Downloading and extracting yago files from website...");
-
+				publish("Downloading and extracting yago files from website...");
 				y.getFilesFromURL(); // download yago files 
 			}
 
