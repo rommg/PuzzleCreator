@@ -22,9 +22,7 @@ public class PuzzleCreator {
 	public static String dbServerAddress = "localhost";
 	public static String dbServerPort = "3306";
 	public static String username = "root";
-	// public static String password = ""; // enter your password
 	public static String schemaName = "DbMysql02";
-	//public static String schemaName = "riddle";
 
 
 	/**
@@ -67,12 +65,6 @@ public class PuzzleCreator {
 
 		}
 		Logger.writeToLog("Connections Pool was created");
-
-		//TODO: remove
-//		DBConnection.test();
-		//end remove
-
-
 	}
 
 	public static void closeAllDBConnections() {

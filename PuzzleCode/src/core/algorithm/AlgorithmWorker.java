@@ -30,7 +30,6 @@ import ui.WaitView;
  *
  */
 public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
-	// System.getProperty("file.separator")
 	protected PuzzleSquare[][] board;
 	protected List<PuzzleDefinition> definitions;
 	private List<PuzzleDefinition> unSolved;
@@ -196,11 +195,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 						* possibleAnswers.size());
 				Answer currentAnswer = possibleAnswers.get(index);
 
-				/*
-				 * check if this answers's entity was already used TODO The
-				 * possible answers should be updated by entity id when the
-				 * problematic answer is assigned
-				 */
+			
 				if (usedEntities.contains(currentAnswer.getEntityId())) {
 					possibleAnswers.remove(currentAnswer);
 					continue innerLoop;
