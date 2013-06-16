@@ -1,6 +1,6 @@
--- [schema-name] is RIDDLE
-CREATE SCHEMA IF NOT EXISTS RIDDLE;
-USE RIDDLE;
+-- [schema-name] is DbMysql02
+CREATE SCHEMA IF NOT EXISTS DbMysql02;
+USE DbMysql02;
 
 -- DROP TABLE IF EXISTS BEST_SCORES;
 DROP TABLE IF EXISTS HINTS;
@@ -105,7 +105,7 @@ id int NOT NULL AUTO_INCREMENT,
 -- predicate
 predicate_id int NOT NULL,
 -- subject or object
-yago_hint varchar(250) DEFAULT '<User_Hint>',
+yago_hint varchar(250) NOT NULL,
 entity_id int NOT NULL, 
 is_entity_subject boolean NOT NULL, 
 PRIMARY KEY(id),
