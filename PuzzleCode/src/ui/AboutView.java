@@ -40,7 +40,7 @@ public class AboutView extends JPanel {
 				MainView.getView().showWelcomeView();
 			}
 		});
-		btnBack.setIcon(new ImageIcon(getClass().getResource("../resources/back.png")));
+		btnBack.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/back.png")));
 		btnPanel.add(btnBack);
 		
 		JPanel topPanel = new JPanel();
@@ -63,7 +63,7 @@ public class AboutView extends JPanel {
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JLabel lblProgrammers = new JLabel("<html><center>Programmed By:  <br> <br>Guy Romm<br>David Franco<br>Saleet Klein<br>Yonatan Wilkof</html>");
+		JLabel lblProgrammers = new JLabel("<html><h1>Programmed By:</h1><br>Yonatan Wilkof<br>Saleet Klein<br>Guy Romm<br>David Franco</html>");
 		mainPanel.add(lblProgrammers);
 		lblProgrammers.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblProgrammers.setHorizontalAlignment(SwingConstants.CENTER);
@@ -71,7 +71,7 @@ public class AboutView extends JPanel {
 		JLabel lblImg = new JLabel("");
 		mainPanel.add(lblImg);
 		lblImg.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImg.setIcon(new ImageIcon(getClass().getResource("../resources/crossword_small.jpg")));
+		lblImg.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/crossword_small.jpg")));
 
 	}
 
