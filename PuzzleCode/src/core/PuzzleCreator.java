@@ -22,7 +22,7 @@ public class PuzzleCreator {
 	public static String dbServerPort = "3305";
 	public static String username = "DbMysql02";
 	public static String schemaName = "DbMysql02";
-
+	public static String password = "";
 
 	/**
 	 * @param args
@@ -39,16 +39,9 @@ public class PuzzleCreator {
 				username = "DbMysql02";
 			}
 		}
-		
-		MainView.start();
-		
-		String[] result = Utils.getCredentials();
-		dbServerAddress = result[0];
-		dbServerPort = result[1];
-		username = result[2];
 
 		appDir = args[0] + System.getProperty("file.separator");
-	//	appDir = ui.Utils.getAppDir();
+		//	appDir = ui.Utils.getAppDir();
 		String password = args[1];
 		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
 				+ System.getProperty("file.separator");
@@ -59,29 +52,9 @@ public class PuzzleCreator {
 			return;
 		}
 		
-		password = result[3];
+		MainView.start();
 
-		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
-				username, password);
-
-		if (!connectionPool.createPool()) {
-			ui.Utils.showDBConnectionErrorMessage();
-			Logger.writeErrorToLog("Failed to create the Connections Pool.");
-			closeAllDBConnections();
-			System.exit(0);
-
-		}
-		Logger.writeToLog("Connections Pool was created");
 	}
 
-	public static void closeAllDBConnections() {
-		try {
-			connectionPool.closeConnections();
-			Logger.writeToLog("Closed all connections");
-		} catch (SQLException e) {
-			Logger.writeErrorToLog("ConnectionPool failed to close connections"
-					+ e.getMessage());
-		}
-	}
 
 }

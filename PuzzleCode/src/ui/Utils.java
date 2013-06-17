@@ -27,7 +27,7 @@ public class Utils {
 
 	public static void showMessageAndClose(String message) {
 		showMessage(message);
-		PuzzleCreator.closeAllDBConnections();
+		MainView.closeAllDBConnections();
 		System.exit(0);
 	}
 

@@ -30,6 +30,7 @@ import javax.swing.border.TitledBorder;
 
 import core.Logger;
 import core.PuzzleCreator;
+import db.ConnectionPool;
 
 /**
  * The one and only frame in the application.
@@ -88,6 +89,25 @@ public class MainView {
 					if (view == null) {
 						view = new MainView();
 						view.frame.setVisible(true);
+
+						String[] result = Utils.getCredentials();
+						PuzzleCreator.dbServerAddress = result[0];
+						PuzzleCreator.dbServerPort = result[1];
+						PuzzleCreator.username = result[2];
+						PuzzleCreator.password = result[3];
+						
+						PuzzleCreator.connectionPool = 
+								new ConnectionPool("jdbc:mysql://" + PuzzleCreator.dbServerAddress + ":" + PuzzleCreator.dbServerPort + "/" + PuzzleCreator.schemaName,
+									PuzzleCreator.username, PuzzleCreator.password);
+
+						if (!PuzzleCreator.connectionPool.createPool()) {
+							ui.Utils.showDBConnectionErrorMessage();
+							Logger.writeErrorToLog("Failed to create the Connections Pool.");
+							closeAllDBConnections();
+							System.exit(0);
+
+						}
+						Logger.writeToLog("Connections Pool was created");
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -232,6 +252,9 @@ public class MainView {
 	            }
 		    }
 		});
+		
+		
+
 
 	}
 
@@ -459,5 +482,15 @@ public class MainView {
 		frame.setLocationRelativeTo(null);
 	}
 	
+	public static void closeAllDBConnections() {
+		try {
+			PuzzleCreator.connectionPool.closeConnections();
+			Logger.writeToLog("Closed all connections");
+		} catch (SQLException e) {
+			Logger.writeErrorToLog("ConnectionPool failed to close connections"
+					+ e.getMessage());
+		}
+	}
+
 	
 }
