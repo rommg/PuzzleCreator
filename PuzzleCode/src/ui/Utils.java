@@ -8,9 +8,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import core.Logger;
-import core.PuzzleCreator;
-
-
 
 
 public class Utils {

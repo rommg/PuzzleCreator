@@ -1,8 +1,6 @@
 package core;
 
-import java.sql.SQLException;
 import ui.MainView;
-import ui.Utils;
 import db.ConnectionPool;
 
 public class PuzzleCreator {
@@ -42,7 +40,7 @@ public class PuzzleCreator {
 
 		appDir = args[0] + System.getProperty("file.separator");
 		//	appDir = ui.Utils.getAppDir();
-		String password = args[1];
+		//String password = args[1];
 		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
 				+ System.getProperty("file.separator");
 		loadFilesDir = appDir + "/temp_yago_files/filtered_tsv_files"
