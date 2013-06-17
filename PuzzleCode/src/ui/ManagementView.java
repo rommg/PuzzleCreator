@@ -102,7 +102,7 @@ public class ManagementView extends JPanel {
 		topBtnPanel.setLayout(new GridLayout(2, 1, 0, 5));
 
 		final JButton btnAddNewFact = new JButton("");
-		btnAddNewFact.setIcon(new ImageIcon(getClass().getResource("../resources/add_tiny.png")));
+		btnAddNewFact.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/add_tiny.png")));
 		btnAddNewFact.addActionListener(new ActionListener() {
 
 			@Override
@@ -136,7 +136,7 @@ public class ManagementView extends JPanel {
 
 		final JButton btnSearchFact = new JButton("");
 		btnSearchFact.setEnabled(false);
-		btnSearchFact.setIcon(new ImageIcon(getClass().getResource("../resources/search_tiny.png")));
+		btnSearchFact.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/search_tiny.png")));
 		btnSearchFact.addActionListener(new ActionListener() {
 
 			@Override
@@ -254,7 +254,7 @@ public class ManagementView extends JPanel {
 		btnPanel.setAlignmentX(FlowLayout.CENTER);
 		JButton btnBack = new JButton();
 		btnBack.setFont(btnBack.getFont().deriveFont(15f));
-		btnBack.setIcon(new ImageIcon(getClass().getResource("../resources/back.png")));
+		btnBack.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/back.png")));
 
 		btnBack.addActionListener(new BackButtonListener());
 		btnPanel.add(btnBack);
@@ -377,7 +377,7 @@ public class ManagementView extends JPanel {
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new GridLayout(1,2));
 
-			deleteBtn = new JButton(new ImageIcon(getClass().getResource("../resources/delete_small.png")));		
+			deleteBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
 				@Override
@@ -432,7 +432,7 @@ public class ManagementView extends JPanel {
 
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new BorderLayout());
-			deleteBtn = new JButton(new ImageIcon(getClass().getResource("../resources/delete_small.png")));		
+			deleteBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("resources/delete_small.png")));		
 			deleteBtn.addActionListener(new ActionListener() {
 
 				@Override
@@ -521,7 +521,7 @@ public class ManagementView extends JPanel {
 			topicBox = new TopicsCheckComboBox(allTopics.keySet(), Collections.<String>emptySet() , true);
 			add(topicBox, BorderLayout.WEST);
 
-			JButton saveBtn = new JButton(new ImageIcon(getClass().getResource("../resources/add_small.png")));
+			JButton saveBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
 				@Override
@@ -615,7 +615,7 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			saveBtn = new JButton(new ImageIcon(getClass().getResource("../resources/add_small.png")));
+			saveBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("resources/add_small.png")));
 			saveBtn.addActionListener(new ActionListener() {
 
 				@Override

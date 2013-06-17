@@ -105,7 +105,7 @@ public class MassiveImportView extends JPanel {
 		chooseFilePanel.add(folderCheckBox);
 
 		btnOpen = new JButton("");
-		btnOpen.setIcon(new ImageIcon(getClass().getResource("../resources/open.png")));
+		btnOpen.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/open.png")));
 		btnOpen.addActionListener(new ActionListener() {
 
 
@@ -131,10 +131,10 @@ public class MassiveImportView extends JPanel {
 
 				if (YagoFileHandler.containsFiles(file)) {
 					btnStartImport.setEnabled(true);
-					success.setIcon(new ImageIcon(getClass().getResource("../resources/check_small.png")));
+					success.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/check_small.png")));
 				}
 				else 
-					success.setIcon(new ImageIcon(getClass().getResource("../resources/fail_small.png")));
+					success.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/fail_small.png")));
 				chooseFilePanel.revalidate();
 			}
 		});

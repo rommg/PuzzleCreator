@@ -75,7 +75,7 @@ public class WaitView extends JPanel {
 		animationPanel.setBackground(Color.WHITE);
 		add(animationPanel, BorderLayout.SOUTH);
 
-		infoLabel = new JLabel(new ImageIcon(getClass().getResource("../resources/about.png")));
+		infoLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("resources/about.png")));
 		infoLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		infoLabel.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.PLAIN, 16));
 		animationPanel.add(infoLabel, BorderLayout.CENTER);
@@ -103,24 +103,24 @@ public class WaitView extends JPanel {
 		final JPanel checkPanel = new JPanel();
 		checkPanel.setBackground(Color.WHITE);
 
-		final JButton  btnCheck = new JButton("Check My Answer!", new ImageIcon(getClass().getResource("../resources/check_btn.png")));
+		final JButton  btnCheck = new JButton("Check My Answer!", new ImageIcon(getClass().getClassLoader().getResource("resources/check_btn.png")));
 		btnCheck.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				boolean isCorrect = isCorrectAnswer(answerPanel, answer);
 				if (isCorrect) {
-					btnCheck.setIcon(new ImageIcon(getClass().getResource("../resources/check_medium.png")));
+					btnCheck.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/check_medium.png")));
 					btnSolve.setEnabled(false);
 				}
 				else  {
-					btnCheck.setIcon(new ImageIcon(getClass().getResource("../resources/fail_medium.png")));
+					btnCheck.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/fail_medium.png")));
 				}
 			}
 		});
 		checkPanel.add(btnCheck);
 
-		btnSolve = new JButton("Solve", new ImageIcon(getClass().getResource("../resources/surrender.png")));
+		btnSolve = new JButton("Solve", new ImageIcon(getClass().getClassLoader().getResource("resources/surrender.png")));
 		btnSolve.addActionListener(new ActionListener() {
 
 			@Override

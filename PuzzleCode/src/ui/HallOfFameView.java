@@ -48,7 +48,7 @@ public class HallOfFameView extends JPanel {
 
 		JButton btnBack = new JButton();
 		btnBack.setFont(btnBack.getFont().deriveFont(15f));
-		btnBack.setIcon(new ImageIcon(getClass().getResource("../resources/back.png")));
+		btnBack.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/back.png")));
 
 		btnBack.addActionListener(new BackButtonListener());
 		btnPanel.add(btnBack);
