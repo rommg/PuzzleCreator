@@ -15,6 +15,7 @@ import core.algorithm.PuzzleDefinition;
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 public class JDefinitionLabel extends JLabel{
 
 	protected int difficulty;

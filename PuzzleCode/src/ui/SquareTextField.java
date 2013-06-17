@@ -1,14 +1,7 @@
 package ui;
 
-import java.awt.AWTKeyStroke;
 import java.awt.Color;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -19,6 +12,7 @@ import javax.swing.text.PlainDocument;
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 public class SquareTextField extends JTextField {
     private int limit;
 

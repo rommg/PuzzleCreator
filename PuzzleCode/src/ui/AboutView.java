@@ -10,12 +10,10 @@ import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import java.awt.FlowLayout;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class AboutView extends JPanel {
 	
 	static AboutView start() {

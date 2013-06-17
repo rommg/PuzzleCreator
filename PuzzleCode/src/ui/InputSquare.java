@@ -8,6 +8,7 @@ import java.awt.Color;
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 final class InputSquare extends AbstractSquarePanel{
 	
 	private SquareTextField field;

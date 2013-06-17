@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import core.Logger;
+
 import net.sf.sevenzipjbinding.ExtractAskMode;
 import net.sf.sevenzipjbinding.ExtractOperationResult;
 import net.sf.sevenzipjbinding.IArchiveExtractCallback;
@@ -13,7 +15,6 @@ import net.sf.sevenzipjbinding.ISevenZipInArchive;
 import net.sf.sevenzipjbinding.PropID;
 import net.sf.sevenzipjbinding.SevenZip;
 import net.sf.sevenzipjbinding.SevenZipException;
-import net.sf.sevenzipjbinding.SevenZipNativeInitializationException;
 import net.sf.sevenzipjbinding.impl.RandomAccessFileInStream;
 
 
@@ -36,7 +37,7 @@ public class SevenZipJBindingExtractor {
 			errCode = 0;
 		}
 		catch (Exception e) {
-			System.out.println("d");
+			Logger.writeErrorToLog(e.getMessage());
 		}
 		finally {
 			if (inArchive != null) {

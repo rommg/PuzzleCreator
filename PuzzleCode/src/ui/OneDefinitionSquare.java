@@ -2,16 +2,13 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+@SuppressWarnings("serial")
 final class OneDefinitionSquare extends AbstractSquarePanel{
 
 	private JDefinitionLabel definitionLbl;
 
-	private JDefinitionLabel bottomDefinition;
 	private int definitionCount = 0;
 
 	public JDefinitionLabel getDefinitionLbl() {

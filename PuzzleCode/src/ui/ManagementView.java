@@ -2,22 +2,16 @@ package ui;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.ItemSelectable;
-
-import javax.swing.JApplet;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
-import javax.swing.ListCellRenderer;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +19,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,25 +29,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.TabExpander;
 import org.japura.gui.CheckComboBox;
 import org.japura.gui.model.ListCheckModel;
-
-import com.mysql.jdbc.Util;
-
-import core.Logger;
-
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import db.utils.DBUtils;
 import db.utils.KnowledgeManagement;
-
-
 import javax.swing.JTabbedPane;
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
+@SuppressWarnings("serial")
 public class ManagementView extends JPanel {
 	private int definitionCounter = 0;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -425,7 +409,6 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			//btnPanel.add(saveBtn);
 			btnPanel.add(deleteBtn);
 			add(btnPanel, BorderLayout.EAST);
 		}
@@ -433,7 +416,6 @@ public class ManagementView extends JPanel {
 
 	private class HintResultLine extends JPanel {
 
-		protected JButton saveBtn;
 		protected JButton deleteBtn;
 		protected JPanel btnPanel;
 		private HintTuple hint;

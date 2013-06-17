@@ -1,19 +1,13 @@
 package ui;
 
-import java.awt.AWTKeyStroke;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
 /**
  * abstract layout of a square in the crossword board
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 abstract class AbstractSquarePanel extends JPanel {
 
     private int row, col; // x,y of the square

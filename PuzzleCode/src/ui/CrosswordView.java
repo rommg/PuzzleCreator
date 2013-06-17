@@ -31,6 +31,7 @@ import java.util.Map;
 import java.awt.BorderLayout;
 
 
+@SuppressWarnings("serial")
 public class CrosswordView extends JPanel {
 
 	private boolean isPaused = false;

@@ -16,6 +16,7 @@ import javax.swing.Timer;;
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 class TimerJLabel extends JLabel{
 
 	private Timer t;

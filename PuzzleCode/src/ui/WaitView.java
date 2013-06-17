@@ -2,37 +2,20 @@ package ui;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
-import javax.swing.Timer;
-
 import java.awt.Font;
 import javax.swing.JButton;
-
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Color;
-
-import sun.net.www.content.audio.aiff;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.Random;
-
 import javax.swing.border.BevelBorder;
-
 import core.algorithm.AlgorithmWorker;
-import core.algorithm.Answer;
-import core.algorithm.BoardSolution;
 import db.utils.DBUtils;
 
 /**
@@ -40,6 +23,7 @@ import db.utils.DBUtils;
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 public class WaitView extends JPanel {
 
 	private JButton btnGo;

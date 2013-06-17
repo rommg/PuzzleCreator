@@ -3,35 +3,22 @@ package ui;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
 import java.awt.BorderLayout;
 import javax.swing.JButton;
-
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-
-import sun.applet.Main;
-
 import javax.swing.border.EtchedBorder;
 
 import db.utils.DBUtils;
 
+@SuppressWarnings("serial")
 public class HallOfFameView extends JPanel {
 
 	private JPanel tablePanel;

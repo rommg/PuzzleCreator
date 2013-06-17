@@ -11,6 +11,7 @@ import javax.swing.border.BevelBorder;
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 class PlainSquare extends AbstractSquarePanel {
 
 	private JLabel emptyLabel;

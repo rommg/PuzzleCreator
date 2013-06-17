@@ -19,10 +19,6 @@ import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
-import org.junit.runners.AllTests;
-
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
 import db.utils.DBUtils;
 
 
@@ -32,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 
 
+@SuppressWarnings("serial")
 public class PrepareGameView extends JPanel {
 	private final ButtonGroup difficultyBtnsGrp = new ButtonGroup();
 	Map<String,Integer> topicsList;

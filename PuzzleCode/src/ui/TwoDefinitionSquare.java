@@ -3,8 +3,6 @@ package ui;
 import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 /**
@@ -12,6 +10,7 @@ import javax.swing.border.BevelBorder;
  * @author yonatan
  *
  */
+@SuppressWarnings("serial")
 final public class TwoDefinitionSquare extends AbstractSquarePanel {
 
 	private JDefinitionLabel topDefinitionLbl;

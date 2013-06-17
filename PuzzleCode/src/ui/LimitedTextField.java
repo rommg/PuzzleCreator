@@ -6,6 +6,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
+@SuppressWarnings("serial")
 class LimitedTextField extends JTextField {
     private int limit;
 
@@ -22,7 +23,7 @@ class LimitedTextField extends JTextField {
         return new LimitDocument();
     }
 
-    private class LimitDocument extends PlainDocument {
+	private class LimitDocument extends PlainDocument {
 
         @Override
         public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException {
