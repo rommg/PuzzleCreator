@@ -3,6 +3,7 @@ package ui;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.ItemSelectable;
 
@@ -13,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.ListCellRenderer;
@@ -26,6 +28,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -121,6 +124,11 @@ public class ManagementView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String entityText = newTextField.getText(); 
+				if (allEntities.containsKey(entityText)) { // entity already exists
+					Utils.showErrorMessage("Entity already exists!");
+					newTextField.setText("");
+					return;
+				}
 				if (!entityText.isEmpty()) {
 					definitionCounter = 0;
 					chosenEntityID = -1;
@@ -161,7 +169,7 @@ public class ManagementView extends JPanel {
 				if (chosenEntityID != -1) { // found
 					try {
 						buildDefinitionPanel(chosenEntityID);
-					buildHintsPanel(chosenEntityID);
+						buildHintsPanel(chosenEntityID);
 					} catch (SQLException e1) {
 						Utils.showErrorMessage("Could not tabs for knowledge fact");
 					} 
@@ -208,6 +216,8 @@ public class ManagementView extends JPanel {
 				if (!flag) {
 					definitionPanel.removeAll();
 				}
+				existingTextField.revalidate();
+				existingTextField.getParent().revalidate();
 			}
 
 			public void itemStateChanged(ItemEvent e) {
@@ -239,8 +249,19 @@ public class ManagementView extends JPanel {
 		tabbedPane.setBackground(Color.LIGHT_GRAY);
 		add(tabbedPane, BorderLayout.CENTER);
 
+		
 		definitionPanel = new JPanel();
-		tabbedPane.addTab("Definitions", null, definitionPanel,null);
+		JScrollPane scroll = new JScrollPane(definitionPanel);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setSize(new Dimension(10, 1300));
+		scroll.setPreferredSize(tabbedPane.getPreferredSize());
+		scroll.setMinimumSize(tabbedPane.getMinimumSize());
+		scroll.setMaximumSize(tabbedPane.getMaximumSize());
+
+
+		tabbedPane.addTab("Definitions", null, scroll,null);
+		
+		
 
 		hintsPanel = new JPanel();
 		tabbedPane.addTab("Hints", null, hintsPanel,null);
@@ -534,7 +555,7 @@ public class ManagementView extends JPanel {
 							definitionCounter++;
 							Integer retID = allDefinitions.get(definitionText);
 							int definitionID = (retID == null) ? -1 : retID; 
-							int[] ret;
+							int[] ret = null;
 							try {
 								ret = KnowledgeManagement.addDefinitionToEntitiy(
 										NewDefinitionLine.this.entityID,
@@ -544,18 +565,23 @@ public class ManagementView extends JPanel {
 										topicBox.getUserSelectedTopics()
 										);
 							} catch (SQLException e) {
-								Utils.showErrorMessage("failed to add definition.");
+								Utils.showErrorMessage("Failed to add definition. ");
 								return;
 							}
-							if (ret == null) {
-								return;
+
+							// update the entityID;
+							if (ret[0] != NewDefinitionLine.this.entityID) { 
+								// add to entity search box
+								ManagementView.this.allEntities.put(entityText, ret[0]); 
+								existingTextField = createAutoCompleteBox(allEntities.keySet(), "", true); 
+								// add to definition search box
+								allDefinitions.put(definitionText, ret[1]); 
 							}
-							else {
-								// update the entityID;
-								NewDefinitionLine.this.entityID = ret[0]; 
-								ManagementView.this.chosenEntityID = ret[0];
-								chosenEntityString = entityText;
-							}
+							
+							NewDefinitionLine.this.entityID = ret[0]; 
+							ManagementView.this.chosenEntityID = ret[0];
+							chosenEntityString = entityText;
+
 
 							try {
 								buildDefinitionPanel(entityID);
@@ -625,7 +651,7 @@ public class ManagementView extends JPanel {
 							Utils.showErrorMessage("failed to add hint.");
 							return;
 						}
-						
+
 						//rebuild panel
 						tabbedPane.setSelectedIndex(tabbedPane.getComponentCount()-1);
 					}
@@ -683,6 +709,7 @@ public class ManagementView extends JPanel {
 	private JComboBox<String> createAutoCompleteBox(Set<String> valueList, String firstvalue, boolean strict) {
 
 		JComboBox<String> box = new JComboBox<String>();
+		Arrays.sort(valueList.toArray());
 		AutoCompleteSupport<Object> autoBox =  AutoCompleteSupport.install(box, GlazedLists.eventListOf(valueList.toArray()));
 		autoBox.setFirstItem(firstvalue);
 		autoBox.setStrict(strict);

@@ -2,65 +2,29 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.FontMetrics;
 import java.awt.GraphicsEnvironment;
-
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.text.Position.Bias;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-
-import com.mysql.jdbc.Util;
-
 import core.Logger;
-import core.algorithm.AlgorithmWorker;
 import core.algorithm.BoardSolution;
 import core.algorithm.PuzzleDefinition;
 import core.algorithm.PuzzleSquare;
 import db.utils.DBUtils;
-
-import net.sf.sevenzipjbinding.ExtractAskMode;
-
-
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import java.awt.GridLayout;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,9 +91,11 @@ public class CrosswordView extends JPanel {
 		// set statistics panel
 		JPanel statsPanel = new JPanel();
 		statsPanel.setLayout( new FlowLayout(FlowLayout.CENTER, 20, 0));
+	
+		// setting timer label, not starting it yet
 		timer = new TimerJLabel();
-		timer.start();
 		statsPanel.add(timer);
+		
 		hintCounterLabel = new HintCounterLabel();
 		hintCounterLabel.setFont(timer.getFont());
 		statsPanel.add(hintCounterLabel);
@@ -226,6 +192,10 @@ public class CrosswordView extends JPanel {
 		BtnPanel.add(btnCheck);
 		BtnPanel.add(btnSurrender);	
 
+	}
+	
+	void startTimer() {
+		timer.start();
 	}
 
 	void setFrameSizeByBoardSize() {

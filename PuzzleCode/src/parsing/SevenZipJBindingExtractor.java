@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.sevenzipjbinding.ExtractAskMode;
 import net.sf.sevenzipjbinding.ExtractOperationResult;
@@ -15,10 +13,12 @@ import net.sf.sevenzipjbinding.ISevenZipInArchive;
 import net.sf.sevenzipjbinding.PropID;
 import net.sf.sevenzipjbinding.SevenZip;
 import net.sf.sevenzipjbinding.SevenZipException;
+import net.sf.sevenzipjbinding.SevenZipNativeInitializationException;
 import net.sf.sevenzipjbinding.impl.RandomAccessFileInStream;
 
+
 public class SevenZipJBindingExtractor {
-	private static Logger logger = Logger.getLogger(SevenZipJBindingExtractor.class.getName());
+	//private static Logger logger = Logger.getLogger(SevenZipJBindingExtractor.class.getName());
 	public int extract(String file, String extractPath) throws SevenZipException, IOException  {
 		int errCode = 1;
 		ISevenZipInArchive inArchive = null;
@@ -28,12 +28,15 @@ public class SevenZipJBindingExtractor {
 			inArchive = SevenZip.openInArchive(null, new RandomAccessFileInStream(randomAccessFile));
 			inArchive.extract(null, false, new MyExtractCallback(inArchive, extractPath));            
 		}  catch (FileNotFoundException e) {
-			logger.log(Level.SEVERE, "FileNotFoundException while searching for  "+ file,(Exception) e);
+			core.Logger.writeErrorToLog("FileNotFoundException while searching for  "+ file);
 			errCode = 0;
 		}
 		catch (SevenZipException e) {
-			logger.log(Level.SEVERE, "SevenZipException while extracting "+ file,(Exception) e);
+			core.Logger.writeErrorToLog("SevenZipException while extracting "+ file);
 			errCode = 0;
+		}
+		catch (Exception e) {
+			System.out.println("d");
 		}
 		finally {
 			if (inArchive != null) {
@@ -72,7 +75,7 @@ public class SevenZipJBindingExtractor {
 						fos = new FileOutputStream(path, true);
 						fos.write(data);
 					} catch (IOException e) {
-						logger.log(Level.SEVERE, "IOException while extracting "+filePath, e);
+						core.Logger.writeErrorToLog("IOException while extracting "+filePath);
 					} finally {
 						try {
 							if (fos != null) {
@@ -80,7 +83,7 @@ public class SevenZipJBindingExtractor {
 								fos.close();
 							}
 						} catch (IOException e) {
-							logger.log(Level.SEVERE, "Could not close FileOutputStream", e);
+							core.Logger.writeErrorToLog("Could not close FileOutputStream");
 						}
 					}
 					return data.length;

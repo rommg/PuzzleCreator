@@ -31,7 +31,6 @@ class TimerJLabel extends JLabel{
 
 		t = new Timer(500, new clockListener());
 		t.setInitialDelay(0);
-		start();
 	}
 
 	void start() {

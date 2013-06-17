@@ -355,6 +355,7 @@ public class MainView {
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.Crossword.toString());
 		((CrosswordView)crosswordView).setFrameSizeByBoardSize();
+		((CrosswordView)crosswordView).startTimer();
 
 		//frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -424,9 +425,9 @@ public class MainView {
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.Management.toString());
-		frame.setMinimumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
-		frame.setPreferredSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
-		frame.setMaximumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
+		//frame.setMinimumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
+		//frame.setPreferredSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
+		//frame.setMaximumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}

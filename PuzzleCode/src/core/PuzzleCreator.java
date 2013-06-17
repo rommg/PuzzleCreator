@@ -1,10 +1,8 @@
 package core;
 
 import java.sql.SQLException;
-
 import ui.MainView;
 import db.ConnectionPool;
-import db.DBConnection;
 
 public class PuzzleCreator {
 
@@ -40,7 +38,11 @@ public class PuzzleCreator {
 				username = "DbMysql02";
 			}
 		}
+		
+		MainView.start();
+
 		appDir = args[0] + System.getProperty("file.separator");
+	//	appDir = ui.Utils.getAppDir();
 		String password = args[1];
 		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
 				+ System.getProperty("file.separator");
@@ -52,7 +54,8 @@ public class PuzzleCreator {
 		}
 
 
-		MainView.start();
+		
+		//password = ui.Utils.getPassword();
 
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
 				username, password);
