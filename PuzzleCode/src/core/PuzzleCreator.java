@@ -52,8 +52,6 @@ public class PuzzleCreator {
 		if (!Logger.initialize(true)) {
 			return;
 		}
-
-
 		
 		//password = ui.Utils.getPassword();
 

@@ -118,7 +118,7 @@ public class MainView {
 		setSizes();
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.setIconImage(new ImageIcon(getClass().getResource("/resources/crossword_tiny.gif")).getImage());
+		frame.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("resources/crossword_tiny.gif")).getImage());
 		frame.setTitle("Crossword Mastermind");
 
 		// build mainPanel
@@ -163,7 +163,7 @@ public class MainView {
 			}
 		});
 		
-		btn = createButton("Massive Import", "addDB.png");
+		btn = createButton("Massive Import", "addDb.png");
 		btn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -193,7 +193,7 @@ public class MainView {
 		welcomePanel = new JPanel();
 		welcomePanel.setLayout(new BorderLayout());
 		welcomePanel.setBackground(Color.WHITE);
-		JLabel logo = new JLabel(new ImageIcon(getClass().getResource("../resources/crossword.jpg")));
+		JLabel logo = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("resources/crossword.jpg")));
 		welcomePanel.add(logo, BorderLayout.CENTER);
 		
 		JPanel titlePanel = new JPanel(new GridLayout(2,1));
@@ -247,7 +247,7 @@ public class MainView {
 		JLabel label = new JLabel(text);
 		btnLabels.put(btn, label);
 		label.setHorizontalAlignment(JLabel.CENTER);
-		JLabel image = new JLabel(new ImageIcon(getClass().getResource("../resources/" + resourceName)));
+		JLabel image = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("resources/" + resourceName)));
 		btn.add(label, BorderLayout.CENTER);
 		btn.add(image, BorderLayout.WEST);
 		menuPanelBtns.put(text, btn);
@@ -332,6 +332,7 @@ public class MainView {
 			prepareGame = PrepareGameView.start();
 		} catch (SQLException e) {
 			Utils.showErrorMessage("Could not load topics properly.");
+			return;
 		}
 		cardPanel.add(prepareGame, Window.PrepareGame.toString());
 
