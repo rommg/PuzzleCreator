@@ -198,7 +198,7 @@ public class YagoFileHandler {
 	public static String getProperAnswerName(String input) {
 
 		String returnString;
-		returnString= input.replace('_', ' ').replace('-', ' ').replaceAll("\\.", "");  // remove .,- and add spaces
+		returnString= input.replace('_', ' ').replace('-', ' ').replaceAll("\\.", "").replaceAll("'", "");  // remove .,-,' and add spaces
 		returnString = returnString.substring(1, returnString.lastIndexOf('>')); // trim <,>
 		int i = returnString.lastIndexOf('(');
 		if (i<=0) // also for entities with 1 char e.g. (_)

@@ -532,8 +532,9 @@ public class ManagementView extends JPanel {
 					}
 					if (field.getSelectedItem() != null ) {
 						String definitionText = field.getSelectedItem().toString();
-						if	( !definitionText.isEmpty() && 
-								(isValidString(definitionText))) { // text is entered and valid
+//						if	( !definitionText.isEmpty() && 
+//								(isValidString(definitionText))) { // text is entered and valid
+						if	( !definitionText.isEmpty()) {
 							definitionCounter++;
 							Integer retID = allDefinitions.get(definitionText);
 							int definitionID = (retID == null) ? -1 : retID; 
@@ -621,7 +622,8 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					String hintText = field.getText();
-					if (!hintText.isEmpty() && isValidString(hintText)) {
+//					if (!hintText.isEmpty() && isValidString(hintText)) {
+					if (!hintText.isEmpty()) {
 						//get updated entityID, in case we created a new entity and we just got its ID
 						NewHintLine.this.entityID = ManagementView.this.chosenEntityID;
 						//call DB add procedure
@@ -699,9 +701,9 @@ public class ManagementView extends JPanel {
 	}
 
 
-	private boolean isValidString(String string) {
-		return string.matches("^[A-Za-z0-9 \\(\\)]+(-[A-Za-z0-9 \\(\\)]+)*$");
-	}
+//	private boolean isValidString(String string) {
+//		return string.matches("^[A-Za-z0-9 \\(\\)]+(-[A-Za-z0-9 \\(\\)]+)*$");
+//	}
 
 	class TopicsCheckComboBox extends CheckComboBox {
 		private boolean lock;

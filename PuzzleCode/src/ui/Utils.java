@@ -53,18 +53,37 @@ public class Utils {
 		Logger.writeErrorToLog(message);
 	}
 
-	public static String getPassword() {
+	public static String[] getCredentials() {
 		while (MainView.getView() == null) {}; //wait for frame to open
-		String code = null;
-		while (code == null || code.isEmpty()) {
-			code = JOptionPane.showInputDialog(MainView.getView().getFrame(), 
-					"Schema: " + PuzzleCreator.schemaName +"\n" +
-							"User: " + PuzzleCreator.username +"\n" +
-							"Enter database password to continue:",
-							"User password needed", 
-							JOptionPane.WARNING_MESSAGE);
+//		String code = null;
+//		while (code == null || code.isEmpty()) {
+//			code = JOptionPane.showInputDialog(MainView.getView().getFrame(), 
+//					"Schema: " + PuzzleCreator.schemaName +"\n" +
+//							"User: " + PuzzleCreator.username +"\n" +
+//							"Enter database password to continue:",
+//							"User password needed", 
+//							JOptionPane.WARNING_MESSAGE);
+//		}
+//		return code;
+		CredentialsView credentialView = new CredentialsView();
+
+		String[] result = new String[4];
+		while ((result[0] == null || result[1] == null || result[2] == null || result[3] == null) ||
+				(result[0].isEmpty() || result[1].isEmpty() || result[2].isEmpty()|| result[3].isEmpty())) {
+			
+			int retCode = JOptionPane.showConfirmDialog(null, credentialView, 
+		               "Please Enter DB Connection Details", JOptionPane.OK_CANCEL_OPTION);
+		      if (retCode == JOptionPane.OK_OPTION) {
+		    	  result[0] = credentialView.getDbServerAddressField();
+		    	  result[1] = credentialView.getDbServerPortField();
+		    	  result[2] = credentialView.getUsername();
+		    	  result[3] = credentialView.getPassword();
+		      }
+		      else {
+		    	  break;
+		      }
 		}
-		return code;
+		return result;
 	}
 
 	public static String getAppDir() {

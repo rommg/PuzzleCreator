@@ -2,6 +2,7 @@ package core;
 
 import java.sql.SQLException;
 import ui.MainView;
+import ui.Utils;
 import db.ConnectionPool;
 
 public class PuzzleCreator {
@@ -40,6 +41,11 @@ public class PuzzleCreator {
 		}
 		
 		MainView.start();
+		
+		String[] result = Utils.getCredentials();
+		dbServerAddress = result[0];
+		dbServerPort = result[1];
+		username = result[2];
 
 		appDir = args[0] + System.getProperty("file.separator");
 	//	appDir = ui.Utils.getAppDir();
@@ -53,7 +59,7 @@ public class PuzzleCreator {
 			return;
 		}
 		
-		//password = ui.Utils.getPassword();
+		password = result[3];
 
 		connectionPool = new ConnectionPool("jdbc:mysql://" + dbServerAddress + ":" + dbServerPort + "/" + schemaName,
 				username, password);
