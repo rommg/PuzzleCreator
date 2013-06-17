@@ -18,8 +18,8 @@ public class PuzzleCreator {
 	// These parameters won't be hard coded, need to retrieve them from the user
 	// through GUI
 	public static String dbServerAddress = "localhost";
-	public static String dbServerPort = "3306";
-	public static String username = "root";
+	public static String dbServerPort = "3305";
+	public static String username = "DbMysql02";
 	public static String schemaName = "DbMysql02";
 
 
