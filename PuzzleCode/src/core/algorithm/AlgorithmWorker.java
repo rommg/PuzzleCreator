@@ -144,7 +144,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 					Logger.writeErrorToLog(ex.getMessage());
 				}
 				if (ex instanceof IOException) {
-					Utils.showMessageAndRestart("Could not find board templates. Application will restart.");
+					Utils.showMessageAndClose("Could not find board templates. Application will close.");
 					Logger.writeErrorToLog(ex.getMessage());
 				}
 			} else {

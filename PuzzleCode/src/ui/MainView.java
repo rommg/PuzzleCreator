@@ -103,7 +103,6 @@ public class MainView {
 						if (!PuzzleCreator.connectionPool.createPool()) {
 							ui.Utils.showDBConnectionErrorMessage();
 							Logger.writeErrorToLog("Failed to create the Connections Pool.");
-							closeAllDBConnections();
 							System.exit(0);
 
 						}

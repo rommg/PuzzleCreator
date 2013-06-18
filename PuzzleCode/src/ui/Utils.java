@@ -3,7 +3,6 @@ package ui;
 import java.awt.Component;
 import java.awt.Container;
 import java.io.File;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -30,15 +29,26 @@ public class Utils {
 
 	public static void showDBConnectionErrorMessage() {
 		while (MainView.getView() == null) {}; // Wait for GUI to open
-		showMessageAndRestart("Oops! The supplied credentials are wrong, or there is a problem with the database. \n Application will shutdown.");
+		showMessageAndClose("Oops! The supplied credentials are wrong, or there is a problem with the database. \n Application will shutdown.");
 	}	
 
-	public static void showMessageAndRestart(String message) {
-		showMessage(message);
-		//restart application
-		MainView.getView().Dispose();
-		MainView.start();
-	}
+//	public static void showMessageAndRestart(String message) {
+//		showMessage(message);
+//		//restart application
+//		ScheduledExecutorService schedulerExecutor = Executors.newScheduledThreadPool(2);
+//		Callable<Process> callable = new Callable<Process>() {
+//
+//			@Override
+//			public Process call() throws Exception {
+//				Process p = Runtime.getRuntime().exec("cmd /c start /b java -jar " + System.getProperty("user.dir") + "puzzle.jar");
+//				return p;
+//			}
+//		};
+//		FutureTask<Process> futureTask = new FutureTask<Process>(callable);
+//		schedulerExecutor.submit(futureTask);           
+//
+//		System.exit(0);
+//	}
 
 	public static void showMessage(String message) {
 		JOptionPane.showMessageDialog(MainView.getView().getFrame(), message);
@@ -52,33 +62,33 @@ public class Utils {
 
 	public static String[] getCredentials() {
 		while (MainView.getView() == null) {}; //wait for frame to open
-//		String code = null;
-//		while (code == null || code.isEmpty()) {
-//			code = JOptionPane.showInputDialog(MainView.getView().getFrame(), 
-//					"Schema: " + PuzzleCreator.schemaName +"\n" +
-//							"User: " + PuzzleCreator.username +"\n" +
-//							"Enter database password to continue:",
-//							"User password needed", 
-//							JOptionPane.WARNING_MESSAGE);
-//		}
-//		return code;
+		//		String code = null;
+		//		while (code == null || code.isEmpty()) {
+		//			code = JOptionPane.showInputDialog(MainView.getView().getFrame(), 
+		//					"Schema: " + PuzzleCreator.schemaName +"\n" +
+		//							"User: " + PuzzleCreator.username +"\n" +
+		//							"Enter database password to continue:",
+		//							"User password needed", 
+		//							JOptionPane.WARNING_MESSAGE);
+		//		}
+		//		return code;
 		CredentialsView credentialView = new CredentialsView();
 
 		String[] result = new String[4];
 		while ((result[0] == null || result[1] == null || result[2] == null || result[3] == null) ||
 				(result[0].isEmpty() || result[1].isEmpty() || result[2].isEmpty()|| result[3].isEmpty())) {
-			
+
 			int retCode = JOptionPane.showConfirmDialog(null, credentialView, 
-		               "Please Enter DB Connection Details", JOptionPane.OK_CANCEL_OPTION);
-		      if (retCode == JOptionPane.OK_OPTION) {
-		    	  result[0] = credentialView.getDbServerAddressField();
-		    	  result[1] = credentialView.getDbServerPortField();
-		    	  result[2] = credentialView.getUsername();
-		    	  result[3] = credentialView.getPassword();
-		      }
-		      else {
-		    	  break;
-		      }
+					"Please Enter DB Connection Details", JOptionPane.OK_CANCEL_OPTION);
+			if (retCode == JOptionPane.OK_OPTION) {
+				result[0] = credentialView.getDbServerAddressField();
+				result[1] = credentialView.getDbServerPortField();
+				result[2] = credentialView.getUsername();
+				result[3] = credentialView.getPassword();
+			}
+			else {
+				break;
+			}
 		}
 		return result;
 	}
