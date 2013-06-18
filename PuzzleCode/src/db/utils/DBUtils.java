@@ -32,12 +32,10 @@ public class DBUtils {
 				+ " AND answers.length >= 2";
 
 		String sqlQuery = "select distinct answers.id, answer, answers.entity_id as entity_id, additional_information "
-				+ "from answers, entities , entities_definitions, definitions, definitions_topics "
+				+ "from answers, entities_definitions, definitions_topics "
 				+ "where "
-				+ "answers.entity_id = entities.id and "
-				+ "entities.id = entities_definitions.entity_id and "
-				+ "entities_definitions.definition_id = definitions.id and "
-				+ "definitions.id = definitions_topics.definition_id and "
+				+ "answers.entity_id = entities_definitions.entity_id and "
+				+ "entities_definitions.definition_id = definitions_topics.definition_id and "
 				+ topicsCondition + " and " + maxLenghtCondition + ";";
 
 		List<Map<String, Object>> rs = DBConnection.executeQuery(sqlQuery);
@@ -139,7 +137,7 @@ public class DBUtils {
 				+ "from entities, entities_definitions, definitions "
 				+ "where entities.id = entities_definitions.entity_id and "
 				+ "entities_definitions.definition_id = definitions.id and "
-				+ "entity_id in " + entityIds + ";";
+				+ "entities.id in " + entityIds + ";";
 		List<Map<String, Object>> definitionsRs = DBConnection
 				.executeQuery(sqlDefinitionsQuery);
 		Map<Integer, List<String>> definitions = new HashMap<Integer, List<String>>();
@@ -287,8 +285,8 @@ public class DBUtils {
 
 		List<Map<String, Object>> map = DBConnection.executeQuery(sql);
 		String[][] returnArray = new String[map.size()][3]; // each of the 10
-															// cells is a tuple
-															// [name,score,date]
+		// cells is a tuple
+		// [name,score,date]
 
 		int index = 0;
 		for (Map<String, Object> row : map) {
@@ -380,8 +378,13 @@ public class DBUtils {
 				+ "WHERE a.entity_id = e.id AND a.length < 10 AND a.length > 3 AND e.id = ed.entity_id AND ed.definition_id = d.id "
 				+ "ORDER BY RAND() LIMIT 1;";
 		List<Map<String, Object>> rs = DBConnection.executeQuery(sqlQuery);
-		while (rs.size() == 0) {
-			rs = DBConnection.executeQuery(sqlQuery);
+		for (int i = 0; i < 20 && rs.size() == 0; i++) {
+			if (rs.size() == 0) {
+				rs = DBConnection.executeQuery(sqlQuery);
+			}		
+		}
+		if (rs.size() == 0){
+			throw new SQLException("answers table is empty");
 		}
 		String[] ret = new String[2];
 		ret[0] = (String) rs.get(0).get("answer");
