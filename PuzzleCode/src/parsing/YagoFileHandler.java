@@ -39,7 +39,7 @@ public class YagoFileHandler {
 	private static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
 	private static final String HAS_GENDER = "<hasGender>";
 	private static final String MARRIED_TO = "<isMarriedTo>";
-	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr."));
+	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr"));
 
 	// static yago files names
 	public static final String YAGO_TYPES = "yagoTypes";
