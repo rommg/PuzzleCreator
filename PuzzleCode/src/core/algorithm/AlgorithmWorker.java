@@ -15,7 +15,6 @@ import java.util.Set;
 import javax.swing.SwingWorker;
 
 import core.Logger;
-import core.PuzzleCreator;
 
 import db.utils.DBUtils;
 import ui.CrosswordView;

@@ -35,9 +35,6 @@ import javax.swing.border.TitledBorder;
 import org.japura.gui.CheckComboBox;
 import org.japura.gui.model.ListCheckModel;
 
-import com.sun.xml.internal.ws.api.server.Container;
-import com.sun.xml.internal.ws.wsdl.writer.document.Definitions;
-
 import core.Logger;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
