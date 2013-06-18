@@ -31,6 +31,8 @@ import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 import org.japura.gui.CheckComboBox;
 import org.japura.gui.model.ListCheckModel;
+
+import core.Logger;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import db.utils.DBUtils;
@@ -122,6 +124,7 @@ public class ManagementView extends JPanel {
 						buildHintsPanel(-1);
 					} catch (SQLException e) {
 						Utils.showErrorMessage("Could not tabs for knowledge fact");
+						Logger.writeErrorToLog(e.getMessage());
 						return;
 					}
 					finally {
@@ -156,6 +159,7 @@ public class ManagementView extends JPanel {
 						buildHintsPanel(chosenEntityID);
 					} catch (SQLException e1) {
 						Utils.showErrorMessage("Could not tabs for knowledge fact");
+						Logger.writeErrorToLog(e1.getMessage());
 					} 
 				}
 			}
@@ -388,6 +392,7 @@ public class ManagementView extends JPanel {
 								KnowledgeManagement.deleteEntityDefinition(DefinitionLine.this.entityID, DefinitionLine.this.definitionID);
 							} catch (SQLException e1) {
 								Utils.showErrorMessage("Could not delete definition");
+								Logger.writeErrorToLog(e1.getMessage());
 								return;
 							}
 							definitionCounter--;
@@ -399,6 +404,7 @@ public class ManagementView extends JPanel {
 							buildDefinitionPanel(entityID);
 						} catch (SQLException e1) {
 							Utils.showErrorMessage("Could not tabs for knowledge fact");
+							Logger.writeErrorToLog(e1.getMessage());
 							return;
 						}
 					}
@@ -442,6 +448,7 @@ public class ManagementView extends JPanel {
 							KnowledgeManagement.deleteHint(HintResultLine.this.hint.getId());
 						} catch (SQLException e1) {
 							Utils.showErrorMessage("Could not delete hint");
+							Logger.writeErrorToLog(e1.getMessage());
 							return;
 						}
 
@@ -497,6 +504,7 @@ public class ManagementView extends JPanel {
 							chosenDefinitionTopics = getTopicsForDefinition(allDefinitions.get(text));
 						} catch (SQLException e) {
 							Utils.showErrorMessage("Could not load topics for knowledge fact");
+							Logger.writeErrorToLog(e.getMessage());
 							return;
 						} 
 						topicBox = new TopicsCheckComboBox(allTopics.keySet(), chosenDefinitionTopics.keySet(), true);
@@ -549,6 +557,7 @@ public class ManagementView extends JPanel {
 										);
 							} catch (SQLException e) {
 								Utils.showErrorMessage("Failed to add definition. ");
+								Logger.writeErrorToLog(e.getMessage());
 								return;
 							}
 
@@ -570,6 +579,7 @@ public class ManagementView extends JPanel {
 								buildDefinitionPanel(entityID);
 							} catch (SQLException e) {
 								Utils.showErrorMessage("Could not load definition tab for knowledge fact");
+								Logger.writeErrorToLog(e.getMessage());
 								return;
 							}
 							tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, true);
@@ -633,6 +643,7 @@ public class ManagementView extends JPanel {
 
 						} catch (SQLException e1) {
 							Utils.showErrorMessage("failed to add hint.");
+							Logger.writeErrorToLog(e1.getMessage());
 							return;
 						}
 

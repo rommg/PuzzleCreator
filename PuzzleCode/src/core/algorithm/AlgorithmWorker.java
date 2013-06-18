@@ -141,9 +141,11 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 				Exception ex = result.getResultException();
 				if (ex instanceof SQLException) {
 					Utils.showDBConnectionErrorMessage();
+					Logger.writeErrorToLog(ex.getMessage());
 				}
 				if (ex instanceof IOException) {
-					Utils.showMessageAndRestart("Could not find board templates. Verify their locations and restart.");
+					Utils.showMessageAndRestart("Could not find board templates. Application will restart.");
+					Logger.writeErrorToLog(ex.getMessage());
 				}
 			} else {
 				CrosswordView crosswordView = (CrosswordView) CrosswordView
@@ -162,6 +164,7 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 			}
 		} catch (Exception ex) {
 			Logger.writeErrorToLog("algorithm was interrupted before board was finished");
+			Logger.writeErrorToLog(ex.getMessage());
 
 		}
 	}

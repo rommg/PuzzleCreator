@@ -355,6 +355,7 @@ public class MainView {
 			prepareGame = PrepareGameView.start();
 		} catch (SQLException e) {
 			Utils.showErrorMessage("Could not load topics properly.");
+			Logger.writeErrorToLog("Could not load topics properly.\n" + e.getMessage());
 			return;
 		}
 		cardPanel.add(prepareGame, Window.PrepareGame.toString());
@@ -395,6 +396,7 @@ public class MainView {
 			waitView = WaitView.start(topics, difficulty);
 		} catch (SQLException e) {
 			Utils.showErrorMessage("Could not load trivia question properly.");
+			Logger.writeErrorToLog("Could not load trivia question properly.\n" + e.getMessage());
 			showWelcomeView();
 			return;
 		}
@@ -441,6 +443,7 @@ public class MainView {
 				management = ManagementView.start();
 			} catch (SQLException e) {
 				Utils.showErrorMessage("Could not load Knowledge Management window properly.");
+				Logger.writeErrorToLog("Could not load Knowledge Management window properly\n" + e.getMessage());
 				showWelcomeView();
 				return;
 			}
