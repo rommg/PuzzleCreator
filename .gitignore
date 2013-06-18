@@ -12,6 +12,7 @@
 *.log
 *.sqlite
 *.txt
+*.tsv
 
 # OS generated files #
 ######################
