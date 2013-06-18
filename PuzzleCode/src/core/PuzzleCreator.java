@@ -20,7 +20,7 @@ public class PuzzleCreator {
 	public static String dbServerPort = "3305";
 	public static String username = "DbMysql02";
 	public static String schemaName = "DbMysql02";
-	public static String password = "";
+	public static String password = "shakshuka";
 
 	/**
 	 * @param args

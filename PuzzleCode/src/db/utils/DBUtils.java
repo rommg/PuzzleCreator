@@ -32,12 +32,10 @@ public class DBUtils {
 				+ " AND answers.length >= 2";
 
 		String sqlQuery = "select distinct answers.id, answer, answers.entity_id as entity_id, additional_information "
-				+ "from answers, entities , entities_definitions, definitions, definitions_topics "
+				+ "from answers, entities_definitions, definitions_topics "
 				+ "where "
-				+ "answers.entity_id = entities.id and "
-				+ "entities.id = entities_definitions.entity_id and "
-				+ "entities_definitions.definition_id = definitions.id and "
-				+ "definitions.id = definitions_topics.definition_id and "
+				+ "answers.entity_id = entities_definitions.entity_id and "
+				+ "entities_definitions.definition_id = definitions_topics.definition_id and "
 				+ topicsCondition + " and " + maxLenghtCondition + ";";
 
 		List<Map<String, Object>> rs = DBConnection.executeQuery(sqlQuery);
@@ -139,7 +137,7 @@ public class DBUtils {
 				+ "from entities, entities_definitions, definitions "
 				+ "where entities.id = entities_definitions.entity_id and "
 				+ "entities_definitions.definition_id = definitions.id and "
-				+ "entity_id in " + entityIds + ";";
+				+ "entities.id in " + entityIds + ";";
 		List<Map<String, Object>> definitionsRs = DBConnection
 				.executeQuery(sqlDefinitionsQuery);
 		Map<Integer, List<String>> definitions = new HashMap<Integer, List<String>>();

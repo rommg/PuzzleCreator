@@ -268,7 +268,7 @@ public class MassiveImportView extends JPanel {
 
 			Logger.writeToLog("Deleting created files...");
 			publish("Deleting created files...");
-			//y.deleteAllYagoFiles(); // delete all temporary files and folders
+			y.deleteAllYagoFiles(); // delete all temporary files and folders
 
 			Logger.writeToLog("Finished!");
 			publish("Finished!");
