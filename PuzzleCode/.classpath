@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.25-bin.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.25-bin.jar" sourcepath="lib/mysql-connector-java-5.1.25-bin.jar"/>
 	<classpathentry kind="lib" path="lib/glazedlists_java15-1.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/japura-1.18.2.jar"/>
 	<classpathentry kind="lib" path="lib/sevenzipjbinding.jar"/>
