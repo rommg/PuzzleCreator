@@ -285,8 +285,8 @@ public class DBUtils {
 
 		List<Map<String, Object>> map = DBConnection.executeQuery(sql);
 		String[][] returnArray = new String[map.size()][3]; // each of the 10
-															// cells is a tuple
-															// [name,score,date]
+		// cells is a tuple
+		// [name,score,date]
 
 		int index = 0;
 		for (Map<String, Object> row : map) {
@@ -378,8 +378,13 @@ public class DBUtils {
 				+ "WHERE a.entity_id = e.id AND a.length < 10 AND a.length > 3 AND e.id = ed.entity_id AND ed.definition_id = d.id "
 				+ "ORDER BY RAND() LIMIT 1;";
 		List<Map<String, Object>> rs = DBConnection.executeQuery(sqlQuery);
-		while (rs.size() == 0) {
-			rs = DBConnection.executeQuery(sqlQuery);
+		for (int i = 0; i < 20 && rs.size() == 0; i++) {
+			if (rs.size() == 0) {
+				rs = DBConnection.executeQuery(sqlQuery);
+			}		
+		}
+		if (rs.size() == 0){
+			throw new SQLException("answers table is empty");
 		}
 		String[] ret = new String[2];
 		ret[0] = (String) rs.get(0).get("answer");

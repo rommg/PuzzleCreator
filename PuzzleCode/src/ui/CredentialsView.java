@@ -4,6 +4,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 
@@ -15,7 +16,7 @@ public class CredentialsView extends JPanel {
 	private JTextField dbServerAddressField;
 	private JFormattedTextField dbServerPortField;
 	private JTextField username;
-	private LimitedTextField password;
+	private JPasswordField password;
 
 
 
@@ -38,8 +39,9 @@ public class CredentialsView extends JPanel {
 		username.requestFocusInWindow();
 		username.selectAll();
 
-		password = new LimitedTextField(10);
-
+		password = new JPasswordField(10);
+		password.setText(PuzzleCreator.password);
+		
 		add(new JLabel("DB Server Address:"));
 		add(dbServerAddressField);
 		add(new JLabel("DB Server Port:"));
