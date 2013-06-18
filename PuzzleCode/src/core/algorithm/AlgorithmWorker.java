@@ -504,8 +504,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		this.definitions.clear();
 		this.usedEntities.clear();
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
-		File templateFile = new File(PuzzleCreator.appDir + "templates",
-				fileName);
+		File templateFile = new File(getClass().getClassLoader().getResource("resources/"+ fileName).getFile());
+		//File templateFile = new File(PuzzleCreator.appDir + "templates",fileName);
 
 		FileReader in = new FileReader(templateFile);
 		BufferedReader bin = new BufferedReader(in);
