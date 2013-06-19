@@ -394,7 +394,7 @@ public class MainView {
 		try {
 			waitView = WaitView.start(topics, difficulty);
 		} catch (SQLException e) {
-			Utils.showErrorMessage("Could not load trivia question properly. Try Massive Import to recreate DB");
+			Utils.showErrorMessage("Could not load trivia question properly. Try Massive Import to recreate DB.");
 			Logger.writeErrorToLog("Could not load trivia question properly.\n" + e.getMessage());
 			showWelcomeView();
 			return;

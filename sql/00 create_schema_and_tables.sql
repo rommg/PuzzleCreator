@@ -115,7 +115,7 @@ CONSTRAINT fk_EntityHintId FOREIGN KEY(entity_id) REFERENCES entities(id)
 -- CREATE TABLE IF NOT EXISTS BEST_SCORES (
 -- user_name varchar(100) NOT NULL, 
 -- score int NOT NULL, 
--- date datetime NOT NULL
+-- date date NOT NULL
 -- );
 
 -- ------------------------------------------------------------------------------------------------
