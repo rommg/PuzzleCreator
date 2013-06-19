@@ -438,17 +438,17 @@ public class YagoFileHandler {
 
 	public void cleanDataTables() throws SQLException, IOException {
 
-		DBConnection.executeSqlScript(SQL_DIR + "00 create_schema_and_tables.sql");
+		DBConnection.executeSqlScript("00create_schema_and_tables.sql");
 	}
 	
 	public void importFilesToDB() throws SQLException, IOException {
 
-		DBConnection.executeSqlScript(SQL_DIR + "05 load_yago_data.sql");
+		DBConnection.executeSqlScript("05load_yago_data.sql");
 	}
 
 	public void populateDB() throws SQLException, IOException {
 
-		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql"); 
+		DBConnection.executeSqlScript("06create_relevant_data.sql"); 
 	}
 	
 	public void reduceHints() throws SQLException {

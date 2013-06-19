@@ -41,6 +41,7 @@ public class CredentialsView extends JPanel {
 
 		password = new JPasswordField(10);
 		password.setText(PuzzleCreator.password);
+		password.selectAll();
 		
 		add(new JLabel("DB Server Address:"));
 		add(dbServerAddressField);
@@ -74,6 +75,6 @@ public class CredentialsView extends JPanel {
 
 
 	String getPassword() {
-		return password.getPassword().toString();
+		return password.getText();
 	}
 }
