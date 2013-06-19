@@ -457,7 +457,7 @@ public class DBConnection {
 		Logger.writeToLog("Start to execute SQL script file: " + sqlScriptPath);
 
 		try {
-			FileReader fr = new FileReader(new File(sqlScriptPath));
+			FileReader fr = new FileReader(new File(DBConnection.class.getClassLoader().getResource("resources/" + sqlScriptPath).getFile()));
 			BufferedReader bufferedReader = new BufferedReader(fr);
 
 			while ((str = bufferedReader.readLine()) != null) {

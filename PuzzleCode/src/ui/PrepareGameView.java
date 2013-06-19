@@ -37,7 +37,6 @@ public class PrepareGameView extends JPanel {
 	private JButton goBtn;
 	private JButton backBtn;
 	private JPanel topicsPanel;
-//	private List<integer> selectedTopicsId;
 
 	private static final String GENERAL_KNOWLEDGE_TOPIC = "General Knowledge";
 	private static final String USER_UPDATE_TOPIC = "User Updates";

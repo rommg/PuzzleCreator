@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +40,7 @@ public class YagoFileHandler {
 	private static final String FILTERED_TSV_FILE_DEST_DIR = TEMP_DIR + "filtered_tsv_files" +  System.getProperty("file.separator");
 	private static final String HAS_GENDER = "<hasGender>";
 	private static final String MARRIED_TO = "<isMarriedTo>";
-	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr."));
+	private static final List<String> ILLEGAL_ANSWERS = new ArrayList<String>(Arrays.asList("the", "a", "an", "mr"));
 
 	// static yago files names
 	public static final String YAGO_TYPES = "yagoTypes";
@@ -113,7 +114,7 @@ public class YagoFileHandler {
 	}
 
 
-	private int getTSVFileFromURL(String yagoFile) {
+	private void getTSVFileFromURL(String yagoFile) throws IOException, SevenZipException {
 		URI uri = null;
 		String zip_7z_file_path = ZIP_FILE_DEST_DIR + yagoFile + TSV_7Z;
 		File zip_7z_file = new File(zip_7z_file_path);
@@ -122,7 +123,7 @@ public class YagoFileHandler {
 
 		if  (tsv_file.exists()) { // TSV file exists
 			Logger.writeToLog(yagoFile + TSV + " already exists.");
-			return 1;
+			return;
 		}
 
 		if (zip_7z_file.exists()) {
@@ -134,9 +135,14 @@ public class YagoFileHandler {
 				uri = new URI(urlStr);
 				uri = uri.resolve(yagoFile + TSV_7Z); 
 				org.apache.commons.io.FileUtils.copyURLToFile(uri.toURL(), new File(zip_7z_file_path));
-			} catch (Exception e) {
-				e.printStackTrace();
-				return 0;
+			}catch (IOException e) {
+				Logger.writeErrorToLog("ERROR failed to download file from YAGO. " + zip_7z_file_path);
+				Logger.writeErrorToLog(e.getStackTrace().toString());
+				throw new IOException("failed to download file from Yago", e);
+			} catch (URISyntaxException e) {
+				Logger.writeErrorToLog("ERROR bad YAGO url." + urlStr);
+				Logger.writeErrorToLog(e.getStackTrace().toString());
+				throw new IOException("failed to download file from Yago", e);
 			}
 		}
 
@@ -150,11 +156,12 @@ public class YagoFileHandler {
 			new SevenZipJBindingExtractor().extract(zip_7z_file_path, TSV_FILE_DEST_DIR);
 		} catch (SevenZipException e) {
 			Logger.writeErrorToLog("SevenZipException while extracting " + zip_7z_file_path + " .");
-			return 0;
+			Logger.writeErrorToLog(e.getStackTrace().toString());
+			throw new SevenZipException("failed to extract 7z file", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			Logger.writeErrorToLog("IOException while extracting " + zip_7z_file_path + " ." );
-			return 0;
+			Logger.writeErrorToLog(e.getStackTrace().toString());
+			throw new IOException("failed to extract 7z file", e);
 		}
 
 		// Get elapsed time in milliseconds
@@ -164,9 +171,6 @@ public class YagoFileHandler {
 		float elapsedTimeSec = elapsedTimeMillis/1000F;
 
 		Logger.writeToLog("Finished Extracting " + zip_7z_file_path + "in " + elapsedTimeSec + "seconds." );
-
-
-		return 1;
 
 	}
 
@@ -211,7 +215,7 @@ public class YagoFileHandler {
 		return !input.matches("[a-zA-Z0-9 -!,;:.']+");
 
 	}
-	private int parseYagoTypes() throws IOException {
+	private void parseYagoTypes() throws IOException {
 		int count = 0;
 		int row = 1;
 		String line = null;
@@ -267,7 +271,8 @@ public class YagoFileHandler {
 			}
 		} catch (IOException e) {
 			Logger.writeErrorToLog("IOException in parseYagoTypes");
-			return 0;
+			Logger.writeErrorToLog(e.getStackTrace().toString());
+			throw new IOException("failed to parse YagoType", e);
 		}
 
 		// Get elapsed time in milliseconds
@@ -280,10 +285,9 @@ public class YagoFileHandler {
 		br.close();
 		bw.close();
 
-		return 1;
 	}
 
-	private int parseYagoFacts() throws IOException {
+	private void parseYagoFacts() throws IOException {
 		int count = 0;
 		int row = 1;
 		String line = null;
@@ -356,7 +360,8 @@ public class YagoFileHandler {
 			}
 		} catch (IOException e) {
 			Logger.writeErrorToLog("IOException in parseYagoFacts");
-			return 0;
+			Logger.writeErrorToLog(e.getStackTrace().toString());
+			throw new IOException("failed to parse yagoFacts files", e);
 		}
 
 		// Get elapsed time in milliseconds
@@ -369,11 +374,9 @@ public class YagoFileHandler {
 		br.close();
 		bw.close();
 		bwAnswers.close();
-
-		return 1;
 	}
 
-	private int parseYagoLiteralFacts() throws IOException {
+	private void parseYagoLiteralFacts() throws IOException {
 		int count = 0;
 		int row = 1;
 		String line = null;
@@ -416,7 +419,9 @@ public class YagoFileHandler {
 
 		} catch (IOException e) {
 			Logger.writeErrorToLog("IOException in parseYagoLiteralFacts");
-			return 0;
+			Logger.writeErrorToLog(e.getStackTrace().toString());
+			throw new IOException("failed to parse yagoLiteralFacts files", e);
+
 		}
 
 		// Get elapsed time in milliseconds
@@ -429,22 +434,21 @@ public class YagoFileHandler {
 		br.close();
 		bw.close();
 
-		return 1;
 	}
 
 	public void cleanDataTables() throws SQLException, IOException {
 
-		DBConnection.executeSqlScript(SQL_DIR + "00 create_schema_and_tables.sql");
+		DBConnection.executeSqlScript("00create_schema_and_tables.sql");
 	}
 	
 	public void importFilesToDB() throws SQLException, IOException {
 
-		DBConnection.executeSqlScript(SQL_DIR + "05 load_yago_data.sql");
+		DBConnection.executeSqlScript("05load_yago_data.sql");
 	}
 
 	public void populateDB() throws SQLException, IOException {
 
-		DBConnection.executeSqlScript(SQL_DIR + "06 create_relevant_data.sql"); 
+		DBConnection.executeSqlScript("06create_relevant_data.sql"); 
 	}
 	
 	public void reduceHints() throws SQLException {
@@ -456,6 +460,7 @@ public class YagoFileHandler {
 		deleteYagoFile(YAGO_TYPES);
 		deleteYagoFile(YAGO_FACTS);
 		deleteYagoFile(YAGO_LITERAL_FACTS);
+		deleteYagoFile(YAGO_HUMAN_ANSWERS);
 
 		//deleting empty directories
 		deleteFileOrDirectory(ZIP_FILE_DEST_DIR);
@@ -482,7 +487,7 @@ public class YagoFileHandler {
 				f.delete();
 	}
 
-	public int createFilteredYagoFiles() {
+	public void createFilteredYagoFiles() throws IOException {
 
 		// create filtered TSV files
 		try {
@@ -490,12 +495,13 @@ public class YagoFileHandler {
 			parseYagoFacts();
 			parseYagoLiteralFacts();
 		} catch (IOException e) {
-			return 0;
+			Logger.writeErrorToLog("IOException in createFilteredYagoFiles" );
+			Logger.writeErrorToLog(e.getStackTrace().toString());
+			throw new IOException("failed to create filtered yago files", e);
 		}
-		return 1;
 	}
 
-	public void getFilesFromURL() {
+	public void getFilesFromURL() throws IOException, SevenZipException {
 		//TODO: download with multi thread??? can we?
 		getTSVFileFromURL(YAGO_TYPES);
 		getTSVFileFromURL(YAGO_FACTS);
