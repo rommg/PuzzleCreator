@@ -1,9 +1,8 @@
 package core.algorithm;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -12,15 +11,15 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.swing.SwingWorker;
 
-import core.Logger;
-
-import db.utils.DBUtils;
 import ui.CrosswordView;
 import ui.MainView;
 import ui.Utils;
 import ui.WaitView;
+import core.Logger;
+import db.utils.DBUtils;
 
 /**
  * This worker executes the board creation algorithm. The return value is the finished board. <br>
@@ -503,10 +502,8 @@ public class AlgorithmWorker extends SwingWorker<BoardSolution, String> {
 		this.definitions.clear();
 		this.usedEntities.clear();
 		String fileName = "" + size + "x" + size + "_" + templateNum + ".tmp";
-		File templateFile = new File(getClass().getClassLoader().getResource("resources/"+ fileName).getFile());
-		//File templateFile = new File(PuzzleCreator.appDir + "templates",fileName);
 
-		FileReader in = new FileReader(templateFile);
+		InputStreamReader in = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("resources/"+ fileName));
 		BufferedReader bin = new BufferedReader(in);
 		bin.readLine();
 		String line = bin.readLine();

@@ -29,6 +29,7 @@ public class CredentialsView extends JPanel {
 		dbServerAddressField = new LimitedTextField(25);
 		dbServerAddressField.setText(PuzzleCreator.dbServerAddress);
 		dbServerAddressField.selectAll();
+		dbServerAddressField.requestFocusInWindow();
 
 		dbServerPortField =  new JFormattedTextField("####");
 		dbServerPortField.setText(PuzzleCreator.dbServerPort);
@@ -75,6 +76,7 @@ public class CredentialsView extends JPanel {
 
 
 	String getPassword() {
-		return password.getText();
+		//return password.getText();
+		return String.valueOf(password.getPassword());
 	}
 }

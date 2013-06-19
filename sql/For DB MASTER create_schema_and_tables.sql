@@ -118,6 +118,16 @@ user_name varchar(100) NOT NULL,
 score int NOT NULL, 
 date date NOT NULL
 );
+-- ------------------------------------------------------------------------------------------------
+CREATE INDEX answersEntityId ON answers(entity_id);
+CREATE INDEX entitiesId ON entities(id);
+CREATE INDEX hintsEntityId ON hints(entity_id);
+CREATE INDEX hintsPredicateId ON hints(predicate_id);
+CREATE INDEX entitiesDefinitionsEntityId ON entities_definitions(entity_id);
+CREATE INDEX entitiesDefinitionsDefinitionId ON entities_definitions(definition_id);
+CREATE INDEX definitionsId ON definitions(id);
+CREATE INDEX predicatesId ON predicates(id);
+
 
 -- ------------------------------------------------------------------------------------------------
 INSERT INTO topics (id, name) VALUES (1, 'Cinema & TV');

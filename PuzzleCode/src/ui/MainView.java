@@ -71,8 +71,8 @@ public class MainView {
 	private JPanel crosswordView = null;
 	private JPanel welcomePanel = null;
 	private JPanel management = null;
-	private JPanel massive = null;
 	private JPanel about = null;
+	private JPanel help = null;
 
 	/**
 	 * Launch the application.
@@ -95,10 +95,10 @@ public class MainView {
 						PuzzleCreator.dbServerPort = result[1];
 						PuzzleCreator.username = result[2];
 						PuzzleCreator.password = result[3];
-						
+
 						PuzzleCreator.connectionPool = 
 								new ConnectionPool("jdbc:mysql://" + PuzzleCreator.dbServerAddress + ":" + PuzzleCreator.dbServerPort + "/" + PuzzleCreator.schemaName,
-									PuzzleCreator.username, PuzzleCreator.password);
+										PuzzleCreator.username, PuzzleCreator.password);
 
 						if (!PuzzleCreator.connectionPool.createPool()) {
 							ui.Utils.showDBConnectionErrorMessage();
@@ -114,12 +114,12 @@ public class MainView {
 			}
 		});
 	}
-	
+
 	public void Dispose() {
 		view = null;
 		frame.dispose();
 	}
-	
+
 
 	/**
 	 * Create the application.
@@ -132,7 +132,7 @@ public class MainView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
+
 		frame = new JFrame();
 		setSizes();
 		frame.setLocationRelativeTo(null);
@@ -175,16 +175,16 @@ public class MainView {
 		// middle buttons
 		btn = createButton("<html><center>Knowledge<br>Management</html>", "add.png");
 		btn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				mamangementBtnClick();
 			}
 		});
-		
+
 		btn = createButton("Massive Import", "addDb.png");
 		btn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				massiveImportBtnClicked();
@@ -193,10 +193,17 @@ public class MainView {
 
 		// bottom buttons
 
-		createButton("Help", "help.png");
-		btn = createButton("About", "about.png");
+		btn = createButton("Help", "help.png");
 		btn.addActionListener(new ActionListener() {
 			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				helpBtnClicked();
+				}
+		});
+		btn = createButton("About", "about.png");
+		btn.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				showAboutView();
@@ -214,13 +221,13 @@ public class MainView {
 		welcomePanel.setBackground(Color.WHITE);
 		JLabel logo = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("resources/crossword.jpg")));
 		welcomePanel.add(logo, BorderLayout.CENTER);
-		
+
 		JPanel titlePanel = new JPanel(new GridLayout(2,1));
 		titlePanel.setBackground(Color.WHITE);
 		JPanel empty = new JPanel();
 		empty.setBackground(Color.WHITE);
 		titlePanel.add(empty);
-		
+
 		JLabel title = new JLabel("Crossword Mastermind");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Stencil", Font.PLAIN, 30));
@@ -230,29 +237,29 @@ public class MainView {
 
 		//add formPanel - this panel will change
 		frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
-		
+
 		//close DB Connections when exiting
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(WindowEvent windowEvent) {
-		    	int option = JOptionPane.showConfirmDialog(
-	               	    MainView.this.frame,  
-	                    "Are you sure you want to quit?", "Exit Crossword Mastermind", JOptionPane.YES_NO_OPTION);
-	            if( option == JOptionPane.YES_OPTION ) {  
-		        	try {
-		        	PuzzleCreator.connectionPool.closeConnections();
-		        	}
-		        	catch (SQLException e) {
-		        		Logger.writeErrorToLog("SQLException while trying to close DB Connections");
-		        	}
-		        	finally {
-			            System.exit(0);
-		        	}
-	            }
-		    }
+			@Override
+			public void windowClosing(WindowEvent windowEvent) {
+				int option = JOptionPane.showConfirmDialog(
+						MainView.this.frame,  
+						"Are you sure you want to quit?", "Exit Crossword Mastermind", JOptionPane.YES_NO_OPTION);
+				if( option == JOptionPane.YES_OPTION ) {  
+					try {
+						PuzzleCreator.connectionPool.closeConnections();
+					}
+					catch (SQLException e) {
+						Logger.writeErrorToLog("SQLException while trying to close DB Connections");
+					}
+					finally {
+						System.exit(0);
+					}
+				}
+			}
 		});
-		
-		
+
+
 
 
 	}
@@ -323,6 +330,10 @@ public class MainView {
 		for (JButton btn : menuPanelBtns.values())
 			btn.addActionListener(listener);
 	}
+	
+	void helpBtnClicked() {
+		showHelpView();
+	}
 
 	void playBtnClicked() {
 		showPrepareView();
@@ -335,13 +346,26 @@ public class MainView {
 	void mamangementBtnClick() {
 		showManagemntView();
 	}
-	
+
 	void massiveImportBtnClicked() {
 		showMassiveImportView();
 	}
-	
+
 	void aboutBtnClicked() {
 		showAboutView();
+	}
+	
+	public void showHelpView() {
+		if (help== null) {
+			help = HelpView.start();
+			cardPanel.add(help, Window.Help.toString());
+		}
+
+		CardLayout cl = (CardLayout)(cardPanel.getLayout());
+		cl.show(cardPanel,Window.Help.toString());
+		setSizes();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 	}
 
 	/**
@@ -365,7 +389,7 @@ public class MainView {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
-	
+
 	public void setCrosswordView(CrosswordView view) {
 		crosswordView = view;
 		cardPanel.add(view, Window.Crossword.toString());
@@ -375,7 +399,7 @@ public class MainView {
 	 * switch to CrosswordView
 	 */
 	public void showCrosswordview() {
-		
+
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.Crossword.toString());
 		((CrosswordView)crosswordView).setFrameSizeByBoardSize();
@@ -426,7 +450,15 @@ public class MainView {
 	 * switch to hall of fame view
 	 */
 	void showHallOfFameView() {
-		HallOfFameView view = HallOfFameView.start();
+		HallOfFameView view;
+		try {
+			view = HallOfFameView.start();
+		} catch (SQLException e) {
+			Utils.showErrorMessage("Oops! There was a DB error. Cannot Load Hall of Fame." );
+			Logger.writeErrorToLog("Could not load Hall Of Fame window properly.\n" + e.getMessage());
+			showWelcomeView();
+			return;
+		}
 		cardPanel.add(view, Window.HallOfFame.toString());
 		setSizes();
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
@@ -451,18 +483,14 @@ public class MainView {
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.Management.toString());
-		//frame.setMinimumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
-		//frame.setPreferredSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
-		//frame.setMaximumSize(new Dimension(FRAME_WIDTH, (int) Math.round(FRAME_HEIGHT * 1.5)));
+		setSizes();
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
-	
+
 	void showMassiveImportView() {
-		if (massive == null) {
-			massive = MassiveImportView.start();
-			cardPanel.add(massive, Window.MassiveImport.toString());
-		}
+		MassiveImportView massive = MassiveImportView.start();
+		cardPanel.add(massive, Window.MassiveImport.toString());
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.MassiveImport.toString());
@@ -483,7 +511,7 @@ public class MainView {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
-	
+
 	public static void closeAllDBConnections() {
 		try {
 			PuzzleCreator.connectionPool.closeConnections();
@@ -494,5 +522,5 @@ public class MainView {
 		}
 	}
 
-	
+
 }

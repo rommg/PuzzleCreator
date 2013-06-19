@@ -2,7 +2,7 @@
 CREATE SCHEMA IF NOT EXISTS DbMysql02;
 USE DbMysql02;
 
--- DROP TABLE IF EXISTS BEST_SCORES;
+-- DROP TABLE IF EXISTS best_score;
 DROP TABLE IF EXISTS hints;
 DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS entities_definitions;
@@ -115,7 +115,13 @@ CONSTRAINT fk_EntityHintId FOREIGN KEY(entity_id) REFERENCES entities(id)
 -- CREATE TABLE IF NOT EXISTS BEST_SCORES (
 -- user_name varchar(100) NOT NULL, 
 -- score int NOT NULL, 
--- date datetime NOT NULL
+-- date date NOT NULL
 -- );
 
 -- ------------------------------------------------------------------------------------------------
+CREATE INDEX answersEntityId ON answers(entity_id);
+CREATE INDEX entitiesId ON entities(id);
+CREATE INDEX hintsEntityId ON hints(entity_id);
+CREATE INDEX hintsPredicateId ON hints(predicate_id);
+CREATE INDEX entitiesDefinitionsEntityId ON entities_definitions(entity_id);
+CREATE INDEX entitiesDefinitionsDefinitionId ON entities_definitions(definition_id);

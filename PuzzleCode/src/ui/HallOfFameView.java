@@ -23,17 +23,18 @@ public class HallOfFameView extends JPanel {
 
 	private JPanel tablePanel;
 
-	static HallOfFameView start() {
+	static HallOfFameView start() throws SQLException {
 		return new HallOfFameView();
 	}
 	/**
 	 * Create the panel.
+	 * @throws SQLException 
 	 */
-	private HallOfFameView() {
+	private HallOfFameView() throws SQLException {
 		initialize();
 	}
 
-	private boolean initialize() {
+	private boolean initialize() throws SQLException {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel topPanel = new JPanel();
@@ -59,8 +60,7 @@ public class HallOfFameView extends JPanel {
 		tablePanel.setLayout(new GridLayout(0, 4, 0, 0));
 
 		if (!populateTablePanel()) {
-			Utils.showErrorMessage("Oops! There was a DB error. Scores will not be shown." );
-			return false;
+			throw new SQLException();
 		}
 		return true;
 	}

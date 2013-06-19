@@ -17,11 +17,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.border.TitledBorder;
 import javax.swing.ImageIcon;
 import javax.swing.ButtonGroup;
+
+import net.sf.sevenzipjbinding.SevenZipException;
 import parsing.YagoFileHandler;
 import core.Logger;
 import core.PuzzleCreator;
@@ -133,9 +136,11 @@ public class MassiveImportView extends JPanel {
 					btnStartImport.setEnabled(true);
 					success.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/check_small.png")));
 				}
-				else 
+				else { 
+					btnStartImport.setEnabled(false);
 					success.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/fail_small.png")));
-				chooseFilePanel.revalidate();
+				}
+				//chooseFilePanel.revalidate();
 			}
 		});
 		chooseFilePanel.add(btnOpen);
@@ -173,12 +178,14 @@ public class MassiveImportView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (worker != null) {
-					worker.cancel(true);
-					setProgressMessage("Cancelled!");
-					MassiveImportView.this.stopButton.setEnabled(false);
-					MassiveImportView.this.btnStartImport.setEnabled(false);
-				}
+//				if (worker != null) {
+//					worker.cancel(true);
+//					setProgressMessage("Cancelled!");
+//					MassiveImportView.this.stopButton.setEnabled(false);
+//					MassiveImportView.this.btnStartImport.setEnabled(false);
+//			}
+				cancelMassiveImport("cancelled!");
+				
 			}
 		});
 		btnPanel.add(stopButton);
@@ -187,6 +194,15 @@ public class MassiveImportView extends JPanel {
 		add(progressPanel, BorderLayout.CENTER);
 		progressPanel.setBorder(new TitledBorder(null, "Progress", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		progressPanel.setLayout(new BoxLayout(progressPanel, BoxLayout.Y_AXIS));
+	}
+	
+	private void cancelMassiveImport(String message) {
+		if (worker != null) {
+			worker.cancel(true);
+			setProgressMessage(message);
+			MassiveImportView.this.stopButton.setEnabled(false);
+			MassiveImportView.this.btnStartImport.setEnabled(false);
+		}
 	}
 
 	private void startImportBtnClicked(boolean download) {
@@ -215,23 +231,39 @@ public class MassiveImportView extends JPanel {
 		}
 
 		@Override
-		protected Void doInBackground() throws Exception {
+		protected Void doInBackground() {
 
 			Logger.writeToLog("Starting importing process...");
 			publish("Starting importing process...");
 
-			YagoFileHandler y = new YagoFileHandler(directory);
+			YagoFileHandler y = null;
+			try {
+				y = new YagoFileHandler(directory);
+			} catch (SQLException e1) {
+				cancelMassiveImport("Failed to start importing process." );
+				return null;
+			}
 
 			if (download) {
 				Logger.writeToLog("Downloading and extracting yago files from website...");
 				publish("Downloading and extracting yago files from website...");
-				y.getFilesFromURL(); // download yago files 
+				try {
+					y.getFilesFromURL();
+				} catch (IOException | SevenZipException e) {
+					cancelMassiveImport("Failed to download YAGO files or extract the downloaded files.");
+					return null;
+				} // download yago files 
 			}
 
 			Logger.writeToLog("Filtering TSV files...");
 			publish("Filtering TSV files...");
 
-			y.createFilteredYagoFiles(); // create TSVs with relevant data only
+			try {
+				y.createFilteredYagoFiles();
+			} catch (IOException e1) {
+				cancelMassiveImport("Failed to filter TSV files.");
+				return null;
+			} // create TSVs with relevant data only
 
 			Logger.writeToLog("Deleteing old data...");
 			publish("Deleting old data...");
@@ -240,7 +272,10 @@ public class MassiveImportView extends JPanel {
 				y.cleanDataTables(); // clean tables with old data
 			}
 			catch (SQLException exception){
-				publish("ERROR while cleaning old tables.");
+				cancelMassiveImport("Failed to clean DB.");
+				return null;
+			} catch (IOException e) {
+				cancelMassiveImport("Failed to clean DB.");
 				return null;
 			}
 			Logger.writeToLog("Importing TSV files to DB...");
@@ -248,10 +283,12 @@ public class MassiveImportView extends JPanel {
 
 			try {
 				y.importFilesToDB();
-				//TODO: change 
 			}
 			catch (SQLException e) {
-				publish("ERROR while loading filtered TSV File to DB!");
+				cancelMassiveImport("Failed to import TSV files to DB.");
+				return null;
+			} catch (IOException e) {
+				cancelMassiveImport("Failed to import TSV files to DB.");
 				return null;
 			}
 
@@ -262,7 +299,10 @@ public class MassiveImportView extends JPanel {
 				y.populateDB();
 			}
 			catch (SQLException e) {
-				publish("ERROR while populating DB!");
+				cancelMassiveImport("Failed to populate DB. Please try to Massive Import again.");
+				return null;
+			} catch (IOException e) {
+				cancelMassiveImport("Failed to populate DB. Please try to Massive Import again.");
 				return null;
 			}
 

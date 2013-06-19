@@ -33,7 +33,6 @@ public class YagoFileHandler {
 	private static final String TSV = ".tsv";
 	private static final String TSV_7Z = TSV + ".7z";
 	private static final String APP_HOME_DIR = PuzzleCreator.appDir;
-	private static final String SQL_DIR = PuzzleCreator.sqlDir;
 	private static final String TEMP_DIR = APP_HOME_DIR +"temp_yago_files" +  System.getProperty("file.separator");
 	private static final String ZIP_FILE_DEST_DIR = TEMP_DIR + "7z_files" +  System.getProperty("file.separator");
 	private static final String TSV_FILE_DEST_DIR = TEMP_DIR + "tsv_files" +  System.getProperty("file.separator");

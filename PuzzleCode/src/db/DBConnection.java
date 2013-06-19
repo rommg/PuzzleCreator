@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -442,23 +443,23 @@ public class DBConnection {
 	 * 
 	 * The method reads a SQL script file and execute each SQL statement.
 	 * 
-	 * @param sqlScriptPath
+	 * @param sqlScriptFileName
 	 *            - file path of the SQL script file. Comments in the script
 	 *            must appear after "--" in a new line.
 	 * @throws SQLException
 	 *             - if roll-backing didn't succeed
 	 */
-	public static void executeSqlScript(String sqlScriptPath) throws SQLException, IOException {
+	public static void executeSqlScript(String sqlScriptFileName) throws SQLException, IOException {
 		String str = new String();
 		StringBuffer strBuffer = new StringBuffer();
 		Connection conn = getConnection();
 		conn.setAutoCommit(false);
 		Statement stmt = conn.createStatement();
-		Logger.writeToLog("Start to execute SQL script file: " + sqlScriptPath);
+		Logger.writeToLog("Start to execute SQL script file: " + sqlScriptFileName);
 
 		try {
-			FileReader fr = new FileReader(new File(DBConnection.class.getClassLoader().getResource("resources/" + sqlScriptPath).getFile()));
-			BufferedReader bufferedReader = new BufferedReader(fr);
+			InputStreamReader in = new InputStreamReader(DBConnection.class.getClassLoader().getResourceAsStream("resources/" + sqlScriptFileName));
+			BufferedReader bufferedReader = new BufferedReader(in);
 
 			while ((str = bufferedReader.readLine()) != null) {
 				if (str.startsWith("--")) {
