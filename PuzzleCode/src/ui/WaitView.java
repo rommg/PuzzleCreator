@@ -103,7 +103,7 @@ public class WaitView extends JPanel {
 		final JPanel checkPanel = new JPanel();
 		checkPanel.setBackground(Color.WHITE);
 
-		final JButton  btnCheck = new JButton("Check My Answer!", new ImageIcon(getClass().getClassLoader().getResource("resources/check_btn.png")));
+		final JButton  btnCheck = new JButton("Check My Answer", new ImageIcon(getClass().getClassLoader().getResource("resources/check_btn.png")));
 		btnCheck.addActionListener(new ActionListener() {
 
 			@Override

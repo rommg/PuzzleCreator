@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.TitledBorder;
 
 import core.Logger;
@@ -78,18 +79,35 @@ public class MainView {
 	 * Launch the application.
 	 */
 	public static void start() {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//		} catch (Throwable e) {
-//			e.printStackTrace();
-//		}
+		//		try {
+		//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		//		} catch (Throwable e) {
+		//			e.printStackTrace();
+		//		}
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Metal".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e1) {
+			Logger.writeErrorToLog("Could not apply Metal Look and feel.");
+			try{
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+			catch (Throwable e2) {
+				Utils.showMessageAndClose("Oops! A horrible error has occured. Application will shutdown");
+				Logger.writeErrorToLog("Could not find an appropriate Look and Feel for on the operating system");
+			}
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					if (view == null) {
 						view = new MainView();
 						view.frame.setVisible(true);
-						
+
 						String[] result = Utils.getCredentials();
 						PuzzleCreator.dbServerAddress = result[0];
 						PuzzleCreator.dbServerPort = result[1];
@@ -195,11 +213,11 @@ public class MainView {
 
 		btn = createButton("Help", "help.png");
 		btn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				helpBtnClicked();
-				}
+			}
 		});
 		btn = createButton("About", "about.png");
 		btn.addActionListener(new ActionListener() {
@@ -330,7 +348,7 @@ public class MainView {
 		for (JButton btn : menuPanelBtns.values())
 			btn.addActionListener(listener);
 	}
-	
+
 	void helpBtnClicked() {
 		showHelpView();
 	}
@@ -354,7 +372,7 @@ public class MainView {
 	void aboutBtnClicked() {
 		showAboutView();
 	}
-	
+
 	public void showHelpView() {
 		if (help== null) {
 			help = HelpView.start();
