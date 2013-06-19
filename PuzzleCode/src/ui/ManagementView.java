@@ -5,6 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.ItemSelectable;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -58,11 +61,12 @@ public class ManagementView extends JPanel {
 
 	private static final String USER_UPDATES_TOPIC = "User Updates";
 	private static final int ADD_ROWS_NUM = 1;
-	private static final int MAX_NUM_DEFS = 20;
+	private static final int MAX_NUM_DEFS = 15;
 
 	private JPanel definitionPanel = null;
 	private JPanel hintsPanel = null;
 	private JTabbedPane tabbedPane;
+	private JScrollPane defScroll;
 
 
 	static JPanel start() throws SQLException {
@@ -124,6 +128,7 @@ public class ManagementView extends JPanel {
 						buildHintsPanel(-1);
 					} catch (SQLException e) {
 						Utils.showErrorMessage("Could not tabs for knowledge fact");
+						tabbedPane.setEnabledAt(0, false);
 						Logger.writeErrorToLog(e.getMessage());
 						return;
 					}
@@ -157,10 +162,17 @@ public class ManagementView extends JPanel {
 					try {
 						buildDefinitionPanel(chosenEntityID);
 						buildHintsPanel(chosenEntityID);
+						tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, true);
+						tabbedPane.setEnabledAt(0, true);
 					} catch (SQLException e1) {
+						tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, false);
+						tabbedPane.setEnabledAt(0, false);
 						Utils.showErrorMessage("Could not tabs for knowledge fact");
 						Logger.writeErrorToLog(e1.getMessage());
 					} 
+					finally{
+						tabbedPane.setSelectedIndex(0);
+					}
 				}
 			}
 		});
@@ -178,8 +190,14 @@ public class ManagementView extends JPanel {
 				btnAddNewFact.setEnabled(flag);
 				newTextField.setEnabled(flag);
 				if (!flag) {
-					definitionPanel.removeAll();
+					clearPanel(definitionPanel);
+					clearPanel(hintsPanel);
 				}
+			}
+			private void clearPanel(JPanel panel) {
+				panel.removeAll();
+				panel.revalidate();
+				panel.repaint();
 			}
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -189,6 +207,7 @@ public class ManagementView extends JPanel {
 					setEnabled(false);
 				}
 			}
+
 		});
 		radioBtnPanel.setLayout(new GridLayout(2, 1, 0, 5));
 
@@ -202,10 +221,17 @@ public class ManagementView extends JPanel {
 				btnSearchFact.setEnabled(flag);
 				existingTextField.setEnabled(flag);
 				if (!flag) {
-					definitionPanel.removeAll();
+					clearPanel(definitionPanel);
+					clearPanel(hintsPanel);
 				}
 				existingTextField.revalidate();
 				existingTextField.getParent().revalidate();
+			}
+
+			private void clearPanel(JPanel panel) {
+				panel.removeAll();
+				panel.revalidate();
+				panel.repaint();
 			}
 
 			public void itemStateChanged(ItemEvent e) {
@@ -237,22 +263,22 @@ public class ManagementView extends JPanel {
 		tabbedPane.setBackground(Color.LIGHT_GRAY);
 		add(tabbedPane, BorderLayout.CENTER);
 
-		
+
 		definitionPanel = new JPanel();
-		JScrollPane scroll = new JScrollPane(definitionPanel);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setSize(new Dimension(10, 1300));
-		scroll.setPreferredSize(tabbedPane.getPreferredSize());
-		scroll.setMinimumSize(tabbedPane.getMinimumSize());
-		scroll.setMaximumSize(tabbedPane.getMaximumSize());
+		defScroll = new JScrollPane(definitionPanel);
+		defScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		definitionPanel.setPreferredSize(new Dimension((int) Math.round(tabbedPane.getPreferredSize().getWidth()), 
+				(int) Math.round(tabbedPane.getPreferredSize().getHeight())));
 
+		tabbedPane.addTab("Definitions", null, defScroll,null);
 
-		tabbedPane.addTab("Definitions", null, scroll,null);
-		
-		
 
 		hintsPanel = new JPanel();
-		tabbedPane.addTab("Hints", null, hintsPanel,null);
+		JScrollPane hintScroll = new JScrollPane(hintsPanel);
+		hintScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		definitionPanel.setPreferredSize(new Dimension((int) Math.round(tabbedPane.getPreferredSize().getWidth()), 
+				(int) Math.round(tabbedPane.getPreferredSize().getHeight())));
+		tabbedPane.addTab("Hints", null, hintScroll,null);
 
 		JPanel btnPanel = new JPanel();
 		btnPanel.setAlignmentX(FlowLayout.CENTER);
@@ -279,7 +305,8 @@ public class ManagementView extends JPanel {
 		int row_num = 0;
 
 		definitionPanel.removeAll();
-		definitionPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+		//definitionPanel.setLayout(new GridLayout(0, 1, 0, 10));
+		definitionPanel.setLayout(new BoxLayout(definitionPanel, BoxLayout.Y_AXIS));
 
 		if (entityID != -1) { // panel for an existing entity
 			Map<String, Integer> definitions = getDefinitionsForEntity(entityID);
@@ -294,14 +321,21 @@ public class ManagementView extends JPanel {
 		}
 
 		definitionPanel.add(new NewDefinitionLine());
+		definitionPanel.add(Box.createVerticalGlue());
 
 		// add padding lines, if needed
 		for (int i = 0; i<MAX_NUM_DEFS - ADD_ROWS_NUM - row_num; i++) {
-			definitionPanel.add(new JPanel());
+			JPanel panel = new JPanel();
+			panel.setPreferredSize(new Dimension((int)hintsPanel.getPreferredSize().getWidth(), 40));
+			definitionPanel.add(panel);
 		}
 
-		definitionPanel.revalidate();
-		tabbedPane.revalidate();
+		//		definitionPanel.invalidate();
+		//		definitionPanel.repaint();
+		//		defScroll.revalidate();
+		//		defScroll.repaint();
+		//		tabbedPane.revalidate();
+		//		tabbedPane.repaint();
 
 		return;
 	}
@@ -311,7 +345,9 @@ public class ManagementView extends JPanel {
 		int row_num = 0;
 
 		hintsPanel.removeAll();
-		hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+		//hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
+		hintsPanel.setLayout(new BoxLayout(hintsPanel, BoxLayout.PAGE_AXIS));
+
 
 		if (entityID != -1) { // existing entity 
 			Map<Integer,String> hintResults = DBUtils.getHintsByEntityID(entityID);
@@ -334,7 +370,9 @@ public class ManagementView extends JPanel {
 
 		// add padding lines, if needed
 		for (int i = 0; i<MAX_NUM_DEFS - ADD_ROWS_NUM - row_num; i++) {
-			hintsPanel.add(new JPanel());
+			JPanel panel = new JPanel();
+			panel.setPreferredSize(new Dimension((int)hintsPanel.getPreferredSize().getWidth(), 40));
+			hintsPanel.add(panel);
 		}
 
 		hintsPanel.revalidate();
@@ -540,8 +578,8 @@ public class ManagementView extends JPanel {
 					}
 					if (field.getSelectedItem() != null ) {
 						String definitionText = field.getSelectedItem().toString();
-//						if	( !definitionText.isEmpty() && 
-//								(isValidString(definitionText))) { // text is entered and valid
+						//						if	( !definitionText.isEmpty() && 
+						//								(isValidString(definitionText))) { // text is entered and valid
 						if	( !definitionText.isEmpty()) {
 							definitionCounter++;
 							Integer retID = allDefinitions.get(definitionText);
@@ -565,11 +603,15 @@ public class ManagementView extends JPanel {
 							if (ret[0] != NewDefinitionLine.this.entityID) { 
 								// add to entity search box
 								ManagementView.this.allEntities.put(entityText, ret[0]); 
-								existingTextField = createAutoCompleteBox(allEntities.keySet(), "", true); 
+								java.awt.Container parent = existingTextField.getParent();
+								parent.remove(existingTextField);
+								existingTextField = createAutoCompleteBox(allEntities.keySet(), entityText, true); 
+								parent.add(existingTextField);
+
 								// add to definition search box
 								allDefinitions.put(definitionText, ret[1]); 
 							}
-							
+
 							NewDefinitionLine.this.entityID = ret[0]; 
 							ManagementView.this.chosenEntityID = ret[0];
 							chosenEntityString = entityText;
@@ -632,7 +674,7 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					String hintText = field.getText();
-//					if (!hintText.isEmpty() && isValidString(hintText)) {
+					//					if (!hintText.isEmpty() && isValidString(hintText)) {
 					if (!hintText.isEmpty()) {
 						//get updated entityID, in case we created a new entity and we just got its ID
 						NewHintLine.this.entityID = ManagementView.this.chosenEntityID;
@@ -712,9 +754,9 @@ public class ManagementView extends JPanel {
 	}
 
 
-//	private boolean isValidString(String string) {
-//		return string.matches("^[A-Za-z0-9 \\(\\)]+(-[A-Za-z0-9 \\(\\)]+)*$");
-//	}
+	//	private boolean isValidString(String string) {
+	//		return string.matches("^[A-Za-z0-9 \\(\\)]+(-[A-Za-z0-9 \\(\\)]+)*$");
+	//	}
 
 	class TopicsCheckComboBox extends CheckComboBox {
 		private boolean lock;

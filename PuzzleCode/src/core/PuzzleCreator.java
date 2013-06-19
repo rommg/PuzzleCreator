@@ -39,8 +39,6 @@ public class PuzzleCreator {
 		}
 
 		appDir = args[0] + System.getProperty("file.separator");
-//			appDir = ui.Utils.getAppDir();
-		String password = args[1];
 		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
 				+ System.getProperty("file.separator");
 		loadFilesDir = appDir + "/temp_yago_files/filtered_tsv_files"
@@ -50,6 +48,7 @@ public class PuzzleCreator {
 			return;
 		}
 		
+		//GUI starts
 		MainView.start();
 
 	}
