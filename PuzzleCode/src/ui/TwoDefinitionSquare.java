@@ -36,6 +36,7 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 		lbl.setParentPanel(this);
 		lbl.setBackground(Color.GRAY);
 		lbl.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		lbl.setFont(this.getFont().deriveFont(9f));
 		add(lbl);
 	}
 	
@@ -46,6 +47,7 @@ final public class TwoDefinitionSquare extends AbstractSquarePanel {
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
 		lbl.setBackground(Color.GRAY);
+		lbl.setFont(this.getFont().deriveFont(9f));
 		add(lbl);
 	}
 

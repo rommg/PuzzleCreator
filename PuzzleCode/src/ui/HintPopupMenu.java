@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 
 import ui.CrosswordView.HintCounterLabel;
 
@@ -126,7 +127,10 @@ final class HintPopupMenu extends JPopupMenu {
 					btn.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/unlocked.png")));
 					btn.setEnabled(false);
 					HintPopupMenu.this.hintCounterLabel.updateCounter();
-					this.lbl.setText("<html><p><left>&nbsp;&nbsp;&nbsp;&nbsp;" + HintItem.this.hintText);
+					this.lbl.setHorizontalTextPosition(SwingConstants.LEFT);
+					//this.lbl.setText("<html><p><left>&nbsp;&nbsp;&nbsp;&nbsp;" + HintItem.this.hintText);
+					this.lbl.setText("<html><p>" + HintItem.this.hintText + "</p></html>");
+
 
 				}
 			}
