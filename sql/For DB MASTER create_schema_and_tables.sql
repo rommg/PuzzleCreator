@@ -94,7 +94,6 @@ CREATE TABLE answers (
 id int NOT NULL AUTO_INCREMENT, 
 answer varchar(50) NOT NULL,
 length int,
-frequency int,
 entity_id int, 
 additional_information varchar(25),
 PRIMARY KEY(id), 

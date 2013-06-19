@@ -461,6 +461,7 @@ public class YagoFileHandler {
 		deleteYagoFile(YAGO_TYPES);
 		deleteYagoFile(YAGO_FACTS);
 		deleteYagoFile(YAGO_LITERAL_FACTS);
+		deleteYagoFile(YAGO_HUMAN_ANSWERS);
 
 		//deleting empty directories
 		deleteFileOrDirectory(ZIP_FILE_DEST_DIR);
