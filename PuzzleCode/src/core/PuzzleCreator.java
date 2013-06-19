@@ -16,11 +16,11 @@ public class PuzzleCreator {
 
 	// These parameters won't be hard coded, need to retrieve them from the user
 	// through GUI
-	public static String dbServerAddress = "localhost"; //"mysqlsrv.cs.tau.ac.il";
+	public static String dbServerAddress = "mysqlsrv.cs.tau.ac.il";
 	public static String dbServerPort = "3306";
-	public static String username = "root";//"DbMysql02";
+	public static String username = "DbMysql02";
 	public static String schemaName = "DbMysql02";
-	public static String password = "2bsafe";//""shakshuka";
+	public static String password = "shakshuka";
 
 	/**
 	 * @param args

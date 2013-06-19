@@ -210,7 +210,7 @@ public class YagoFileHandler {
 			return returnString.substring(0, i-1).toLowerCase(); // get rid of ' ' +  '(... )' in end of entity names
 	}
 
-	private boolean containsNonEnglishChars(String input) {
+	public static boolean containsNonEnglishChars(String input) {
 		return !input.matches("[a-zA-Z0-9 -!,;:.']+");
 
 	}

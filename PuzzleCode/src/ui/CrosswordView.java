@@ -433,6 +433,7 @@ public class CrosswordView extends JPanel {
 		case 'r': {
 			for (int col = def.getBeginColumn(); col<def.getBeginColumn() + def.getAnswer().length; col++) {
 				boardPanelHolders[def.getBeginRow()][col].getComponent(0).setBackground(color);
+				((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setOpaque(true);
 				((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
@@ -440,6 +441,7 @@ public class CrosswordView extends JPanel {
 		case 'l':{
 			for (int col = def.getBeginColumn(); col>def.getBeginColumn() - def.getAnswer().length; col--) {
 				boardPanelHolders[def.getBeginRow()][col].getComponent(0).setBackground(color);
+				((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setOpaque(true);
 				((SquareTextField)boardPanelHolders[def.getBeginRow()][col].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
@@ -447,6 +449,7 @@ public class CrosswordView extends JPanel {
 		case 'u': {
 			for (int row = def.getBeginRow(); row>def.getBeginRow() - def.getAnswer().length; row--) {
 				boardPanelHolders[row][def.getBeginColumn()].getComponent(0).setBackground(color);
+				((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setOpaque(true);
 				((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;
@@ -454,6 +457,7 @@ public class CrosswordView extends JPanel {
 		case 'd': {
 			for (int row = def.getBeginRow(); row<def.getBeginRow() + def.getAnswer().length; row++) {
 				boardPanelHolders[row][def.getBeginColumn()].getComponent(0).setBackground(color);
+				((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setOpaque(true);
 				((SquareTextField)boardPanelHolders[row][def.getBeginColumn()].getComponent(0)).setCaretColor(caretColor);
 			}
 			break;

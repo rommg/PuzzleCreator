@@ -3,6 +3,8 @@ package db.utils;
 import java.sql.SQLException;
 import java.util.List;
 
+import parsing.YagoFileHandler;
+
 import db.DBConnection;
 
 public class KnowledgeManagement {
@@ -31,26 +33,45 @@ public class KnowledgeManagement {
 		}
 		if (entityId == -1){
 			entityId = DBConnection.addEntity(entity); //INSERT INTO entities (name) VALUES (entity); get the id
+			if (!YagoFileHandler.containsNonEnglishChars(entity)) { // subject is of a relevant type and English letters only
+				String answer = entity.replaceAll(" ", "");
+				StringBuffer additionalInfo = new StringBuffer();
+
+				String[] entityNameDivided = entity.split(" ");
+				if (entityNameDivided.length > 1) { // create additional information if there word count in entity > 1
+					additionalInfo.append("(");
+					for (int i = 0; i<entityNameDivided.length; ++i) {
+						additionalInfo.append(entityNameDivided[i].length());
+						if (i == entityNameDivided.length - 1) //last word in entity
+							additionalInfo.append(")");
+						else 
+							additionalInfo.append(",");
+					}
+				}
+
+				DBConnection.addAnswer(answer, answer.length(), additionalInfo.toString(), entityId);
+			}
 		}
+
 		DBConnection.setNewDefinition(entityId, definitionId); // INSER INTO entities_definitions (entity_id, definition_id) VALUES (entityId, definitionId);
 		int[] ret =  {entityId, definitionId};
 		return ret;
 	}
 
-//TODO: remove
-//	/*
-//	 * assumption: User definition is one of the topics
-//	 * 			   topic is not null, definition is not null, entity is not null
-//	 * return :
-//	 * int[0] is the entityId 
-//	 * int[1] is the definition id
-//	 */
-//	public static int[] addDefinitionToEntitiy(String entity, int definitionId, String definition, List<Integer> topics){
-//		int entityId = DBConnection.addEntity(entity); //INSERT INTO entities (name) VALUES (entity); get the id
-//		int defId = addDefinitionToEntitiy(entityId, definitionId ,definition, topics);
-//		int[] ret = {entityId, defId};
-//		return ret;
-//	}
+	//TODO: remove
+	//	/*
+	//	 * assumption: User definition is one of the topics
+	//	 * 			   topic is not null, definition is not null, entity is not null
+	//	 * return :
+	//	 * int[0] is the entityId 
+	//	 * int[1] is the definition id
+	//	 */
+	//	public static int[] addDefinitionToEntitiy(String entity, int definitionId, String definition, List<Integer> topics){
+	//		int entityId = DBConnection.addEntity(entity); //INSERT INTO entities (name) VALUES (entity); get the id
+	//		int defId = addDefinitionToEntitiy(entityId, definitionId ,definition, topics);
+	//		int[] ret = {entityId, defId};
+	//		return ret;
+	//	}
 
 	/*
 	 * return hint id

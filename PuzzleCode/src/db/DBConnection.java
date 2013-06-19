@@ -5,7 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -14,7 +20,6 @@ import java.util.Map;
 import java.util.Set;
 
 import parsing.YagoFileHandler;
-
 import core.Logger;
 import core.PuzzleCreator;
 
@@ -741,6 +746,28 @@ public class DBConnection {
 			e.printStackTrace();
 			
 		}
+	}
+
+	public static void addAnswer(String answer, int length, String additionalInfo, long entityId) throws SQLException {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sqlQuery = "INSERT INTO answers (answer, length, additional_information, entity_id) VALUES (?, ?, ?, ?);";
+		try {
+			pstmt = conn.prepareStatement(sqlQuery, new String[] { "ID" });
+			pstmt.setString(1, answer);
+			pstmt.setInt(2, length);
+			pstmt.setString(3, additionalInfo);
+			pstmt.setLong(4, entityId);
+			pstmt.executeUpdate();
+
+		} catch (SQLException e){
+			throw new SQLException("SQL error", e);
+		}
+		finally {
+			safelyClose(rs, null, conn, pstmt);
+		}	
 	}
 
 
