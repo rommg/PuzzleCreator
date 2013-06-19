@@ -405,7 +405,6 @@ public class YagoFileHandler {
 								relevantEntities.contains(lineColumns[1]) &&  // checking by entity name because there are many rows with no yagoID
 								litertalTypes.contains(lineColumns[2]) &&
 								!properLiteral.isEmpty()){
-								//(!containsNonEnglishChars(properLiteral))) { 
 									String newline = lineColumns[1] + decomposedYagoID[1] + "\t" + lineColumns[2] + "\t" + properLiteral;
 									bw.write(newline);
 									bw.newLine();
@@ -501,7 +500,6 @@ public class YagoFileHandler {
 	}
 
 	public void getFilesFromURL() throws IOException, SevenZipException {
-		//TODO: download with multi thread??? can we?
 		getTSVFileFromURL(YAGO_TYPES);
 		getTSVFileFromURL(YAGO_FACTS);
 		getTSVFileFromURL(YAGO_LITERAL_FACTS);

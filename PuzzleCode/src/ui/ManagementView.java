@@ -305,7 +305,6 @@ public class ManagementView extends JPanel {
 		int row_num = 0;
 
 		definitionPanel.removeAll();
-		//definitionPanel.setLayout(new GridLayout(0, 1, 0, 10));
 		definitionPanel.setLayout(new BoxLayout(definitionPanel, BoxLayout.Y_AXIS));
 
 		if (entityID != -1) { // panel for an existing entity
@@ -329,14 +328,6 @@ public class ManagementView extends JPanel {
 			panel.setPreferredSize(new Dimension((int)hintsPanel.getPreferredSize().getWidth(), 40));
 			definitionPanel.add(panel);
 		}
-
-		//		definitionPanel.invalidate();
-		//		definitionPanel.repaint();
-		//		defScroll.revalidate();
-		//		defScroll.repaint();
-		//		tabbedPane.revalidate();
-		//		tabbedPane.repaint();
-
 		return;
 	}
 
@@ -345,7 +336,6 @@ public class ManagementView extends JPanel {
 		int row_num = 0;
 
 		hintsPanel.removeAll();
-		//hintsPanel.setLayout(new GridLayout(MAX_NUM_DEFS, 1, 0, 10));
 		hintsPanel.setLayout(new BoxLayout(hintsPanel, BoxLayout.PAGE_AXIS));
 
 
@@ -497,7 +487,6 @@ public class ManagementView extends JPanel {
 				}
 			});
 
-			//			btnPanel.add(saveBtn);
 			btnPanel.add(deleteBtn, BorderLayout.CENTER);
 			add(btnPanel, BorderLayout.EAST);
 		}
@@ -578,8 +567,7 @@ public class ManagementView extends JPanel {
 					}
 					if (field.getSelectedItem() != null ) {
 						String definitionText = field.getSelectedItem().toString();
-						//						if	( !definitionText.isEmpty() && 
-						//								(isValidString(definitionText))) { // text is entered and valid
+
 						if	( !definitionText.isEmpty()) {
 							definitionCounter++;
 							Integer retID = allDefinitions.get(definitionText);
@@ -674,7 +662,6 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					String hintText = field.getText();
-					//					if (!hintText.isEmpty() && isValidString(hintText)) {
 					if (!hintText.isEmpty()) {
 						//get updated entityID, in case we created a new entity and we just got its ID
 						NewHintLine.this.entityID = ManagementView.this.chosenEntityID;
@@ -752,11 +739,6 @@ public class ManagementView extends JPanel {
 		autoBox.setStrict(strict);
 		return box;
 	}
-
-
-	//	private boolean isValidString(String string) {
-	//		return string.matches("^[A-Za-z0-9 \\(\\)]+(-[A-Za-z0-9 \\(\\)]+)*$");
-	//	}
 
 	class TopicsCheckComboBox extends CheckComboBox {
 		private boolean lock;

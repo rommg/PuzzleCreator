@@ -76,7 +76,6 @@ public class CredentialsView extends JPanel {
 
 
 	String getPassword() {
-		//return password.getText();
 		return String.valueOf(password.getPassword());
 	}
 }

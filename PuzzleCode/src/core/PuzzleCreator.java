@@ -26,21 +26,7 @@ public class PuzzleCreator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
-//		if (args.length < 2) {
-//			System.out.println("Not enough arguments");
-//			return;
-//		}
-//		if (args.length == 3) {
-//			if (args[2].compareTo("true") == 0) {
-//				dbServerPort = "3305";
-//				username = "DbMysql02";
-//			}
-//		}
 		
-//		appDir = args[0] + System.getProperty("file.separator");
-//		sqlDir = args[0] + System.getProperty("file.separator") + "sql"
-//				+ System.getProperty("file.separator");
 		loadFilesDir = appDir + "/temp_yago_files/filtered_tsv_files"
 				+ System.getProperty("file.separator");
 

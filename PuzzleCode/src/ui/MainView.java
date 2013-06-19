@@ -71,7 +71,6 @@ public class MainView {
 	//views instances
 	private JPanel crosswordView = null;
 	private JPanel welcomePanel = null;
-	private JPanel management = null;
 	private JPanel about = null;
 	private JPanel help = null;
 
@@ -487,17 +486,17 @@ public class MainView {
 	}
 
 	void showManagemntView() {
-		if (management == null) {
-			try {
-				management = ManagementView.start();
-			} catch (SQLException e) {
-				Utils.showErrorMessage("Could not load Knowledge Management window properly.");
-				Logger.writeErrorToLog("Could not load Knowledge Management window properly\n" + e.getMessage());
-				showWelcomeView();
-				return;
-			}
-			cardPanel.add(management, Window.Management.toString());
+		JPanel management = null;
+		try {
+			management = ManagementView.start();
+		} catch (SQLException e) {
+			Utils.showErrorMessage("Could not load Knowledge Management window properly.");
+			Logger.writeErrorToLog("Could not load Knowledge Management window properly\n" + e.getMessage());
+			showWelcomeView();
+			return;
 		}
+		cardPanel.add(management, Window.Management.toString());
+
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.Management.toString());
