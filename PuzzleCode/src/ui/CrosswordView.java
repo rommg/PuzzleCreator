@@ -128,6 +128,7 @@ public class CrosswordView extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				int score = CrosswordModel.calculateScore(getDifficultyFromSize(), timer.calcElapsedMilli(), Integer.parseInt(hintCounterLabel.getText()));
 				if (isCorrect()) {
+					timer.pause();
 					btnCheck.setBackground(Color.GREEN);
 					String message = "Congratulations!";
 					String[][] highScores = null;

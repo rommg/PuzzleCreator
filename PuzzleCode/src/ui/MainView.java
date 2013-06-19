@@ -78,18 +78,18 @@ public class MainView {
 	 * Launch the application.
 	 */
 	public static void start() {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					if (view == null) {
 						view = new MainView();
 						view.frame.setVisible(true);
-
+						
 						String[] result = Utils.getCredentials();
 						PuzzleCreator.dbServerAddress = result[0];
 						PuzzleCreator.dbServerPort = result[1];
