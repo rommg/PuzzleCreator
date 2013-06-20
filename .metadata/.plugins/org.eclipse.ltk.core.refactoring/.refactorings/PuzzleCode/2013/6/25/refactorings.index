@@ -8,3 +8,6 @@
 1371571146210	Delete element
 1371573981179	Extract method 'clearPanel'
 1371576515861	Convert local variable 'defScroll' to field
+1371712439286	Delete element
+1371712445787	Delete element
+1371717786935	Convert local variable 'massive' to field

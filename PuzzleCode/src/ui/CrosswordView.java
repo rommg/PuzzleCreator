@@ -483,7 +483,7 @@ public class CrosswordView extends JPanel {
 	 *
 	 */
 	class JDefinitionLabelListener extends MouseAdapter { // had to put it here because definitions List does not exist at view & controller initialize, and didnt want to have controller refernce in this class
-		private Color COLOR = Color.BLUE;
+		private Color COLOR = new Color(135,206,250);
 		private Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 		private Color origBackgroundColor;
 
