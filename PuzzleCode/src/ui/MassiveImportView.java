@@ -140,7 +140,6 @@ public class MassiveImportView extends JPanel {
 					btnStartImport.setEnabled(false);
 					success.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/fail_small.png")));
 				}
-				//chooseFilePanel.revalidate();
 			}
 		});
 		chooseFilePanel.add(btnOpen);
@@ -178,12 +177,6 @@ public class MassiveImportView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-//				if (worker != null) {
-//					worker.cancel(true);
-//					setProgressMessage("Cancelled!");
-//					MassiveImportView.this.stopButton.setEnabled(false);
-//					MassiveImportView.this.btnStartImport.setEnabled(false);
-//			}
 				cancelMassiveImport("cancelled!");
 				
 			}
@@ -210,6 +203,7 @@ public class MassiveImportView extends JPanel {
 		progressPanel.revalidate();
 		progressPanel.repaint();
 		stopButton.setEnabled(true);
+		btnStartImport.setEnabled(false);
 
 		worker = new ImportWorker(file, download);
 		worker.execute();
