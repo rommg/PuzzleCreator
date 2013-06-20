@@ -1,5 +1,10 @@
 package core.algorithm;
 
+/**
+ * This class holds a puzzle answer. 
+ * @author rommguy
+ *
+ */
 public class Answer {
 	private String answerSt;
 	private int entityId;

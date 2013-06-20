@@ -3,6 +3,12 @@ package core.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class holds a board definition. It is used to check the possible location of letters on puzzle squares, by holding the list of possible answers for this definition.<br>
+ * The method checkLetter is used to make sure a certain letter allows at least one possible answer for this definition.<br>
+ * This class overrides the comareTo method, to allow sorting puzzle definitions according to the amount of possible answers each definition has.
+ *
+ */
 public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 
 	private int textRow;
@@ -80,6 +86,15 @@ public class PuzzleDefinition implements Comparable<PuzzleDefinition> {
 		return cloned;
 	}
 
+	/**
+	 * This method checks if the char c, in the given row and column, leaves at least 1 answer available for this definition. <br>
+	 * If setLetter is true, and the check OK, the letter is set for this definition, and the possible answers list is updated.
+	 * @param c - the checked letter.
+	 * @param row 
+	 * @param column
+	 * @param setLetter - if true, the letter is set, and the possible answers list is updated.
+	 * @return true if more than one possible answer exists with this letter.
+	 */
 	public boolean checkLetter(char c, int row, int column, boolean setLetter) {
 		int letterIndex = -1;
 		switch (direction) {
