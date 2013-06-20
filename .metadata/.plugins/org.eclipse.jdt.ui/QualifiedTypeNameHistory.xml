@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="sun.java2d.Disposer"/>
 <fullyQualifiedTypeName name="javax.swing.BoxLayout"/>
 <fullyQualifiedTypeName name="utils.DBUtils"/>
 <fullyQualifiedTypeName name="org.japura.gui.CheckComboBox"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="core.Logger"/>
 <fullyQualifiedTypeName name="ui.ManagementView"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
 </qualifiedTypeNameHistroy>
