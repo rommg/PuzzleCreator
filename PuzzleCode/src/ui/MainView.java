@@ -73,6 +73,7 @@ public class MainView {
 	private JPanel welcomePanel = null;
 	private JPanel about = null;
 	private JPanel help = null;
+	private MassiveImportView massive;
 
 	/**
 	 * Launch the application.
@@ -506,8 +507,10 @@ public class MainView {
 	}
 
 	void showMassiveImportView() {
-		MassiveImportView massive = MassiveImportView.start();
-		cardPanel.add(massive, Window.MassiveImport.toString());
+		if (massive == null) {
+			massive = MassiveImportView.start();
+			cardPanel.add(massive, Window.MassiveImport.toString());
+		}
 
 		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 		cl.show(cardPanel,Window.MassiveImport.toString());
