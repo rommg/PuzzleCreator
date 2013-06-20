@@ -63,7 +63,7 @@ public class HelpView extends JPanel {
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setLayout(new GridLayout(0, 2, 0, 0));
 
-		JLabel lblProgrammers = new JLabel("<html><h3>Yonatan Wilkof: 050 789 7788</h3><h3>Saleet Klein: 054 255 9280</h3><h3>Guy Romm: 052 377 0338</h3><h3>David Franco: 054 540 8227</h3><br><h4>*not on saturdays</h4></html>");
+		JLabel lblProgrammers = new JLabel("<html><h3>Yonatan Wilkof: 050 7897788</h3><h3>Saleet Klein: 054 2559280</h3><h3>Guy Romm: 052 3770338</h3><h3>David Franco: 054 5408227</h3><br><h4>*not on Saturdays</h4></html>");
 		mainPanel.add(lblProgrammers);
 		lblProgrammers.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblProgrammers.setHorizontalAlignment(SwingConstants.CENTER);
