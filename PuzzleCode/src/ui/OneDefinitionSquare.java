@@ -24,7 +24,7 @@ final class OneDefinitionSquare extends AbstractSquarePanel{
 		setLayout(new BorderLayout());
 		lbl.setBackground(Color.GRAY);
 		lbl.setParentPanel(this);
-		//lbl.setFont(this.getFont().deriveFont(getFontSize(lbl)));
+		lbl.setFont(this.getFont().deriveFont(12f));
 		add(lbl, BorderLayout.CENTER);
 	
 	}
