@@ -359,8 +359,6 @@ public class DBUtils {
 			} else {
 				entitiesWithoutHints++;
 			}
-			// System.out.println("id: " + pd.getEntityId() + " def: " +
-			// pd.getDefinition() + " hints: " + pd.getHints());
 		}
 		System.out.println("Number of entities with no hint: "
 				+ entitiesWithoutHints);
@@ -369,8 +367,6 @@ public class DBUtils {
 			System.out.println("All Entities have definitions!");
 		}
 	}
-
-	// TODO: end to remove
 
 	public static String[] getTriviaQuestion() throws SQLException {
 		String sqlQuery = "SELECT a.answer, a.additional_information, d.definition "

@@ -3,7 +3,10 @@ package core.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * This class represents a square on the puzzle board.<br> 
+ * The method check letter, is used to check if a specific letter can be assigned to this square.
+ */
 public class PuzzleSquare {
 
 	private boolean isLetter;
@@ -67,6 +70,13 @@ public class PuzzleSquare {
 		this.definitions.add(def);
 	}
 
+	/**
+	 * The method checks if param c can be assigned to this puzzle square.<br>
+	 * If setLetter is true, and the check is positive, the method assignes c to this square, affecting all definitions that uses this square.
+	 * @param c
+	 * @param setLetter
+	 * @return true if c can be assigned to this square
+	 */
 	public boolean checkLetter(char c, boolean setLetter){
 		
 		if (this.letter != 0 && this.letter != c){

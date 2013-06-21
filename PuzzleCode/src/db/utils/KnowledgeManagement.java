@@ -58,21 +58,6 @@ public class KnowledgeManagement {
 		return ret;
 	}
 
-	//TODO: remove
-	//	/*
-	//	 * assumption: User definition is one of the topics
-	//	 * 			   topic is not null, definition is not null, entity is not null
-	//	 * return :
-	//	 * int[0] is the entityId 
-	//	 * int[1] is the definition id
-	//	 */
-	//	public static int[] addDefinitionToEntitiy(String entity, int definitionId, String definition, List<Integer> topics){
-	//		int entityId = DBConnection.addEntity(entity); //INSERT INTO entities (name) VALUES (entity); get the id
-	//		int defId = addDefinitionToEntitiy(entityId, definitionId ,definition, topics);
-	//		int[] ret = {entityId, defId};
-	//		return ret;
-	//	}
-
 	/*
 	 * return hint id
 	 * assumption: hint is not null 
