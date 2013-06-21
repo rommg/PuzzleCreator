@@ -55,10 +55,10 @@ public class ManagementView extends JPanel {
 	private String[] allTopicNamesArray;
 
 	//global variables containing the chosen entity details
-	private int currentEntityID = -1; // // for existing entities
-	private String currentEntityString = ""; // for added entities
-	private Map<String, Integer> currentEntityLoadedDefinitions;
-	private Map<Integer,String> currentEntityLoadedHints;
+	private int currentEntityID = -1; // current screen shown entity
+	private String currentEntityString = ""; // current screen shown entity name
+	private Map<String, Integer> currentEntityLoadedDefinitions; // current entity's loaded definitions
+	private Map<Integer,String> currentEntityLoadedHints; // current entity's loaded hints
 
 	private static final String USER_UPDATES_TOPIC = "User Updates";
 	private static final int ADD_ROWS_NUM = 1;
