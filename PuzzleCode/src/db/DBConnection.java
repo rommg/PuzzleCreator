@@ -271,7 +271,7 @@ public class DBConnection {
 		String sqlQuery = "SELECT max(id) as max_id FROM definitions;";
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
-			//TODO: ERROR
+			throw new SQLException ("getMaxDefinitionID: definitions table seems to be empty");
 		}
 		return (Integer)(rs.get(0).get("max_id"));
 	}
@@ -392,7 +392,7 @@ public class DBConnection {
 		String sqlQuery = "SELECT max(id) as max_id FROM predicates;";
 		List<Map<String,Object>> rs = executeQuery(sqlQuery);
 		if (rs.size() == 0){
-			//TODO: ERROR
+			throw new SQLException ("getMaxPredicateID: predicates table seems to be empty");
 		}
 		return (Integer)(rs.get(0).get("max_id"));
 	}
