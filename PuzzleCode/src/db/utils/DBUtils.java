@@ -320,54 +320,6 @@ public class DBUtils {
 		return strBlder.toString();
 	}
 
-	// TODO: remove!!!!
-	public static void test() throws SQLException  {
-		int[] topics = { 1 };
-		List<Answer> answers = DBUtils.getPossibleAnswers(topics, 10);
-		System.out.println("Found " + answers.size() + " possible answers");
-		for (Answer answer : answers) {
-			if (answer.length > 10) {
-				System.out.println("ERROR: too long answer");
-			}
-		}
-
-		List<PuzzleDefinition> pDefinitions = new ArrayList<PuzzleDefinition>();
-		for (int i = 1; i < 32683; i++) {
-			PuzzleDefinition pd = new PuzzleDefinition(0, 0, 0, 0, 0, 'R',
-					new AlgorithmWorker(null, null, 0));
-			pd.setAnswer(new Answer("", i));
-			pDefinitions.add(pd);
-		}
-		setHintsAndDefinitions(pDefinitions);
-		int maxNumOfHints = 0;
-		int entitiesWithoutHints = 0;
-		boolean error = false;
-		for (PuzzleDefinition pd : pDefinitions) {
-			if (pd.getDefinition() == null) {
-				System.out.println("ERROR: no definition for entity: "
-						+ pd.getEntityId());
-				error = true;
-			}
-			if (pd.getHints() != null) {
-				if (maxNumOfHints < pd.getHints().size()) {
-					maxNumOfHints = pd.getHints().size();
-					if (maxNumOfHints > 100) {
-						System.out.println("More than 100 hints: "
-								+ pd.getEntityId());
-					}
-				}
-			} else {
-				entitiesWithoutHints++;
-			}
-		}
-		System.out.println("Number of entities with no hint: "
-				+ entitiesWithoutHints);
-		System.out.println("Maximum Number of hints: " + maxNumOfHints);
-		if (!error) {
-			System.out.println("All Entities have definitions!");
-		}
-	}
-
 	public static String[] getTriviaQuestion() throws SQLException {
 		String sqlQuery = "SELECT a.answer, a.additional_information, d.definition "
 				+ "FROM entities e, answers a, definitions d, entities_definitions ed "
