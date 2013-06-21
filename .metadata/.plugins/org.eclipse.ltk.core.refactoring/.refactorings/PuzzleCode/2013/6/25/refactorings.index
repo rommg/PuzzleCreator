@@ -11,3 +11,9 @@
 1371712439286	Delete element
 1371712445787	Delete element
 1371717786935	Convert local variable 'massive' to field
+1371797891775	Convert local variable 'definitions' to field
+1371798992255	Rename field 'definitions'
+1371799322517	Rename field 'chosenEntityID'
+1371799347094	Rename field 'chosenEntityString'
+1371799508738	Convert local variable 'hintResults' to field
+1371799534681	Rename field 'hintResults'

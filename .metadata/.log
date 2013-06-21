@@ -1693,3 +1693,6 @@ Binding(CTRL+DEL,
 		,,true),null),
 	org.eclipse.ui.defaultAcceleratorConfiguration,
 	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.jst.jsp.core 4 4 2013-06-21 10:16:31.401
+!MESSAGE A workspace crash was detected. The previous session did not exit normally. Not using saved taglib indexes.

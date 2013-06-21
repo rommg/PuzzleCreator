@@ -49,15 +49,16 @@ public class ManagementView extends JPanel {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField newTextField;
 	private JComboBox<String> existingTextField;
-	private Map<String,Integer> allTopics; // map of all topics
 	private Map<String,Integer> allEntities; // Map : GET_PROPER_NAME(entity_name) (which is unique) -> PK. .
+	private Map<String,Integer> allDefinitions = null; // map of all definitions
+	private Map<String,Integer> allTopics; // map of all topics
 	private String[] allTopicNamesArray;
-	private Map<String,Integer> allDefinitions = null;
 
 	//global variables containing the chosen entity details
-	private int chosenEntityID = -1; // // for existing entities
-	private String chosenEntityString = ""; // for added entities
-
+	private int currentEntityID = -1; // // for existing entities
+	private String currentEntityString = ""; // for added entities
+	private Map<String, Integer> currentEntityLoadedDefinitions;
+	private Map<Integer,String> currentEntityLoadedHints;
 
 	private static final String USER_UPDATES_TOPIC = "User Updates";
 	private static final int ADD_ROWS_NUM = 1;
@@ -121,9 +122,12 @@ public class ManagementView extends JPanel {
 				}
 				if (!entityText.isEmpty()) {
 					definitionCounter = 0;
-					chosenEntityID = -1;
-					chosenEntityString = entityText;
+					currentEntityID = -1;
+					currentEntityString = entityText;
 					try {
+						currentEntityLoadedDefinitions = null; 
+						currentEntityLoadedHints = null;
+
 						buildDefinitionPanel(-1);
 						buildHintsPanel(-1);
 					} catch (SQLException e) {
@@ -156,12 +160,15 @@ public class ManagementView extends JPanel {
 					return; // do nothing if no text entered
 
 				definitionCounter = 0;
-				chosenEntityID  = allEntities.get(searchText);
+				currentEntityID  = allEntities.get(searchText);
 
-				if (chosenEntityID != -1) { // found
+				if (currentEntityID != -1) { // found
 					try {
-						buildDefinitionPanel(chosenEntityID);
-						buildHintsPanel(chosenEntityID);
+						currentEntityLoadedDefinitions = null; 
+						currentEntityLoadedHints = null;
+
+						buildDefinitionPanel(currentEntityID);
+						buildHintsPanel(currentEntityID);
 						tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, true);
 						tabbedPane.setEnabledAt(0, true);
 					} catch (SQLException e1) {
@@ -300,6 +307,12 @@ public class ManagementView extends JPanel {
 
 	}
 
+	/**
+	 * This function builds the definitions Tab. 
+	 * @param entityID The entity to add the definition to. For new entity to add, entityID == -1
+	 * @param currentEntityDefinitions The list of definitions queried for the entityID. For rebuilding to the same queried entity, currentEntityDefinitions == null
+	 * @throws SQLException
+	 */
 	private void buildDefinitionPanel(int entityID) throws SQLException {
 
 		int row_num = 0;
@@ -308,13 +321,14 @@ public class ManagementView extends JPanel {
 		definitionPanel.setLayout(new BoxLayout(definitionPanel, BoxLayout.Y_AXIS));
 
 		if (entityID != -1) { // panel for an existing entity
-			Map<String, Integer> definitions = getDefinitionsForEntity(entityID);
+			if (currentEntityLoadedDefinitions == null) // definitions for entityID not yet loaded from DB
+				currentEntityLoadedDefinitions = getDefinitionsForEntity(entityID);
 
-			row_num = definitions.size();
+			row_num = currentEntityLoadedDefinitions.size();
 			definitionCounter = row_num;
 
-			for (String definition : definitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
-				DefinitionLine line = new DefinitionLine(chosenEntityID, definitions.get(definition), definition);
+			for (String definition : currentEntityLoadedDefinitions.keySet()) { // definition : MAP : DEFINITON STRING - > ID
+				DefinitionLine line = new DefinitionLine(currentEntityID, currentEntityLoadedDefinitions.get(definition), definition);
 				definitionPanel.add(line);
 			}
 		}
@@ -340,15 +354,16 @@ public class ManagementView extends JPanel {
 
 
 		if (entityID != -1) { // existing entity 
-			Map<Integer,String> hintResults = DBUtils.getHintsByEntityID(entityID);
+			if (currentEntityLoadedHints == null) // don't load hints again if already loaded them for entity
+				currentEntityLoadedHints = DBUtils.getHintsByEntityID(entityID);
 
 			List<HintTuple> hintTupleLst = new ArrayList<HintTuple>();
 
-			for (Entry<Integer,String> entry : hintResults.entrySet()) {
+			for (Entry<Integer,String> entry : currentEntityLoadedHints.entrySet()) {
 				hintTupleLst.add(new HintTuple(entry.getKey(),entry.getValue()));
 			}
 
-			row_num = hintResults.size();
+			row_num = currentEntityLoadedHints.size();
 
 			for (HintTuple hint : hintTupleLst) { 
 				HintResultLine line = new HintResultLine(hint);
@@ -415,7 +430,8 @@ public class ManagementView extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (definitionCounter - 1 >= 1){
-						if (!DefinitionLine.this.definitionBox.getText().toString().isEmpty()) {
+						String deletedEntityText = DefinitionLine.this.definitionBox.getText().toString();
+						if (!deletedEntityText.isEmpty()) {
 							try {
 								KnowledgeManagement.deleteEntityDefinition(DefinitionLine.this.entityID, DefinitionLine.this.definitionID);
 							} catch (SQLException e1) {
@@ -424,6 +440,7 @@ public class ManagementView extends JPanel {
 								return;
 							}
 							definitionCounter--;
+							currentEntityLoadedDefinitions.remove(deletedEntityText); 
 							JPanel parent = (JPanel) DefinitionLine.this.getParent();
 							parent.remove(DefinitionLine.this);
 							parent.revalidate();
@@ -480,6 +497,8 @@ public class ManagementView extends JPanel {
 							return;
 						}
 
+						// when deleting no need to build tab again
+						currentEntityLoadedHints.remove(HintResultLine.this.hint.getId());
 						JPanel parent = (JPanel) HintResultLine.this.getParent();
 						parent.remove(HintResultLine.this);
 						parent.revalidate();
@@ -507,8 +526,8 @@ public class ManagementView extends JPanel {
 		String entityText = null;
 
 		NewDefinitionLine() { // for existing entity
-			entityID = chosenEntityID;
-			entityText = new String(chosenEntityString);
+			entityID = currentEntityID;
+			entityText = new String(currentEntityString);
 			initialize();
 		}
 
@@ -569,7 +588,6 @@ public class ManagementView extends JPanel {
 						String definitionText = field.getSelectedItem().toString();
 
 						if	( !definitionText.isEmpty()) {
-							definitionCounter++;
 							Integer retID = allDefinitions.get(definitionText);
 							int definitionID = (retID == null) ? -1 : retID; 
 							int[] ret = null;
@@ -587,6 +605,8 @@ public class ManagementView extends JPanel {
 								return;
 							}
 
+							definitionCounter++;
+
 							// update the entityID;
 							if (ret[0] != NewDefinitionLine.this.entityID) { 
 								// add to entity search box
@@ -598,11 +618,17 @@ public class ManagementView extends JPanel {
 
 								// add to definition search box
 								allDefinitions.put(definitionText, ret[1]); 
+
 							}
 
-							NewDefinitionLine.this.entityID = ret[0]; 
-							ManagementView.this.chosenEntityID = ret[0];
-							chosenEntityString = entityText;
+							//update the line's entityID
+							NewDefinitionLine.this.entityID = ret[0];
+							//update the window's currentChosenEntityID
+							ManagementView.this.currentEntityID = ret[0];
+							currentEntityString = entityText;
+							// add to queried entitie's definitions mapping
+							if (currentEntityLoadedDefinitions != null) // will be null if this is a new entity and this is the first definition
+								currentEntityLoadedDefinitions.put(definitionText, ret[1]);
 
 
 							try {
@@ -639,7 +665,7 @@ public class ManagementView extends JPanel {
 
 
 		NewHintLine() {
-			this.entityID = chosenEntityID;
+			this.entityID = currentEntityID;
 			initialize();
 		}
 
@@ -664,10 +690,12 @@ public class ManagementView extends JPanel {
 					String hintText = field.getText();
 					if (!hintText.isEmpty()) {
 						//get updated entityID, in case we created a new entity and we just got its ID
-						NewHintLine.this.entityID = ManagementView.this.chosenEntityID;
+						NewHintLine.this.entityID = ManagementView.this.currentEntityID;
 						//call DB add procedure
 						try {
-							KnowledgeManagement.addHint(NewHintLine.this.entityID, hintText);
+							int hintID = KnowledgeManagement.addHint(NewHintLine.this.entityID, hintText);
+							if (currentEntityLoadedHints != null) // will be null if this is a new entity and this is the first hint
+							currentEntityLoadedHints.put(hintID, hintText);
 							buildHintsPanel(entityID);
 
 						} catch (SQLException e1) {
