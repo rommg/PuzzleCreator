@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,8 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import parsing.YagoFileHandler;
 import core.Logger;
 import core.PuzzleCreator;
 
@@ -571,67 +568,7 @@ public class DBConnection {
 		}
 	}
 
-	// Methods from DBConnector, not yet used here: //
-	// ////////////////////////////////////////////////
 
-	private static String buildCreateTableSql(String tablename) {
-		return "CREATE TABLE " + tablename + " " + "(yago_id varchar(50), " + "subject varchar(50), "
-				+ "predicate varchar(50), " + "object varchar(250), " + "value float, "
-				+ "id int NOT NULL AUTO_INCREMENT, " + "PRIMARY KEY(id));";
-
-	}
-
-	@SuppressWarnings("unused")
-	private static String buildImportSql(String importedFile, String tableTo) {
-		String fixedPath = YagoFileHandler.getFilteredTsvFileDestDir().replace("\\", "\\\\");
-		return "LOAD DATA LOCAL INFILE '" + fixedPath + importedFile + ".TSV' " + "INTO TABLE " + tableTo + " "
-		+ "fields terminated by '\\t' " + "lines terminated by '\\n' "
-		+ "(yago_id,subject,predicate,object,value);";
-	}
-
-	@SuppressWarnings("unused")
-	private static int createTable(String tablename) {
-		String sql = buildCreateTableSql(tablename);
-		try {
-			Connection conn = getConnection();
-			Statement stmt = conn.createStatement();
-			stmt.addBatch("DROP TABLE IF EXISTS " + tablename);
-			stmt.addBatch(sql);
-			stmt.executeBatch();
-			stmt.close();
-			freeConnection(conn);
-		} catch (SQLSyntaxErrorException e) {
-			Logger.writeErrorToLog("Executing: " + sql + " failed: Wrong syntax.");
-			return 0;
-		} catch (SQLException e) {
-			Logger.writeErrorToLog(e.getMessage());
-			return 0;
-		}
-		return 1;
-	}
-
-	@SuppressWarnings("unused")
-	private static int createSchema(String schemaName) {
-		return executeSql(schemaName, "CREATE SCHEMA IF NOT EXISTS " + schemaName
-				+ " CHARACTER SET utf8 COLLATE utf8_general_ci;");
-	}
-
-	private static int executeSql(String schemaname, String sql) {
-		try {
-			Connection conn = getConnection();
-			Statement stmt = conn.createStatement();
-			stmt.execute(sql);
-			stmt.close();
-			freeConnection(conn);
-		} catch (SQLSyntaxErrorException e) {
-			Logger.writeErrorToLog("Executing: " + sql + " failed: Wrong syntax.");
-			return 0;
-		} catch (SQLException e) {
-			Logger.writeErrorToLog(e.getMessage());
-			return 0;
-		}
-		return 1;
-	}
 
 	public static void insreatIntoYagoTables(String yagoTypes_tsv, String sql, int numOfArguments) throws SQLException, IOException{
 		String line = new String();
