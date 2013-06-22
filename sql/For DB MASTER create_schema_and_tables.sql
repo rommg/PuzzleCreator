@@ -623,7 +623,7 @@ INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<isInte
 INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<isMarriedTo>', 'Married to ?', 'Married to ?');
 -- INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<isLocatedIn>', 'Located in ?', '? is located there');
 -- INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<livesIn>', 'Person who lives in ?', '? lives there');
-INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<playsFor>', 'Plays for ?', '? plays for it');
+INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<playsFor>', 'Played for ?', '? played for it');
 INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<wasBornIn>', 'Was born in ?', '? was born there');
 INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<hasWonPrize>', 'Has won the ?', '? has won it');
 INSERT INTO predicates (yago_predicate, subject_str, object_str) VALUE ('<wroteMusicFor>', 'Wrote music for ?', '? wrote its music');
