@@ -68,12 +68,7 @@ public class DBUtils {
 		for (PuzzleDefinition puzzleDefinition : pDefinitions) {
 			int entityId = puzzleDefinition.getEntityId();
 			int rand = (int) (Math.random() * definitions.get(entityId).size());
-			try {
-				puzzleDefinition.setDefinition(definitions.get(entityId).get(
-						rand));
-			} catch (Exception ex) {
-				// TODO is this needed?
-			}
+			puzzleDefinition.setDefinition(definitions.get(entityId).get(rand));
 			definitions.get(entityId).remove(rand);
 			if (definitions.get(entityId).size() != 0) {
 				if (hints.keySet().contains(entityId)) {
